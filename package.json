@@ -1,0 +1,61 @@
+{
+	"name": "SliConf",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"test": "jest"
+	},
+	"dependencies": {
+		"color": "^0.11.3",
+		"jest-react-native": "^18.0.0",
+		"lodash": "^4.17.4",
+		"moment": "^2.18.1",
+		"native-base": "^2.2.1",
+		"react": "16.0.0-alpha.12",
+		"react-native": "0.46.3",
+		"react-native-code-push": "^4.0.0-beta",
+		"react-native-easy-grid": "^0.1.14",
+		"react-native-modalbox": "^1.4.1",
+		"react-native-popup-dialog": "^0.9.29",
+		"react-navigation": "^1.0.0-beta.11",
+		"react-redux": "^5.0.5",
+		"redux": "^3.7.2",
+		"redux-form": "^7.0.0",
+		"redux-persist": "^4.8.2",
+		"redux-thunk": "^2.2.0",
+		"remote-redux-devtools": "^0.5.12"
+	},
+	"devDependencies": {
+		"babel-jest": "20.0.3",
+		"babel-preset-react-native": "2.1.0",
+		"jest": "20.0.4",
+		"chai": "^4.1.0",
+		"mocha": "^3.4.2",
+		"react-test-renderer": "16.0.0-alpha.12"
+	},
+	"keywords": [
+		"android",
+		"ios",
+		"react",
+		"native",
+		"react-native",
+		"native-base",
+		"native-modules",
+		"react-component",
+		"navbar",
+		"packager",
+		"rnpm",
+		"es6",
+		"redux",
+		"react-native-code-push",
+		"react-native boilerplate",
+		"react-native with redux",
+		"react-native with redux boilerplate",
+		"native-base boilerplate",
+		"react-native with native-base"
+	],
+	"jest": {
+		"preset": "react-native"
+	}
+}
