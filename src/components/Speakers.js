@@ -43,6 +43,7 @@ export default class Speakers extends Component {
         });
     }
 
+
     render() {
         if(this.state.isFirst) this.lapsList();
         if(this.state.status) return this.renderAbout();
