@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Image, ActivityIndicator, Dimensions} from 'react-native';
+import {Image, Dimensions} from 'react-native';
 import {
     Container,
     Header,
@@ -17,16 +17,15 @@ import {
     CardItem,
     List,
     ListItem,
-    Thumbnail
+    Thumbnail,
+    Spinner
 
 } from "native-base";
 import {HOME} from '../router'
 
 const device = Dimensions.get('window');
-const styles = StyleSheet.create({
-});
-
 const logo = require("../../images/shadow.png");
+const API = 'https://jsonblob.com/api/jsonBlob/5fe3a887-70bb-11e7-9e0d-8d0ef0a54cdd';
 
 class MainScreen extends React.Component {
 
@@ -35,15 +34,31 @@ class MainScreen extends React.Component {
         isLoading: true,
         value: '',
         first: true,
-        isRefreshing: true
     };
 
     static navigationOptions = {
         header: null,
     };
 
+    checkEvent(code) {
+        fetch(API + code)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson.status === 'true') {
+                    this.props.navigation.navigate(HOME, {
+                        id: code,
+                        name: responseJson.events.name
+                    });
+                } else
+                    this.getEventList(code);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
     getEventList(name) {
-        return fetch('https://jsonblob.com/api/jsonBlob/5fe3a887-70bb-11e7-9e0d-8d0ef0a54cdd')
+        return fetch(API)
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
@@ -58,6 +73,104 @@ class MainScreen extends React.Component {
                 console.error(error);
             });
     }
+
+    _handlePressSearch(value) {
+        // TODO direk arama kosulunu duzenle
+        if (value.length === 120)
+            this.checkEvent(value);
+        else
+            this.getEventList(value);
+    }
+
+    renderStart() {
+        let searchSpin = false;
+        let color = 'blue';
+        return (
+            <Content>
+                <Image source={logo} style={{
+                    flex: 1,
+                    width: device.width,
+                    height: device.height,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <View>
+                        <Item rounded last style={{borderColor: color,width:device.width-20}}>
+                            <Icon active name={"search"} style={{color: color}}/>
+                            <Input style={{color: color }} placeholder="örn: JavaDay, 512"
+                                   onChangeText={(text) => this.setState({value: text})}
+                                   value={this.state.value}/>
+                        </Item>
+                        <Button primary rounded
+                                style={{
+                                    marginTop: 20,
+                                    alignSelf: 'center'
+                                }}
+                                onPress={this.state.value === "" ? null : () => {
+                                    searchSpin = true;
+                                    this._handlePressSearch(this.state.value);
+                                    this.setState({first: false});
+                                }}>
+                            {searchSpin ? <Spinner color='orange'/> : <Text>Bul</Text>}
+                        </Button>
+                    </View>
+                </Image>
+            </Content>
+        )
+    }
+
+    renderSeacrh() {
+        let color = 'white';
+        return (
+            <Container>
+                <Header style={{padding: 2}}>
+                    <Body style={{flexDirection: 'row', flex: 1, padding:2}}>
+                    <Item rounded last style={{borderColor: color,flex: 1}}>
+                        <Icon active name={"search"} style={{color: color,flex:.1}}/>
+                        <Input style={{color: color , flex: .8}}
+                               placeholder="örn: JavaDay, 512"
+                               onChangeText={(text) => this.setState({value: text})}
+                               value={this.state.value}/>
+                        <Button rounded transparent light style={{justifyContent: 'center',flex:.1,alignItems:'center'}}
+                                onPress={this.state.value === "" ? null : () => {
+                                    this._handlePressSearch(this.state.value);
+                                }}>
+                            <Text style={{color: color,textAlign:'center',textAlignVertical:'center'}}>Bul</Text>
+                        </Button>
+                    </Item>
+                    </Body>
+                </Header>
+                <Content>
+                    <List dataArray={this.state.data}
+                          renderRow={(item) => this.renderRow(item)}>
+                    </List>
+                </Content>
+            </Container>
+        )
+    }
+
+    renderRow(event) {
+        return (
+            <ListItem button onPress={() =>
+                this.props.navigation.navigate(HOME, {
+                    id: event.id,
+                    name: event.name
+                })}>
+                <Left>
+                    <Thumbnail source={{uri: event.logo}}/>
+                    <Body>
+                    <Text>{event.name}</Text>
+                    <Text note>{event.date}</Text>
+                    </Body>
+                </Left>
+                <Right>
+                    <Text>{event.id}</Text>
+                    <Icon name="arrow-forward"/>
+                </Right>
+            </ListItem>
+        )
+    }
+
 
     _first() {
         return (
@@ -134,7 +247,7 @@ class MainScreen extends React.Component {
                               <ListItem button onPress={() =>
                                   this.props.navigation.navigate(HOME, {
                                       id: item.id,
-                                      name : item.name
+                                      name: item.name
                                   })}>
                                   <Left>
                                       <Thumbnail source={{uri: item.logo}}/>
@@ -156,11 +269,12 @@ class MainScreen extends React.Component {
     }
 
     render() {
-        return <Container>
-            {this.state.first ? this._first() : this._search()}
-        </Container>
+        return (
+            <Container>
+                {this.state.first ? this.renderStart() : this.renderSeacrh()}
+            </Container>)
+
     }
 }
-
 
 export default MainScreen;

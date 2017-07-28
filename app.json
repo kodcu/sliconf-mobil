@@ -3,7 +3,7 @@
     "sdkVersion": "18.0.0",
     "androidStatusBar": {
             "barStyle": "light-content",
-            "backgroundColor": "#333"
+            "backgroundColor": "#ABC"
     }
   }
 }
