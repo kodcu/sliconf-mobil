@@ -4,7 +4,7 @@
 
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Container, Content, Header, Left, Button, Icon, Body, Right, Text, Title, Card, CardItem} from 'native-base';
+import {Container, Content, Header, Left, Button, Icon, Body, Right, Text, Title, Card, CardItem,List} from 'native-base';
 import {connect} from "react-redux";
 import DrawBar from "./DrawBar";
 import Agenda from "./AgendaScreen";
@@ -15,7 +15,7 @@ import LoginError from './LoginError'
 import { Col, Row, Grid } from "react-native-easy-grid";
 import {DrawerNavigator, NavigationActions} from "react-navigation";
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.flatten({
     container: {
         padding: 10
     },
@@ -90,9 +90,9 @@ class HomeScreen extends React.Component {
 
                 <Text style={styles.title}>Welcome to {params.name}</Text>
                 <View style={styles.separator}/>
+                <List dataArray={routes}
+                      renderRow={(data) =>
 
-                {routes.map((data, index) => (
-                    <Card style={{marginBottom: 5}}>
                         <CardItem>
                             <Icon active name="person"/>
                             <Text>{data.title}</Text>
@@ -100,9 +100,8 @@ class HomeScreen extends React.Component {
                                 <Icon name="arrow-forward"/>
                             </Right>
                         </CardItem>
-                    </Card>
-                ))}
-
+                      }>
+                </List>
                 <Grid style={{padding: 20}}>
                     <Row>
                         <Row style={{
