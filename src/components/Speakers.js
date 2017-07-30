@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Container, Header, Left, Body, Right, Button, Icon, Title,Toast,Content,Card ,CardItem,List,ListItem,Thumbnail} from 'native-base';
-
+import { NavigationActions} from "react-navigation";
 
 var SpeakersList = [
     {name: 'Kasia Mrowca',workingAt:'Mrowca LTD'},
@@ -51,7 +51,7 @@ export default class Speakers extends Component {
             <Container>
                 <Header>
                     <Left>
-                        <Button transparent onPress={() => this.props.navigation.navigate('Main')}>
+                        <Button transparent onPress={() => this.props.navigation.dispatch(NavigationActions.back())}>
                             <Icon name='arrow-back' />
                         </Button>
                     </Left>
