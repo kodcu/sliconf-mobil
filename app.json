@@ -4,6 +4,15 @@
     "androidStatusBar": {
             "barStyle": "light-content",
             "backgroundColor": "#ABC"
+    },
+    "name": "Sliconf",
+    "icon": "./images/icon.png",
+    "version": "1.0.0",
+    "ios": {
+      "bundleIdentifier": "com.kodcu.sliconf"
+    },
+    "android": {
+      "package": "com.kodcu.sliconf"
     }
   }
 }
