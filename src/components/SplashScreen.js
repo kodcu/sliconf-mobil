@@ -3,7 +3,7 @@ import ReactMixin from 'react-mixin'
 import TimerMixin from 'react-timer-mixin';
 import {Button, StyleSheet, Text, View, NetInfo, Dimensions, Image} from 'react-native';
 import {Container, Content, Spinner} from 'native-base';
-import {MAIN} from '../router';
+import {MAIN,REDUX} from '../router';
 
 const window = Dimensions.get('window');
 const background = require("../../images/splash.png");
@@ -61,7 +61,7 @@ class SplashScreen extends React.Component {
         this.setTimeout(() => {
             if (this.state.network){
                 console.log("open success");
-                this.props.navigation.dispatch({type: MAIN});
+                this.props.navigation.dispatch({type: REDUX});
             }else
                 alert("İnternet bağlantınızı kontrol edeniz...")
 
