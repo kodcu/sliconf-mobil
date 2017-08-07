@@ -22,8 +22,8 @@ import {actionCreators} from '../reducks/module/event'
 import Loading from '../components/Loading'
 import Error from '../components/Error'
 import renderIf from '../config/renderIf'
-import {HOME} from '../router';
-
+import {LOGIN} from '../router';
+import Header from "../components/Header";
 const {height, width} = Dimensions.get('window');
 const logo = require("../../images/logo.png");
 
@@ -69,7 +69,7 @@ class MainScreen extends Component {
         await dispatch(actionCreators.fetchEvent(code))
 
         if (!error && !loading) {
-            this.props.navigation.dispatch({type: HOME});
+            this.props.navigation.dispatch({type: LOGIN});
         }
     }
 
@@ -79,13 +79,19 @@ class MainScreen extends Component {
 
     renderEventRow = (item) => {
         return (
-            <TouchableOpacity
-                style={{width: width - 20, height: 50, margin: 10, backgroundColor: '#3f9'}}
-                onPress={this.getEvent.bind(this, item.id)}
-            >
-                <Text>
-                    {item.name} -- {item.date} -- {item.id}
-                </Text>
+            <TouchableOpacity onPress={this.getEvent.bind(this, item.id)}>
+                <View style={{flexDirection:'row',padding:5,borderTopWidth:0.5,borderBottomWidth:0.5}}>
+                    <Image source={{uri:item.logo}}style={{width:75,height:75,margin:5,borderRadius:100}}/>
+                    <View >
+                        <View style={{flexDirection:'row',justifyContent: 'space-between',width:width-95}}>
+                            <Text style={{fontWeight:'bold',fontSize:15}} >{item.name}</Text>
+                            <Text>{item.id}</Text>
+                            <Text style={{}}>{item.date}</Text>
+                        </View>
+                        <Text style={{width:width-95}}>Javaday istanbul is most effective international communuty driven software conference of turkey organised by java user group</Text>
+                    </View>
+
+                </View>
             </TouchableOpacity>
 
         )
@@ -132,7 +138,7 @@ class MainScreen extends Component {
                 <Loading visible={loading}/>
 
                 {renderIf(search)(
-                    <KeyboardAvoidingView style={styles.container2} behavior="height">
+                    <View behavior="height">
                         <View style={styles.containerTop}>
                             <Image
                                 source={logo}
@@ -155,37 +161,13 @@ class MainScreen extends Component {
                                 />
                             </View>
                         </View>
-                    </KeyboardAvoidingView>
+                    </View>
                 )}
 
                 {renderIf(!search)(
                     <View style={styles.container}>
-                        <View
-                            style={{
-                                width: window.width,
-                                height: 39,
-                                marginTop: 1,
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'flex-start',
-                                backgroundColor: '#fff',
-                                borderBottomWidth: 1,
-                                borderBottomColor: '#000',
-                            }}>
+                        <Header title={value} rightImage={{uri:'http://www.safehirings.com/close.png'}} onPressRight={() => this._hide()} titleStyle={{color:'#fff'}}/>
 
-                            <Text
-                                style={{
-                                    flex: 1,
-                                    paddingTop: 10,
-                                    paddingLeft: 20,
-                                    fontWeight: 'bold',
-                                    color: '#000',
-                                    textAlign: 'center',
-                                }}>
-                                {value}
-                            </Text>
-                            <Button onPress={() => this._hide()} title="X" color="#000"/>
-                        </View>
                         <FlatList
                             data={events}
                             extraData={this.state}
@@ -248,7 +230,8 @@ const styles = StyleSheet.create({
     },
     box: {
         borderBottomWidth: (Platform.OS === 'ios') ? 1 : 0,
-        borderBottomColor: '#818284'
+        borderBottomColor: '#818284',
+        padding:5
     },
 })
 

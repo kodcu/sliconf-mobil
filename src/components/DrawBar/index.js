@@ -73,7 +73,7 @@ export default class DrawBar extends React.Component {
                 </Content>
                 <Footer>
                     <FooterTab>
-                        <Button vertical onPress={() => alert("Şuanda işleminiz gerçekleştirilemedi lütfen daha sonra tekrar deneyiniz..")}>
+                        <Button vertical onPress={() => this.props.navigation.navigate('Login')}>
                             <Icon name="person" />
                             <Text>Giriş Yap</Text>
                         </Button>
