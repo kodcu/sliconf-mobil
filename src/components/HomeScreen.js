@@ -12,6 +12,7 @@ import Comments from "./Comments";
 import SpeakersScreen from "./Speakers";
 import SearcScreen from './Search';
 import LoginError from './LoginError'
+import Login from '../container/LoginScreen'
 import { Col, Row, Grid } from "react-native-easy-grid";
 import {DrawerNavigator, NavigationActions} from "react-navigation";
 
@@ -162,7 +163,8 @@ const DrawNav = DrawerNavigator(
         Comments:{screen:Comments},
         Search:{screen:SearcScreen},
         Speakers:{screen:SpeakersScreen},
-        LoginError:{screen:LoginError}
+        LoginError:{screen:LoginError},
+        Login:{screen:Login}
     },
     {
         contentComponent: props => <DrawBar {...props} />

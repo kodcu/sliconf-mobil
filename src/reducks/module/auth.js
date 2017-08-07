@@ -22,7 +22,7 @@ const initialState = {
 };
 
 export const reducer = (state = initialState, action) => {
-    const {type, payload} = action
+    const {type, payload, message} = action;
 
     switch (type) {
         case types.LOGIN_REQUEST: {
@@ -50,7 +50,7 @@ export const reducer = (state = initialState, action) => {
                 error: true,
                 login: false,
                 user: {},
-                errorMessage: payload
+                errorMessage: message
             }
         }
         case types.LOGOUT_REQUEST: {
@@ -69,32 +69,25 @@ export const reducer = (state = initialState, action) => {
 
 export const actionCreators = {
 
-    login: ({username, password}) => async (dispatch, getState) => {
+    login: (username,password) => async (dispatch, getState) => {
+        dispatch({type: types.LOGIN_REQUEST});
 
-        dispatch({
-            type: types.LOGIN_REQUEST
-        })
 
-        if (username === "mslm@kodcu.com" && password === "admin123") {
+        if (username === "abc" && password === "123") {
             try {
                 const response = await fetch(API_LOGIN)
                 const posts = await response.json()
 
-                dispatch({
-                    type: types.LOGIN_RESPONSE_SUC,
-                    payload: posts.user
-                })
+                dispatch({type: types.LOGIN_RESPONSE_SUC, payload: posts.user})
+
 
             } catch (e) {
-                dispatch({
-                    type: types.LOGIN_RESPONSE_FAIL,
-                    payload: 'İşleminiz gerçekleştirilemiyor!'
-                })
+                dispatch({type: types.LOGIN_RESPONSE_FAIL, message: 'hata'})
             }
         }else
             dispatch({
                 type: types.LOGIN_RESPONSE_FAIL,
-                payload: 'Girdiğiniz bilgiler hatali veya eksik'
+                message: 'Girdiğiniz bilgiler hatali veya eksik'
             })
 
 
@@ -104,7 +97,7 @@ export const actionCreators = {
         dispatch({
             type: types.LOGOUT_REQUEST
         })
-    }
+    },
 
 }
 

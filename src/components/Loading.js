@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Modal, Text, View , ActivityIndicator} from 'react-native';
+import PropTypes from 'prop-types';
 
 export default class Loading extends Component {
 
     render() {
         const {visible} = this.props;
         return (
-            <View style={{ marginTop: 22 }}>
+            <View>
                 <Modal
                     animationType={'fade'}
                     transparent={true}
