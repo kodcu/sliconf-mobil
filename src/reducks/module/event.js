@@ -4,12 +4,12 @@
 
 const types = {
     EVENTLIST_POSTS_REQUEST: 'EVENTLIST_POSTS_REQUEST',
-    EVENTLIST_POSTS_RESPONSE_SUC: 'EVENTLIST_POSTS_RESPONSE',
-    EVENTLIST_POSTS_RESPONSE_FAIL: 'EVENTLIST_POSTS_RESPONSE',
+    EVENTLIST_POSTS_RESPONSE_SUC: 'EVENTLIST_POSTS_RESPONSE_SUC',
+    EVENTLIST_POSTS_RESPONSE_FAIL: 'EVENTLIST_POSTS_RESPONSE_FAIL',
 
     EVENT_POSTS_REQUEST: 'EVENT_POSTS_REQUEST',
-    EVENT_POSTS_RESPONSE_SUC: 'EVENT_POSTS_RESPONSE',
-    EVENT_POSTS_RESPONSE_FAIL: 'EVENT_POSTS_RESPONSE',
+    EVENT_POSTS_RESPONSE_SUC: 'EVENT_POSTS_RESPONSE_SUC',
+    EVENT_POSTS_RESPONSE_FAIL: 'EVENT_POSTS_RESPONSE_FAIL',
 
 }
 
@@ -24,30 +24,60 @@ const initialState = {
 }
 
 export const reducer = (state = initialState, action) => {
-    const {type, payload, message} = action
+    const {type, payload} = action
 
     switch (type) {
         case types.EVENTLIST_POSTS_REQUEST: {
-            return {...state, loading: true, error: false, events: []}
+            return {
+                ...state,
+                loading: true,
+                error: false,
+                events: []
+            }
         }
         case types.EVENTLIST_POSTS_RESPONSE_SUC: {
-            return {...state, loading: false, events: payload, error: false}
+            return {
+                ...state,
+                loading: false,
+                events: payload,
+                error: false
+            }
         }
         case types.EVENTLIST_POSTS_RESPONSE_FAIL: {
-            return {...state, loading: false, events: [], error: true, errorMessage: message}
+            return {
+                ...state,
+                loading: false,
+                events: [],
+                error: true,
+                errorMessage: payload
+            }
         }
         case types.EVENT_POSTS_REQUEST: {
-            return {...state, loading: true, error: false}
+            return {
+                ...state,
+                loading: true,
+                error: false,
+                event: []
+            }
         }
         case types.EVENT_POSTS_RESPONSE_SUC: {
-            return {...state, loading: false, event: payload, error: false}
+            return {
+                ...state,
+                loading: false,
+                event: payload,
+                error: false
+            }
         }
         case types.EVENT_POSTS_RESPONSE_FAIL: {
-            return {...state, loading: false, error: true, errorMessage: message}
+            return {
+                ...state,
+                loading: false,
+                error: true,
+                errorMessage: payload,
+                event: []
+            }
         }
-
     }
-
     return state;
 
 }
@@ -56,33 +86,51 @@ export const reducer = (state = initialState, action) => {
 export const actionCreators = {
 
     fetchEventList: (name) => async (dispatch, getState) => {
-        dispatch({type: types.EVENTLIST_POSTS_REQUEST})
+        dispatch({
+            type: types.EVENTLIST_POSTS_REQUEST
+        })
 
         try {
             const response = await fetch(API_EVENTLIST)
             const posts = await response.json()
 
             if (name === 'hata')
-                dispatch({type: types.EVENTLIST_POSTS_RESPONSE_FAIL, message: 'bu isimde bir etkinlik bulunamadı'})
+                dispatch({
+                    type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
+                    payload: '" ' + {name} + ' " isminde etkinlik bulunamadı!'
+                })
             else
-                dispatch({type: types.EVENTLIST_POSTS_RESPONSE_SUC, payload: posts.events})
-
+                dispatch({
+                    type: types.EVENTLIST_POSTS_RESPONSE_SUC,
+                    payload: posts.events
+                })
 
         } catch (e) {
-            dispatch({type: types.EVENTLIST_POSTS_RESPONSE_FAIL, message: 'hata'})
+            dispatch({
+                type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
+                payload: 'İşleminiz gerçekleştirilemiyor!'
+            })
         }
 
     },
     fetchEvent: (code) => async (dispatch, getState) => {
-        dispatch({type: types.EVENT_POSTS_REQUEST})
+        dispatch({
+            type: types.EVENT_POSTS_REQUEST
+        })
 
         try {
             const response = await fetch(API_EVENT)
             const posts = await response.json()
 
-            dispatch({type: types.EVENT_POSTS_RESPONSE_SUC, payload: posts.event})
+            dispatch({
+                type: types.EVENT_POSTS_RESPONSE_SUC,
+                payload: posts.event
+            })
         } catch (e) {
-            dispatch({type: types.EVENT_POSTS_RESPONSE_FAIL, message: 'Etkinliğe ulaşılamıyor'})
+            dispatch({
+                type: types.EVENT_POSTS_RESPONSE_FAIL,
+                payload: 'İşleminiz gerçekleştirilemiyor!'
+            })
         }
     }
 
