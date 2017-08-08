@@ -1,5 +1,3 @@
-'use strict';
-
 export function speakersList(speakers: Array<any>) {
     let newSpeakers = [];
     let myMap = new Map();

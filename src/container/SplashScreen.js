@@ -1,6 +1,4 @@
 import React from 'react';
-import ReactMixin from 'react-mixin'
-import TimerMixin from 'react-timer-mixin';
 import {StyleSheet, View, Text, NetInfo} from 'react-native'
 import {Image} from 'react-native-animatable'
 import {MAIN} from '../router';
@@ -28,7 +26,6 @@ const styles = StyleSheet.create({
 })
 
 
-@ReactMixin.decorate(TimerMixin)
 class SplashScreen extends React.Component {
 
     state = {
@@ -39,13 +36,6 @@ class SplashScreen extends React.Component {
         header: null,
     };
 
-    async componentWillMount() {
-        await Expo.Font.loadAsync({
-            'Roboto': require('native-base/Fonts/Roboto.ttf'),
-            'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-            'Ionicons': require('native-base/Fonts/Ionicons.ttf'),
-        });
-    }
 
     componentDidMount() {
 
@@ -53,7 +43,7 @@ class SplashScreen extends React.Component {
             this.setState({network: isConnected});
         });
 
-        this.setTimeout(() => {
+        setTimeout(() => {
             if (this.state.network) {
                 console.log("open success");
                 this.props.navigation.dispatch({type: MAIN});

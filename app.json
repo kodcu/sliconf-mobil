@@ -1,18 +1,4 @@
 {
-  "expo": {
-    "sdkVersion": "18.0.0",
-    "androidStatusBar": {
-            "barStyle": "light-content",
-            "backgroundColor": "#ABC"
-    },
-    "name": "Sliconf",
-    "icon": "./images/icon.png",
-    "version": "1.0.0",
-    "ios": {
-      "bundleIdentifier": "com.kodcu.sliconf"
-    },
-    "android": {
-      "package": "com.kodcu.sliconf"
-    }
-  }
+  "name": "SliConf",
+  "displayName": "SliConf"
 }

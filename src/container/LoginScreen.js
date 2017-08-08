@@ -3,7 +3,7 @@
  */
 import React,{Component} from 'react';
 import {StyleSheet,View,Image,Text,KeyboardAvoidingView} from 'react-native';
-import LoginForm from '../components/LoginForm'
+import LoginForm from '../component/LoginForm'
 
 export default class LoginScreen extends Component{
 
