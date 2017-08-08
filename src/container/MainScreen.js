@@ -9,21 +9,17 @@ import {
     StyleSheet,
     Image,
     TextInput,
-    KeyboardAvoidingView,
     FlatList,
-    Button,
     Dimensions,
     Platform,
     TouchableOpacity
 } from 'react-native'
 import {connect} from 'react-redux'
-import { Ionicons } from '@expo/vector-icons';
 import {actionCreators} from '../reducks/module/event'
-import Loading from '../components/Loading'
-import Error from '../components/Error'
+import Loading from '../component/Loading'
 import renderIf from '../config/renderIf'
 import {LOGIN} from '../router';
-import Header from "../components/Header";
+import Header from "../component/Header";
 const {height, width} = Dimensions.get('window');
 const logo = require("../../images/logo.png");
 
@@ -99,7 +95,7 @@ class MainScreen extends Component {
 
     _keyExtractor = (item, index) => item.id;
 
-    _errorDialog() {
+    _errorDialog = () => {
        return(
            <View
                style={{
@@ -120,14 +116,12 @@ class MainScreen extends Component {
                        alignItems:'center',
                        justifyContent :'center',
                    }}>
-                       <Ionicons name="md-close-circle" size={50} color="#d66" />
                        <Text style={{marginTop: 15,fontWeight :'bold', color :'#d66',textAlign :'center'}}>Etkinlik Bulunamadı</Text>
                    </View>
                </View>
            </View>
        )
     }
-
 
     render() {
         const {events, loading,} = this.props
