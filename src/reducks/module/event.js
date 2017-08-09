@@ -2,6 +2,8 @@
  * Created by Muslum on 30.07.2017.
  */
 
+ import Request from '../../service/Request'
+
 const types = {
     EVENTLIST_POSTS_REQUEST: 'EVENTLIST_POSTS_REQUEST',
     EVENTLIST_POSTS_RESPONSE_SUC: 'EVENTLIST_POSTS_RESPONSE_SUC',
@@ -86,6 +88,33 @@ export const reducer = (state = initialState, action) => {
 export const actionCreators = {
 
     fetchEventList: (name) => async (dispatch, getState) => {
+      dispatch({
+          type: types.EVENTLIST_POSTS_REQUEST
+      })
+
+      await Request.GET(API_EVENTLIST,{
+        '200': (res)=>{
+          dispatch({
+              type: types.EVENTLIST_POSTS_RESPONSE_SUC,
+              payload: res.events
+          })
+        },
+        otherwise:(res)=>{
+          dispatch({
+              type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
+              payload: '" ' + {name} + ' " isminde etkinlik bulunamadı!'
+          })
+        },
+        fail:(err) =>{
+          dispatch({
+              type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
+              payload: 'İşleminiz gerçekleştirilemiyor!'
+          })
+        }
+      })
+    },
+
+    fetchEventList2: (name) => async (dispatch, getState) => {
         dispatch({
             type: types.EVENTLIST_POSTS_REQUEST
         })
