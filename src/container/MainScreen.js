@@ -9,19 +9,23 @@ import {
     StyleSheet,
     Image,
     TextInput,
+    StatusBar,
     FlatList,
+    Button,
     Dimensions,
     Platform,
     TouchableOpacity
 } from 'react-native'
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/event'
-import Loading from '../component/Loading'
+import Loading from '../components/Loading'
+import Error from '../components/Error'
 import renderIf from '../config/renderIf'
 import {LOGIN} from '../router';
-import Header from "../component/Header";
+import Header from "../components/Header";
 const {height, width} = Dimensions.get('window');
 const logo = require("../../images/logo.png");
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const mapStateToProps = (state) => ({
     loading: state.event.loading,
@@ -95,7 +99,7 @@ class MainScreen extends Component {
 
     _keyExtractor = (item, index) => item.id;
 
-    _errorDialog = () => {
+    _errorDialog() {
        return(
            <View
                style={{
@@ -116,12 +120,14 @@ class MainScreen extends Component {
                        alignItems:'center',
                        justifyContent :'center',
                    }}>
+
                        <Text style={{marginTop: 15,fontWeight :'bold', color :'#d66',textAlign :'center'}}>Etkinlik Bulunamadı</Text>
                    </View>
                </View>
            </View>
        )
     }
+
 
     render() {
         const {events, loading,} = this.props
@@ -132,15 +138,14 @@ class MainScreen extends Component {
                 <Loading visible={loading}/>
 
                 {renderIf(search)(
-                    <View behavior="height">
-                        <View style={styles.containerTop}>
-                            <Image
-                                source={logo}
-                                style={styles.image}
-                            />
-                            <Text style={styles.textTitle}>Welcome to SliConf</Text>
-                            <Text style={styles.textSubtitle}>Conferences at your fingertips</Text>
-                        </View>
+                    <KeyboardAwareScrollView>
+                        <View style={styles.container}>
+                            <View style={styles.logoContainer}>
+                                <Image style={styles.logo} source={require('../../images/logo.png')}/>
+                                <Text style={styles.title}>Welcome to SliConf</Text>
+                                <Text style={{fontSize:20,marginBottom:40,color:'#818285'}}>Conferences at your fingertips</Text>
+                            </View>
+
                         <View style={styles.containerBottom}>
                             <View style={styles.search}>
                                 <Text> Event Name</Text>
@@ -155,7 +160,8 @@ class MainScreen extends Component {
                                 />
                             </View>
                         </View>
-                    </View>
+                        </View>
+                    </KeyboardAwareScrollView>
                 )}
 
                 {renderIf(!search)(
@@ -227,6 +233,42 @@ const styles = StyleSheet.create({
         borderBottomColor: '#818284',
         padding:5
     },
+    logoContainer: {
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    logo: {
+        width: 200,
+        height: 200,
+    },
+    title: {
+        color:'#2AB673',
+        marginTop:10,
+        width:200,
+        textAlign: 'center',
+        opacity: 0.9,
+        fontSize:20,
+        fontWeight: 'bold'
+    },
+    container2: {
+        padding:20
+    },
+    input : {
+        height: 40,
+        backgroundColor:'rgba(255,255,255,0.2)',
+        marginBottom: 10,
+        color: '#000000',
+        paddingHorizontal: 10,
+    },
+    buttonContainer:{
+        backgroundColor:'#2AB673',
+        paddingVertical:15
+    },
+    buttonText:{
+        textAlign:'center',
+        color:'#FFFFFF',
+        fontWeight:'700'
+    }
 })
 
 export default connect(mapStateToProps)(MainScreen)
