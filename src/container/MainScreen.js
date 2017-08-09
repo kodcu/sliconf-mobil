@@ -18,11 +18,10 @@ import {
 } from 'react-native'
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/event'
-import Loading from '../components/Loading'
-import Error from '../components/Error'
+import Loading from '../component/Loading'
 import renderIf from '../config/renderIf'
 import {LOGIN} from '../router';
-import Header from "../components/Header";
+import Header from "../component/Header";
 const {height, width} = Dimensions.get('window');
 const logo = require("../../images/logo.png");
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
