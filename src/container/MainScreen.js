@@ -25,6 +25,7 @@ import Header from "../component/Header";
 const {height, width} = Dimensions.get('window');
 const logo = require("../../images/logo.png");
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import If from '../component/If'
 
 const mapStateToProps = (state) => ({
     loading: state.event.loading,
@@ -54,10 +55,10 @@ class MainScreen extends Component {
     }
 
     loadEventList = async (name) => {
-        const {dispatch, error} = this.props
+        const {dispatch, error,loading} = this.props
         await dispatch(actionCreators.fetchEventList(name))
 
-        if (!error)
+        if (!error && !loading)
             this.setState({search: false})
 
 
@@ -136,7 +137,8 @@ class MainScreen extends Component {
             <View style={styles.container}>
                 <Loading visible={loading}/>
 
-                {renderIf(search)(
+                <If con={search}>
+                  <If.Then>
                     <KeyboardAwareScrollView>
                         <View style={styles.container}>
                             <View style={styles.logoContainer}>
@@ -161,9 +163,9 @@ class MainScreen extends Component {
                         </View>
                         </View>
                     </KeyboardAwareScrollView>
-                )}
+                  </If.Then>
 
-                {renderIf(!search)(
+                  <If.Else>
                     <View style={styles.container}>
                         <Header title={value} rightImage={{uri:'http://www.safehirings.com/close.png'}} onPressRight={() => this._hide()} titleStyle={{color:'#fff'}}/>
 
@@ -176,7 +178,9 @@ class MainScreen extends Component {
                         <View/>
 
                     </View>
-                )}
+                  </If.Else>
+                </If>
+
             </View>
         )
     }

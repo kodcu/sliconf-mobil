@@ -36,18 +36,29 @@ class SplashScreen extends Component {
         header: null,
     };
 
+    componentWillMount() {
+        NetInfo.isConnected.fetch().then(this._handleConnectionInfoChange);
+        NetInfo.isConnected.addEventListener('change',this._handleConnectionInfoChange);
+     }
+
+     componentWillUnmount(){
+         NetInfo.isConnected.removeEventListener('change',this._handleConnectionInfoChange);
+     }
+
+    _handleConnectionInfoChange = (isConnected) => {
+        if(isConnected){
+          setTimeout(() => {
+                  this.props.navigation.dispatch({type: MAIN});
+          }, 500);
+        }
+    };
 
 
-    componentDidMount() {
-
-
+    /*componentDidMount() {
         setTimeout(() => {
                 this.props.navigation.dispatch({type: MAIN});
-
-
         }, 5000);
-
-    }
+    }*/
 
     render() {
         return (
