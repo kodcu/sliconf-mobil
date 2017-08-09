@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {StyleSheet, View, Text, NetInfo} from 'react-native'
 import {Image} from 'react-native-animatable'
 import {MAIN} from '../router';
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 })
 
 
-class SplashScreen extends React.Component {
+class SplashScreen extends Component {
 
     state = {
         network: false
@@ -37,18 +37,13 @@ class SplashScreen extends React.Component {
     };
 
 
+
     componentDidMount() {
 
-        NetInfo.isConnected.fetch().then(isConnected => {
-            this.setState({network: isConnected});
-        });
 
         setTimeout(() => {
-            if (this.state.network) {
-                console.log("open success");
                 this.props.navigation.dispatch({type: MAIN});
-            } else
-                alert("İnternet bağlantınızı kontrol edeniz...")
+
 
         }, 5000);
 

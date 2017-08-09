@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SliConf.iml" filepath="$PROJECT_DIR$/SliConf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/sliconf-mobil.iml" filepath="$PROJECT_DIR$/.idea/sliconf-mobil.iml" />
     </modules>
   </component>
 </project>
