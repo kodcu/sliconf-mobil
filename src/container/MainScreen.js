@@ -20,7 +20,7 @@ import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/event'
 import Loading from '../component/Loading'
 import renderIf from '../config/renderIf'
-import {LOGIN} from '../router';
+import {HOME} from '../router';
 import Header from "../component/Header";
 const {height, width} = Dimensions.get('window');
 const logo = require("../../images/logo.png");
@@ -69,7 +69,7 @@ class MainScreen extends Component {
         await dispatch(actionCreators.fetchEvent(code))
 
         if (!error && !loading) {
-            this.props.navigation.dispatch({type: LOGIN});
+            this.props.navigation.dispatch({type: HOME});
         }
     }
 
