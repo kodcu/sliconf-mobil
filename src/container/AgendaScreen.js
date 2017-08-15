@@ -129,7 +129,7 @@ export default class AgendaScreen extends Component {
                                 <Text>Hepsi</Text>
                             </Button>
                             <Button vertical onPress={this.setState({sectiklerim:true})}>
-                                <Text>Seçimlerim</Text>
+                                <Text>Seçtiklerim</Text>
                             </Button>
                         </FooterTab>
                     </Footer>
