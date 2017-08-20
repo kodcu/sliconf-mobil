@@ -1,6 +1,6 @@
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import AppNavigator from '../../router'
-import {MAIN,SPLASH,HOME,LOGIN,} from '../../router'
+import {MAIN,SPLASH,HOME,LOGIN,AGENDA} from '../../router'
 
 const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams(SPLASH));
 
@@ -26,6 +26,12 @@ const navReducer = (state, action) => {
         state
       );
       break;
+      case AGENDA:
+          nextState = AppNavigator.router.getStateForAction(
+              NavigationActions.navigate({ routeName: AGENDA }),
+              state
+          );
+          break;
       case LOGIN:
           nextState = AppNavigator.router.getStateForAction(
               NavigationActions.navigate({ routeName: LOGIN }),
