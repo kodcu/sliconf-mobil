@@ -1,78 +1,61 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet,StatusBar,TouchableOpacity,Image,Dimensions,Platform } from 'react-native';
-import PropTypes from 'prop-types';
+import React, {Component} from 'react';
+import {View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, Dimensions, Platform} from 'react-native';
+import {Header as NBHeader, Button } from 'native-base'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import If from './If'
 
-export default class Header extends Component {
+export class Header extends Component {
 
-    headerTitle = () =>{
-        const {title} = this.props;
-        if(title.length > 20) return title.substr(0,20).concat("...");
-        return title
-    };
+
 
     render() {
-        const {leftImage,rightImage,onPressRight,onPressLeft} =this.props;
+        const {leftImage, rightImage, onPressRight, onPressLeft, children} = this.props;
         return (
-            <View style={styles.container}>
-                <StatusBar
-                    backgroundColor="#2AB673"
-                    barStyle="light-content"
-                />
+            <NBHeader backgroundColor="#fff" iosBarStyle="dark-content" androidStatusBarColor="#fff"
+                      noShadow={true} style={{backgroundColor: '#fff'}}>
                 <View style={[styles.header, this.props.headerStyle]}>
                     <TouchableOpacity onPress={onPressLeft}>
-                        <Image source={leftImage} style={{width:45,height:45,margin:20}} />
+                        <Icon name={leftImage}/>
                     </TouchableOpacity>
-                    <Text style={[styles.HeaderText, this.props.titleStyle]}>{this.headerTitle()}</Text>
-                <TouchableOpacity onPress={onPressRight}>
-                    <Image source={rightImage} style={{width:30,height:30,margin:20}}/></TouchableOpacity>
+
+                    <View>
+                        {children}
+                    </View>
+
+                    <TouchableOpacity onPress={onPressRight}>
+                        <Icon name={rightImage}/>
+                    </TouchableOpacity>
                 </View>
-            </View>
+            </NBHeader>
         );
     }
 }
+
+export class Title extends Component {
+    render() {
+        return <View><Text style={styles.HeaderText}>{this.props.title}</Text></View>
+    }
+}
+
 const {width} = Dimensions.get('window');
 const styles = StyleSheet.create({
-    container: {
-
-    },
-    header:{
+    container: {},
+    header: {
+        paddingRight: 15,
+        paddingLeft: 15,
+        width: width,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width:width,
-        height:Platform.OS === 'ios' ? 44 : 56,
-        backgroundColor:"#2AB673",
-        borderBottomWidth:1
+        backgroundColor: '#fff'
     },
-    HeaderText:{
-        fontSize:25,
-        fontWeight:'bold'
+    HeaderText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: '#666'
     }
 });
-Header.defaultProps = {
-    title: '',
-    leftImage:{},
-    rightImage:{}
-};
-Header.propTypes = {
-    title: PropTypes.string.isRequired,
-    titleStyle: PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.number,
-        PropTypes.shape({}),
-    ]),
-    headerStyle: PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.number,
-        PropTypes.shape({}),
-    ]),
-    leftImage:PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.shape({}),
-    ]),
-    rightImage:PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.shape({}),
-    ]),
 
-};
+Header.Title = Title;
+
+export default Header;
