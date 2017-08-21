@@ -1,7 +1,8 @@
-import React,{Component} from 'react';
-import {StyleSheet, View, Text, NetInfo} from 'react-native'
+import React, {Component} from 'react';
+import {StyleSheet, View, Text, NetInfo,Platform} from 'react-native'
 import {Image} from 'react-native-animatable'
-import {MAIN} from '../router';
+import {AGENDA, MAIN} from '../router';
+import ListEvent from '../component/ListEvent';
 
 const logo = require("../../images/logo.png");
 
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 150,
         width: 150,
-        marginBottom:50
+        marginBottom: 50
     },
     text: {
         color: '#2AB673'
@@ -37,33 +38,45 @@ class SplashScreen extends Component {
     };
 
     componentWillMount() {
-        NetInfo.isConnected.fetch().then(this._handleConnectionInfoChange);
-        NetInfo.isConnected.addEventListener('change',this._handleConnectionInfoChange);
-     }
+        if(Platform.OS === "ios"){
+            NetInfo.isConnected.fetch().then(this._handleConnectionInfoChange);
+            NetInfo.isConnected.addEventListener('change', this._handleConnectionInfoChange);
+        }
+    }
 
-     componentWillUnmount(){
-         NetInfo.isConnected.removeEventListener('change',this._handleConnectionInfoChange);
-     }
+    componentWillUnmount() {
+        if(Platform.OS === "ios")
+            NetInfo.isConnected.removeEventListener('change', this._handleConnectionInfoChange);
+    }
 
     _handleConnectionInfoChange = (isConnected) => {
-        if(isConnected){
-          setTimeout(() => {
-                  this.props.navigation.dispatch({type: MAIN});
-          }, 500);
+        if (isConnected) {
+            setTimeout(() => {
+                this.props.navigation.dispatch({type:MAIN })
+                console.log("open success")
+            }, 3000);
         }
     };
 
 
-    /*componentDidMount() {
-        setTimeout(() => {
-                this.props.navigation.dispatch({type: MAIN});
-        }, 5000);
-    }*/
+    async componentDidMount() {
+        if(Platform.OS !== "ios") {
+
+            await NetInfo.isConnected.fetch().then(isConnected => {this.setState({network: isConnected});});
+
+            if (this.state.network) {
+                setTimeout(() => {
+                    this.props.navigation.dispatch({type: MAIN})
+                    console.log("open success")
+                }, 3000);
+            }
+        }
+    }
 
     render() {
         return (
             <View style={styles.container}>
-                <Text/>
+                <View/>
                 <Image
                     source={logo}
                     animation="swing"

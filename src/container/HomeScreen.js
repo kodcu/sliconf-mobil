@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import {
     View,
     Text,
@@ -10,8 +10,12 @@ import {
     Platform,
     TouchableOpacity
 } from 'react-native'
-import { Container, Header, Left, Body, Right, Button, Icon, Title ,Content} from 'native-base';
+import {Container} from 'native-base';
+import Header from "../component/Header";
 import {connect} from 'react-redux'
+import Style from '../theme/Style'
+import {AGENDA} from '../router';
+
 
 
 const mapStateToProps = (state) => ({
@@ -26,48 +30,49 @@ class HomeScreen extends Component {
     };
 
     render() {
-        const {event}=this.props;
+        const {event} = this.props;
         return (
-            <Container style={{backgroundColor:'#ffffff'}}>
-                <Header style={{backgroundColor:'#2AB673'}} androidStatusBarColor='#2AB673'>
-                    <Left>
-                        <Button transparent>
-                            <Icon name='close' />
-                        </Button>
-                    </Left>
-                    <Body >
-                    <Title style={{alignSelf:'center'}} >Home</Title>
-                    </Body>
-                    <Right>
-                        <Button transparent>
-                            <Icon name='menu' />
-                        </Button>
-                    </Right>
-                </Header>
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                    <Text style={{margin:30,fontSize:20,fontWeight:'bold',textAlign:'center'}}>Welcome to {event.name}</Text>
+            <Container style={{backgroundColor: '#ffffff'}}>
 
-                    <View style={{flexDirection:'row',marginTop:20,}}>
-                        <TouchableOpacity style={[styles.boxSmall,{backgroundColor:'#E06668'}]} >
-                            <Image source={require('../../images/Agenda.png')} style={{width:50,height:50}}/>
-                            <Text style={styles.buttonText}>Agenda</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.boxSmall,{backgroundColor:'#F69274'}]} >
-                            <Image source={require('../../images/Speakers.png')} style={{width:50,height:50}}/>
-                            <Text style={styles.buttonText}>Speakers</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flexDirection:'row'}}>
-                        <TouchableOpacity style={[styles.boxSmall,{backgroundColor:'#9E9DC7'}]} >
-                            <Image source={require('../../images/Sponsors.png')} style={{width:50,height:50}}/>
-                            <Text style={styles.buttonText}>Sponsors</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.boxSmall,{backgroundColor:'#75C7CA'}]} >
-                            <Image source={require('../../images/Search.png')} style={{width:50,height:50}}/>
-                            <Text style={styles.buttonText}>Search</Text>
-                        </TouchableOpacity>
+                <Header leftImage='close' rightImage='bars'
+                        onPressLeft={() => this.props.navigation.goBack()}>
+                    <Header.Title title="Home" />
+            </Header>
+
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-between',}}>
+                    <View>
+                        <Text style={styles.title}>Welcome to</Text>
+                        <Text style={styles.title}>{this.props.event.name}</Text>
+                        <Text style={styles.subtitle}>Java Day Istanbul is the most effective international
+                            community driven software conference of Turkey organised by Istanbul Java User Group.
+                            The conference helps developers to learn the newest technologies about Java, Web, Mobile,
+                            Big DATA, Cloud, DevOps, Agile and Future.
+                        </Text>
                     </View>
 
+                    <View>
+
+                        <View style={{flexDirection: 'row',}}>
+                            <TouchableOpacity onPress={() => this.props.navigation.dispatch({type: AGENDA})} style={[styles.leftboxSmall, {backgroundColor: '#E06668'}]}>
+                                <Image source={require('../../images/Agenda.png')} style={{width: 50, height: 50}}/>
+                                <Text style={styles.buttonText}>Agenda</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.rightboxSmall, {backgroundColor: '#F69274'}]}>
+                                <Image source={require('../../images/Speakers.png')} style={{width: 50, height: 50}}/>
+                                <Text style={styles.buttonText}>Speakers</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <TouchableOpacity style={[styles.leftboxSmall, {backgroundColor: '#9E9DC7'}]}>
+                                <Image source={require('../../images/Sponsors.png')} style={{width: 50, height: 50}}/>
+                                <Text style={styles.buttonText}>Sponsors</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.rightboxSmall, {backgroundColor: '#75C7CA'}]}>
+                                <Image source={require('../../images/Search.png')} style={{width: 50, height: 50}}/>
+                                <Text style={styles.buttonText}>Search</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
             </Container>
         )
@@ -81,19 +86,49 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    boxSmall: {
-        width: (width-50)/2,
-        height: 175,
-        marginBottom: 10,
-        marginRight: 10,
+    leftboxSmall: {
+        width: Style.DEVICE_WIDTH * 0.44,
+        height: Style.DEVICE_WIDTH * 0.44,
+        marginBottom: Style.DEVICE_WIDTH * 0.04,
+        marginRight: Style.DEVICE_WIDTH * 0.02,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'skyblue',
     },
-    buttonText:{
-        fontSize:20,
-        color:'white',
-        fontWeight:'bold'
+    rightboxSmall: {
+        width: Style.DEVICE_WIDTH * 0.44,
+        height: Style.DEVICE_WIDTH * 0.44,
+        marginBottom: Style.DEVICE_WIDTH * 0.04,
+        marginLeft: Style.DEVICE_WIDTH * 0.02,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonText: {
+        fontFamily: "Montserrat-Regular",
+        lineHeight: Style.FONT_SIZE_TITLE * 1.5,
+        fontSize: Style.FONT_SIZE_TITLE,
+        color: 'white',
+        fontWeight: 'bold',
+        margin: Style.MARGIN,
+        textAlign: 'center'
+    },
+    title: {
+        fontFamily: "Montserrat-Regular",
+        lineHeight: Style.FONT_SIZE_TITLE_LARGE * 1.5,
+        fontSize: Style.FONT_SIZE_TITLE_LARGE,
+        fontWeight: 'bold',
+        padding:Style.MARGIN,
+        paddingTop: 0,
+        paddingBottom: 0,
+        textAlign: 'center'
+    },
+    subtitle: {
+        fontFamily: "Montserrat-Regular",
+        lineHeight: Style.FONT_SIZE_TITLE_SMALL * 1.5,
+        fontSize: Style.FONT_SIZE_TITLE_SMALL,
+        fontWeight: 'normal',
+        margin:Style.MARGIN,
+        marginTop: Style.MARGIN * 2,
+        textAlign: 'center'
     }
 
 })

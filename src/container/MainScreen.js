@@ -16,16 +16,20 @@ import {
     Platform,
     TouchableOpacity
 } from 'react-native'
+import {Form, Item, Label, Input} from 'native-base';
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/event'
 import Loading from '../component/Loading'
-import renderIf from '../config/renderIf'
 import {HOME} from '../router';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
+import If from '../component/If'
 import Header from "../component/Header";
+import ListEvent from "../component/ListEvent";
+import Style from '../theme/Style'
+
 const {height, width} = Dimensions.get('window');
 const logo = require("../../images/logo.png");
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import If from '../component/If'
+
 
 const mapStateToProps = (state) => ({
     loading: state.event.loading,
@@ -55,7 +59,7 @@ class MainScreen extends Component {
     }
 
     loadEventList = async (name) => {
-        const {dispatch, error,loading} = this.props
+        const {dispatch, error, loading} = this.props
         await dispatch(actionCreators.fetchEventList(name))
 
         if (!error && !loading)
@@ -77,60 +81,40 @@ class MainScreen extends Component {
         this.setState({search: true})
     }
 
-    renderEventRow = (item) => {
-        return (
-            <TouchableOpacity onPress={this.getEvent.bind(this, item.id)}>
-                <View style={{flexDirection:'row',padding:5,borderTopWidth:0.5,borderBottomWidth:0.5}}>
-                    <Image source={{uri:item.logo}}style={{width:75,height:75,margin:5,borderRadius:100}}/>
-                    <View >
-                        <View style={{flexDirection:'row',justifyContent: 'space-between',width:width-95}}>
-                            <Text style={{fontWeight:'bold',fontSize:15}} >{item.name}</Text>
-                            <Text>{item.id}</Text>
-                            <Text style={{}}>{item.date}</Text>
-                        </View>
-                        <Text style={{width:width-95}}>Javaday istanbul is most effective international communuty driven software conference of turkey organised by java user group</Text>
-                    </View>
-
-                </View>
-            </TouchableOpacity>
-
-        )
-    }
-
     _keyExtractor = (item, index) => item.id;
 
     _errorDialog() {
-       return(
-           <View
-               style={{
-                   flex: 1,
-                   justifyContent: 'center',
-                   alignItems: 'center',
-               }}>
-               <View
-                   style={{
-                       width: width,
-                       marginTop:50,
-                       justifyContent: 'center',
-                       alignItems: 'center',
-                       backgroundColor: '#fff',
-                   }}>
-                   <View style={{
-                       alignSelf:'center',
-                       alignItems:'center',
-                       justifyContent :'center',
-                   }}>
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <View
+                    style={{
+                        width: width,
+                        marginTop: 50,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#fff',
+                    }}>
+                    <View style={{
+                        alignSelf: 'center',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
 
-                       <Text style={{marginTop: 15,fontWeight :'bold', color :'#d66',textAlign :'center'}}>Etkinlik Bulunamadı</Text>
-                   </View>
-               </View>
-           </View>
-       )
+                        <Text style={{marginTop: 15, fontWeight: 'bold', color: '#d66', textAlign: 'center'}}>Etkinlik Bulunamadı</Text>
+                    </View>
+                </View>
+            </View>
+        )
     }
 
 
     render() {
-        const {events, loading,} = this.props
+        let {events, loading,} = this.props
         const {search, value,} = this.state
 
         return (
@@ -138,47 +122,55 @@ class MainScreen extends Component {
                 <Loading visible={loading}/>
 
                 <If con={search}>
-                  <If.Then>
-                    <KeyboardAwareScrollView>
+                    <If.Then>
+                        <KeyboardAwareScrollView>
+                            <View style={styles.container}>
+                                <View style={styles.logoContainer}>
+                                    <Image style={styles.image} source={require('../../images/logo.png')}/>
+                                    <Text style={styles.title}>Welcome to SliConf</Text>
+                                    <Text style={styles.subtitle}>Conferences at your fingertips</Text>
+                                </View>
+
+                                <View style={styles.containerBottom}>
+                                    <View style={styles.search}>
+                                        <Form>
+                                            <Item floatingLabel>
+                                                <Label>Event Name</Label>
+                                                <Input
+                                                    returnKeyType="search"
+                                                    keyboardType="default"
+                                                    autoCorrect={false}
+                                                    style={styles.box}
+                                                    onSubmitEditing={() => this._handlePressSearch()}
+                                                    onChangeText={text => this.setState({value: text})}
+                                                    value={value}
+                                                />
+                                            </Item>
+                                        </Form>
+
+                                    </View>
+                                </View>
+                            </View>
+                        </KeyboardAwareScrollView>
+                    </If.Then>
+
+                    <If.Else>
                         <View style={styles.container}>
-                            <View style={styles.logoContainer}>
-                                <Image style={styles.logo} source={require('../../images/logo.png')}/>
-                                <Text style={styles.title}>Welcome to SliConf</Text>
-                                <Text style={{fontSize:20,marginBottom:40,color:'#818285'}}>Conferences at your fingertips</Text>
-                            </View>
+                            <Header leftImage='search' rightImage='close'
+                                    onPressRight={() => this._hide()}>
+                                <Header.Title title={value} />
+                            </Header>
 
-                        <View style={styles.containerBottom}>
-                            <View style={styles.search}>
-                                <Text> Event Name</Text>
-                                <TextInput
-                                    returnKeyType="search"
-                                    keyboardType="default"
-                                    autoCorrect={false}
-                                    style={styles.box}
-                                    onSubmitEditing={() => this._handlePressSearch(value)}
-                                    onChangeText={text => this.setState({value: text})}
-                                    value={value}
-                                />
-                            </View>
+                            <FlatList
+                                data={events}
+                                extraData={this.state}
+                                keyExtractor={this._keyExtractor}
+                                renderItem={({item}) => <ListEvent event={item} onPress={this.getEvent}/>}
+                                ListEmptyComponent={this._errorDialog}/>
+                            <View/>
+
                         </View>
-                        </View>
-                    </KeyboardAwareScrollView>
-                  </If.Then>
-
-                  <If.Else>
-                    <View style={styles.container}>
-                        <Header title={value} rightImage={{uri:'http://www.safehirings.com/close.png'}} onPressRight={() => this._hide()} titleStyle={{color:'#fff'}}/>
-
-                        <FlatList
-                            data={events}
-                            extraData={this.state}
-                            keyExtractor={this._keyExtractor}
-                            renderItem={({item}) => this.renderEventRow(item)}
-                            ListEmptyComponent={this._errorDialog}/>
-                        <View/>
-
-                    </View>
-                  </If.Else>
+                    </If.Else>
                 </If>
 
             </View>
@@ -192,7 +184,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
 
     },
     containerSearch: {
@@ -213,13 +205,14 @@ const styles = StyleSheet.create({
     },
     search: {
         flex: 1,
-        width: width - 80,
+        width: Style.DEVICE_WIDTH - 80,
         justifyContent: 'flex-start',
-    },
+    padding:10},
     image: {
         height: 100,
         width: 100,
-        marginBottom: 20
+        marginBottom: 20,
+        marginTop: 60
     },
     textTitle: {
         color: '#2AB673',
@@ -234,43 +227,52 @@ const styles = StyleSheet.create({
     box: {
         borderBottomWidth: (Platform.OS === 'ios') ? 1 : 0,
         borderBottomColor: '#818284',
-        padding:5
+        padding: 5
     },
     logoContainer: {
-        alignItems:'center',
-        justifyContent:'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     logo: {
         width: 200,
         height: 200,
     },
     title: {
-        color:'#2AB673',
-        marginTop:10,
-        width:200,
+        color: '#2AB673',
+        marginTop: 10,
+        width: 200,
         textAlign: 'center',
         opacity: 0.9,
-        fontSize:20,
+        fontFamily: "Montserrat-Regular",
+        fontSize: Style.FONT_SIZE_TITLE_LARGE* 0.8,
+        lineHeight: Style.FONT_SIZE_TITLE_LARGE * 1.3,
         fontWeight: 'bold'
     },
-    container2: {
-        padding:20
+    subtitle: {
+        fontFamily: "Montserrat-Regular",
+        lineHeight: Style.FONT_SIZE_SMALL * 1.5,
+        fontSize: Style.FONT_SIZE_SMALL,
+        marginBottom: 10,
+        color: '#818285'
     },
-    input : {
+    container2: {
+        padding: 20
+    },
+    input: {
         height: 40,
-        backgroundColor:'rgba(255,255,255,0.2)',
+        backgroundColor: 'rgba(255,255,255,0.2)',
         marginBottom: 10,
         color: '#000000',
         paddingHorizontal: 10,
     },
-    buttonContainer:{
-        backgroundColor:'#2AB673',
-        paddingVertical:15
+    buttonContainer: {
+        backgroundColor: '#2AB673',
+        paddingVertical: 15
     },
-    buttonText:{
-        textAlign:'center',
-        color:'#FFFFFF',
-        fontWeight:'700'
+    buttonText: {
+        textAlign: 'center',
+        color: '#FFFFFF',
+        fontWeight: '700'
     }
 })
 
