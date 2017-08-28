@@ -27,187 +27,26 @@ import BreakTimeCard from '../component/BreakTimeCard'
 import renderIf from '../config/renderIf'
 import If from '../component/If'
 
-let DATAS = {
-    "13:00": [
-        {
-            name: 'Kasia Mrowca',
-            place: 'Oda 1',
-            level: 1,
-            topic: 'React Nedir ?',
-            time: '13:00',
-            posters: require('../../images/logo.png'),
-            date: '12-05-2018'
-        },
-        {
-            name: 'Speaker 1',
-            place: 'Oda 0',
-            level: 2,
-            time: '13:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '12-05-2018'
-        },
-        {
-            name: 'Speaker 2',
-            place: 'Oda 2',
-            level: 2,
-            time: '13:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '12-05-2018'
-        }
+let MOCKDATA = {
+    "04-05-2018":[
+        {key: "A100",time: "13:00",topic: "Fuse Integrasyonu",topicDetail: "Ayrıntı", level: 1,room: "Oda 2", speaker: "Lemi Orhan", star: 4.5,date: "04-05-2018" },
+        {key: "A101",time: "14:00",topic: "Docker nedir ?",topicDetail: "Ayrıntı", level: 2,room: "Oda 1", speaker: "Hakan Özler", star: 4.5,date: "04-05-2018" },
+        {key: "A102",time: "15:00",topic: "Spring data kullanımı",topicDetail: "Ayrıntı", level: 3,room: "Oda 3", speaker: "Hüseyin Akdoğan", star: 4.5,date: "04-05-2018" },
+        {key: "A103",time: "16:00",topic: "Database Yönetimi",topicDetail: "Ayrıntı", level: 3,room: "Oda 0", speaker: "Anıl Coşar", star: 4.5,date: "04-05-2018" },
     ],
-    "13:45": [
-        {name: '', place: '', level: 1, topic: 'Coffee Break', time: '13:45', posters: '', date: '12-05-2018'},
+    "05-05-2018":[
+        {key: "A104",time: "13:00",topic: "React vs Angular",topicDetail: "Ayrıntı", level: 3,room: "Oda 1", speaker: "Göksel Pirnal", star: 4.5,date: "05-05-2018" },
+        {key: "A105",time: "14:00",topic: "Jenkins ile planlı çalışmak",topicDetail: "Ayrıntı", level: 2,room: "Oda 1", speaker: "Talip Teyfur", star: 4.5,date: "05-05-2018" },
+        {key: "A106",time: "15:00",topic: "react-native ile cross-platform yazmak",topicDetail: "Ayrıntı", level: 1,room: "Oda 3", speaker: "Müslüm Sezgin", star: 4.5,date: "05-05-2018" },
+
     ],
-    "14:00": [
-        {
-            name: 'Speaker 3',
-            place: 'Oda 0',
-            level: 1,
-            topic: 'React Nedir ?',
-            time: '14:00',
-            posters: require('../../images/logo.png'),
-            date: '13-05-2018'
-        },
-        {
-            name: 'Speaker 4',
-            place: 'Oda 3',
-            level: 2,
-            time: '14:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '13-05-2018'
-        },
-        {
-            name: 'Speaker 5',
-            place: 'Oda 2',
-            level: 3,
-            time: '14:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '13-05-2018'
-        }
-    ],
-    "15:00": [
-        {
-            name: 'Speaker 6',
-            place: 'Oda 1',
-            level: 3,
-            topic: 'React Nedir ?',
-            time: '15:00',
-            posters: require('../../images/logo.png'),
-            date: '14-05-2018'
-        },
-        {
-            name: 'Speaker 7',
-            place: 'Oda 0',
-            level: 3,
-            time: '15:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '14-05-2018'
-        },
-        {
-            name: 'Speaker 8',
-            place: 'Oda 2',
-            level: 1,
-            time: '15:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '14-05-2018'
-        },
-        {
-            name: 'Speaker 9',
-            place: 'Oda 3',
-            level: 1,
-            time: '15:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '12-05-2018'
-        }
-    ],
-    "16:00": [
-        {
-            name: 'Speaker 10',
-            place: 'Oda 1',
-            level: 3,
-            topic: 'React Nedir ?',
-            time: '15:00',
-            posters: require('../../images/logo.png'),
-            date: '12-05-2018'
-        },
-        {
-            name: 'Speaker 11',
-            place: 'Oda 0',
-            level: 3,
-            time: '15:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '12-05-2018'
-        },
-        {
-            name: 'Speaker 12',
-            place: 'Oda 2',
-            level: 1,
-            time: '15:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '12-05-2018'
-        },
-        {
-            name: 'Speaker 13',
-            place: 'Oda 3',
-            level: 1,
-            time: '15:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '12-05-2018'
-        }
-    ],
-    "17:00": [
-        {
-            name: 'Speaker 14',
-            place: 'Oda 1',
-            level: 3,
-            topic: 'React Nedir ?',
-            time: '15:00',
-            posters: require('../../images/logo.png'),
-            date: '12-05-2018'
-        },
-        {
-            name: 'Speaker 15',
-            place: 'Oda 0',
-            level: 3,
-            time: '15:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '12-05-2018'
-        },
-        {
-            name: 'Speaker 16',
-            place: 'Oda 2',
-            level: 1,
-            time: '15:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '12-05-2018'
-        },
-        {
-            name: 'Speaker 17',
-            place: 'Oda 3',
-            level: 1,
-            time: '15:00',
-            topic: 'Native Nedir ?',
-            posters: require('../../images/logo.png'),
-            date: '12-05-2018'
-        }
+    "06-05-2018":[
+        {key: "A107",time: "12:00",topic: "Java 9 Modularity",topicDetail: "Ayrıntı", level: 1,room: "Oda 1", speaker: "Altuğ Bilgin Altıntaş", star: 4.5,date: "06-05-2018" },
     ]
 }
 
 let choosen = [];
-let rooms = ["Oda 0", "Oda 1", "Oda 2", "Oda 3"];
-
+let eventsDates =[];
 export default class AgendaScreen extends Component {
     //TODO: Herbir card farklı telefon boyutlarına göre dinamikleştirilecek.
     //TODO: Odalar alttaki cardlarla beraber hareket edecek.
@@ -220,7 +59,55 @@ export default class AgendaScreen extends Component {
 
     state = {
         switchedDay: 'Day 1',
-        isClicked: true
+        isClicked: true,
+        data:[],
+        rooms:[]
+    }
+
+    eventsList(events) {
+        let changedEventsList = [];
+        let myMap = new Map();
+
+        events.forEach(function (element)  {
+            let time = element.time
+            myMap.get(time) ? array = myMap.get(time) : array = []
+            array.push(element)
+            myMap.set(time, array)
+        });
+
+        myMap.forEach(function (value, key) {
+            changedEventsList={...changedEventsList,[key]: value}
+        })
+
+        return changedEventsList
+    }
+
+    roomsList(events){
+        let roomsList = [];
+        let tempRoom=events.filter((thing, index, self) => self.findIndex((t) => {return t.room === thing.room }) === index)
+        tempRoom.forEach((element)=> roomsList.push(element.room))
+        roomsList.sort();
+        return roomsList
+    }
+
+    componentWillMount(){
+        Object.keys(MOCKDATA).forEach((date)=> eventsDates.push(date))
+        this.setState({
+            rooms:this.roomsList(MOCKDATA["04-05-2018"]),
+            data:this.eventsList(MOCKDATA["04-05-2018"])
+        })
+    }
+    changeDate(date){
+
+        this.setState({
+            switchedDay:date,
+            rooms:this.roomsList(MOCKDATA[date]),
+            data:this.eventsList(MOCKDATA[date])
+        })
+    }
+
+    handleScroll = (event) => {
+        this.roomScroll.scrollTo({ x: event.nativeEvent.contentOffset.x, animated: true });
     }
 
     deleteItemFromChosenEvents(arg) {
@@ -257,7 +144,7 @@ export default class AgendaScreen extends Component {
         let isExist = false;
         let i, j;
         for (i = 0; i < arg.length; i++) {
-            if (myroom == arg[i].place) {
+            if (myroom == arg[i].room) {
                 isExist = true;
                 for (j = 0; j < choosen.length; j++) {
                     if (arg[i] === choosen[j]) {
@@ -266,6 +153,7 @@ export default class AgendaScreen extends Component {
                                         isEmpty={false}
                                         onPressAddButton={this.addItemToChosenEvents}
                                         isClicked={true}
+                                        key={arg[i].key}
                                         choosedEvents={choosen}
                                         onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
                     }
@@ -274,6 +162,7 @@ export default class AgendaScreen extends Component {
                                     isEmpty={false}
                                     onPressAddButton={this.addItemToChosenEvents}
                                     isClicked={false}
+                                    key={arg[i].key}
                                     choosedEvents={choosen}
                                     onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
             } else {
@@ -288,84 +177,102 @@ export default class AgendaScreen extends Component {
         this.setState({isClicked: true})
     }
 
+
     render() {
-        const {isClicked} = this.state
+        const { isClicked } = this.state
+        DATAS=this.state.data
+        rooms=this.state.rooms
         return (
-            <Container style={{backgroundColor: '#fff'}}>
-                <Content>
-                    {renderIf(isClicked)(
-                        <View>
-
-                            <Header leftImage='chevron-left' rightImage='bars'
-                                    onPressLeft={() => this.props.navigation.goBack()} >
-                                <Picker style={{width:140}}
-                                        selectedValue={this.state.switchedDay}
-                                        onValueChange={(itemValue, itemIndex) => this.setState({switchedDay:itemValue})}>
-                                    <Picker.Item label="Day 1" value="11052018" />
-                                    <Picker.Item label="Day 2" value="12052018" />
-                                    <Picker.Item label="Day 3" value="13052018" />
-                                    <Picker.Item label="Day 4" value="14052018" />
-                                </Picker>
-                            </Header>
-
-
-                            <View style={styles.roomsField}>
-                                <Icon name='ios-funnel-outline' style={{marginLeft: 30, margin: 8}}/>
+            <Container style={{ backgroundColor: '#fff' }}>
+                <If con={isClicked}>
+                    <If.Then>
+                        <Header leftImage='chevron-left' rightImage='bars'
+                                onPressLeft={() => this.props.navigation.goBack()} >
+                            <Picker style={{width:140}}
+                                    selectedValue={this.state.switchedDay}
+                                    onValueChange={(itemValue, itemIndex) => this.changeDate(itemValue)}>
+                                    {eventsDates.map((item,i)=>
+                                        <Picker.Item label={"Day "+(i+1)} value={item} />
+                                    )}
+                            </Picker>
+                        </Header>
+                        <View style={styles.roomsField}>
+                            <TouchableOpacity>
+                            <Icon name='ios-funnel-outline' style={styles.filterIcon} />
+                            </TouchableOpacity>
+                            <View style={{marginLeft:30,margin:8}}>
+                            <ScrollView horizontal ref={(el) => { this.roomScroll = el; }} showsHorizontalScrollIndicator={false}>
                                 {rooms.map((oda, i) =>
                                     <Text key={i} style={styles.roomText}>{oda}</Text>
                                 )}
-                            </View>
-                            <ScrollView horizontal>
-                                <ScrollView>
-                                    {Object.keys(DATAS).map((time, i) => (
-                                        <View key={i}>
-                                            <If con={DATAS[time][0].name != ''}>
-                                                <If.Then>
-                                                    <View style={styles.cardsField}>
-                                                        <Text style={styles.cardsTime}>{time}</Text>
-                                                        {rooms.map((myroom, i) => (
-                                                            <View
-                                                                key={i}>{this.isThereEventInRoom(myroom, DATAS[time])}</View>
-                                                        ))}
-                                                    </View>
-                                                </If.Then>
-                                                <If.Else>
-                                                    <BreakTimeCard item={DATAS[time][0]}/>
-                                                </If.Else>
-                                            </If>
-                                        </View>
-
-                                    ))}
-
-                                </ScrollView>
                             </ScrollView>
+                            </View>
                         </View>
-                    )}
-                    {renderIf(!isClicked)(
-                        <View>
+                    </If.Then>
+                    <If.Else>
+                        <Header leftImage='chevron-left'
+                                onPressLeft={() => this._hide()}>
+                            <Header.Title title="Seçtiklerim" />
+                        </Header>
+                    </If.Else>
+                </If>
+                <Content >
+                    <If con={isClicked}>
 
-                            <Header leftImage='chevron-left'
-                                    onPressLeft={() => this._hide()}>
-                                <Header.Title title="Seçtiklerim" />
-                            </Header>
+                        <If.Then>
 
-                            {choosen.map((choosed, i) =>
-                                <ChosenCard key={i} item={choosed} day={this.state.switchedDay}/>
-                            )}
-                        </View>
-                    )}
+                            <Content >
+                                <View style={{ flexDirection: 'row' }}>
 
+                                    <View style={{ margin: 5, padding: 5 }}>
+                                        {Object.keys(DATAS).map((list, i) => (
+
+                                            <View key={i}>{DATAS[list][0].name == '' ? <Text style={{ margin: 8 }}>{list}</Text> : <Text style={styles.cardsTime}>{list}</Text>}</View>
+                                        ))}
+                                    </View>
+                                    <ScrollView horizontal onScroll={this.handleScroll} >
+                                        <ScrollView >
+                                            {Object.keys(DATAS).map((time, i) => (
+                                                <View key={i}>
+                                                    <If con={DATAS[time][0].name != ''}>
+                                                        <If.Then>
+                                                            <View style={styles.cardsField}>
+
+                                                                {rooms.map((myroom, i) => (
+                                                                    <View key={i}>{this.isThereEventInRoom(myroom, DATAS[time])}</View>
+                                                                ))}
+                                                            </View>
+                                                        </If.Then>
+                                                        <If.Else>
+                                                            <BreakTimeCard item={DATAS[time][0]} />
+                                                        </If.Else>
+                                                    </If>
+                                                </View>
+
+                                            ))}
+
+                                        </ScrollView>
+                                    </ScrollView>
+                                </View>
+                            </Content>
+                        </If.Then>
+                        <If.Else>
+                            <View>
+
+                                {choosen.map((choosed, i) =>
+                                    <ChosenCard key={i} item={choosed} day={this.state.switchedDay} onPressDeleteButton={this.deleteItemFromChosenEvents}/>
+                                )}
+                            </View></If.Else>
+                    </If>
                 </Content>
-                <Footer>
-                    <FooterTab style={{backgroundColor: '#fff'}}>
-                        <Button vertical onPress={() => {
-                            this.setState({isClicked: true})
-                        }}>
+
+
+                <Footer >
+                    <FooterTab style={{ backgroundColor: '#fff' }}>
+                        <Button vertical onPress={() => { this.setState({ isClicked: true }) }}>
                             <Text>Hepsi</Text>
                         </Button>
-                        <Button vertical onPress={() => {
-                            this.setState({isClicked: false})
-                        }}>
+                        <Button vertical onPress={() => { this.setState({ isClicked: false }) }}>
                             <Text>Seçimlerim</Text>
                         </Button>
                     </FooterTab>
@@ -398,6 +305,11 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         textAlign: 'center',
         height: 100
+    },
+    filterIcon:{
+        marginLeft: 15,
+        marginRight: 15,
+        margin: 8
     }
 
 })
