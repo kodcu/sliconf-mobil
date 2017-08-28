@@ -9,7 +9,7 @@ export const Style = {
     CARD_HEIGHT: responsiveWidth(95) * 0.33,
 
     FONT_SIZE: responsiveFontSize(2) * 0.85,
-    FONT_SIZE_SMALLER: responsiveFontSize(1.5) * 0.85,
+    FONT_SIZE_SMALLER: responsiveFontSize(1.5) * 0.75,
     FONT_SIZE_SMALL: responsiveFontSize(1.75)* 0.85,
     FONT_SIZE_TITLE: responsiveFontSize(2.5)* 0.85,
     FONT_SIZE_VERY_SMALL: responsiveFontSize(1)* 0.85,

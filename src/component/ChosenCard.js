@@ -6,24 +6,25 @@ import PropTypes from 'prop-types';
 
 export default class ChosenCard extends Component {
 
-    
-    
+
+
     getColorByLevel(level){
         switch(level){
             case 1:
-            return '#29B673';
-            break;
+                return '#29B673';
+                break;
             case 2:
-            return '#FBB041';
-            break;
+                return '#FBB041';
+                break;
             case 3:
-            return '#EE5E5F';
-            break;
+                return '#EE5E5F';
+                break;
             default :
-            return '#ffffff';
+                return '#ffffff';
         }
     }
-    
+
+
 
     render() {
         const item =this.props.item;
@@ -32,17 +33,17 @@ export default class ChosenCard extends Component {
                 <View  style={[styles.cardLine,{borderColor:this.getColorByLevel(item.level)}]}/>
                 <View style={styles.detailField}>
                     <Text style={styles.topic}>{item.topic}</Text>
-                    <Text style={styles.speaker}>{item.name}</Text>
+                    <Text style={styles.speaker}>{item.speaker}</Text>
                     <View style={styles.infoField}>
                         <Text style={styles.topic}>{item.time}</Text>
                         <Text style={styles.topic}>{item.date}</Text>
-                        <Text style={styles.topic}>{item.place}</Text>
+                        <Text style={styles.topic}>{item.room}</Text>
                     </View>
                 </View>
                 <View style={styles.actionField}>
-                    <TouchableOpacity>
+                    <TouchableOpacity >
                         <View style={styles.buttonField}>
-                        <Icon name='ios-checkmark' style={{alignSelf:'center'}}/>
+                            <Icon name='ios-checkmark' style={{alignSelf:'center'}}/>
                         </View>
                     </TouchableOpacity>
                 </View>

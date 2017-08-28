@@ -1,35 +1,35 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,StatusBar,TouchableOpacity,Image,Dimensions,Platform } from 'react-native';
-import { Container, Header, Left, Body, Right, Button, Icon, Title ,Content,CardItem,Thumbnail,Card,List,Item,Footer,FooterTab,Picker, Form, Item as FormItem} from 'native-base';
+import { View, Text, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 
 
 export default class ChosenCard extends Component {
 
-    
-    
+
+
 
     render() {
         const item =this.props.item;
         return(
             <View style={styles.container}>
-            <View  style={styles.cardLine}>
-                <View  style={styles.line}/>
+                <View  style={styles.cardLine}>
+                    <View  style={styles.line}/>
                     <View style={styles.detailField}>
                         <Text style={styles.topic}>{item.topic} </Text>
+                    </View>
                 </View>
             </View>
-        </View> 
         )
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft:100,
+        marginLeft:30,
         borderBottomWidth:1,
         borderTopWidth:1,
-        borderColor:'#D1D3D4'
+        borderColor:'#D1D3D4',
+        margin:5
     },
     detailField:{
         flex:0.7,
@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
     },
     line:{
         borderColor:'#A97B50',
-        borderWidth:1
+        borderWidth:1,
+        margin:5,
     }
 
 })
