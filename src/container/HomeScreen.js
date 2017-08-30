@@ -14,7 +14,7 @@ import {Container} from 'native-base';
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import Style from '../theme/Style'
-import {AGENDA} from '../router';
+import {AGENDA,SPEAKERS} from '../router';
 
 
 
@@ -39,15 +39,10 @@ class HomeScreen extends Component {
                     <Header.Title title="Home" />
             </Header>
 
-                <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-between',}}>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-around',}}>
                     <View>
                         <Text style={styles.title}>Welcome to</Text>
                         <Text style={styles.title}>{this.props.event.name}</Text>
-                        <Text style={styles.subtitle}>Java Day Istanbul is the most effective international
-                            community driven software conference of Turkey organised by Istanbul Java User Group.
-                            The conference helps developers to learn the newest technologies about Java, Web, Mobile,
-                            Big DATA, Cloud, DevOps, Agile and Future.
-                        </Text>
                     </View>
 
                     <View>
@@ -57,7 +52,7 @@ class HomeScreen extends Component {
                                 <Image source={require('../../images/Agenda.png')} style={{width: 50, height: 50}}/>
                                 <Text style={styles.buttonText}>Agenda</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.rightboxSmall, {backgroundColor: '#F69274'}]}>
+                            <TouchableOpacity onPress={() => this.props.navigation.dispatch({type: SPEAKERS})} style={[styles.rightboxSmall, {backgroundColor: '#F69274'}]}>
                                 <Image source={require('../../images/Speakers.png')} style={{width: 50, height: 50}}/>
                                 <Text style={styles.buttonText}>Speakers</Text>
                             </TouchableOpacity>
@@ -121,15 +116,7 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
         textAlign: 'center'
     },
-    subtitle: {
-        fontFamily: "Montserrat-Regular",
-        lineHeight: Style.FONT_SIZE_TITLE_SMALL * 1.5,
-        fontSize: Style.FONT_SIZE_TITLE_SMALL,
-        fontWeight: 'normal',
-        margin:Style.MARGIN,
-        marginTop: Style.MARGIN * 2,
-        textAlign: 'center'
-    }
+
 
 })
 
