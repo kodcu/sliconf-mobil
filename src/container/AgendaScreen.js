@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, FlatList} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Image, TouchableOpacity} from 'react-native';
 import {
     Container,
     Left,
-    Body,
     Right,
     Button,
     Icon,
@@ -18,14 +17,13 @@ import {
     FooterTab,
     Picker,
     Form,
-    Item as FormItem
 } from 'native-base';
 import AgendaCard from '../component/AgendaCard'
 import ChosenCard from '../component/ChosenCard'
 import Header from '../component/Header'
 import BreakTimeCard from '../component/BreakTimeCard'
-import renderIf from '../config/renderIf'
 import If from '../component/If'
+import {connect} from 'react-redux'
 
 let MOCKDATA = {
     "04-05-2018":[
@@ -47,11 +45,12 @@ let MOCKDATA = {
 
 let choosen = [];
 let eventsDates =[];
-export default class AgendaScreen extends Component {
-    //TODO: Herbir card farklı telefon boyutlarına göre dinamikleştirilecek.
-    //TODO: Odalar alttaki cardlarla beraber hareket edecek.
-    //TODO: Filtreleme için pop-up oluşturulacak.
-    //TODO: Başlıktan seçilen günlere göre ajanda verisi değişecek.
+
+const mapStateToProps = (state) => ({
+
+})
+
+class AgendaScreen extends Component {
 
     static navigationOptions = {
         header: null
@@ -97,6 +96,7 @@ export default class AgendaScreen extends Component {
             data:this.eventsList(MOCKDATA["04-05-2018"])
         })
     }
+
     changeDate(date){
 
         this.setState({
@@ -114,30 +114,11 @@ export default class AgendaScreen extends Component {
         let array = choosen;
         let index = array.indexOf(arg)
         array.splice(index, 1);
-
     }
 
     addItemToChosenEvents(arg) {
-
         choosen.push(arg);
         console.log(choosen);
-
-    }
-
-    getLevelColor(level) {
-        switch (level) {
-            case 1:
-                return '#29B673';
-                break;
-            case 2:
-                return '#FBB041';
-                break;
-            case 3:
-                return '#EE5E5F';
-                break;
-            default :
-                return '#ffffff';
-        }
     }
 
     isThereEventInRoom(myroom, arg) {
@@ -192,7 +173,7 @@ export default class AgendaScreen extends Component {
                                     selectedValue={this.state.switchedDay}
                                     onValueChange={(itemValue, itemIndex) => this.changeDate(itemValue)}>
                                     {eventsDates.map((item,i)=>
-                                        <Picker.Item label={"Day "+(i+1)} value={item} />
+                                        <Picker.Item key={i+1} label={"Day "+(i+1)} value={item} />
                                     )}
                             </Picker>
                         </Header>
@@ -230,7 +211,7 @@ export default class AgendaScreen extends Component {
                                             <View key={i}>{DATAS[list][0].name == '' ? <Text style={{ margin: 8 }}>{list}</Text> : <Text style={styles.cardsTime}>{list}</Text>}</View>
                                         ))}
                                     </View>
-                                    <ScrollView horizontal onScroll={this.handleScroll} >
+                                    <ScrollView horizontal onScroll={this.handleScroll} showsHorizontalScrollIndicator={false} >
                                         <ScrollView >
                                             {Object.keys(DATAS).map((time, i) => (
                                                 <View key={i}>
@@ -313,3 +294,5 @@ const styles = StyleSheet.create({
     }
 
 })
+
+export default connect(mapStateToProps)(AgendaScreen)

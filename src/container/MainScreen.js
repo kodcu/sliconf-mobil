@@ -69,8 +69,11 @@ class MainScreen extends Component {
     }
 
     getEvent = async (code) => {
-        const {dispatch, error, loading} = this.props
+        const {dispatch,loading} = this.props
         await dispatch(actionCreators.fetchEvent(code))
+        const {error,errorMessage} =this.props
+        if(error)
+            alert(errorMessage);
 
         if (!error && !loading) {
             this.props.navigation.dispatch({type: HOME});
