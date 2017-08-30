@@ -90,7 +90,7 @@ class AgendaScreen extends Component {
     }
 
     componentWillMount(){
-        Object.keys(MOCKDATA).forEach((date)=> eventsDates.push(date))
+        Object.keys(MOCKDATA).forEach((date)=> eventsDates.includes(date) ? null:eventsDates.push(date))
         this.setState({
             rooms:this.roomsList(MOCKDATA["04-05-2018"]),
             data:this.eventsList(MOCKDATA["04-05-2018"])
