@@ -21,6 +21,7 @@ import {
 import AgendaCard from '../component/AgendaCard'
 import ChosenCard from '../component/ChosenCard'
 import Header from '../component/Header'
+import Filter from '../component/Filter'
 import BreakTimeCard from '../component/BreakTimeCard'
 import If from '../component/If'
 import {connect} from 'react-redux'
@@ -60,7 +61,12 @@ class AgendaScreen extends Component {
         switchedDay: 'Day 1',
         isClicked: true,
         data:[],
-        rooms:[]
+        rooms:[],
+        filter:false
+    }
+
+    filterHide = () => {
+        this.setState({filter:false})
     }
 
     eventsList(events) {
@@ -160,13 +166,17 @@ class AgendaScreen extends Component {
 
 
     render() {
-        const { isClicked } = this.state
+        const { isClicked , filter} = this.state
         DATAS=this.state.data
         rooms=this.state.rooms
         return (
             <Container style={{ backgroundColor: '#fff' }}>
+
+
+
                 <If con={isClicked}>
                     <If.Then>
+                        <Filter visible={filter} onPress ={() => this.filterHide()}/>
                         <Header leftImage='chevron-left' rightImage='bars'
                                 onPressLeft={() => this.props.navigation.goBack()} >
                             <Picker style={{width:140}}
@@ -178,7 +188,7 @@ class AgendaScreen extends Component {
                             </Picker>
                         </Header>
                         <View style={styles.roomsField}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.setState({filter:true})}>
                             <Icon name='ios-funnel-outline' style={styles.filterIcon} />
                             </TouchableOpacity>
                             <View style={{marginLeft:30,margin:8}}>
