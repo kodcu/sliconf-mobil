@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, Dimensions, Platform} from 'react-native';
-import {Header as NBHeader, Button } from 'native-base'
+import {Header as NBHeader, Button,} from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import If from './If'
 
 export class Header extends Component {
-
 
 
     render() {
@@ -14,17 +13,17 @@ export class Header extends Component {
             <NBHeader backgroundColor="#fff" iosBarStyle="dark-content" androidStatusBarColor="#fff"
                       noShadow={true} style={{backgroundColor: '#fff'}}>
                 <View style={[styles.header, this.props.headerStyle]}>
-                    <TouchableOpacity onPress={onPressLeft}>
+                    <Button style={{backgroundColor: '#fff', shadowColor: '#fff', elevation: 0}} onPress={onPressLeft}>
                         <Icon name={leftImage}/>
-                    </TouchableOpacity>
+                    </Button>
 
                     <View>
                         {children}
                     </View>
 
-                    <TouchableOpacity onPress={onPressRight}>
+                    <Button style={{backgroundColor: '#fff', shadowColor: '#fff', elevation: 0}} onPress={onPressRight}>
                         <Icon name={rightImage}/>
-                    </TouchableOpacity>
+                    </Button>
                 </View>
             </NBHeader>
         );
@@ -41,8 +40,7 @@ const {width} = Dimensions.get('window');
 const styles = StyleSheet.create({
     container: {},
     header: {
-        paddingRight: 15,
-        paddingLeft: 15,
+
         width: width,
         flexDirection: 'row',
         justifyContent: 'space-between',

@@ -42,7 +42,8 @@ class SpeakersScreen extends Component {
             {name: "Talip Teyfur2",workingat: "Kodsis",about: "dfdfdf",topic: ["A104"]},
             {name: "Talip Teyfur3",workingat: "Kodsis",about: "dfdfdf",topic: ["A104"]},
         ],
-        weye:[]
+        weye:[],
+        selected:0
     }
     speakersList(sp) {
         let changedSpeakersList = [];
@@ -79,21 +80,30 @@ class SpeakersScreen extends Component {
         this.setState({
             weye:this.speakersList(this.state.DATAS)
         })
-
-        console.log(this.state.weye)
     }
     componentWillUpdate(nextProps, nextState){
         console.log(nextState)
     }
     handleScroll = (event) => {
-        console.log(event.nativeEvent.contentOffset.y)
+        const {weye,DATAS} = this.state
+
+        let scrollIndex = Math.floor( event.nativeEvent.contentOffset.y / 205)
+        let leftSpeaker = DATAS[(scrollIndex === -1 ? 0 : scrollIndex)*2]
+        let nameChar = leftSpeaker.name.charAt(0).toUpperCase()
+        let index = Object.keys(weye).indexOf(nameChar);
+        this.setState({selected:index})
+    }
+
+    setSelected = (index,item) => {
+        this.setState({selected:index})
+        this.myfunction(item)
     }
 
     myfunction = (letter) =>{
         let DATAS=this.state.DATAS
         if(this.state.weye[letter]!==undefined){
             let item =this.state.weye[letter][0]
-            this.myFlatList.scrollToIndex({ animated: true, index:Math.floor(((DATAS.length/2)/DATAS.length)*DATAS.indexOf(item)) });
+            this.myFlatList.scrollToIndex({ animated: true, index:Math.floor(0.5 * DATAS.indexOf(item)) });
         }
 
     }
@@ -102,6 +112,7 @@ class SpeakersScreen extends Component {
     // Hangi harfe basarsa git arrayda o harfin ilk elemanını bul sonra onun indexine flatlistin scrollto özelliği ile git
     render() {
 
+        const sel = this.state.selected;
         return (
             <Container style={{backgroundColor:'#fff'}}>
                 <Header leftImage='chevron-left' rightImage='bars'
@@ -119,9 +130,12 @@ class SpeakersScreen extends Component {
                             getItemLayout={this.getItemLayout}
                             onScroll={this.handleScroll}
                         /></View>
-                    <View style={{justifyContent:'center',alignItems:'center',margin:10,paddingBottom:10,flexGrow:0.2}}>
+                    <View style={{justifyContent:'center',alignItems:'center',margin:5,paddingBottom:10,flexGrow:0.2}}>
                         {Object.keys(this.state.weye).map((myi, i) =>
-                            <AlphabeticView key={i} item={myi} onClick={this.myfunction}/>
+                            <TouchableOpacity onPress={() => this.setSelected(i,myi)} key={i}>
+                                <Text style={{fontFamily: "Montserrat-Regular",fontSize : sel === i ? 35 : ( (sel-1) === i || (sel+1) === i )  ? 27 : ( (sel-2)  === i || (sel+2)  === i ) ? 20 : 15
+                                }} >{myi}</Text>
+                            </TouchableOpacity>
                         )}
 
                     </View>
@@ -142,12 +156,16 @@ const styles = StyleSheet.create({
         flexWrap:'wrap'
     },
     card: {
-        backgroundColor: 'red',
         width: (width / 2) - 25,
         height: 200,
         marginLeft: 10,
         marginTop: 10,
-        backgroundColor:'#fff',borderWidth:1,borderRadius:15,borderColor:'#F1F2F2',justifyContent:'center',alignItems:'center'
+        backgroundColor:'#fff',
+        borderWidth:1,
+        borderRadius:15,
+        borderColor:'#F1F2F2',
+        justifyContent:'center',
+        alignItems:'center'
     }
 })
 
