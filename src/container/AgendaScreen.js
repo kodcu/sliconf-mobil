@@ -30,8 +30,10 @@ let MOCKDATA = {
     "04-05-2018":[
         {key: "A100",time: "13:00",topic: "Fuse Integrasyonu",topicDetail: "Ayrıntı", level: 1,room: "Oda 2", speaker: "Lemi Orhan", star: 4.5,date: "04-05-2018" },
         {key: "A101",time: "14:00",topic: "Docker nedir ?",topicDetail: "Ayrıntı", level: 2,room: "Oda 1", speaker: "Hakan Özler", star: 4.5,date: "04-05-2018" },
+        {key: "A108",time: "14:45",topic: "Coffe break",topicDetail: "", level: 0,room: "Oda 0", speaker: "", star: 4.5,date: "04-05-2018" },
         {key: "A102",time: "15:00",topic: "Spring data kullanımı",topicDetail: "Ayrıntı", level: 3,room: "Oda 3", speaker: "Hüseyin Akdoğan", star: 4.5,date: "04-05-2018" },
         {key: "A103",time: "16:00",topic: "Database Yönetimi",topicDetail: "Ayrıntı", level: 3,room: "Oda 0", speaker: "Anıl Coşar", star: 4.5,date: "04-05-2018" },
+
     ],
     "05-05-2018":[
         {key: "A104",time: "13:00",topic: "React vs Angular",topicDetail: "Ayrıntı", level: 3,room: "Oda 1", speaker: "Göksel Pirnal", star: 4.5,date: "05-05-2018" },
@@ -219,14 +221,14 @@ class AgendaScreen extends Component {
                                     <View style={{ margin: 5, padding: 5 }}>
                                         {Object.keys(DATAS).map((list, i) => (
 
-                                            <View key={i}>{DATAS[list][0].name == '' ? <Text style={{ margin: 8 }}>{list}</Text> : <Text style={styles.cardsTime}>{list}</Text>}</View>
+                                            <View key={i}>{DATAS[list][0].level === 0 ? <Text style={{ margin: 8 }}>{list}</Text> : <Text style={styles.cardsTime}>{list}</Text>}</View>
                                         ))}
                                     </View>
                                     <ScrollView horizontal onScroll={this.handleScroll} showsHorizontalScrollIndicator={false} >
                                         <ScrollView >
                                             {Object.keys(DATAS).map((time, i) => (
                                                 <View key={i}>
-                                                    <If con={DATAS[time][0].name != ''}>
+                                                    <If con={DATAS[time][0].level !== 0}>
                                                         <If.Then>
                                                             <View style={styles.cardsField}>
 
@@ -296,7 +298,7 @@ const styles = StyleSheet.create({
         margin: 8,
         textAlignVertical: 'center',
         textAlign: 'center',
-        height: 100
+        height: 92
     },
     filterIcon:{
         marginLeft: 15,
