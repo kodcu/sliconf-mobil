@@ -25,7 +25,7 @@ import Filter from '../component/Filter'
 import BreakTimeCard from '../component/BreakTimeCard'
 import If from '../component/If'
 import {connect} from 'react-redux'
-
+import {SEARCHRESULT} from '../router';
 let MOCKDATA = {
     "04-05-2018":[
         {key: "A100",time: "13:00",topic: "Fuse Integrasyonu",topicDetail: "Ayrıntı", level: 1,room: "Oda 2", speaker: "Lemi Orhan", star: 4.5,date: "04-05-2018" },
@@ -65,9 +65,13 @@ class AgendaScreen extends Component {
         filter:false
     }
 
-    filterHide = () => {
+    filterHide=(searchResults)=>{
+        console.log('Agenda Screendeyim sonuclar')
+        console.log(searchResults)
         this.setState({filter:false})
+        this.props.navigation.navigate(SEARCHRESULT,searchResults)
     }
+
 
     eventsList(events) {
         let changedEventsList = [];
@@ -171,12 +175,9 @@ class AgendaScreen extends Component {
         rooms=this.state.rooms
         return (
             <Container style={{ backgroundColor: '#fff' }}>
-
-
-
                 <If con={isClicked}>
                     <If.Then>
-                        <Filter visible={filter} onPress ={() => this.filterHide()}/>
+                        <Filter visible={filter} onPress ={(e) => this.filterHide(e)} events={MOCKDATA}/>
                         <Header leftImage='chevron-left' rightImage='bars'
                                 onPressLeft={() => this.props.navigation.goBack()} >
                             <Picker style={{width:140}}
@@ -251,7 +252,7 @@ class AgendaScreen extends Component {
                             <View>
 
                                 {choosen.map((choosed, i) =>
-                                    <ChosenCard key={i} item={choosed} day={this.state.switchedDay} onPressDeleteButton={this.deleteItemFromChosenEvents}/>
+                                    <ChosenCard key={i} item={choosed} onPressDeleteButton={this.deleteItemFromChosenEvents}/>
                                 )}
                             </View></If.Else>
                     </If>
