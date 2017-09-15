@@ -1,6 +1,6 @@
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import AppNavigator from '../../router'
-import {MAIN,SPLASH,HOME,LOGIN,AGENDA,SPEAKERS,SEARCHRESULT} from '../../router'
+import {MAIN,SPLASH,HOME,LOGIN,AGENDA,SPEAKERS,SEARCHRESULT,INFO} from '../../router'
 
 const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams(SPLASH));
 
@@ -47,6 +47,12 @@ const navReducer = (state, action) => {
       case SEARCHRESULT:
           nextState = AppNavigator.router.getStateForAction(
               NavigationActions.navigate({ routeName: SEARCHRESULT }),
+              state
+          );
+          break;
+      case INFO:
+          nextState = AppNavigator.router.getStateForAction(
+              NavigationActions.navigate({ routeName: INFO }),
               state
           );
           break;
