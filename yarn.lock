@@ -3361,6 +3361,12 @@ react-native-animatable@^1.2.3:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-camera@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-0.10.0.tgz#5d973c9a8aab95f68aede395ba310eae0c3cecdd"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -3397,6 +3403,14 @@ react-native-easy-grid@0.1.15:
     create-react-class "^15.6.0"
     prop-types "^15.5.10"
     react-timer-mixin "^0.13.3"
+
+react-native-maps@^0.16.4:
+  version "0.16.4"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.16.4.tgz#c18c3cab8cd0ce05431cd74dac11a39afaa579e4"
+
+react-native-qrcode-scanner@0.0.17:
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/react-native-qrcode-scanner/-/react-native-qrcode-scanner-0.0.17.tgz#75621b868a42bf5457f76dbac6afe31fb354872f"
 
 react-native-responsive-dimensions@^1.0.1:
   version "1.0.1"
