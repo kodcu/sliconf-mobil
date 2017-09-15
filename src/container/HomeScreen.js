@@ -14,7 +14,7 @@ import {Container} from 'native-base';
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import Style from '../theme/Style'
-import {AGENDA,SPEAKERS} from '../router';
+import {AGENDA,SPEAKERS,INFO} from '../router';
 
 
 
@@ -62,9 +62,9 @@ class HomeScreen extends Component {
                                 <Image source={require('../../images/Sponsors.png')} style={{width: 50, height: 50}}/>
                                 <Text style={styles.buttonText}>Sponsors</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.rightboxSmall, {backgroundColor: '#75C7CA'}]}>
+                            <TouchableOpacity onPress={() => this.props.navigation.dispatch({type: INFO})} style={[styles.rightboxSmall, {backgroundColor: '#75C7CA'}]}>
                                 <Image source={require('../../images/Search.png')} style={{width: 50, height: 50}}/>
-                                <Text style={styles.buttonText}>Search</Text>
+                                <Text style={styles.buttonText}>Info</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

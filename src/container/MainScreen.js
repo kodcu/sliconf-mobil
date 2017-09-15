@@ -24,10 +24,10 @@ import {HOME} from '../router';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import If from '../component/If'
 import Header from "../component/Header";
-import ListEvent from "../component/ListEvent";
+import Makiko from "../component/Makiko";
 import Style from '../theme/Style'
 import QRCodeScanner from 'react-native-qrcode-scanner';
-
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 const {height, width} = Dimensions.get('window');
 const logo = require("../../images/logo.png");
 
@@ -64,7 +64,7 @@ class MainScreen extends Component {
         await dispatch(actionCreators.fetchEventList(name))
 
         if (!error && !loading)
-            this.setState({search: false})
+            this.getEvent("K123")
 
 
     }
@@ -137,22 +137,19 @@ class MainScreen extends Component {
 
                                 <View style={styles.containerBottom}>
                                     <View style={styles.search}>
-                                        <Form>
-                                            <Item floatingLabel>
-                                                <Label>Event Name</Label>
-                                                <Input
-                                                    returnKeyType="search"
-                                                    keyboardType="default"
-                                                    autoCorrect={false}
-                                                    style={styles.box}
-                                                    onSubmitEditing={() => this._handlePressSearch()}
-                                                    onChangeText={text => this.setState({value: text})}
-                                                    value={value}
-                                                />
-                                                <TouchableOpacity onPress={()=> this.setState({search:false})}>
-                                                    <Text>QRCODE</Text></TouchableOpacity>
-                                            </Item>
-                                        </Form>
+                                        <Makiko
+                                            label={'Event Code'}
+                                            iconClass={FontAwesomeIcon}
+                                            iconName={'search'}
+                                            iconColor={'#fff'}
+                                            inputStyle={{ color: '#111' }}
+                                            onSubmitEditing={(value) => this._handlePressSearch(value)}
+                                        />
+
+
+                                        <TouchableOpacity style={{marginTop:20,alignItems:'center'}} onPress={()=>{this.setState({search:false})}}>
+                                            <Image style={{width:50,height:50}} source={require('../../images/qrcode.png')}/>
+                                        </TouchableOpacity>
 
                                     </View>
                                 </View>
@@ -162,7 +159,7 @@ class MainScreen extends Component {
 
                     <If.Else>
                         <View style={styles.container}>
-                            <Header leftImage='search' rightImage='close'
+                            <Header rightImage='close'
                                     onPressRight={() => this._hide()}>
                                 <Header.Title title="QR Code" />
                             </Header>
