@@ -4,9 +4,7 @@ import { Container, Button, Icon, Title ,Content,CardItem,Thumbnail,Card,List,It
 import AlphabeticView from '../component/AlphabeticView'
 import Header from "../component/Header";
 import {connect} from 'react-redux'
-
-
-
+import {SPEAKERINFO} from '../router';
 
 DATAS2=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","R","S","T","U","V","Y","Z","W"]
 
@@ -68,11 +66,11 @@ class SpeakersScreen extends Component {
 
     renderRow (info) {
         console.log(info.index)
-        return <View  style={styles.card}>
+        return <TouchableOpacity onPress={() => this.props.navigation.navigate(SPEAKERINFO,info)} ><View  style={styles.card} >
             <Thumbnail source={require('../../images/hi.png')} large style={{marginBottom:15}}/>
             <Text style={{fontSize:15,color:'#000'}}>{info.item.name}</Text>
             <Text style={{fontSize:12,color:'#BCBEC0'}}>{info.item.workingat}</Text>
-        </View>
+        </View></TouchableOpacity>
 
 
     }

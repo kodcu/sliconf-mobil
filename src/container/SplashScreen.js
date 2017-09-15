@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, NetInfo,Platform} from 'react-native'
 import {Image} from 'react-native-animatable'
-import {AGENDA, MAIN,INFO} from '../router';
+import {MAIN} from '../router';
 import ListEvent from '../component/ListEvent';
 
 const logo = require("../../images/logo.png");
@@ -52,7 +52,7 @@ class SplashScreen extends Component {
     _handleConnectionInfoChange = (isConnected) => {
         if (isConnected) {
             setTimeout(() => {
-                this.props.navigation.dispatch({type:INFO })
+                this.props.navigation.dispatch({type:MAIN })
                 console.log("open success")
             }, 3000);
         }
@@ -66,7 +66,7 @@ class SplashScreen extends Component {
 
             if (this.state.network) {
                 setTimeout(() => {
-                    this.props.navigation.dispatch({type: INFO})
+                    this.props.navigation.dispatch({type:MAIN })
                     console.log("open success")
                 }, 3000);
             }

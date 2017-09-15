@@ -25,7 +25,7 @@ class InfoScreen extends Component {
     render() {
         return (
             <Container>
-                <Header leftImage='close' rightImage='bars'
+                <Header leftImage='chevron-left' rightImage='bars'
                         onPressLeft={() => this.props.navigation.goBack()}>
                     <Header.Title title="Info" />
                 </Header>

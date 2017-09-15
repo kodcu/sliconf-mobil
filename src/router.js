@@ -7,6 +7,7 @@ import AgendaScreen from './container/AgendaScreen'
 import SpeakersScreen from './container/SpeakersScreen'
 import SearchResult from './container/SearchResult'
 import InfoScreen from './container/InfoScreen'
+import SpeakerInfoScreen from './container/SpeakerInfoScreen'
 
 export let SPLASH = 'screen/Splash'
 export let MAIN = 'screen/Main'
@@ -16,6 +17,7 @@ export let AGENDA ='screen/Agenda'
 export let SPEAKERS ='screen/Speakers'
 export let SEARCHRESULT ='screen/SearchResult'
 export let INFO ='screen/InfoScreen'
+export let SPEAKERINFO='screen/SpeakerInfo'
 
 export default StackNavigator({
     [SPLASH]: {screen: SplashScreen},
@@ -25,5 +27,6 @@ export default StackNavigator({
     [SPEAKERS]:{screen: SpeakersScreen},
     [LOGIN]:{screen: LoginScreen},
     [SEARCHRESULT]:{screen:SearchResult},
-    [INFO]:{screen:InfoScreen}
+    [INFO]:{screen:InfoScreen},
+    [SPEAKERINFO]:{screen:SpeakerInfoScreen}
 });
