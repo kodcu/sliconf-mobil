@@ -27,7 +27,6 @@ import Header from "../component/Header";
 import ListEvent from "../component/ListEvent";
 import Style from '../theme/Style'
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 const {height, width} = Dimensions.get('window');
 const logo = require("../../images/logo.png");
