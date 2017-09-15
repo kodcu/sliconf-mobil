@@ -26,6 +26,8 @@ import If from '../component/If'
 import Header from "../component/Header";
 import ListEvent from "../component/ListEvent";
 import Style from '../theme/Style'
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 const {height, width} = Dimensions.get('window');
 const logo = require("../../images/logo.png");
@@ -148,6 +150,8 @@ class MainScreen extends Component {
                                                     onChangeText={text => this.setState({value: text})}
                                                     value={value}
                                                 />
+                                                <TouchableOpacity onPress={()=> this.setState({search:false})}>
+                                                    <Text>QRCODE</Text></TouchableOpacity>
                                             </Item>
                                         </Form>
 
@@ -161,15 +165,11 @@ class MainScreen extends Component {
                         <View style={styles.container}>
                             <Header leftImage='search' rightImage='close'
                                     onPressRight={() => this._hide()}>
-                                <Header.Title title={value} />
+                                <Header.Title title="QR Code" />
                             </Header>
 
-                            <FlatList
-                                data={events}
-                                extraData={this.state}
-                                keyExtractor={this._keyExtractor}
-                                renderItem={({item}) => <ListEvent event={item} onPress={this.getEvent}/>}
-                                ListEmptyComponent={this._errorDialog}/>
+                            <QRCodeScanner onRead={(e) => {(console.log('QR code scanned!'+' '+e, e));this.loadEventList("java");this.getEvent('K123');this.props.navigation.dispatch({type: HOME});}}/>
+
                             <View/>
 
                         </View>
