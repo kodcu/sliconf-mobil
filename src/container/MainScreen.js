@@ -164,7 +164,7 @@ class MainScreen extends Component {
                                 <Header.Title title="QR Code" />
                             </Header>
 
-                            <QRCodeScanner onRead={(e) => {(console.log('QR code scanned!'+' '+e, e));this.loadEventList("java");this.getEvent('K123');this.props.navigation.dispatch({type: HOME});}}/>
+                            <QRCodeScanner onRead={(e) => {(console.log('QR code scanned!'+' '+e, e));this.getEvent('K123');}}/>
 
                             <View/>
 
