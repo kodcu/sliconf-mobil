@@ -17,7 +17,7 @@ export default class SearchResult extends Component {
             <View style={styles.container}>
                 <Header leftImage='chevron-left'
                         onPressLeft={() => this.props.navigation.dispatch({type: AGENDA})}>
-                    <Header.Title title="Arama Sonuçları" />
+                    <Header.Title title="Search Result" />
                 </Header>
                 <ScrollView>
                     {results.map((item, i) =>
