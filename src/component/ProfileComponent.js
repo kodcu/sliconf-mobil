@@ -37,7 +37,7 @@ const LoginComponent = ({login}) =>
             <Image source={require('../../images/hi.png')} resizeMode="contain"
                    style={{width: 60, height: 60, borderRadius: 30}}/>
             <View style={{justifyContent: 'center', margin: 15}}>
-                <Text style={{fontWeight: '700', fontSize: 25, color: '#444'}}>Sign in</Text>
+                <Text style={{fontWeight: '700', fontSize: 20, color: '#444'}}>Sign in</Text>
             </View>
             <Icon name='ios-log-in-outline' size={20}/>
 

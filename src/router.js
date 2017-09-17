@@ -6,7 +6,7 @@ import LoginScreen from './container/LoginScreen';
 import AgendaScreen from './container/AgendaScreen'
 import SpeakersScreen from './container/SpeakersScreen'
 import SearchResult from './container/SearchResult'
-import InfoScreen from './container/InfoScreen'
+import InfoScreen from './container/AboutScreen'
 import SpeakerInfoScreen from './container/SpeakerInfoScreen'
 import * as React from "react";
 import DrawerMenu from "./container/DrawerMenu";
