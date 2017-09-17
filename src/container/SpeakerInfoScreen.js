@@ -18,9 +18,6 @@ const mapStateToProps = (state) => ({
 
 class SpeakerInfoScreen extends Component {
 
-    static navigationOptions = {
-        header: null
-    };
 
     render() {
         const {state} = this.props.navigation;

@@ -9,11 +9,7 @@ const mapStateToProps = (state) => ({
 })
 class InfoScreen extends Component {
 
-    static navigationOptions = {
-        header: null,
-        drawerLabel: 'Info',
 
-    };
     redirectToMap() {
         Linking.canOpenURL('https://www.google.com/maps/search/?api=1&query=41.045013,28.988804').then(supported => {
             if (supported) {
