@@ -10,6 +10,7 @@ import InfoScreen from './container/InfoScreen'
 import SpeakerInfoScreen from './container/SpeakerInfoScreen'
 import * as React from "react";
 import DrawerMenu from "./container/DrawerMenu";
+import LocationScreen from "./container/LocationScreen"
 
 export let SPLASH = 'screen/Splash'
 export let MAIN = 'screen/Main'
@@ -20,6 +21,7 @@ export let SPEAKERS = 'screen/Speakers'
 export let SEARCHRESULT = 'screen/SearchResult'
 export let INFO = 'screen/InfoScreen'
 export let SPEAKERINFO = 'screen/SpeakerInfo'
+export let LOCATION ='screen/Location'
 
 const DrawerStack = DrawerNavigator({
     [HOME]: {screen: HomeScreen},
@@ -42,6 +44,7 @@ const DrawerStack = DrawerNavigator({
     [INFO]: {screen: InfoScreen},
     [LOGIN]: {screen: LoginScreen},
 
+
 }, {
     headerMode: 'none',
     drawerWidth: 250,
@@ -56,6 +59,7 @@ const DrawerStack = DrawerNavigator({
 const LoginStack = StackNavigator({
     [SPLASH]: {screen: SplashScreen},
     [MAIN]: {screen: MainScreen},
+    [LOCATION] :{screen:LocationScreen}
 },{
     headerMode: 'none',
 })
