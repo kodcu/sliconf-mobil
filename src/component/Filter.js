@@ -1,132 +1,93 @@
 import React, { Component } from 'react';
-import { Modal, Text, View ,TouchableOpacity,TextInput} from 'react-native';
-import { Container, Header, Left, Body, Right, Button, Icon, Title,Toast,Content,Card ,CardItem,ListItem,Form,Item,Input,Radio,Picker,CheckBox,Thumbnail,List} from 'native-base';
+import { Modal, Text, View ,TouchableOpacity,TextInput,ScrollView} from 'react-native';
+import { Container} from 'native-base';
 import PropTypes from 'prop-types';
+import CheckBox from 'react-native-check-box'
+
 
 export default class Filter extends Component {
 
     state = {
         eventName:'',
-        radioBeginner:false,
-        radioIntermediate:false,
-        radioAdvanced:false,
+        data:[{name:"Java Language",checked:false},
+            {name:"Server Side",checked:false},
+            {name:"Big Data",checked:false},
+            {name:"Mobile",checked:false},
+            {name:"Modern Web",checked:false},
+            {name:"Cloud,Containers &Infrastructure",checked:false}],
+        searchFilter:[]
     }
 
-    changeState(radio){
-        switch (radio){
-            case 1:
-                this.setState({
-                    radioBeginner:!this.state.radioBeginner,
-                });
-                break;
-            case 2:
-                this.setState({
-                    radioIntermediate:!this.state.radioIntermediate,
-                });
-                break;
-            case 3:
-                this.setState({
-                    radioAdvanced:!this.state.radioAdvanced,
-                });
-                break;
+
+    onClick(data) {
+        data.checked = !data.checked;
+        this.setState({data:this.state.data})
+        if(data.checked===true)
+            this.state.searchFilter.push(data.name)
+        else{
+            let array = this.state.searchFilter;
+            let index = array.indexOf(data.name)
+            array.splice(index, 1);
         }
-
     }
+
+    renderCheckBox(data,i) {
+        var leftText = data.name;
+        return (
+            <CheckBox
+                key={i}
+                style={{flex: 1, padding: 10}}
+                onClick={()=>this.onClick(data)}
+                isChecked={data.checked}
+                leftText={leftText}
+            />)
+    }
+
+
     searchData(){
         let sourceData=this.props.events;
         let myArray =[];
+        if(this.state.eventName === '') {
+            Object.values(sourceData).map((data) => {
+                data.map((data2) => {
+                    this.state.searchFilter.map((myFilter) => {
+                        if(data2.tags.find((data2)=>myFilter===data2)!==undefined && myArray.find((myArrayData)=>data2===myArrayData)===undefined)
+                            myArray.push(data2)
 
-        if(this.state.radioBeginner){
-            if(this.state.eventName === ''){
-                Object.values(sourceData).map((data) => {
-                    data.map((data2) =>{
-                        if(data2.level === 1){
-                            myArray.push(data2);
-
-                        }
-                    }
-                    )
-
-
+                    })
                 })
-            }else {
-                Object.values(sourceData).map((data) => {
-                    data.map((data2) =>{
-                        if(data2.level === 1 && data2.topic.toLowerCase().includes(this.state.eventName.toLowerCase())){
-                            myArray.push(data2);
-                        }
-                    }
-                    )
 
+
+
+
+            })
+        }else {
+            Object.values(sourceData).map((data) => {
+                data.map((data2) => {
+                    if(data2.topic.toLowerCase().includes(this.state.eventName.toLowerCase())&& this.state.searchFilter.length===0)
+                        myArray.push(data2)
+                    this.state.searchFilter.map((myFilter) => {
+                        if(data2.tags.find((data2)=>myFilter===data2)!==undefined &&
+                            data2.topic.toLowerCase().includes(this.state.eventName.toLowerCase()) &&
+                            myArray.find((myArrayData)=>data2===myArrayData)===undefined )
+
+                            myArray.push(data2)
+
+                    })
                 })
-            }
 
+            })
         }
-        if(this.state.radioIntermediate){
-            if(this.state.eventName === ''){
-                Object.values(sourceData).map((data) => {
-                    data.map((data2) =>{
-                            if(data2.level === 2){
-                                myArray.push(data2);
-
-                            }
-                        }
-                    )
-
-
-                })
-            }else {
-                Object.values(sourceData).map((data) => {
-                    data.map((data2) =>{
-                            if(data2.level === 2 && data2.topic.toLowerCase().includes(this.state.eventName.toLowerCase())){
-                                myArray.push(data2);
-                            }
-                        }
-                    )
-
-                })
-            }
-
-        }
-        if(this.state.radioAdvanced){
-            if(this.state.eventName === ''){
-                Object.values(sourceData).map((data) => {
-                    data.map((data2) =>{
-                            if(data2.level === 3){
-                                myArray.push(data2);
-
-                            }
-                        }
-                    )
-
-
-                })
-            }else {
-                Object.values(sourceData).map((data) => {
-                    data.map((data2) =>{
-                            if(data2.level === 3 && data2.topic.toLowerCase().includes(this.state.eventName.toLowerCase())){
-                                myArray.push(data2);
-                            }
-                        }
-                    )
-
-                })
-            }
-
-        }
-
-
         if(myArray.length !==0){
             this.props.onPress(myArray)
         }else
             alert('Sonuç Bulunamadı');
-
-
     }
 
 
     render() {
-        const {visible,onPress} = this.props;
+        const {visible,onPress,onClose} = this.props;
+        let DATAS =this.state.data;
         return (
             <View>
                 <Modal
@@ -151,40 +112,26 @@ export default class Filter extends Component {
                                 backgroundColor: '#f5f5f5',
                                 borderRadius: 25,
                             }}>
-                                <TextInput
-                                    placeholder="Search Events"
-                                    returnKeyType="search"
-                                    keyboardType="default"
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    onChangeText={(text) => this.setState({eventName:text})}/>
-                                <ListItem button onPress={() => this.changeState(1)}>
-                                    <Left>
-                                        <Text>Başlangıç</Text>
-                                    </Left>
-                                    <Right>
-                                        <Radio selected={this.state.radioBeginner} />
-                                    </Right>
-                                </ListItem>
-                                <ListItem button onPress={() => this.changeState(2)} >
-                                    <Left>
-                                        <Text>Orta Seviye</Text>
-                                    </Left>
-                                    <Right>
-                                        <Radio selected={this.state.radioIntermediate}/>
-                                    </Right>
-                                </ListItem>
-                                <ListItem button onPress={() => this.changeState(3)}>
-                                    <Left>
-                                        <Text>İleri Seviye</Text>
-                                    </Left>
-                                    <Right>
-                                        <Radio selected={this.state.radioAdvanced} />
-                                    </Right>
-                                </ListItem>
+                            <TextInput
+                                placeholder="Search Events"
+                                returnKeyType="search"
+                                keyboardType="default"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                onChangeText={(text) => this.setState({eventName:text})}/>
+
+                            <ScrollView>
+                            {DATAS.map((item,i) =>
+                                this.renderCheckBox(item,i)
+                            )}</ScrollView>
+
+
                                 <TouchableOpacity onPress={() => this.searchData()} style={{alignSelf:'center'}}>
                                     <Text style={{marginTop: 5,fontWeight :'bold'}}>ARA</Text>
                                 </TouchableOpacity>
+                            <TouchableOpacity onPress={this.props.onClose()} style={{alignSelf:'center'}}>
+                                <Text style={{marginTop: 5,fontWeight :'bold'}}>KAPAT</Text>
+                            </TouchableOpacity>
 
                         </View>
                     </View>
