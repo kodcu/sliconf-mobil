@@ -10,7 +10,9 @@ const mapStateToProps = (state) => ({
 class InfoScreen extends Component {
 
     static navigationOptions = {
-        header: null
+        header: null,
+        drawerLabel: 'Info',
+
     };
     redirectToMap() {
         Linking.canOpenURL('https://www.google.com/maps/search/?api=1&query=41.045013,28.988804').then(supported => {
@@ -26,7 +28,8 @@ class InfoScreen extends Component {
         return (
             <Container>
                 <Header leftImage='chevron-left' rightImage='bars'
-                        onPressLeft={() => this.props.navigation.goBack()}>
+                        onPressLeft={() => this.props.navigation.goBack()}
+                        onPressRight={() => {this.props.navigation.navigate('DrawerOpen')}}>
                     <Header.Title title="Info" />
                 </Header>
                 <Tabs initialPage={2}>

@@ -2,7 +2,7 @@ import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import AppNavigator from '../../router'
 import {MAIN,SPLASH,HOME,LOGIN,AGENDA,SPEAKERS,SEARCHRESULT,INFO,SPEAKERINFO} from '../../router'
 
-const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams(SPLASH));
+//const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams(SPLASH));
 
 const navReducer = (state, action) => {
   let nextState;

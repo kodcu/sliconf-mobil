@@ -1,4 +1,4 @@
-import {StackNavigator} from 'react-navigation';
+import {StackNavigator, DrawerNavigator, DrawerItems} from 'react-navigation';
 import SplashScreen from './container/SplashScreen';
 import MainScreen from './container/MainScreen';
 import HomeScreen from './container/HomeScreen';
@@ -8,25 +8,56 @@ import SpeakersScreen from './container/SpeakersScreen'
 import SearchResult from './container/SearchResult'
 import InfoScreen from './container/InfoScreen'
 import SpeakerInfoScreen from './container/SpeakerInfoScreen'
+import * as React from "react";
+import DrawerMenu from "./container/DrawerMenu";
 
 export let SPLASH = 'screen/Splash'
 export let MAIN = 'screen/Main'
 export let HOME = 'screen/Home'
 export let LOGIN = 'screen/Login'
-export let AGENDA ='screen/Agenda'
-export let SPEAKERS ='screen/Speakers'
-export let SEARCHRESULT ='screen/SearchResult'
-export let INFO ='screen/InfoScreen'
-export let SPEAKERINFO='screen/SpeakerInfo'
+export let AGENDA = 'screen/Agenda'
+export let SPEAKERS = 'screen/Speakers'
+export let SEARCHRESULT = 'screen/SearchResult'
+export let INFO = 'screen/InfoScreen'
+export let SPEAKERINFO = 'screen/SpeakerInfo'
 
-export default StackNavigator({
+const DrawerStack = DrawerNavigator({
+    [HOME]: {screen: HomeScreen},
+    [AGENDA]: {screen: AgendaScreen},
+    [SPEAKERS]: {
+        screen: StackNavigator({
+            [SPEAKERS]: {screen: SpeakersScreen},
+            [SPEAKERINFO]: {screen: SpeakerInfoScreen}
+        })
+    },
+    [INFO]: {screen: InfoScreen},
+    [LOGIN]: {screen: LoginScreen},
+
+}, {
+    headerMode: 'none',
+    drawerWidth: 250,
+    drawerPosition: 'right',
+    contentOptions: {
+        activeTintColor: '#fff',
+        activeBackgroundColor: '#29B673',
+    },
+    contentComponent: DrawerMenu
+})
+
+const LoginStack = StackNavigator({
     [SPLASH]: {screen: SplashScreen},
     [MAIN]: {screen: MainScreen},
-    [HOME]:{screen: HomeScreen},
-    [AGENDA]:{screen: AgendaScreen},
-    [SPEAKERS]:{screen: SpeakersScreen},
-    [LOGIN]:{screen: LoginScreen},
-    [SEARCHRESULT]:{screen:SearchResult},
-    [INFO]:{screen:InfoScreen},
-    [SPEAKERINFO]:{screen:SpeakerInfoScreen}
-});
+},{
+    headerMode: 'none',
+})
+
+// Manifest of possible screens
+const PrimaryNav = StackNavigator({
+        loginStack: {screen: LoginStack},
+        drawerStack: {screen: DrawerStack}
+    },
+    {
+        headerMode: 'none',
+    })
+
+export default PrimaryNav
