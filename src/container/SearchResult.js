@@ -5,10 +5,6 @@ import ChosenCard from '../component/ChosenCard'
 import {AGENDA} from '../router';
 export default class SearchResult extends Component {
 
-    static navigationOptions = {
-        header: null
-    };
-
     render() {
         const {state} = this.props.navigation;
         let results= state.params
@@ -16,7 +12,7 @@ export default class SearchResult extends Component {
         return (
             <View style={styles.container}>
                 <Header leftImage='chevron-left'
-                        onPressLeft={() => this.props.navigation.dispatch({type: AGENDA})}>
+                        onPressLeft={() => this.props.navigation.goBack()}>
                     <Header.Title title="Search Result" />
                 </Header>
                 <ScrollView>

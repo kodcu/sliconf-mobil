@@ -183,7 +183,7 @@ class AgendaScreen extends Component {
                     <If.Then>
                         <Filter visible={filter} onPress ={(e) => this.filterHide(e)} onClose={()=>this.closeFilter} events={MOCKDATA} />
                         <Header leftImage='chevron-left' rightImage='bars'
-                                onPressLeft={() => this.props.navigation.goBack()}
+                                onPressLeft={() => this.props.navigation.goBack(null)}
                                 onPressRight={() => {this.props.navigation.navigate('DrawerOpen')}}>
                             <Picker style={{width:140}}
                                     selectedValue={this.state.switchedDay}

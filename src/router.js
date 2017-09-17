@@ -23,12 +23,21 @@ export let SPEAKERINFO = 'screen/SpeakerInfo'
 
 const DrawerStack = DrawerNavigator({
     [HOME]: {screen: HomeScreen},
-    [AGENDA]: {screen: AgendaScreen},
+    [AGENDA]: {
+        screen: StackNavigator({
+            [AGENDA]: {screen: AgendaScreen},
+            [SEARCHRESULT]: {screen: SearchResult}
+        },{
+            headerMode: 'none',
+        })
+    },
     [SPEAKERS]: {
         screen: StackNavigator({
             [SPEAKERS]: {screen: SpeakersScreen},
             [SPEAKERINFO]: {screen: SpeakerInfoScreen}
-        })
+        },{
+    headerMode: 'none',
+})
     },
     [INFO]: {screen: InfoScreen},
     [LOGIN]: {screen: LoginScreen},

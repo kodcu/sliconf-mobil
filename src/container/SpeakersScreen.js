@@ -14,12 +14,6 @@ const mapStateToProps = (state) => ({
 
 class SpeakersScreen extends Component {
 
-    static navigationOptions = {
-        header: null,
-        drawerLabel: 'Speakers',
-    };
-
-
 
     state={
         DATAS :[
@@ -47,9 +41,7 @@ class SpeakersScreen extends Component {
     speakersList(sp) {
         let changedSpeakersList = [];
         let myMap = new Map();
-        console.log(sp)
         sp.forEach(function (element)  {
-            console.log(element)
             let char = element.name.charAt(0).toUpperCase()
             myMap.get(char) ? array = myMap.get(char) : array = []
             array.push(element)
@@ -66,7 +58,6 @@ class SpeakersScreen extends Component {
     _keyExtractor = (item, index) => index;
 
     renderRow (info) {
-        console.log(info.index)
         return <TouchableOpacity onPress={() => this.props.navigation.navigate(SPEAKERINFO,info)} ><View  style={styles.card} >
             <Thumbnail source={require('../../images/hi.png')} large style={{marginBottom:15}}/>
             <Text style={{fontSize:15,color:'#000'}}>{info.item.name}</Text>

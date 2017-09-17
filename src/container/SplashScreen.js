@@ -48,7 +48,7 @@ class SplashScreen extends Component {
     _handleConnectionInfoChange = (isConnected) => {
         if (isConnected) {
             setTimeout(() => {
-                this.props.navigation.dispatch({type:AGENDA })
+                this.props.navigation.dispatch({type:MAIN })
                 console.log("open success")
             }, 3000);
         }
@@ -62,7 +62,7 @@ class SplashScreen extends Component {
 
             if (this.state.network) {
                 setTimeout(() => {
-                    this.props.navigation.dispatch({type:AGENDA })
+                    this.props.navigation.dispatch({type:MAIN })
                     console.log("open success")
                 }, 3000);
             }
