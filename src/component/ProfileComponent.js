@@ -8,7 +8,7 @@ const ProfileComponent = ({profileUrl, username, email,logout}) =>
         <View style={{flex:1,justifyContent:'space-between',flexDirection: 'row'}}>
             <TouchableOpacity style={{flexDirection: 'row', padding: 5,flex:0.8}} onPress={() => {}}>
                 <Image source={{uri: profileUrl}} resizeMode="contain"
-                       style={{margin: 5, width: 60, height: 60, borderRadius: 30}}/>
+                       style={{margin: 5, width: 60, height: 60, borderRadius: 90}}/>
                 <View style={{justifyContent: 'center',flex:1}}>
                     <Text style={{fontWeight: '500', fontSize: 15, color: '#444'}}>{username}</Text>
                     <Text style={{fontWeight: '200', color: '#999',fontSize:10}}>{email}</Text>
@@ -35,7 +35,7 @@ const LoginComponent = ({login}) =>
             height: 80
         }} onPress={login}>
             <Image source={require('../../images/hi.png')} resizeMode="contain"
-                   style={{width: 60, height: 60, borderRadius: 30}}/>
+                   style={{width: 60, height: 60, borderRadius: 90}}/>
             <View style={{justifyContent: 'center', margin: 15}}>
                 <Text style={{fontWeight: '700', fontSize: 20, color: '#444'}}>Sign in</Text>
             </View>

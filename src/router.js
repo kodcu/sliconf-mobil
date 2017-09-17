@@ -11,6 +11,7 @@ import SpeakerInfoScreen from './container/SpeakerInfoScreen'
 import * as React from "react";
 import DrawerMenu from "./container/DrawerMenu";
 import LocationScreen from "./container/LocationScreen"
+import FloorPlanScreen from "./container/FloorPlanScreen"
 
 export let SPLASH = 'screen/Splash'
 export let MAIN = 'screen/Main'
@@ -22,6 +23,7 @@ export let SEARCHRESULT = 'screen/SearchResult'
 export let INFO = 'screen/InfoScreen'
 export let SPEAKERINFO = 'screen/SpeakerInfo'
 export let LOCATION ='screen/Location'
+export let FLOOR ='screen/Floor'
 
 const DrawerStack = DrawerNavigator({
     [HOME]: {screen: HomeScreen},
@@ -43,7 +45,8 @@ const DrawerStack = DrawerNavigator({
     },
     [INFO]: {screen: InfoScreen},
     [LOGIN]: {screen: LoginScreen},
-    [LOCATION] :{screen:LocationScreen}
+    [LOCATION] :{screen:LocationScreen},
+    [FLOOR] :{screen:FloorPlanScreen}
 
 
 }, {

@@ -17,6 +17,7 @@
     "react-native-maps": "^0.16.4",
     "react-native-qrcode-scanner": "0.0.17",
     "react-native-responsive-dimensions": "^1.0.1",
+    "react-native-transformable-image": "^0.0.18",
     "react-native-vector-icons": "^4.3.0",
     "react-navigation": "^1.0.0-beta.11",
     "react-redux": "^5.0.5",
@@ -34,6 +35,8 @@
     "preset": "react-native"
   },
   "rnpm": {
-    "assets": ["./assets/fonts"]
+    "assets": [
+      "./assets/fonts"
+    ]
   }
 }
