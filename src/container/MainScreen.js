@@ -30,6 +30,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 const {height, width} = Dimensions.get('window');
 const logo = require("../../images/logo.png");
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
 const mapStateToProps = (state) => ({
@@ -149,7 +150,7 @@ class MainScreen extends Component {
 
 
                                         <TouchableOpacity style={{marginTop:20,alignItems:'center'}} onPress={()=>{this.setState({search:false})}}>
-                                            <Image style={{width:50,height:50}} source={require('../../images/qrcode.png')}/>
+                                            <Icon name ='qrcode-scan' size={50} color={'#414042'}/>
                                         </TouchableOpacity>
 
                                     </View>
