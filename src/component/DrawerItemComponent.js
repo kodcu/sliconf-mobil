@@ -8,7 +8,7 @@ import {
     StyleSheet
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-import {SPEAKERS} from "../router";
+import Icon2 from 'react-native-vector-icons/FontAwesome'
 
 const DrawerItem = ({navigation, icon, name, screenName, color, onPress}) =>
 
@@ -19,8 +19,9 @@ const DrawerItem = ({navigation, icon, name, screenName, color, onPress}) =>
             onPress();
         }}
     >
-        <Icon name={icon} size={25} color={color} style={{margin: 15}}/>
+        {icon === 'building-o' ? <Icon2 name={icon} size={25} color={color} style={{margin: 15}}/> : <Icon name={icon} size={25} color={color} style={{margin: 15}}/>}
         <Text style={{
+            fontFamily: "Montserrat-Regular",
             fontSize: 15,
             fontWeight: '300',
             margin: 15,

@@ -11,7 +11,7 @@ import {Button,} from 'native-base'
 import Icon from 'react-native-vector-icons/Ionicons'
 import ProfileComponent from '../component/ProfileComponent'
 import DrawerItem from '../component/DrawerItemComponent'
-import {AGENDA, HOME, INFO, SPEAKERS,LOCATION} from "../router";
+import {AGENDA, HOME, INFO, SPEAKERS, LOCATION, FLOOR} from "../router";
 import If from "../component/If";
 
 const userData = {
@@ -42,7 +42,8 @@ class DrawerMenu extends Component {
             {icon: "ios-calendar-outline", name: "Schedule", screenName: AGENDA, key: 2},
             {icon: "ios-microphone-outline", name: "Speakers", screenName: SPEAKERS, key: 3},
             {icon: "ios-compass-outline", name: "Location", screenName: LOCATION, key: 4},
-            {icon: "ios-information-circle-outline", name: "Info", screenName: INFO, key: 5},
+            {icon: "building-o", name: "Floor Plan", screenName: FLOOR, key: 5},
+            {icon: "ios-information-circle-outline", name: "Info", screenName: INFO, key: 6},
 
         ]
 
