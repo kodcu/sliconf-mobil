@@ -40,7 +40,6 @@ const {width} = Dimensions.get('window');
 const styles = StyleSheet.create({
     container: {},
     header: {
-
         width: width,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -48,8 +47,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     HeaderText: {
+        fontFamily: 'Montserrat-Medium',
         fontSize: 18,
-        fontWeight: 'bold',
         color: '#666'
     }
 });

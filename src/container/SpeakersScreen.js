@@ -17,24 +17,14 @@ class SpeakersScreen extends Component {
 
     state={
         DATAS :[
-            {name: "Anıl Coşar",workingat: "Gömsis",about: "dfdfdf",topic: ["A106","A107"]},
-            {name: "Apeaker 1",workingat: "Company 1",about: "dfdfdf",topic: ["A106","A107"]},
-            {name: "Bpeaker 2",workingat: "Company 1",about: "dfdfdf",topic: ["A106","A107"]},
-            {name: "Cpeaker 3",workingat: "Company 1",about: "dfdfdf",topic: ["A106","A107"]},
-            {name: "Dpeaker 4",workingat: "Company 1",about: "dfdfdf",topic: ["A106","A107"]},
-            {name: "Epeaker 5",workingat: "Company 1",about: "dfdfdf",topic: ["A106","A107"]},
-            {name: "Fpeaker 6",workingat: "Company 1",about: "dfdfdf",topic: ["A106","A107"]},
-            {name: "Gpeaker 7",workingat: "Company 1",about: "dfdfdf",topic: ["A106","A107"]},
-            {name: "Göksel Pirnal",workingat: "Big Apps",about: "dfdfdf",topic: ["A103"]},
-            {name: "Hakan Özler",workingat: "Kodsis",about: "dfdfdf",topic: ["A101"]},
-            {name: "Hpeaker 8",workingat: "Company 1",about: "dfdfdf",topic: ["A106","A107"]},
-            {name: "Hüseyin Akdoğan",workingat: "Datasist",about: "dfdfdf",topic: ["A102"]},
-            {name: "Lemi Orhan",workingat: "iyzico",about: "dfdfdf",topic: ["A100"]},
-            {name: "Müslüm Sezgin",workingat: "Gömsis",about: "dfdfdf",topic: ["A105"]},
-            {name: "Talip Teyfur",workingat: "Kodsis",about: "dfdfdf",topic: ["A104"]},
-            {name: "Talip Teyfur2",workingat: "Kodsis",about: "dfdfdf",topic: ["A104"]},
-            {name: "Talip Teyfur3",workingat: "Kodsis",about: "dfdfdf",topic: ["A104"]},
-        ],
+            {name: "AMahdy Abdelaziz",workingat: "Vaadin",about: "dfdfdf",topic: ["A105"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/01/amadhy-abdelaziz-150x150.jpg'},
+            {name: "Arun Gupta",workingat: "Amazon Web Services",about: "dfdfdf",topic: ["A100"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/07/arun-gupta-150x150.png'},
+            {name: "Frédéric Hubin",workingat: "ING Bank",about: "dfdfdf",topic: ["A101"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/07/photo_400x400-150x150.jpg'},
+            {name: "Mahmoud Abdelghany",workingat: "Blue4IT",about: "dfdfdf",topic: ["A106","A107"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/08/Mahmoud-Abdelghany-150x150.jpg'},
+            {name: "Marcin Szymaniuk",workingat: "TantusData",about: "dfdfdf",topic: ["A102"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/08/Marcin-lowres-400x400_1-150x150.jpg'},
+            {name: "Nick Tune",workingat: "Salesforce",about: "dfdfdf",topic: ["A103"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/07/NickTune_pcn443-150x150.png'},
+            {name: "Venkat Subramaniam",workingat: "Agile Developer, Inc.",about: "dfdfdf",topic: ["A106","A107"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/07/VenkatSubramaniam-150x150.jpg'},
+                   ],
         weye:[],
         selected:0
     }
@@ -59,7 +49,7 @@ class SpeakersScreen extends Component {
 
     renderRow (info) {
         return <TouchableOpacity onPress={() => this.props.navigation.navigate(SPEAKERINFO,info)} ><View  style={styles.card} >
-            <Thumbnail source={require('../../images/hi.png')} large style={{marginBottom:15}}/>
+            <Thumbnail source={{uri:info.item.profilePicture}} large style={{marginBottom:15}}/>
             <Text style={{fontSize:15,color:'#000'}}>{info.item.name}</Text>
             <Text style={{fontSize:12,color:'#BCBEC0'}}>{info.item.workingat}</Text>
         </View></TouchableOpacity>

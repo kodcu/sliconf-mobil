@@ -43,6 +43,7 @@ const DrawerStack = DrawerNavigator({
     },
     [INFO]: {screen: InfoScreen},
     [LOGIN]: {screen: LoginScreen},
+    [LOCATION] :{screen:LocationScreen}
 
 
 }, {
@@ -59,7 +60,7 @@ const DrawerStack = DrawerNavigator({
 const LoginStack = StackNavigator({
     [SPLASH]: {screen: SplashScreen},
     [MAIN]: {screen: MainScreen},
-    [LOCATION] :{screen:LocationScreen}
+
 },{
     headerMode: 'none',
 })

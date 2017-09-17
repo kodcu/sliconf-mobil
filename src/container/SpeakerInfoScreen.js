@@ -7,9 +7,9 @@ import Header from "../component/Header";
 import {connect} from 'react-redux'
 
 let DATAS = [
-    {speaker: 'Kasia Mrowca', room: 'Oda 1', level:1,topic:'React Nedir ?',time:'13:00',posters: require('../../images/logo.png'), date:'12-05-2018'},
-    {speaker: 'Kasia Mrowca', room: 'Oda 0',level:2, time:'14:00',topic:'Native Nedir ?',posters: require('../../images/logo.png'), date:'13-05-2018'},
-    {speaker: 'Kasia Mrowca', room: 'Oda 2',level:3, time:'17:00',topic:'Unicorns Nedir ?',posters: require('../../images/logo.png'), date:'14-05-2018'}
+    {speaker: '', room: 'Oda 1', level:1,topic:'React Nedir ?',time:'13:00',posters: require('../../images/logo.png'), date:'12-05-2018'},
+    {speaker: '', room: 'Oda 0',level:2, time:'14:00',topic:'Native Nedir ?',posters: require('../../images/logo.png'), date:'13-05-2018'},
+    {speaker: '', room: 'Oda 2',level:3, time:'17:00',topic:'Unicorns Nedir ?',posters: require('../../images/logo.png'), date:'14-05-2018'}
 ]
 
 const mapStateToProps = (state) => ({
@@ -29,7 +29,7 @@ class SpeakerInfoScreen extends Component {
                     <Header.Title title="Speaker Info" />
                 </Header>
                 <View  style={{alignItems:'center'}}>
-                    <Image source={{uri: 'https://javaday.istanbul/wp-content/uploads/2015/08/kasia-mrowca2-150x150.jpg'}} style={{borderRadius:90,width:120,height:120,margin:10}}/>
+                    <Image source={{uri: speaker.profilePicture}} style={{borderRadius:90,width:120,height:120,margin:10}}/>
                     <Text style={{fontSize:18,color:'#414042'}}>{speaker.name}</Text>
                     <Text style={{fontSize:12}}>{speaker.workingat}</Text>
                     <View style={{flexDirection:'row'}}>

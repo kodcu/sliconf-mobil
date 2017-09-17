@@ -102,7 +102,9 @@ const styles = StyleSheet.create({
     },
     cardLine:{
         borderWidth:1,
-        margin:10
+        margin:10,
+        marginTop:0,
+        marginBottom:0
     },
     topic: {
         fontSize:10,

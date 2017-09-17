@@ -1,11 +1,30 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TouchableOpacity,Image } from 'react-native';
+import { View, Text, StyleSheet,TouchableOpacity,Image,Linking } from 'react-native';
 import { Container} from 'native-base';
 import Header from "../component/Header";
 import MapView,{PROVIDER_GOOGLE} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Entypo'
 
+const s ='https://www.google.com/maps/search/?api=1&query=41.045013,28.988804';
 export default class LocationScreen extends Component {
+
+    redirectToMap() {
+        Linking.canOpenURL('https://www.google.com/maps/dir/?api=1&destination=41.045013,28.988804').then(supported => {
+            if (supported) {
+                Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=41.045013,28.988804');
+            } else {
+                Linking.canOpenURL('http://maps.apple.com/?ll=41.045013,28.988804').then(supported => {
+                    if (supported) {
+                        Linking.openURL('http://maps.apple.com/?ll=41.045013,28.988804');
+                    } else {
+                        alert('Unable to find maps application')
+                    }
+                }).catch(err => console.error('An error occurred', err));
+            }
+        }).catch(err => console.error('An error occurred', err));
+    }
+
+
     render() {
         return (
             <Container style={{backgroundColor:'#fff'}}>
@@ -31,18 +50,18 @@ export default class LocationScreen extends Component {
 
                     </MapView>
                 </View>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={() => this.redirectToMap()}>
                     <View style={styles.getDirections}>
                         <View style={styles.addressContainer}>
                             <Text style={styles.venueName}>
-                                Javaday Istanbul 2018 G
+                                Javaday Istanbul 2018
                             </Text>
                             <Text style={styles.venueAddress}>
                                 Hilton Kongre Ve Fuar Salonu, Hilton Hotel 50 N, 34367 Şişli / Istanbul
                             </Text>
                         </View>
                         <View style={styles.directionsIcon}>
-                            <Icon name='address' size={35}/>
+                            <Icon name='address' size={35} style={{color:'#29B673'}}/>
                             <Text style={styles.directionsLabel}>Directions</Text>
                         </View>
                     </View>
@@ -57,15 +76,19 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent: 'flex-start',
         alignItems: 'center',
+        borderTopWidth: 1,
+        borderTopColor: '#DEDEDE',
+        borderBottomWidth: 1,
+        borderBottomColor: '#DEDEDE'
     },
     map: {
         width: '100%',
         flex:1,
-        zIndex: 2
+        zIndex: 2,
     },
     venueAddress: {
-        fontFamily: 'vincHand',
-        fontSize: 13,
+        fontFamily: 'Montserrat-Light',
+        fontSize: 10,
         lineHeight: 18,
         letterSpacing: 0,
     },
@@ -74,9 +97,10 @@ const styles = StyleSheet.create({
         flex: 1
     },
     directionsLabel: {
-        fontSize: 11,
+        fontFamily: 'Montserrat-Medium',
+        fontSize: 10,
         letterSpacing: 0,
-
+        color:'#29B673'
     },
     getDirections: {
         flexDirection: 'row',
@@ -87,13 +111,13 @@ const styles = StyleSheet.create({
         borderBottomColor: '#DEDEDE'
     },
     venueName: {
-        fontSize: 17,
+        fontSize: 15,
         letterSpacing: 0,
-        fontWeight:'bold',
-        fontFamily: 'Montserrat-Regular'
+        fontFamily: 'Montserrat-SemiBold',
+        color:'#29B673'
     },
     addressContainer: {
         flex: 4,
-        margin:5
+        marginLeft:5
     },
 });

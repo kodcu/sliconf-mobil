@@ -11,13 +11,13 @@ import {Button,} from 'native-base'
 import Icon from 'react-native-vector-icons/Ionicons'
 import ProfileComponent from '../component/ProfileComponent'
 import DrawerItem from '../component/DrawerItemComponent'
-import {AGENDA, HOME, INFO, SPEAKERS} from "../router";
+import {AGENDA, HOME, INFO, SPEAKERS,LOCATION} from "../router";
 import If from "../component/If";
 
 const userData = {
     profileUrl: 'https://s-media-cache-ak0.pinimg.com/736x/a3/e3/d6/a3e3d67e30105ca1688565e484370ab8--social-networks-harry-potter.jpg',
-    username: 'Mahmut Tancer Karassss',
-    email: 'anil@foto.co'
+    username: 'Nursel Cıbır',
+    email: 'nurselcibir@gmail.com'
 }
 
 class DrawerMenu extends Component {
@@ -39,9 +39,11 @@ class DrawerMenu extends Component {
 
         const menuData = [
             {icon: "ios-home-outline", name: "Home", screenName: HOME, key: 1},
-            {icon: "ios-home-outline", name: "Schedule", screenName: AGENDA, key: 2},
-            {icon: "ios-home-outline", name: "Speakers", screenName: SPEAKERS, key: 3},
-            {icon: "ios-home-outline", name: "Info", screenName: INFO, key: 4},
+            {icon: "ios-calendar-outline", name: "Schedule", screenName: AGENDA, key: 2},
+            {icon: "ios-microphone-outline", name: "Speakers", screenName: SPEAKERS, key: 3},
+            {icon: "ios-compass-outline", name: "Location", screenName: LOCATION, key: 4},
+            {icon: "ios-information-circle-outline", name: "Info", screenName: INFO, key: 5},
+
         ]
 
 

@@ -10,8 +10,8 @@ const ProfileComponent = ({profileUrl, username, email,logout}) =>
                 <Image source={{uri: profileUrl}} resizeMode="contain"
                        style={{margin: 5, width: 60, height: 60, borderRadius: 30}}/>
                 <View style={{justifyContent: 'center',flex:1}}>
-                    <Text style={{fontWeight: '500', fontSize: 20, color: '#444'}}>{username}</Text>
-                    <Text style={{fontWeight: '200', color: '#999'}}>{email}</Text>
+                    <Text style={{fontWeight: '500', fontSize: 15, color: '#444'}}>{username}</Text>
+                    <Text style={{fontWeight: '200', color: '#999',fontSize:10}}>{email}</Text>
                 </View>
             </TouchableOpacity>
             <View style={{flex: 0.2, justifyContent: 'center', alignItems: 'center'}}>
