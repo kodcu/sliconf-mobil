@@ -24,7 +24,7 @@ class SpeakerInfoScreen extends Component {
         let speaker= state.params.item
         return (
             <Container style={{backgroundColor:'#fff'}}>
-                <Header leftImage='chevron-left' rightImage='bars'
+                <Header leftImage='chevron-left'
                         onPressLeft={() => this.props.navigation.goBack()}>
                     <Header.Title title="Speaker Info" />
                 </Header>
