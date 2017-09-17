@@ -28,21 +28,21 @@ import {connect} from 'react-redux'
 import {SEARCHRESULT} from '../router';
 let MOCKDATA = {
     "04-05-2018":[
-        {key: "A100",time: "13:00",topic: "Fuse Integrasyonu",topicDetail: "Ayrıntı", level: 1,room: "Oda 2", speaker: "Lemi Orhan", star: 4.5,date: "04-05-2018" },
-        {key: "A101",time: "14:00",topic: "Docker nedir ?",topicDetail: "Ayrıntı", level: 2,room: "Oda 1", speaker: "Hakan Özler", star: 4.5,date: "04-05-2018" },
-        {key: "A108",time: "14:45",topic: "Coffe break",topicDetail: "", level: 0,room: "Oda 0", speaker: "", star: 4.5,date: "04-05-2018" },
-        {key: "A102",time: "15:00",topic: "Spring data kullanımı",topicDetail: "Ayrıntı", level: 3,room: "Oda 3", speaker: "Hüseyin Akdoğan", star: 4.5,date: "04-05-2018" },
-        {key: "A103",time: "16:00",topic: "Database Yönetimi",topicDetail: "Ayrıntı", level: 3,room: "Oda 0", speaker: "Anıl Coşar", star: 4.5,date: "04-05-2018" },
+        {key: "A100",time: "13:00",topic: "Fuse Integrasyonu",topicDetail: "Ayrıntı", level: 1,room: "Oda 2", speaker: "Lemi Orhan", star: 4.5,date: "04-05-2018",tags:[] },
+        {key: "A101",time: "14:00",topic: "Docker nedir ?",topicDetail: "Ayrıntı", level: 2,room: "Oda 1", speaker: "Hakan Özler", star: 4.5,date: "04-05-2018",tags:["Server Side","Java Language"] },
+        {key: "A108",time: "14:45",topic: "Coffe break",topicDetail: "", level: 0,room: "Oda 0", speaker: "", star: 4.5,date: "04-05-2018",tags:[] },
+        {key: "A102",time: "15:00",topic: "Spring data kullanımı",topicDetail: "Ayrıntı", level: 3,room: "Oda 3", speaker: "Hüseyin Akdoğan", star: 4.5,date: "04-05-2018",tags:["Big Data","Java Language"] },
+        {key: "A103",time: "16:00",topic: "Database Yönetimi",topicDetail: "Ayrıntı", level: 3,room: "Oda 0", speaker: "Anıl Coşar", star: 4.5,date: "04-05-2018",tags:["Big Data"]},
 
     ],
     "05-05-2018":[
-        {key: "A104",time: "13:00",topic: "React vs Angular",topicDetail: "Ayrıntı", level: 3,room: "Oda 1", speaker: "Göksel Pirnal", star: 4.5,date: "05-05-2018" },
-        {key: "A105",time: "14:00",topic: "Jenkins ile planlı çalışmak",topicDetail: "Ayrıntı", level: 2,room: "Oda 1", speaker: "Talip Teyfur", star: 4.5,date: "05-05-2018" },
-        {key: "A106",time: "15:00",topic: "react-native ile cross-platform yazmak",topicDetail: "Ayrıntı", level: 1,room: "Oda 3", speaker: "Müslüm Sezgin", star: 4.5,date: "05-05-2018" },
+        {key: "A104",time: "13:00",topic: "React vs Angular",topicDetail: "Ayrıntı", level: 3,room: "Oda 1", speaker: "Göksel Pirnal", star: 4.5,date: "05-05-2018",tags:["Modern Web"] },
+        {key: "A105",time: "14:00",topic: "Jenkins ile planlı çalışmak",topicDetail: "Ayrıntı", level: 2,room: "Oda 1", speaker: "Talip Teyfur", star: 4.5,date: "05-05-2018",tags:["Server Side"] },
+        {key: "A106",time: "15:00",topic: "react-native ile cross-platform yazmak",topicDetail: "Ayrıntı", level: 1,room: "Oda 3", speaker: "Müslüm Sezgin", star: 4.5,date: "05-05-2018",tags:["Mobile"]  },
 
     ],
     "06-05-2018":[
-        {key: "A107",time: "12:00",topic: "Java 9 Modularity",topicDetail: "Ayrıntı", level: 1,room: "Oda 1", speaker: "Altuğ Bilgin Altıntaş", star: 4.5,date: "06-05-2018" },
+        {key: "A107",time: "12:00",topic: "Java 9 Modularity",topicDetail: "Ayrıntı", level: 1,room: "Oda 1", speaker: "Altuğ Bilgin Altıntaş", star: 4.5,date: "06-05-2018",tags:["Java Language"] },
     ]
 }
 
@@ -60,7 +60,8 @@ class AgendaScreen extends Component {
         isClicked: true,
         data:[],
         rooms:[],
-        filter:false
+        filter:false,
+
     }
 
     filterHide=(searchResults)=>{
@@ -68,6 +69,11 @@ class AgendaScreen extends Component {
         console.log(searchResults)
         this.setState({filter:false})
         this.props.navigation.navigate(SEARCHRESULT,searchResults)
+    }
+
+    closeFilter=()=>{
+        console.log("kapandi")
+        this.setState({filter:false})
     }
 
 
@@ -175,7 +181,7 @@ class AgendaScreen extends Component {
             <Container style={{ backgroundColor: '#fff' }}>
                 <If con={isClicked}>
                     <If.Then>
-                        <Filter visible={filter} onPress ={(e) => this.filterHide(e)} events={MOCKDATA}/>
+                        <Filter visible={filter} onPress ={(e) => this.filterHide(e)} onClose={()=>this.closeFilter} events={MOCKDATA} />
                         <Header leftImage='chevron-left' rightImage='bars'
                                 onPressLeft={() => this.props.navigation.goBack()}
                                 onPressRight={() => {this.props.navigation.navigate('DrawerOpen')}}>
@@ -261,10 +267,10 @@ class AgendaScreen extends Component {
                 <Footer >
                     <FooterTab style={{ backgroundColor: '#fff' }}>
                         <Button vertical onPress={() => { this.setState({ isClicked: true }) }}>
-                            <Text>Hepsi</Text>
+                            <Text style={{color:this.state.isClicked ?'#29B673':'#414042'}}>Hepsi</Text>
                         </Button>
                         <Button vertical onPress={() => { this.setState({ isClicked: false }) }}>
-                            <Text>Seçimlerim</Text>
+                            <Text style={{color:this.state.isClicked?'#414042':'#29B673'}}>Seçimlerim</Text>
                         </Button>
                     </FooterTab>
                 </Footer>

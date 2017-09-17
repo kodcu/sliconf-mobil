@@ -66,6 +66,7 @@ class MainScreen extends Component {
         if (!error && !loading)
             this.getEvent("K123")
 
+
     }
 
     getEvent = async (code) => {
