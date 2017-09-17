@@ -267,10 +267,10 @@ class AgendaScreen extends Component {
                 <Footer >
                     <FooterTab style={{ backgroundColor: '#fff' }}>
                         <Button vertical onPress={() => { this.setState({ isClicked: true }) }}>
-                            <Text style={{color:this.state.isClicked ?'#29B673':'#414042'}}>Hepsi</Text>
+                            <Text style={{color:this.state.isClicked ?'#29B673':'#414042'}}>All</Text>
                         </Button>
                         <Button vertical onPress={() => { this.setState({ isClicked: false }) }}>
-                            <Text style={{color:this.state.isClicked?'#414042':'#29B673'}}>Seçimlerim</Text>
+                            <Text style={{color:this.state.isClicked?'#414042':'#29B673'}}>Chosen</Text>
                         </Button>
                     </FooterTab>
                 </Footer>
