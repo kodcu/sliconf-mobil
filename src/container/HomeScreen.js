@@ -14,11 +14,8 @@ import {Container} from 'native-base';
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import Style from '../theme/Style'
-import {AGENDA,SPEAKERS,INFO} from '../router';
-
-
-
-
+import {AGENDA,SPEAKERS,INFO,LOCATION} from '../router';
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
@@ -38,8 +35,8 @@ class HomeScreen extends Component {
                     <Header.Title title="Home" />
             </Header>
 
-                <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-around',}}>
-                    <View>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-between',}}>
+                    <View style={{marginTop:30}}>
                         <Text style={styles.title}>Welcome to</Text>
                         <Text style={styles.title}>{this.props.event.name}</Text>
                     </View>
@@ -48,21 +45,21 @@ class HomeScreen extends Component {
 
                         <View style={{flexDirection: 'row',}}>
                             <TouchableOpacity onPress={() => this.props.navigation.dispatch({type: AGENDA})} style={[styles.leftboxSmall, {backgroundColor: '#E06668'}]}>
-                                <Image source={require('../../images/Agenda.png')} style={{width: 50, height: 50}}/>
-                                <Text style={styles.buttonText}>Agenda</Text>
+                                <Icon name='ios-calendar-outline' size={50} color='#fff'/>
+                                <Text style={styles.buttonText}>Schedule</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => this.props.navigation.dispatch({type: SPEAKERS})} style={[styles.rightboxSmall, {backgroundColor: '#F69274'}]}>
-                                <Image source={require('../../images/Speakers.png')} style={{width: 50, height: 50}}/>
+                                <Icon name='ios-microphone-outline' size={50} color='#fff'/>
                                 <Text style={styles.buttonText}>Speakers</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{flexDirection: 'row'}}>
-                            <TouchableOpacity style={[styles.leftboxSmall, {backgroundColor: '#9E9DC7'}]}>
-                                <Image source={require('../../images/Sponsors.png')} style={{width: 50, height: 50}}/>
-                                <Text style={styles.buttonText}>Sponsors</Text>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate(LOCATION)} style={[styles.leftboxSmall, {backgroundColor: '#9E9DC7'}]}>
+                                <Icon name='ios-compass-outline' size={50} color='#fff'/>
+                                <Text style={styles.buttonText}>Location</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => this.props.navigation.dispatch({type: INFO})} style={[styles.rightboxSmall, {backgroundColor: '#75C7CA'}]}>
-                                <Image source={require('../../images/Search.png')} style={{width: 50, height: 50}}/>
+                                <Icon name='ios-information-circle-outline' size={50} color='#fff'/>
                                 <Text style={styles.buttonText}>Info</Text>
                             </TouchableOpacity>
                         </View>
@@ -87,6 +84,7 @@ const styles = StyleSheet.create({
         marginRight: Style.DEVICE_WIDTH * 0.02,
         justifyContent: 'center',
         alignItems: 'center',
+        borderRadius:5
     },
     rightboxSmall: {
         width: Style.DEVICE_WIDTH * 0.44,
@@ -95,6 +93,7 @@ const styles = StyleSheet.create({
         marginLeft: Style.DEVICE_WIDTH * 0.02,
         justifyContent: 'center',
         alignItems: 'center',
+        borderRadius:5
     },
     buttonText: {
         fontFamily: "Montserrat-Regular",
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     title: {
-        fontFamily: "Montserrat-Regular",
+        fontFamily: "Montserrat-SemiBold",
         lineHeight: Style.FONT_SIZE_TITLE_LARGE * 1.5,
         fontSize: Style.FONT_SIZE_TITLE_LARGE,
         fontWeight: 'bold',

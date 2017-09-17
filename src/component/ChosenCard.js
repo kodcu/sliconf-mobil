@@ -55,7 +55,7 @@ export default class ChosenCard extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor:'#fff',
-        borderRadius:15,
+        borderRadius:8,
         flexDirection:'row',
         margin:5,
         borderColor:'#F1F2F2',
@@ -67,7 +67,9 @@ const styles = StyleSheet.create({
     },
     cardLine:{
         borderWidth:1,
-        margin:10
+        margin:10,
+        marginTop:0,
+        marginBottom:0
     },
     topic: {
         fontSize:10,textAlign:'left',textAlignVertical:'center',color:'#000000',margin:5
