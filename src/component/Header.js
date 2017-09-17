@@ -14,7 +14,7 @@ export class Header extends Component {
                       noShadow={true} style={{backgroundColor: '#fff'}}>
                 <View style={[styles.header, this.props.headerStyle]}>
                     <Button style={{backgroundColor: '#fff', shadowColor: '#fff', elevation: 0}} onPress={onPressLeft}>
-                        <Icon name={leftImage}/>
+                        <Icon name={leftImage} size={15}/>
                     </Button>
 
                     <View>
@@ -22,7 +22,7 @@ export class Header extends Component {
                     </View>
 
                     <Button style={{backgroundColor: '#fff', shadowColor: '#fff', elevation: 0}} onPress={onPressRight}>
-                        <Icon name={rightImage}/>
+                        <Icon name={rightImage} size={15}/>
                     </Button>
                 </View>
             </NBHeader>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     HeaderText: {
-        fontSize: 15,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#666'
     }

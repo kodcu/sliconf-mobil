@@ -15,7 +15,8 @@ const mapStateToProps = (state) => ({
 class SpeakersScreen extends Component {
 
     static navigationOptions = {
-        header: null
+        header: null,
+        drawerLabel: 'Speakers',
     };
 
 
@@ -114,7 +115,8 @@ class SpeakersScreen extends Component {
         return (
             <Container style={{backgroundColor:'#fff'}}>
                 <Header leftImage='chevron-left' rightImage='bars'
-                        onPressLeft={() => this.props.navigation.goBack()} >
+                        onPressLeft={() => this.props.navigation.goBack(null)}
+                        onPressRight={() => {this.props.navigation.navigate('DrawerOpen')}}>
                             <Header.Title title="Speakers" />
                 </Header>
                 <View style={{flexDirection:'row',flex:1}}>

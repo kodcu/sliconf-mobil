@@ -18,6 +18,8 @@ import {AGENDA,SPEAKERS,INFO} from '../router';
 
 
 
+
+
 const mapStateToProps = (state) => ({
     event: state.event.event,
 
@@ -25,17 +27,14 @@ const mapStateToProps = (state) => ({
 
 class HomeScreen extends Component {
 
-    static navigationOptions = {
-        header: null
-    };
-
     render() {
         const {event} = this.props;
         return (
             <Container style={{backgroundColor: '#ffffff'}}>
 
                 <Header leftImage='close' rightImage='bars'
-                        onPressLeft={() => this.props.navigation.goBack()}>
+                        onPressLeft={() => this.props.navigation.goBack(null)}
+                        onPressRight={() => {this.props.navigation.navigate('DrawerOpen')}}>
                     <Header.Title title="Home" />
             </Header>
 
@@ -119,5 +118,7 @@ const styles = StyleSheet.create({
 
 
 })
+
+
 
 export default connect(mapStateToProps)(HomeScreen)

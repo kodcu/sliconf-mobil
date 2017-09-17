@@ -9,7 +9,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 export default class LoginScreen extends Component{
 
     static navigationOptions = {
-        header: null
+        header: null,
+        drawerLabel: 'Login',
     };
 
     render() {

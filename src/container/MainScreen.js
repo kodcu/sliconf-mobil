@@ -66,7 +66,6 @@ class MainScreen extends Component {
         if (!error && !loading)
             this.getEvent("K123")
 
-
     }
 
     getEvent = async (code) => {
@@ -77,7 +76,8 @@ class MainScreen extends Component {
             alert(errorMessage);
 
         if (!error && !loading) {
-            this.props.navigation.dispatch({type: HOME});
+            //this.props.navigation.dispatch({type: 'drawerStack'});
+            this.props.navigation.navigate('drawerStack')
         }
     }
 
@@ -164,7 +164,7 @@ class MainScreen extends Component {
                                 <Header.Title title="QR Code" />
                             </Header>
 
-                            <QRCodeScanner onRead={(e) => {(console.log('QR code scanned!'+' '+e, e));this.loadEventList("java");this.getEvent('K123');this.props.navigation.dispatch({type: HOME});}}/>
+                            <QRCodeScanner onRead={(e) => {(console.log('QR code scanned!'+' '+e, e));this._hide();this.getEvent(e)}}/>
 
                             <View/>
 

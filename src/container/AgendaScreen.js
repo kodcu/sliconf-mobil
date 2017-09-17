@@ -55,10 +55,6 @@ const mapStateToProps = (state) => ({
 
 class AgendaScreen extends Component {
 
-    static navigationOptions = {
-        header: null
-    };
-
     state = {
         switchedDay: 'Day 1',
         isClicked: true,
@@ -181,7 +177,8 @@ class AgendaScreen extends Component {
                     <If.Then>
                         <Filter visible={filter} onPress ={(e) => this.filterHide(e)} events={MOCKDATA}/>
                         <Header leftImage='chevron-left' rightImage='bars'
-                                onPressLeft={() => this.props.navigation.goBack()} >
+                                onPressLeft={() => this.props.navigation.goBack()}
+                                onPressRight={() => {this.props.navigation.navigate('DrawerOpen')}}>
                             <Picker style={{width:140}}
                                     selectedValue={this.state.switchedDay}
                                     onValueChange={(itemValue, itemIndex) => this.changeDate(itemValue)}>

@@ -33,10 +33,6 @@ class SplashScreen extends Component {
         network: false
     };
 
-    static navigationOptions = {
-        header: null,
-    };
-
     componentWillMount() {
         if(Platform.OS === "ios"){
             NetInfo.isConnected.fetch().then(this._handleConnectionInfoChange);
