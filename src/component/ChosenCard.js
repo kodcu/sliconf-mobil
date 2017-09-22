@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet,StatusBar,TouchableOpacity,Image,Dimensions,Platform } from 'react-native';
 import { Container, Header, Left, Body, Right, Button, Icon, Title ,Content,CardItem,Thumbnail,Card,List,Item,Footer,FooterTab,Picker, Form, Item as FormItem} from 'native-base';
 import PropTypes from 'prop-types';
-
+import If from '../component/If'
 
 export default class ChosenCard extends Component {
 
@@ -28,26 +28,33 @@ export default class ChosenCard extends Component {
 
     render() {
         const item =this.props.item;
+        const buttonVisible=this.props.buttonVisible
         return(
-            <View  style={styles.container}>
-                <View  style={[styles.cardLine,{borderColor:this.getColorByLevel(item.level)}]}/>
-                <View style={styles.detailField}>
-                    <Text style={styles.topic}>{item.topic}</Text>
-                    <Text style={styles.speaker}>{item.speaker}</Text>
-                    <View style={styles.infoField}>
-                        <Text style={styles.topic}>{item.time}</Text>
-                        <Text style={styles.topic}>{item.date}</Text>
-                        <Text style={styles.topic}>{item.room}</Text>
-                    </View>
-                </View>
-                <View style={styles.actionField}>
-                    <TouchableOpacity >
-                        <View style={styles.buttonField}>
-                            <Icon name='ios-checkmark' style={{alignSelf:'center'}}/>
+
+                <View  style={styles.container}>
+                    <View  style={[styles.cardLine,{borderColor:this.getColorByLevel(item.level)}]}/>
+                    <View style={styles.detailField}>
+                        <Text style={styles.topic}>{item.topic}</Text>
+                        <Text style={styles.speaker}>{item.speaker}</Text>
+                        <View style={styles.infoField}>
+                            <Text style={styles.topic}>{item.time}</Text>
+                            <Text style={styles.topic}>{item.date}</Text>
+                            <Text style={styles.topic}>{item.room}</Text>
                         </View>
-                    </TouchableOpacity>
+                    </View>
+                    <If con={buttonVisible}>
+                    <If.Then>
+                        <View style={styles.actionField}>
+                            <TouchableOpacity onPress={(item) => this.props.onPressDeleteButton(item)} >
+                                <View style={styles.buttonField}>
+                                    <Icon name='ios-close' style={{alignSelf:'center'}}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </If.Then>
+                    </If>
                 </View>
-            </View>
+
         )
     }
 }

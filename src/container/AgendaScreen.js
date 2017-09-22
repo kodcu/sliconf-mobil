@@ -26,6 +26,8 @@ import BreakTimeCard from '../component/BreakTimeCard'
 import If from '../component/If'
 import {connect} from 'react-redux'
 import {SEARCHRESULT} from '../router';
+
+
 let MOCKDATA = {
     "04-05-2018":[
         {key: "A100",time: "13:00",topic: "Fuse Integrasyonu",topicDetail: "Ayrıntı", level: 1,room: "Oda 2", speaker: "Lemi Orhan", star: 4.5,date: "04-05-2018",tags:[] },
@@ -46,7 +48,7 @@ let MOCKDATA = {
     ]
 }
 
-let choosen = [];
+
 let eventsDates =[];
 
 const mapStateToProps = (state) => ({
@@ -61,6 +63,7 @@ class AgendaScreen extends Component {
         data:[],
         rooms:[],
         filter:false,
+        choosen: []
 
     }
 
@@ -124,10 +127,11 @@ class AgendaScreen extends Component {
         this.roomScroll.scrollTo({ x: event.nativeEvent.contentOffset.x, animated: true });
     }
 
-    deleteItemFromChosenEvents(arg) {
+    deleteItemFromChosenEvents=(arg)=> {
         let array = choosen;
         let index = array.indexOf(arg)
         array.splice(index, 1);
+        this.setState({choosen:choosen})
     }
 
     addItemToChosenEvents(arg) {
@@ -177,6 +181,7 @@ class AgendaScreen extends Component {
         const { isClicked , filter} = this.state
         DATAS=this.state.data
         rooms=this.state.rooms
+        choosen = this.state.choosen
         return (
             <Container style={{ backgroundColor: '#fff' }}>
                 <If con={isClicked}>
@@ -209,7 +214,7 @@ class AgendaScreen extends Component {
                     <If.Else>
                         <Header leftImage='chevron-left'
                                 onPressLeft={() => this._hide()}>
-                            <Header.Title title="Seçtiklerim" />
+                            <Header.Title title="Chosen" />
                         </Header>
                     </If.Else>
                 </If>
@@ -257,7 +262,7 @@ class AgendaScreen extends Component {
                             <View>
 
                                 {choosen.map((choosed, i) =>
-                                    <ChosenCard key={i} item={choosed} onPressDeleteButton={this.deleteItemFromChosenEvents}/>
+                                    <ChosenCard key={i} item={choosed} onPressDeleteButton={this.deleteItemFromChosenEvents} visibleButton={true}/>
                                 )}
                             </View></If.Else>
                     </If>
