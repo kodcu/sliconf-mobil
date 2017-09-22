@@ -24,8 +24,9 @@ class SpeakerInfoScreen extends Component {
         let speaker= state.params.item
         return (
             <Container style={{backgroundColor:'#fff'}}>
-                <Header leftImage='chevron-left'
-                        onPressLeft={() => this.props.navigation.goBack()}>
+                <Header leftImage='chevron-left' rightImage='bars'
+                        onPressLeft={() => this.props.navigation.goBack()}
+                        onPressRight={() => {this.props.navigation.navigate('DrawerOpen')}}>
                     <Header.Title title="Speaker Info" />
                 </Header>
                 <View  style={{alignItems:'center'}}>
@@ -33,8 +34,8 @@ class SpeakerInfoScreen extends Component {
                     <Text style={{fontSize:18,color:'#414042'}}>{speaker.name}</Text>
                     <Text style={{fontSize:12}}>{speaker.workingat}</Text>
                     <View style={{flexDirection:'row'}}>
-                        <Icon name='twitter-with-circle' size={25} color="#379BD9" style={{margin:10}}/>
-                        <Icon name='linkedin-with-circle' size={25} color="#1574AE" style={{margin:10}} />
+                        <Icon name='twitter-with-circle' size={30} color="#379BD9" style={{margin:10}}/>
+                        <Icon name='linkedin-with-circle' size={30} color="#1574AE" style={{margin:10}} />
                         <TouchableOpacity style={{margin:10}}>
                             <View style={{borderRadius:20,backgroundColor:'#29B673',width:80,height:25,justifyContent:'center'}}>
                                 <Text style={{color:'#fff',textAlign:'center',textAlignVertical:'center'}}>ABOUT</Text>
@@ -44,7 +45,7 @@ class SpeakerInfoScreen extends Component {
                 </View>
                 <ScrollView style={{margin:15}}>
                     {DATAS.map((item, i) =>
-                        <ChosenCard key={i} item={item}/>
+                        <ChosenCard key={i} item={item} visibleButton={false}/>
                     )}
                 </ScrollView>
             </Container>

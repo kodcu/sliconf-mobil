@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {addNavigationHelpers} from 'react-navigation';
 import AppNavigator from './router'
 import {StatusBar} from 'react-native';
+
 class App extends React.Component {
     componentDidMount() {
         // internet bağlantısının dğeişme olayı buradan yönetilebilir
@@ -11,7 +12,7 @@ class App extends React.Component {
     componentWillMount() {
         StatusBar.setHidden(false);
         StatusBar.setBackgroundColor("#fff")
-        StatusBar.setBarStyle("dark-content")
+        StatusBar.setBarStyle("dark-content",true)
     }
 
     render() {

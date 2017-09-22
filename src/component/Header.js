@@ -11,7 +11,7 @@ export class Header extends Component {
         const {leftImage, rightImage, onPressRight, onPressLeft, children} = this.props;
         return (
             <NBHeader backgroundColor="#fff" iosBarStyle="dark-content" androidStatusBarColor="#fff"
-                      noShadow={true} style={{backgroundColor: '#fff'}}>
+                      noShadow={true} style={{backgroundColor: '#fff'}} >
                 <View style={[styles.header, this.props.headerStyle]}>
                     <Button style={{backgroundColor: '#fff', shadowColor: '#fff', elevation: 0}} onPress={onPressLeft}>
                         <Icon name={leftImage} size={15}/>

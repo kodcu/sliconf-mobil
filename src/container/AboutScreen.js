@@ -4,6 +4,7 @@ import {Container, Tab, Tabs, Thumbnail} from 'native-base'
 import Header from "../component/Header";
 import Icon from 'react-native-vector-icons/Ionicons'
 import IconSocial from 'react-native-vector-icons/Entypo'
+import Communications from 'react-native-communications';
 
 
 export class About extends Component {
@@ -44,8 +45,7 @@ export class About extends Component {
 
     rowItem=(name, icon) => <TouchableOpacity
                 style={{flexDirection: 'row', alignItems: 'center'}}
-                onPress={() => {
-                }}>
+                onPress={() =>  icon === "ios-call-outline" ?  Communications.phonecall(name, true):Communications.email([name.toString()],null,null,'Etkinlik Hakkında','')}>
                 <Icon name={icon} size={40} color={'#333'} style={{margin: 15}}/>
                 <Text style={{
                     fontSize: 15,
@@ -100,6 +100,7 @@ export class About extends Component {
                     <Tabs tabBarUnderlineStyle={{backgroundColor: '#2c8', elevation: 0, shadowColor: '#fff', height: 0}}
                           style={{marginTop: 10}}>
                         <Tab heading="Contact Us"
+                             key={1}
                              tabStyle={styles.tab}
                              activeTabStyle={styles.activeTab}
                              activeTextStyle={styles.activeTabText}
@@ -121,6 +122,7 @@ export class About extends Component {
 
                         <Tab heading="Sponsor"
                              tabStyle={styles.tab}
+                             key={2}
                              activeTabStyle={styles.activeTab}
                              activeTextStyle={styles.activeTabText}
                              textStyle={styles.tabText}>
