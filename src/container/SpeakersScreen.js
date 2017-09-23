@@ -17,13 +17,13 @@ class SpeakersScreen extends Component {
 
     state={
         DATAS :[
-            {name: "AMahdy Abdelaziz",workingat: "Vaadin",about: "dfdfdf",topic: ["A105"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/01/amadhy-abdelaziz-150x150.jpg'},
-            {name: "Arun Gupta",workingat: "Amazon Web Services",about: "dfdfdf",topic: ["A100"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/07/arun-gupta-150x150.png'},
-            {name: "Frédéric Hubin",workingat: "ING Bank",about: "dfdfdf",topic: ["A101"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/07/photo_400x400-150x150.jpg'},
-            {name: "Mahmoud Abdelghany",workingat: "Blue4IT",about: "dfdfdf",topic: ["A106","A107"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/08/Mahmoud-Abdelghany-150x150.jpg'},
-            {name: "Marcin Szymaniuk",workingat: "TantusData",about: "dfdfdf",topic: ["A102"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/08/Marcin-lowres-400x400_1-150x150.jpg'},
-            {name: "Nick Tune",workingat: "Salesforce",about: "dfdfdf",topic: ["A103"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/07/NickTune_pcn443-150x150.png'},
-            {name: "Venkat Subramaniam",workingat: "Agile Developer, Inc.",about: "dfdfdf",topic: ["A106","A107"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/07/VenkatSubramaniam-150x150.jpg'},
+            {name: "AMahdy Abdelaziz",workingat: "Vaadin",about: "dfdfdf",topic: ["A105"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/01/amadhy-abdelaziz-150x150.jpg',twitter:"https://twitter.com/amahdy7",linkedin:"https://www.linkedin.com/in/amahdyabdelaziz/?ppe=1"},
+            {name: "Arun Gupta",workingat: "Amazon Web Services",about: "dfdfdf",topic: ["A100"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/07/arun-gupta-150x150.png',twitter:"https://twitter.com/arungupta",linkedin:""},
+            {name: "Frédéric Hubin",workingat: "ING Bank",about: "dfdfdf",topic: ["A101"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/07/photo_400x400-150x150.jpg',twitter:"https://twitter.com/fhubin",linkedin:"https://www.linkedin.com/in/fr%C3%A9d%C3%A9ric-hubin-0b24bb127/"},
+            {name: "Mahmoud Abdelghany",workingat: "Blue4IT",about: "dfdfdf",topic: ["A106","A107"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/08/Mahmoud-Abdelghany-150x150.jpg',twitter:"https://twitter.com/@blackbeard0x14e",linkedin:""},
+            {name: "Marcin Szymaniuk",workingat: "TantusData",about: "dfdfdf",topic: ["A102"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/08/Marcin-lowres-400x400_1-150x150.jpg',twitter:"",linkedin:""},
+            {name: "Nick Tune",workingat: "Salesforce",about: "dfdfdf",topic: ["A103"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/07/NickTune_pcn443-150x150.png',twitter:"https://twitter.com/ntcoding",linkedin:"https://www.linkedin.com/in/nick-tune-3671441a/"},
+            {name: "Venkat Subramaniam",workingat: "Agile Developer, Inc.",about: "dfdfdf",topic: ["A106","A107"],profilePicture:'https://javaday.istanbul/wp-content/uploads/2017/07/VenkatSubramaniam-150x150.jpg',twitter:"https://twitter.com/venkat_s",linkedin:"https://www.linkedin.com/in/vsubramaniam"},
                    ],
         weye:[],
         selected:0
