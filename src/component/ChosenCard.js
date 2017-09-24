@@ -28,7 +28,7 @@ export default class ChosenCard extends Component {
 
     render() {
         const item =this.props.item;
-        const buttonVisible=this.props.buttonVisible
+        const buttonVisible=this.props.visibleButton
         return(
 
                 <View  style={styles.container}>
@@ -42,17 +42,18 @@ export default class ChosenCard extends Component {
                             <Text style={styles.topic}>{item.room}</Text>
                         </View>
                     </View>
-                    <If con={buttonVisible}>
-                    <If.Then>
                         <View style={styles.actionField}>
+                            <If con={buttonVisible}>
+                                <If.Then>
                             <TouchableOpacity onPress={(item) => this.props.onPressDeleteButton(item)} >
                                 <View style={styles.buttonField}>
                                     <Icon name='ios-close' style={{alignSelf:'center'}}/>
                                 </View>
                             </TouchableOpacity>
+                                </If.Then>
+                            </If>
                         </View>
-                    </If.Then>
-                    </If>
+
                 </View>
 
         )

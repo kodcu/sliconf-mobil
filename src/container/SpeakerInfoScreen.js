@@ -90,7 +90,7 @@ class SpeakerInfoScreen extends Component {
                     </View>
                 </View>
 
-                <ScrollView style={{margin:15}}>
+                <ScrollView style={{margin:15}} showsVerticalScrollIndicator={false}>
                     <If con={this.state.isAboutOpen}>
                         <If.Then>
                     <AnimatedView
