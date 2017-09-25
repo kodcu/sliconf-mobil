@@ -50,7 +50,7 @@ class SplashScreen extends Component {
             setTimeout(() => {
                 this.props.navigation.dispatch({type:MAIN })
                 console.log("open success")
-            }, 3000);
+            }, 1000);
         }
     };
 
@@ -64,7 +64,7 @@ class SplashScreen extends Component {
                 setTimeout(() => {
                     this.props.navigation.dispatch({type:MAIN })
                     console.log("open success")
-                }, 3000);
+                }, 1000);
             }
         }
     }

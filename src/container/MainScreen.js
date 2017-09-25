@@ -216,6 +216,7 @@ const styles = StyleSheet.create({
         marginTop: 60
     },
     textTitle: {
+        fontFamily: 'Montserrat-Regular',
         color: '#2AB673',
         fontSize: 25,
         fontWeight: 'bold',
