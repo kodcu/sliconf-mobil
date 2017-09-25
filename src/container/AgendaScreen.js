@@ -25,9 +25,7 @@ import Filter from '../component/Filter'
 import BreakTimeCard from '../component/BreakTimeCard'
 import If from '../component/If'
 import {connect} from 'react-redux'
-import {SEARCHRESULT} from '../router';
-
-
+import {SEARCHRESULT, TALK} from '../router';
 let MOCKDATA = {
     "04-05-2018":[
         {key: "A100",time: "13:00",topic: "Fuse Integrasyonu",topicDetail: "Ayrıntı", level: 1,room: "Oda 2", speaker: "Lemi Orhan", star: 4.5,date: "04-05-2018",tags:[] },
@@ -48,7 +46,7 @@ let MOCKDATA = {
     ]
 }
 
-
+let choosen = [];
 let eventsDates =[];
 
 const mapStateToProps = (state) => ({
@@ -154,6 +152,7 @@ class AgendaScreen extends Component {
                                         isClicked={true}
                                         key={arg[i].key}
                                         choosedEvents={choosen}
+                                        onPress={() => this.props.navigate(TALK)}
                                         onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
                     }
                 }
@@ -163,6 +162,7 @@ class AgendaScreen extends Component {
                                     isClicked={false}
                                     key={arg[i].key}
                                     choosedEvents={choosen}
+                                    onPress={() => this.props.navigation.navigate(TALK)}
                                     onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
             } else {
                 isExist = false;
@@ -214,7 +214,7 @@ class AgendaScreen extends Component {
                     <If.Else>
                         <Header leftImage='chevron-left'
                                 onPressLeft={() => this._hide()}>
-                            <Header.Title title="Chosen" />
+                            <Header.Title title="Seçtiklerim" />
                         </Header>
                     </If.Else>
                 </If>
@@ -262,7 +262,7 @@ class AgendaScreen extends Component {
                             <View>
 
                                 {choosen.map((choosed, i) =>
-                                    <ChosenCard key={i} item={choosed} onPressDeleteButton={this.deleteItemFromChosenEvents} visibleButton={true}/>
+                                    <ChosenCard key={i} item={choosed} onPressDeleteButton={this.deleteItemFromChosenEvents}/>
                                 )}
                             </View></If.Else>
                     </If>

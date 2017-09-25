@@ -62,7 +62,7 @@ export default class AgendaCard extends Component {
             )
         }else{
             return (
-                <View  style={styles.container}>
+                <TouchableOpacity  style={styles.container} onPress={this.props.onPress}>
                     <View  style={[styles.cardLine,{borderColor:this.getColorByLevel(item.level)}]}/>
                     <View style={styles.detailField}>
                         <Text style={styles.topic}>{item.topic} </Text>
@@ -78,7 +78,7 @@ export default class AgendaCard extends Component {
                             </View>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </TouchableOpacity>
             );
         }
 
