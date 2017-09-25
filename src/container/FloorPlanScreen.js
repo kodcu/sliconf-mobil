@@ -15,7 +15,7 @@ export class FloorPlan extends Component {
                 </Header>
                 <Image
                     style={{flex:1}}
-                    source={{uri: 'http://im.htemlak.com/2/5/2011/04/30/10484/10484_41f1846773a0a8c8308a8338886b4bc9.png'}}
+                    source={{uri: 'http://docplayer.biz.tr/docs-images/59/43501500/images/19-0.png'}}
                 />
             </View>
         )
