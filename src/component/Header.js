@@ -8,21 +8,21 @@ export class Header extends Component {
 
 
     render() {
-        const {leftImage, rightImage, onPressRight, onPressLeft, children} = this.props;
+        const {leftImage, rightImage, onPressRight, onPressLeft, children,active} = this.props;
         return (
-            <NBHeader backgroundColor="#fff" iosBarStyle="dark-content" androidStatusBarColor="#fff"
-                      noShadow={true} style={{backgroundColor: '#fff'}} >
+            <NBHeader backgroundColor="#fff" iosBarStyle={active === undefined || active === null ? "dark-content" : 'light-content'} androidStatusBarColor={active === undefined || active === null ? '#fff' : '#29B673'}
+                      noShadow={true} style={{backgroundColor: '#fff'}}>
                 <View style={[styles.header, this.props.headerStyle]}>
-                    <Button style={{backgroundColor: '#fff', shadowColor: '#fff', elevation: 0}} onPress={onPressLeft}>
-                        <Icon name={leftImage} size={15}/>
+                    <Button style={{backgroundColor: 'rgba(0,0,0,0)', shadowColor: '#fff', elevation: 0}} onPress={onPressLeft}>
+                        <Icon color={active === undefined || active === null ? '#333' : '#fff'}  name={leftImage} size={18}/>
                     </Button>
 
                     <View>
                         {children}
                     </View>
 
-                    <Button style={{backgroundColor: '#fff', shadowColor: '#fff', elevation: 0}} onPress={onPressRight}>
-                        <Icon name={rightImage} size={15}/>
+                    <Button style={{backgroundColor: 'rgba(0,0,0,0)', shadowColor: '#fff', elevation: 0}} onPress={onPressRight}>
+                        <Icon color={active === undefined || active === null ? '#333' : '#fff'} name={rightImage} size={18}/>
                     </Button>
                 </View>
             </NBHeader>
