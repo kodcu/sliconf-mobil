@@ -262,7 +262,7 @@ class AgendaScreen extends Component {
                             <View>
 
                                 {choosen.map((choosed, i) =>
-                                    <ChosenCard key={i} item={choosed} onPressDeleteButton={this.deleteItemFromChosenEvents}/>
+                                    <ChosenCard key={i} item={choosed} onPressDeleteButton={this.deleteItemFromChosenEvents} visibleButton={true}/>
                                 )}
                             </View></If.Else>
                     </If>

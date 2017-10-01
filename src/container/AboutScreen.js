@@ -45,7 +45,7 @@ export class About extends Component {
 
     rowItem=(name, icon) => <TouchableOpacity
                 style={{flexDirection: 'row', alignItems: 'center'}}
-                onPress={() =>  icon === "ios-call-outline" ?  Communications.phonecall(name, true):Communications.email([name.toString()],null,null,'Etkinlik Hakkında','')}>
+                onPress={() =>  icon === "ios-call-outline"||icon ==="ios-phone-portrait" ?  Communications.phonecall(name, true):Communications.email([name.toString()],null,null,'Etkinlik Hakkında','')}>
                 <Icon name={icon} size={40} color={'#333'} style={{margin: 15}}/>
                 <Text style={{
                     fontSize: 15,
@@ -79,16 +79,14 @@ export class About extends Component {
 
                 <ScrollView>
 
-                    <View style={{padding: 15, justifyContent: 'center', alignItems: 'center'}} onPress={() => {
-                    }}>
+                    <View style={styles.aboutField}>
                         <Image
                             source={{uri: 'https://pbs.twimg.com/profile_images/869175415822327808/O67MAYb2_400x400.jpg'}}
                             resizeMode="contain"
-                            style={{margin: 10, width: 100, height: 100, borderRadius: 30}}/>
-                        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-                            <Text style={{fontWeight: '700', fontSize: 25, color: '#444', margin: 10}}>JavaDay Istanbul
-                                2018</Text>
-                            <Text style={{fontWeight: '200', color: '#999', textAlign: 'center'}}>Java Day Istanbul is
+                            style={styles.eventLogo}/>
+                        <View style={styles.detailField}>
+                            <Text style={styles.detailTitleText}>JavaDay Istanbul 2018</Text>
+                            <Text style={styles.detailText}>Java Day Istanbul is
                                 one of the most effective international community driven software conference of Turkey
                                 organised by Istanbul Java User Group. The conference helps developers to learn the
                                 newest technologies about Java, Web, Mobile, Big DATA, Cloud, DevOps, Agile and Future.
@@ -97,21 +95,21 @@ export class About extends Component {
                         </View>
                     </View>
 
-                    <Tabs tabBarUnderlineStyle={{backgroundColor: '#2c8', elevation: 0, shadowColor: '#fff', height: 0}}
-                          style={{marginTop: 10}}>
+                    <Tabs tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
+                          style={styles.tabs}>
                         <Tab heading="Contact Us"
                              key={1}
                              tabStyle={styles.tab}
                              activeTabStyle={styles.activeTab}
                              activeTextStyle={styles.activeTabText}
                              textStyle={styles.tabText}>
-                            <View style={{justifyContent: 'flex-start', alignItems: 'center', flex: 1, marginTop: 10}}>
+                            <View style={styles.contact}>
 
                                 {this.rowItem('contact@javaday.istanbul', 'ios-at-outline')}
-                                {this.rowItem(' +90 (850) 885 14 19', 'ios-call-outline')}
+                                {this.rowItem(' +90 (850) 885 14 19', 'ios-phone-portrait')}
                                 {this.rowItem('+90 (506) 388 03 46', 'ios-call-outline')}
 
-                                <View style={{flexDirection: 'row', marginLeft: 50, marginRight: 50}}>
+                                <View style={styles.socialMedia}>
                                     {this.rowSocial('facebook-with-circle', 'https://www.facebook.com/javadayistanbul/')}
                                     {this.rowSocial('instagram-with-circle', 'https://www.instagram.com/javadayistanbul_2018/')}
                                     {this.rowSocial('twitter-with-circle', 'https://twitter.com/javadayistanbul/')}
@@ -127,9 +125,6 @@ export class About extends Component {
                              activeTextStyle={styles.activeTabText}
                              textStyle={styles.tabText}>
                             <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-
-
-
                                 <View style={{justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
 
                                     {Object.keys(this.state.sponsor).map((item,index) =>
@@ -157,14 +152,10 @@ export class About extends Component {
 
                                         </View>
                                     )}
-
                                 </View>
-
                             </View>
                         </Tab>
-
                     </Tabs>
-
                 </ScrollView>
             </Container>
         )
@@ -196,13 +187,45 @@ const styles = StyleSheet.create({
         fontSize: 15,
         lineHeight: 23,
         letterSpacing: 0.47,
-        color: '#999'
+                color: '#999'
     },
     activeTabText: {
         fontSize: 18,
         fontWeight: '600',
         color: '#2c8'
-    }
+    },
+    aboutField:{
+        padding: 15,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    eventLogo:{
+        margin: 10,
+        width: 100,
+        height: 100,
+        borderRadius: 30},
+    detailField:{justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1},
+    detailTitleText:{fontWeight: '700',
+        fontSize: 25,
+        color: '#444',
+        margin: 10},
+    detailText:{fontWeight: '200',
+        color: '#999',
+        textAlign: 'center'},
+    tabBarUnderlineStyle:{backgroundColor: '#2c8',
+        elevation: 0,
+        shadowColor: '#fff',
+        height: 0},
+    tabsStyle:{marginTop: 10},
+    contact:{justifyContent: 'flex-start',
+        alignItems: 'center',
+        flex: 1,
+        marginTop: 10},
+    socialMedia:{flexDirection: 'row',
+        marginLeft: 50,
+        marginRight: 50},
 });
 
 export default About;

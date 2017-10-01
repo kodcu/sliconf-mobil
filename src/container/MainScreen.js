@@ -245,13 +245,12 @@ const styles = StyleSheet.create({
         width: 200,
         textAlign: 'center',
         opacity: 0.9,
-        fontFamily: "Montserrat-Regular",
+        fontFamily: "Montserrat-Bold",
         fontSize: Style.FONT_SIZE_TITLE_LARGE* 0.8,
         lineHeight: Style.FONT_SIZE_TITLE_LARGE * 1.3,
-        fontWeight: 'bold'
     },
     subtitle: {
-        fontFamily: "Montserrat-Regular",
+        fontFamily: "Montserrat-Light",
         lineHeight: Style.FONT_SIZE_SMALL * 1.5,
         fontSize: Style.FONT_SIZE_SMALL,
         marginBottom: 10,
