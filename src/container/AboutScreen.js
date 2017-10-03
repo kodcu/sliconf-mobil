@@ -197,13 +197,45 @@ const styles = StyleSheet.create({
         fontSize: 15,
         lineHeight: 23,
         letterSpacing: 0.47,
-        color: '#999'
+                color: '#999'
     },
     activeTabText: {
         fontSize: 18,
         fontWeight: '600',
         color: '#2c8'
-    }
+    },
+    aboutField:{
+        padding: 15,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    eventLogo:{
+        margin: 10,
+        width: 100,
+        height: 100,
+        borderRadius: 30},
+    detailField:{justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1},
+    detailTitleText:{fontWeight: '700',
+        fontSize: 25,
+        color: '#444',
+        margin: 10},
+    detailText:{fontWeight: '200',
+        color: '#999',
+        textAlign: 'center'},
+    tabBarUnderlineStyle:{backgroundColor: '#2c8',
+        elevation: 0,
+        shadowColor: '#fff',
+        height: 0},
+    tabsStyle:{marginTop: 10},
+    contact:{justifyContent: 'flex-start',
+        alignItems: 'center',
+        flex: 1,
+        marginTop: 10},
+    socialMedia:{flexDirection: 'row',
+        marginLeft: 50,
+        marginRight: 50},
 });
 
 export default connect(mapStateToProps)(About)

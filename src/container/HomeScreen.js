@@ -21,7 +21,7 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 const mapStateToProps = (state) => ({
     event: state.event.event,
 })
-
+import { scale, moderateScale, verticalScale} from '../theme/Scale';
 class HomeScreen extends Component {
 
     render() {
@@ -40,24 +40,24 @@ class HomeScreen extends Component {
                         <View style={{}}>
                             <View style={{flexDirection:'row',alignItems:'center',paddingBottom:10}}>
                                 <Icon style={{paddingRight:10}} color='#fff' name='ios-clock-outline' size={22}/>
-                                <Text style={{color:'#fff',fontSize:responsiveFontSize(1.8)}}>{event.time}</Text>
+                                <Text style={{color:'#fff',fontSize:moderateScale(13)}}>{event.time}</Text>
                             </View>
 
                             <View style={{}}>
                                 <View style={{flexDirection:'row',alignItems:'center'}}>
                                     <Icon style={{paddingRight:10}} color='#fff' name='ios-calendar-outline' size={22}/>
-                                    <Text style={{color:'#fff',fontSize:responsiveFontSize(1.8)}}>{event.date}</Text>
+                                    <Text style={{color:'#fff',fontSize:moderateScale(13)}}>{event.date}</Text>
                                 </View>
                             </View>
                         </View>
 
-                        <Image source={{uri:event.logo}} style={{width:height*0.15,height:height*0.15,borderRadius:90}}/>
+                        <Image source={{uri:event.logo}} style={{width:height*0.15,height:height*0.15,borderRadius:50}}/>
 
                     </View>
 
                     <View style={{flex:0.4,justifyContent:'flex-end',alignItems:'flex-end',padding:responsiveWidth(4),}}>
-                        <Text style={{color:'#fff',fontSize: responsiveFontSize(4.5) ,fontFamily: "Montserrat-Regular",}}>{event.name.substring(0,event.name.indexOf(" "))}</Text>
-                        <Text style={{color:'#fff',fontSize: responsiveFontSize(4.5),lineHeight:responsiveHeight(5)*1.2,fontFamily: "Montserrat-Regular",}}>{event.name.substr(event.name.indexOf(" "))}</Text>
+                        <Text style={{color:'#fff',fontSize: moderateScale(25) ,fontFamily: "Montserrat-Regular",}}>{event.name.substring(0,event.name.indexOf(" "))}</Text>
+                        <Text style={{color:'#fff',fontSize: moderateScale(25),lineHeight:responsiveHeight(5)*1.2,fontFamily: "Montserrat-Regular",}}>{event.name.substr(event.name.indexOf(" "))}</Text>
 
                     </View>
 
@@ -70,7 +70,7 @@ class HomeScreen extends Component {
                             <View style={{padding:30}} >
                                 <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center'}}
                                                   onPress={() => this.props.navigation.navigate(AGENDA)}>
-                                    <View style={{alignItems: 'center', justifyContent: 'center',borderRadius:90,borderWidth:1,width:60,height:60,marginBottom:10}}>
+                                    <View style={{alignItems: 'center', justifyContent: 'center',borderRadius:90,borderWidth:1,width:scale(60),height:scale(60),marginBottom:10}}>
                                         <Icon style={{}} name='ios-calendar-outline' size={40}/>
                                     </View>
                                     <Text>Schedule</Text>
@@ -80,8 +80,8 @@ class HomeScreen extends Component {
                             <View style={{padding:30}} >
                                 <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center'}}
                                                   onPress={() => this.props.navigation.navigate(SPEAKERS)}>
-                                    <View style={{alignItems: 'center', justifyContent: 'center',borderRadius:90,borderWidth:1,width:60,height:60,marginBottom:10}}>
-                                        <Icon style={{}} name='ios-microphone-outline' size={40}/>
+                                    <View style={{alignItems: 'center', justifyContent: 'center',borderRadius:90,borderWidth:1,width:scale(60),height:scale(60),marginBottom:10}}>
+                                        <Icon style={{}} name='ios-microphone-outline' size={scale(40)}/>
                                     </View>
                                     <Text>Speakers</Text>
                                 </TouchableOpacity>
@@ -90,7 +90,7 @@ class HomeScreen extends Component {
                             <View style={{padding:30}} >
                                 <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center'}}
                                                   onPress={() => this.props.navigation.navigate(LOCATION)}>
-                                    <View style={{alignItems: 'center', justifyContent: 'center',borderRadius:90,borderWidth:1,width:60,height:60,marginBottom:10}}>
+                                    <View style={{alignItems: 'center', justifyContent: 'center',borderRadius:90,borderWidth:1,width:scale(60),height:scale(60),marginBottom:10}}>
                                         <Icon style={{}} name='ios-map-outline' size={40}/>
                                     </View>
                                     <Text>Location</Text>
@@ -102,7 +102,7 @@ class HomeScreen extends Component {
                             <View style={{padding:30}} >
                                 <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center'}}
                                                   onPress={() => this.props.navigation.navigate(FLOOR)}>
-                                    <View style={{alignItems: 'center', justifyContent: 'center',borderRadius:90,borderWidth:1,width:60,height:60,marginBottom:10}}>
+                                    <View style={{alignItems: 'center', justifyContent: 'center',borderRadius:90,borderWidth:1,width:scale(60),height:scale(60),marginBottom:10}}>
                                         <Icon style={{}} name='ios-menu-outline' size={40}/>
                                     </View>
                                     <Text>Floor Plan</Text>
@@ -111,20 +111,20 @@ class HomeScreen extends Component {
 
                             <View style={{padding:30}} >
                                 <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center'}}>
-                                    <View style={{alignItems: 'center', justifyContent: 'center',borderRadius:90,borderColor:'#29B673',borderWidth:1,width:60,height:60,marginBottom:10}}>
-                                        <Icon color='#29B673' style={{}} name='ios-cash-outline' size={40}/>
+                                    <View style={{alignItems: 'center', justifyContent: 'center',borderRadius:90,borderWidth:1,width:scale(60),height:scale(60),marginBottom:10}}>
+                                        <Icon  style={{}} name='ios-cash-outline' size={40}/>
                                     </View>
-                                    <Text style={{color:'#29B673'}}>Buy</Text>
+                                    <Text >Buy Ticket</Text>
                                 </TouchableOpacity>
                             </View>
 
                             <View style={{padding:30}} >
                                 <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center'}}
                                                   onPress={() => this.props.navigation.navigate(INFO)}>
-                                    <View style={{alignItems: 'center', justifyContent: 'center',borderRadius:90,borderWidth:1,width:60,height:60,marginBottom:10}}>
+                                    <View style={{alignItems: 'center', justifyContent: 'center',borderRadius:90,borderWidth:1,width:scale(60),height:scale(60),marginBottom:10}}>
                                         <Icon style={{}} name='ios-information-outline' size={40}/>
                                     </View>
-                                    <Text>Genarel Info</Text>
+                                    <Text>Genaral Info</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
