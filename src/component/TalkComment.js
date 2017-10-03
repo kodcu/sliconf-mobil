@@ -1,16 +1,24 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {Button, Footer, FooterTab, Icon, Input, Thumbnail} from "native-base";
-
+import {Button, Container, Content, Footer, FooterTab, Input, Thumbnail} from "native-base";
+import Icon from 'react-native-vector-icons/Ionicons'
 
 export class TalkComment extends Component {
     render() {
         return (
+            <Container>
 
-            <View style={{flex:1, backgroundColor: '#555',padding:15}}>
-                <Text>Comment</Text>
+                <Footer style={{justifyContent:'flex-end'}}>
+                    <FooterTab style={{backgroundColor: '#fff',padding:2,flex:1}}>
+                        <Input style={{flex:0.9,borderWidth:0.5,borderRadius:5}}/>
+                        <Button rounded bordered style={{marginLeft:10,flex:0.1,width:50,height:50}} >
+                            <Icon size={35} name='ios-send-outline' color='#333'/>
+                        </Button>
 
-            </View>
+                    </FooterTab>
+
+                </Footer>
+            </Container>
         )
     }
 }
