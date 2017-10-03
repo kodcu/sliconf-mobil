@@ -9,12 +9,12 @@ export default class Filter extends Component {
 
     state = {
         eventName:'',
-        data:[{name:"Java Language",checked:false},
-            {name:"Server Side",checked:false},
+        data:[{name:"Java",checked:false},
+            {name:"Security",checked:false},
             {name:"Big Data",checked:false},
             {name:"Mobile",checked:false},
             {name:"Modern Web",checked:false},
-            {name:"Cloud,Containers &Infrastructure",checked:false}],
+            {name:"Cloud,Containers & Infrastructure",checked:false}],
         searchFilter:[]
     }
 

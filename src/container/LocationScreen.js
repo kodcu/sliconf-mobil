@@ -4,18 +4,24 @@ import { Container} from 'native-base';
 import Header from "../component/Header";
 import MapView,{PROVIDER_GOOGLE} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Entypo'
+import {connect} from 'react-redux'
+
+const mapStateToProps = (state) => ({
+    event: state.event.event,
+})
 
 const s ='https://www.google.com/maps/search/?api=1&query=41.045013,28.988804';
-export default class LocationScreen extends Component {
+class LocationScreen extends Component {
 
-    redirectToMap() {
-        Linking.canOpenURL('https://www.google.com/maps/dir/?api=1&destination=41.045013,28.988804').then(supported => {
+    redirectToMap(lat,lng) {
+
+        Linking.canOpenURL('https://www.google.com/maps/dir/?api=1&destination='+lat+','+lng).then(supported => {
             if (supported) {
-                Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=41.045013,28.988804');
+                Linking.openURL('https://www.google.com/maps/dir/?api=1&destination'+lat+','+lng);
             } else {
-                Linking.canOpenURL('http://maps.apple.com/?ll=41.045013,28.988804').then(supported => {
+                Linking.canOpenURL('http://maps.apple.com/?ll='+lat+','+lng).then(supported => {
                     if (supported) {
-                        Linking.openURL('http://maps.apple.com/?ll=41.045013,28.988804');
+                        Linking.openURL('http://maps.apple.com/?ll='+lat+','+lng);
                     } else {
                         alert('Unable to find maps application')
                     }
@@ -26,6 +32,9 @@ export default class LocationScreen extends Component {
 
 
     render() {
+        const event = this.props.event;
+        const location = event.about.location;
+
         return (
             <Container style={{backgroundColor:'#fff'}}>
                 <Header leftImage='chevron-left' rightImage='bars'
@@ -38,27 +47,23 @@ export default class LocationScreen extends Component {
                         provider={PROVIDER_GOOGLE}
                         style={styles.map}
                         initialRegion={{
-                            latitude: 41.045013,
-                            longitude: 28.988804,
+                            latitude: location.lat,
+                            longitude: location.lng,
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421,
                         }}>
-                        <MapView.Marker.Animated coordinate={{latitude: 41.045013,longitude: 28.988804}}
-                                                 title={'Javaday Istanbul 2018'}
-                                                 description={'Hilton Kongre Ve Fuar Salonu, Hilton Hotel 50 N, 34367 Şişli / Istanbul'}
-                                                 onCalloutPress={()=> this.redirectToMap()} />
+                        <MapView.Marker.Animated coordinate={{latitude: location.lat,longitude: location.lng}}
+                                                 title={event.name}
+                                                 description={location.description}
+                                                 onCalloutPress={()=> this.redirectToMap(location.lat,location.lng)} />
 
                     </MapView>
                 </View>
-                <TouchableOpacity onPress={() => this.redirectToMap()}>
+                <TouchableOpacity onPress={() => this.redirectToMap(location.lat,location.lng)}>
                     <View style={styles.getDirections}>
                         <View style={styles.addressContainer}>
-                            <Text style={styles.venueName}>
-                                Javaday Istanbul 2018
-                            </Text>
-                            <Text style={styles.venueAddress}>
-                                Hilton Kongre Ve Fuar Salonu, Hilton Hotel 50 N, 34367 Şişli / Istanbul
-                            </Text>
+                            <Text style={styles.venueName}>{event.name}</Text>
+                            <Text style={styles.venueAddress}>{location.description}</Text>
                         </View>
                         <View style={styles.directionsIcon}>
                             <Icon name='address' size={35} style={{color:'#29B673'}}/>
@@ -120,4 +125,7 @@ const styles = StyleSheet.create({
         flex: 4,
         marginLeft:5
     },
+
 });
+
+export default connect(mapStateToProps)(LocationScreen)

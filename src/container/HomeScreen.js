@@ -20,18 +20,15 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
-
 })
 
 class HomeScreen extends Component {
 
     render() {
         const {event} = this.props;
+        console.log("evo",event)
         return (
             <Container style={{backgroundColor: '#ffffff'}}>
-
-
-
 
                 <View style={{flex:0.45,backgroundColor:'#29B673',borderRadius:30}}>
                     <Header active headerStyle={{backgroundColor:'#29B673'}}
@@ -43,24 +40,24 @@ class HomeScreen extends Component {
                         <View style={{}}>
                             <View style={{flexDirection:'row',alignItems:'center',paddingBottom:10}}>
                                 <Icon style={{paddingRight:10}} color='#fff' name='ios-clock-outline' size={22}/>
-                                <Text style={{color:'#fff',fontSize:responsiveFontSize(1.8)}}>9.30</Text>
+                                <Text style={{color:'#fff',fontSize:responsiveFontSize(1.8)}}>{event.time}</Text>
                             </View>
 
                             <View style={{}}>
                                 <View style={{flexDirection:'row',alignItems:'center'}}>
                                     <Icon style={{paddingRight:10}} color='#fff' name='ios-calendar-outline' size={22}/>
-                                    <Text style={{color:'#fff',fontSize:responsiveFontSize(1.8)}}>25 May 2018</Text>
+                                    <Text style={{color:'#fff',fontSize:responsiveFontSize(1.8)}}>{event.date}</Text>
                                 </View>
                             </View>
                         </View>
 
-                        <Image source={{uri:'https://pbs.twimg.com/profile_images/869175415822327808/O67MAYb2_400x400.jpg'}} style={{width:height*0.15,height:height*0.15,borderRadius:90}}/>
+                        <Image source={{uri:event.logo}} style={{width:height*0.15,height:height*0.15,borderRadius:90}}/>
 
                     </View>
 
                     <View style={{flex:0.4,justifyContent:'flex-end',alignItems:'flex-end',padding:responsiveWidth(4),}}>
-                        <Text style={{color:'#fff',fontSize: responsiveFontSize(4.5) ,fontFamily: "Montserrat-Regular",}}>Javaday</Text>
-                        <Text style={{color:'#fff',fontSize: responsiveFontSize(4.5),lineHeight:responsiveHeight(5)*1.2,fontFamily: "Montserrat-Regular",}}>Istanbul 2018</Text>
+                        <Text style={{color:'#fff',fontSize: responsiveFontSize(4.5) ,fontFamily: "Montserrat-Regular",}}>{event.name.substring(0,event.name.indexOf(" "))}</Text>
+                        <Text style={{color:'#fff',fontSize: responsiveFontSize(4.5),lineHeight:responsiveHeight(5)*1.2,fontFamily: "Montserrat-Regular",}}>{event.name.substr(event.name.indexOf(" "))}</Text>
 
                     </View>
 

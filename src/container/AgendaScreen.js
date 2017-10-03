@@ -26,31 +26,12 @@ import BreakTimeCard from '../component/BreakTimeCard'
 import If from '../component/If'
 import {connect} from 'react-redux'
 import {SEARCHRESULT, TALK} from '../router';
-let MOCKDATA = {
-    "04-05-2018":[
-        {key: "A100",time: "13:00",topic: "Fuse Integrasyonu",topicDetail: "Ayrıntı", level: 1,room: "Oda 2", speaker: "Lemi Orhan", star: 4.5,date: "04-05-2018",tags:[] },
-        {key: "A101",time: "14:00",topic: "Docker nedir ?",topicDetail: "Ayrıntı", level: 2,room: "Oda 1", speaker: "Hakan Özler", star: 4.5,date: "04-05-2018",tags:["Server Side","Java Language"] },
-        {key: "A108",time: "14:45",topic: "Coffe break",topicDetail: "", level: 0,room: "Oda 0", speaker: "", star: 4.5,date: "04-05-2018",tags:[] },
-        {key: "A102",time: "15:00",topic: "Spring data kullanımı",topicDetail: "Ayrıntı", level: 3,room: "Oda 3", speaker: "Hüseyin Akdoğan", star: 4.5,date: "04-05-2018",tags:["Big Data","Java Language"] },
-        {key: "A103",time: "16:00",topic: "Database Yönetimi",topicDetail: "Ayrıntı", level: 3,room: "Oda 0", speaker: "Anıl Coşar", star: 4.5,date: "04-05-2018",tags:["Big Data"]},
-
-    ],
-    "05-05-2018":[
-        {key: "A104",time: "13:00",topic: "React vs Angular",topicDetail: "Ayrıntı", level: 3,room: "Oda 1", speaker: "Göksel Pirnal", star: 4.5,date: "05-05-2018",tags:["Modern Web"] },
-        {key: "A105",time: "14:00",topic: "Jenkins ile planlı çalışmak",topicDetail: "Ayrıntı", level: 2,room: "Oda 1", speaker: "Talip Teyfur", star: 4.5,date: "05-05-2018",tags:["Server Side"] },
-        {key: "A106",time: "15:00",topic: "react-native ile cross-platform yazmak",topicDetail: "Ayrıntı", level: 1,room: "Oda 3", speaker: "Müslüm Sezgin", star: 4.5,date: "05-05-2018",tags:["Mobile"]  },
-
-    ],
-    "06-05-2018":[
-        {key: "A107",time: "12:00",topic: "Java 9 Modularity",topicDetail: "Ayrıntı", level: 1,room: "Oda 1", speaker: "Altuğ Bilgin Altıntaş", star: 4.5,date: "06-05-2018",tags:["Java Language"] },
-    ]
-}
 
 let choosen = [];
-let eventsDates =[];
+let eventsDates = [];
 
 const mapStateToProps = (state) => ({
-
+    agenda: state.event.event.agenda,
 })
 
 class AgendaScreen extends Component {
@@ -58,23 +39,23 @@ class AgendaScreen extends Component {
     state = {
         switchedDay: 'Day 1',
         isClicked: true,
-        data:[],
-        rooms:[],
-        filter:false,
+        data: [],
+        rooms: [],
+        filter: false,
         choosen: []
 
     }
 
-    filterHide=(searchResults)=>{
+    filterHide = (searchResults) => {
         console.log('Agenda Screendeyim sonuclar')
         console.log(searchResults)
-        this.setState({filter:false})
-        this.props.navigation.navigate(SEARCHRESULT,searchResults)
+        this.setState({filter: false})
+        this.props.navigation.navigate(SEARCHRESULT, searchResults)
     }
 
-    closeFilter=()=>{
+    closeFilter = () => {
         console.log("kapandi")
-        this.setState({filter:false})
+        this.setState({filter: false})
     }
 
 
@@ -82,7 +63,7 @@ class AgendaScreen extends Component {
         let changedEventsList = [];
         let myMap = new Map();
 
-        events.forEach(function (element)  {
+        events.forEach(function (element) {
             let time = element.time
             myMap.get(time) ? array = myMap.get(time) : array = []
             array.push(element)
@@ -90,46 +71,49 @@ class AgendaScreen extends Component {
         });
 
         myMap.forEach(function (value, key) {
-            changedEventsList={...changedEventsList,[key]: value}
+            changedEventsList = {...changedEventsList, [key]: value}
         })
 
         return changedEventsList
     }
 
-    roomsList(events){
+    roomsList(events) {
         let roomsList = [];
-        let tempRoom=events.filter((thing, index, self) => self.findIndex((t) => {return t.room === thing.room }) === index)
-        tempRoom.forEach((element)=> roomsList.push(element.room))
+        let tempRoom = events.filter((thing, index, self) => self.findIndex((t) => {
+            return t.room === thing.room
+        }) === index)
+        tempRoom.forEach((element) => roomsList.push(element.room))
         roomsList.sort();
         return roomsList
     }
 
-    componentWillMount(){
-        Object.keys(MOCKDATA).forEach((date)=> eventsDates.includes(date) ? null:eventsDates.push(date))
+    componentWillMount() {
+        const data = this.props.agenda;
+        Object.keys(data).forEach((date) => eventsDates.includes(date) ? null : eventsDates.push(date))
         this.setState({
-            rooms:this.roomsList(MOCKDATA["04-05-2018"]),
-            data:this.eventsList(MOCKDATA["04-05-2018"])
+            rooms: this.roomsList(data[Object.keys(data)[0]]),
+            data: this.eventsList(data[Object.keys(data)[0]])
         })
     }
 
-    changeDate(date){
-
+    changeDate(date) {
+        const data = this.props.agenda;
         this.setState({
-            switchedDay:date,
-            rooms:this.roomsList(MOCKDATA[date]),
-            data:this.eventsList(MOCKDATA[date])
+            switchedDay: date,
+            rooms: this.roomsList(data[date]),
+            data: this.eventsList(data[date])
         })
     }
 
     handleScroll = (event) => {
-        this.roomScroll.scrollTo({ x: event.nativeEvent.contentOffset.x, animated: true });
+        this.roomScroll.scrollTo({x: event.nativeEvent.contentOffset.x, animated: true});
     }
 
-    deleteItemFromChosenEvents=(arg)=> {
+    deleteItemFromChosenEvents = (arg) => {
         let array = choosen;
         let index = array.indexOf(arg)
         array.splice(index, 1);
-        this.setState({choosen:choosen})
+        this.setState({choosen: choosen})
     }
 
     addItemToChosenEvents(arg) {
@@ -178,62 +162,71 @@ class AgendaScreen extends Component {
 
 
     render() {
-        const { isClicked , filter} = this.state
-        DATAS=this.state.data
-        rooms=this.state.rooms
+        const {isClicked, filter} = this.state
+        DATAS = this.state.data
+        rooms = this.state.rooms
         choosen = this.state.choosen
+        const agenda = this.props.agenda;
         return (
-            <Container style={{ backgroundColor: '#fff' }}>
+            <Container style={{backgroundColor: '#fff'}}>
                 <If con={isClicked}>
                     <If.Then>
-                        <Filter visible={filter} onPress ={(e) => this.filterHide(e)} onClose={()=>this.closeFilter} events={MOCKDATA} />
+                        <Filter visible={filter} onPress={(e) => this.filterHide(e)} onClose={() => this.closeFilter}
+                                events={agenda}/>
                         <Header leftImage='chevron-left' rightImage='bars'
                                 onPressLeft={() => this.props.navigation.goBack(null)}
-                                onPressRight={() => {this.props.navigation.navigate('DrawerOpen')}}>
-                            <Picker style={{width:140}}
+                                onPressRight={() => {
+                                    this.props.navigation.navigate('DrawerOpen')
+                                }}>
+                            <Picker style={{width: 140}}
                                     selectedValue={this.state.switchedDay}
                                     onValueChange={(itemValue, itemIndex) => this.changeDate(itemValue)}>
-                                    {eventsDates.map((item,i)=>
-                                        <Picker.Item key={i+1} label={"Day "+(i+1)} value={item} />
-                                    )}
+                                {eventsDates.map((item, i) =>
+                                    <Picker.Item key={i + 1} label={"Day " + (i + 1)} value={item}/>
+                                )}
                             </Picker>
                         </Header>
                         <View style={styles.roomsField}>
-                            <TouchableOpacity onPress={() => this.setState({filter:true})}>
-                            <Icon name='ios-funnel-outline' style={styles.filterIcon} />
+                            <TouchableOpacity onPress={() => this.setState({filter: true})}>
+                                <Icon name='ios-funnel-outline' style={styles.filterIcon}/>
                             </TouchableOpacity>
-                            <View style={{marginLeft:30,margin:8}}>
-                            <ScrollView horizontal ref={(el) => { this.roomScroll = el; }} showsHorizontalScrollIndicator={false}>
-                                {rooms.map((oda, i) =>
-                                    <Text key={i} style={styles.roomText}>{oda}</Text>
-                                )}
-                            </ScrollView>
+                            <View style={{marginLeft: 30, margin: 8}}>
+                                <ScrollView horizontal ref={(el) => {
+                                    this.roomScroll = el;
+                                }} showsHorizontalScrollIndicator={false}>
+                                    {rooms.map((oda, i) =>
+                                        <Text key={i} style={styles.roomText}>{oda}</Text>
+                                    )}
+                                </ScrollView>
                             </View>
                         </View>
                     </If.Then>
                     <If.Else>
                         <Header leftImage='chevron-left'
                                 onPressLeft={() => this._hide()}>
-                            <Header.Title title="Seçtiklerim" />
+                            <Header.Title title="Schedule"/>
                         </Header>
                     </If.Else>
                 </If>
-                <Content >
+                <Content>
                     <If con={isClicked}>
 
                         <If.Then>
 
-                            <Content >
-                                <View style={{ flexDirection: 'row' }}>
+                            <Content>
+                                <View style={{flexDirection: 'row'}}>
 
-                                    <View style={{ margin: 5, padding: 5 }}>
+                                    <View style={{margin: 5, padding: 5}}>
                                         {Object.keys(DATAS).map((list, i) => (
 
-                                            <View key={i}>{DATAS[list][0].level === 0 ? <Text style={{ margin: 8 }}>{list}</Text> : <Text style={styles.cardsTime}>{list}</Text>}</View>
+                                            <View key={i}>{DATAS[list][0].level === 0 ?
+                                                <Text style={{margin: 8}}>{list}</Text> :
+                                                <Text style={styles.cardsTime}>{list}</Text>}</View>
                                         ))}
                                     </View>
-                                    <ScrollView horizontal onScroll={this.handleScroll} showsHorizontalScrollIndicator={false} >
-                                        <ScrollView >
+                                    <ScrollView horizontal onScroll={this.handleScroll}
+                                                showsHorizontalScrollIndicator={false}>
+                                        <ScrollView>
                                             {Object.keys(DATAS).map((time, i) => (
                                                 <View key={i}>
                                                     <If con={DATAS[time][0].level !== 0}>
@@ -241,12 +234,13 @@ class AgendaScreen extends Component {
                                                             <View style={styles.cardsField}>
 
                                                                 {rooms.map((myroom, i) => (
-                                                                    <View key={i}>{this.isThereEventInRoom(myroom, DATAS[time])}</View>
+                                                                    <View
+                                                                        key={i}>{this.isThereEventInRoom(myroom, DATAS[time])}</View>
                                                                 ))}
                                                             </View>
                                                         </If.Then>
                                                         <If.Else>
-                                                            <BreakTimeCard item={DATAS[time][0]} />
+                                                            <BreakTimeCard item={DATAS[time][0]}/>
                                                         </If.Else>
                                                     </If>
                                                 </View>
@@ -262,20 +256,25 @@ class AgendaScreen extends Component {
                             <View>
 
                                 {choosen.map((choosed, i) =>
-                                    <ChosenCard key={i} item={choosed} onPressDeleteButton={this.deleteItemFromChosenEvents}/>
+                                    <ChosenCard key={i} item={choosed}
+                                                onPressDeleteButton={this.deleteItemFromChosenEvents}/>
                                 )}
                             </View></If.Else>
                     </If>
                 </Content>
 
 
-                <Footer >
-                    <FooterTab style={{ backgroundColor: '#fff' }}>
-                        <Button vertical onPress={() => { this.setState({ isClicked: true }) }}>
-                            <Text style={{color:this.state.isClicked ?'#29B673':'#414042'}}>All</Text>
+                <Footer>
+                    <FooterTab style={{backgroundColor: '#fff'}}>
+                        <Button vertical onPress={() => {
+                            this.setState({isClicked: true})
+                        }}>
+                            <Text style={{color: this.state.isClicked ? '#29B673' : '#414042'}}>All</Text>
                         </Button>
-                        <Button vertical onPress={() => { this.setState({ isClicked: false }) }}>
-                            <Text style={{color:this.state.isClicked?'#414042':'#29B673'}}>Chosen</Text>
+                        <Button vertical onPress={() => {
+                            this.setState({isClicked: false})
+                        }}>
+                            <Text style={{color: this.state.isClicked ? '#414042' : '#29B673'}}>Chosen</Text>
                         </Button>
                     </FooterTab>
                 </Footer>
@@ -308,7 +307,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         height: 92
     },
-    filterIcon:{
+    filterIcon: {
         marginLeft: 15,
         marginRight: 15,
         margin: 8
