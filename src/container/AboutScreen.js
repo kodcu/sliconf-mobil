@@ -2,10 +2,14 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking, FlatList} from 'react-native';
 import {Container, Tab, Tabs, Thumbnail} from 'native-base'
 import Header from "../component/Header";
+import {connect} from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import IconSocial from 'react-native-vector-icons/Entypo'
 import Communications from 'react-native-communications';
 
+const mapStateToProps = (state) => ({
+    event: state.event.event,
+})
 
 export class About extends Component {
 
@@ -66,6 +70,8 @@ export class About extends Component {
 
 
     render() {
+        const {event} = this.props;
+
         return (
             <Container style={styles.container}>
 
@@ -82,18 +88,12 @@ export class About extends Component {
                     <View style={{padding: 15, justifyContent: 'center', alignItems: 'center'}} onPress={() => {
                     }}>
                         <Image
-                            source={{uri: 'https://pbs.twimg.com/profile_images/869175415822327808/O67MAYb2_400x400.jpg'}}
+                            source={{uri: event.logo}}
                             resizeMode="contain"
                             style={{margin: 10, width: 100, height: 100, borderRadius: 30}}/>
                         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-                            <Text style={{fontWeight: '700', fontSize: 25, color: '#444', margin: 10}}>JavaDay Istanbul
-                                2018</Text>
-                            <Text style={{fontWeight: '200', color: '#999', textAlign: 'center'}}>Java Day Istanbul is
-                                one of the most effective international community driven software conference of Turkey
-                                organised by Istanbul Java User Group. The conference helps developers to learn the
-                                newest technologies about Java, Web, Mobile, Big DATA, Cloud, DevOps, Agile and Future.
-                                Java Day Istanbul also helps developers, tech companies, and startups to establish good
-                                network among them.</Text>
+                            <Text style={{fontWeight: '700', fontSize: 25, color: '#444', margin: 10}}>{event.name}</Text>
+                            <Text style={{fontWeight: '200', color: '#999', textAlign: 'center'}}>{event.description}</Text>
                         </View>
                     </View>
 
@@ -107,16 +107,17 @@ export class About extends Component {
                              textStyle={styles.tabText}>
                             <View style={{justifyContent: 'flex-start', alignItems: 'center', flex: 1, marginTop: 10}}>
 
-                                {this.rowItem('contact@javaday.istanbul', 'ios-at-outline')}
-                                {this.rowItem(' +90 (850) 885 14 19', 'ios-call-outline')}
-                                {this.rowItem('+90 (506) 388 03 46', 'ios-call-outline')}
 
-                                <View style={{flexDirection: 'row', marginLeft: 50, marginRight: 50}}>
-                                    {this.rowSocial('facebook-with-circle', 'https://www.facebook.com/javadayistanbul/')}
-                                    {this.rowSocial('instagram-with-circle', 'https://www.instagram.com/javadayistanbul_2018/')}
-                                    {this.rowSocial('twitter-with-circle', 'https://twitter.com/javadayistanbul/')}
-                                    {this.rowSocial('youtube-with-circle', 'https://www.youtube.com/channel/UCadtQ5IDIECmr6j3iwfNBSA/')}
-                                </View>
+                                {event.about.email ? this.rowItem(event.about.email, 'ios-at-outline') : null}
+
+                                {event.about.phone ? <View>
+                                    {event.about.phone.map((item,index) => this.rowItem(item,'ios-call-outline'))}
+                                </View> : null}
+
+                                {event.about.sosial ? <View style={{flexDirection: 'row', marginLeft: 50, marginRight: 50}}>
+                                    {Object.keys(event.about.sosial).map((item,index) => this.rowSocial(item+'-with-circle', event.about.sosial[item]))}
+                                </View> : null}
+
                             </View>
                         </Tab>
 
@@ -132,7 +133,7 @@ export class About extends Component {
 
                                 <View style={{justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
 
-                                    {Object.keys(this.state.sponsor).map((item,index) =>
+                                    {Object.keys(event.sponsor).map((item,index) =>
                                         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
 
                                         <Text style={{
@@ -145,7 +146,7 @@ export class About extends Component {
 
                                             <View style={{alignItems: 'center', flex: 1}}>
                                                 <FlatList
-                                                    data={this.state.sponsor[item]}
+                                                    data={event.sponsor[item]}
                                                     renderItem={(info) => <Image source={{uri: info.item.logo}}
                                                                                  resizeMode="contain"
                                                                                  style={{margin: 10, width: 120, height: 80}}/>}
@@ -205,4 +206,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default About;
+export default connect(mapStateToProps)(About)
