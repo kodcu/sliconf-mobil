@@ -55,6 +55,7 @@ export const reducer = (state = initialState, action) => {
             }
         }
         case types.EVENT_POSTS_REQUEST: {
+            console.log("EVENT POST REQUESTTEYİZ")
             return {
                 ...state,
                 loading: true,
@@ -63,6 +64,7 @@ export const reducer = (state = initialState, action) => {
             }
         }
         case types.EVENT_POSTS_RESPONSE_SUC: {
+            console.log("BASARILI")
             return {
                 ...state,
                 loading: false,
@@ -71,6 +73,7 @@ export const reducer = (state = initialState, action) => {
             }
         }
         case types.EVENT_POSTS_RESPONSE_FAIL: {
+            console.log("FAIL")
             return {
                 ...state,
                 loading: false,
@@ -143,11 +146,13 @@ export const actionCreators = {
 
     },
     fetchEvent: (code) => async (dispatch, getState) => {
+        console.log("dispach yapılıyor.")
         dispatch({
             type: types.EVENT_POSTS_REQUEST
         })
 
         try {
+            console.log("try carhdayiz")
             const response = await fetch(API_EVENT)
             const posts = await response.json()
 
@@ -156,6 +161,7 @@ export const actionCreators = {
                 payload: posts.event
             })
         } catch (e) {
+            console.log("hata yakaladık")
             dispatch({
                 type: types.EVENT_POSTS_RESPONSE_FAIL,
                 payload: 'İşleminiz gerçekleştirilemiyor!'

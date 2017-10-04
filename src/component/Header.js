@@ -11,7 +11,7 @@ export class Header extends Component {
         const {leftImage, rightImage, onPressRight, onPressLeft, children,active} = this.props;
         return (
             <NBHeader backgroundColor="#fff" iosBarStyle={active === undefined || active === null ? "dark-content" : 'light-content'} androidStatusBarColor={active === undefined || active === null ? '#fff' : '#29B673'}
-                      noShadow={true} style={{backgroundColor: '#fff'}}>
+                      noShadow={true} style={{backgroundColor: '#fff',paddingTop:20}}>
                 <View style={[styles.header, this.props.headerStyle]}>
                     <Button style={{backgroundColor: 'rgba(0,0,0,0)', shadowColor: '#fff', elevation: 0}} onPress={onPressLeft}>
                         <Icon color={active === undefined || active === null ? '#333' : '#fff'}  name={leftImage} size={18}/>

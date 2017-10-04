@@ -31,7 +31,7 @@ class HomeScreen extends Component {
             <Container style={{backgroundColor: '#ffffff'}}>
 
                 <View style={{flex:0.45,backgroundColor:'#29B673',borderRadius:30}}>
-                    <Header active headerStyle={{backgroundColor:'#29B673'}}
+                    <Header headerStyle={{backgroundColor:'#29B673'}}
                             leftImage='chevron-left' rightImage='bars'
                             onPressLeft={() => this.props.navigation.goBack(null)}
                             onPressRight={() => {this.props.navigation.navigate('DrawerOpen')}}/>
