@@ -59,7 +59,7 @@ class DrawerMenu extends Component {
                                                         color={this.state.selected === item.key ? '#29B673' : '#333'}/>}
                 />
                 <View>
-                    <View style={{height: this.state.logout ? 70 : 0,backgroundColor:'#29B673',alignItems:'center',justifyContent:'space-around'}}>
+                    <View style={{height: this.state.logout ? 70 : 0,backgroundColor:this.state.logout ?'#29B673':'#fff',alignItems:'center',justifyContent:'space-around'}}>
                         <Text style={{color:'#fff',paddingTop:10}}>Are you sure?</Text>
                         <View style={{flexDirection:'row',flex:1,justifyContent:'space-around',alignItems:'center'}}>
                             <Button transparent onPress={() =>{ this.logout_close();this.setState({login:false})} }>

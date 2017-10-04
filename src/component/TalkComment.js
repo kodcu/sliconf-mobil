@@ -19,8 +19,8 @@ const POPULARENTRIES=[
 ]
 export class TalkComment extends Component {
 
-    renderRow (info) {
-        return <View  style={{margin:10,flexDirection:'row',marginTop:15,flex:1}}>
+    renderRow (info,key) {
+        return <View  key={key} style={{margin:10,flexDirection:'row',marginTop:15,flex:1}}>
             <Thumbnail source={{uri:info.picture}} small style={{marginBottom:15,flex:0.1}}/>
             <View style={{marginLeft:10,flex:0.9}} >
                 <View style={{flexDirection:'row'}}>
@@ -74,7 +74,7 @@ export class TalkComment extends Component {
                 </View>
                 <View style={{height:height-380}}>
                     <ScrollView>
-                        {ENTRIES.map((item)=> this.renderRow(item))}</ScrollView>
+                        {ENTRIES.map((item,key)=> this.renderRow(item,key))}</ScrollView>
                 </View>
             </View>
 

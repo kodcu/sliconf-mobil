@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {addNavigationHelpers} from 'react-navigation';
 import AppNavigator from './router'
-import {StatusBar} from 'react-native';
+import {Platform,StatusBar} from 'react-native';
 
 class App extends React.Component {
     componentDidMount() {
@@ -11,7 +11,8 @@ class App extends React.Component {
 
     componentWillMount() {
         StatusBar.setHidden(false);
-        StatusBar.setBackgroundColor("#fff")
+        if(Platform.OS === 'android')
+            StatusBar.setBackgroundColor("#fff")
         StatusBar.setBarStyle("dark-content",true)
     }
 

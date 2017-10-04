@@ -44,7 +44,7 @@ class LocationScreen extends Component {
                 </Header>
                 <View style={styles.container}>
                     <MapView
-                        provider={PROVIDER_GOOGLE}
+                        //provider={PROVIDER_GOOGLE}
                         style={styles.map}
                         initialRegion={{
                             latitude: location.lat,

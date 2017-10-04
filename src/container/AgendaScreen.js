@@ -179,6 +179,7 @@ class AgendaScreen extends Component {
                                     this.props.navigation.navigate('DrawerOpen')
                                 }}>
                             <Picker style={{width: 140}}
+                                    placeholder="Day 1"
                                     selectedValue={this.state.switchedDay}
                                     onValueChange={(itemValue, itemIndex) => this.changeDate(itemValue)}>
                                 {eventsDates.map((item, i) =>

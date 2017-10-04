@@ -23,7 +23,6 @@ const DrawerItem = ({navigation, icon, name, screenName, color, onPress}) =>
         <Text style={{
             fontFamily: "Montserrat-Regular",
             fontSize: 15,
-            fontWeight: '300',
             margin: 15,
             color: color
         }}>{name}  </Text>

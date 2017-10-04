@@ -42,6 +42,8 @@
 	<string/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+        <true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
@@ -73,6 +75,11 @@
 		<string>Montserrat-Medium.ttf</string>
 		<string>Montserrat-SemiBold.ttf</string>
 		<string>Montserrat-Thin.ttf</string>
+		<string>Feather.ttf</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>This app wants to access your camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>his app wants to access your photo library</string>
 </dict>
 </plist>
