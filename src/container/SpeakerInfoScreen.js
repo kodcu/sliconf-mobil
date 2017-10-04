@@ -100,7 +100,7 @@ class SpeakerInfoScreen extends Component {
                 </Header>
                 <View style={{alignItems: 'center'}}>
                     <Image source={{uri: speaker.profilePicture}}
-                           style={{borderRadius: 90, width: 120, height: 120, margin: 10}}/>
+                           style={{borderRadius: 50, width: 120, height: 120, margin: 10}}/>
                     <Text style={{fontSize: 18, color: '#414042'}}>{speaker.name}</Text>
                     <Text style={{fontSize: 12}}>{speaker.workingat}</Text>
                     <View style={{flexDirection: 'row'}}>
