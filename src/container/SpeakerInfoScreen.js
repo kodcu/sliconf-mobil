@@ -58,7 +58,7 @@ class SpeakerInfoScreen extends Component {
         if (!this.state.isAboutOpen) {
             height.setValue(0)
             width.setValue(0)
-            Animated.spring(height, {toValue: phoneH/2.1, friction: 7}).start()
+            Animated.spring(height, {toValue: phoneH/1.9, friction: 7}).start()
             Animated.spring(width, {toValue: phoneW, friction: 7}).start()
         } else {
             height.setValue(0)
