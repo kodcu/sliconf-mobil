@@ -8,10 +8,10 @@ export class Header extends Component {
 
 
     render() {
-        const {leftImage, rightImage, onPressRight, onPressLeft, children,active} = this.props;
+        const {leftImage, rightImage, rightText, onPressRight, onPressLeft, children,active} = this.props;
         return (
             <NBHeader backgroundColor="#fff" iosBarStyle={active === undefined || active === null ? "dark-content" : 'light-content'} androidStatusBarColor={active === undefined || active === null ? '#fff' : '#29B673'}
-                      noShadow={true} style={{backgroundColor: '#fff',paddingTop:20}}>
+                      noShadow={true} style={{backgroundColor: '#fff',paddingTop:Platform.os === 'ios' ? 20 : 0 }}>
                 <View style={[styles.header, this.props.headerStyle]}>
                     <Button style={{backgroundColor: 'rgba(0,0,0,0)', shadowColor: '#fff', elevation: 0}} onPress={onPressLeft}>
                         <Icon color={active === undefined || active === null ? '#333' : '#fff'}  name={leftImage} size={18}/>
@@ -22,7 +22,10 @@ export class Header extends Component {
                     </View>
 
                     <Button style={{backgroundColor: 'rgba(0,0,0,0)', shadowColor: '#fff', elevation: 0}} onPress={onPressRight}>
-                        <Icon color={active === undefined || active === null ? '#333' : '#fff'} name={rightImage} size={18}/>
+                        {rightText ? <Text style={{fontFamily: 'Montserrat-Medium', fontSize: 14,
+                            color:active === undefined || active === null ? '#333' : '#fff'}}>{rightText} </Text> : null}
+                        {rightImage ? <Icon color={active === undefined || active === null ? '#333' : '#fff'} name={rightImage} size={18}/> : null}
+
                     </Button>
                 </View>
             </NBHeader>

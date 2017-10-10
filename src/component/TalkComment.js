@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet,FlatList,Dimensions,ScrollView} from 'react-native';
-import {Container,Button, Footer, FooterTab, Input, Thumbnail,Content} from "native-base";
+import {View, Text, StyleSheet,FlatList,Dimensions,ScrollView,Alert} from 'react-native';
+import {Container, Button, Footer, FooterTab, Input, Thumbnail, Content, Fab} from "native-base";
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -72,10 +72,21 @@ export class TalkComment extends Component {
                         removeClippedSubviews={false}/>
 
                 </View>
-                <View style={{height:height-380}}>
+                <View style={{height:height-355}}>
                     <ScrollView>
                         {ENTRIES.map((item,key)=> this.renderRow(item,key))}</ScrollView>
                 </View>
+
+                <Fab
+                    active={true}
+                    direction="left"
+                    containerStyle={{ }}
+                    style={{ backgroundColor: '#29B673' }}
+                    position="bottomRight"
+                    onPress={() => {}}>
+                    <Icon  name="ios-text" />
+                </Fab>
+
             </View>
 
         )

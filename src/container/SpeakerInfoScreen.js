@@ -58,7 +58,7 @@ class SpeakerInfoScreen extends Component {
         if (!this.state.isAboutOpen) {
             height.setValue(0)
             width.setValue(0)
-            Animated.spring(height, {toValue: phoneH/1.9, friction: 7}).start()
+            Animated.spring(height, {toValue: phoneH-290, friction: 7}).start()
             Animated.spring(width, {toValue: phoneW, friction: 7}).start()
         } else {
             height.setValue(0)
@@ -98,7 +98,7 @@ class SpeakerInfoScreen extends Component {
                         }}>
                     <Header.Title title="Speaker Info"/>
                 </Header>
-                <View style={{alignItems: 'center'}}>
+                <View style={{alignItems: 'center', height:230}}>
                     <Image source={{uri: speaker.profilePicture}}
                            style={{borderRadius: 50, width: 120, height: 120, margin: 10}}/>
                     <Text style={{fontSize: 18, color: '#414042'}}>{speaker.name}</Text>
@@ -131,9 +131,9 @@ class SpeakerInfoScreen extends Component {
 
                 <If con={this.state.isAboutOpen}>
                     <If.Then>
-                        <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', marginTop: 10}}>
+                        <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', marginTop: 5}}>
                             <AnimatedView
-                                style={{width, height, borderWidth: 1, borderColor: '#29B673',}}>
+                                style={{width, height, borderWidth: 1, borderColor: '#29B673',borderRadius:10}}>
                                 <ScrollView style={{margin: 15}} showsVerticalScrollIndicator={false}>
                                     <Text style={{
                                         margin: 10,
