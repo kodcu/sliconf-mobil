@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Text, View , ActivityIndicator} from 'react-native';
+import { Modal, Text, View , ActivityIndicator,Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
 
 export default class Loading extends Component {
@@ -18,6 +18,9 @@ export default class Loading extends Component {
                             flex: 1,
                             justifyContent: 'center',
                             alignItems: 'center',
+                            width:Dimensions.get('window').width,
+                            height:Dimensions.get('window').height,
+                            backgroundColor:'rgba(0,0,0,0.1)'
                         }}>
                         <View
                             style={{
@@ -37,6 +40,7 @@ export default class Loading extends Component {
                             }}>
                                 <ActivityIndicator animating={true} color= '#789' size='large'/>
                                 <Text style={{marginTop: 25,fontWeight :'bold', color :'#789'}}>Loading...</Text>
+
                             </View>
                         </View>
                     </View>

@@ -6,43 +6,40 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import If from "../component/If";
 import TalkInfo from "../component/TalkInfo";
 import TalkComment from "../component/TalkComment";
-import {TalkRate} from "../component/TalkRate";
+import TalkRate from "../component/TalkRate";
 
 export class TalkDetail extends Component {
 
     state = {
-        tab:'info'
+        tab:'info',
+        rate:false
     }
 
 
     render() {
 
-        const {tab} = this.state
-
+        const {tab,rate} = this.state
+        const {state} = this.props.navigation;
+        let talk= state.params
         return (
             <Container style={styles.container}>
 
-                <Header leftImage='chevron-left' rightImage='bars'
+                <Header leftImage='chevron-left' rightText='Rate'
                         onPressLeft={() => this.props.navigation.goBack()}
-                        onPressRight={() => {
-                            this.props.navigation.navigate('DrawerOpen')
-                        }}>
+                        onPressRight={() => {this.setState({rate:true})}}>
                     <Header.Title title="Talk Detail"/>
                 </Header>
 
                 <Content>
-                   <If>
-                       <If.Then con={tab==='info'}>
-                          <TalkInfo/>
+                    <TalkRate visible={rate} onPressDismiss={() => {this.setState({rate:false})}} />
+                   <If con={tab==='info'}>
+                       <If.Then>
+                          <TalkInfo Talk={talk}/>
                        </If.Then>
 
-                       <If.ElseIf con={tab==='comment'}>
+                       <If.Else>
                           <TalkComment/>
-                       </If.ElseIf>
-
-                       <If.ElseIf con={tab==='rate'}>
-                          <TalkRate/>
-                       </If.ElseIf>
+                       </If.Else>
 
                    </If>
                 </Content>
@@ -58,9 +55,6 @@ export class TalkDetail extends Component {
                             <Icon size={25} name={tab==='comment' ? 'ios-chatbubbles' : 'ios-chatbubbles-outline'} color={tab==='comment' ? '#29B673' : '#333'}/>
                         </Button>
 
-                        <Button vertical onPress={() =>this.setState({tab:'rate'})}>
-                            <Icon size={25} name={tab==='rate' ? 'ios-ribbon' : 'ios-ribbon-outline'} color={tab==='rate' ? '#29B673' : '#333'}/>
-                        </Button>
                     </FooterTab>
 
                 </Footer>

@@ -28,10 +28,10 @@ class HomeScreen extends Component {
         const {event} = this.props;
         console.log("evo",event)
         return (
-            <Container style={{backgroundColor: '#ffffff'}}>
+            <Container style={{backgroundColor: '#fff'}}>
 
                 <View style={{flex:0.45,backgroundColor:'#29B673',borderRadius:30}}>
-                    <Header headerStyle={{backgroundColor:'#29B673'}}
+                    <Header active headerStyle={{backgroundColor:'#29B673'}}
                             leftImage='chevron-left' rightImage='bars'
                             onPressLeft={() => this.props.navigation.goBack(null)}
                             onPressRight={() => {this.props.navigation.navigate('DrawerOpen')}}/>
@@ -64,8 +64,8 @@ class HomeScreen extends Component {
 
                 </View>
 
-                <View style={{flex: 0.55, alignItems: 'center', justifyContent: 'space-between',}}>
-                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor:'#fff',paddingBottom:0}}>
+                <View style={{flex: 0.55, alignItems: 'center', justifyContent: 'space-between'}}>
+                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor:'#fff',paddingBottom:0,borderRadius:0,}}>
                         <View style={{flexDirection: 'row',justifyContent:'space-around',width}}>
                             <View style={{padding:30}} >
                                 <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center'}}

@@ -136,7 +136,7 @@ class AgendaScreen extends Component {
                                         isClicked={true}
                                         key={arg[i].key}
                                         choosedEvents={choosen}
-                                        onPress={() => this.props.navigate(TALK)}
+                                        onPress={() => this.props.navigate(TALK,arg)}
                                         onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
                     }
                 }
@@ -146,7 +146,7 @@ class AgendaScreen extends Component {
                                     isClicked={false}
                                     key={arg[i].key}
                                     choosedEvents={choosen}
-                                    onPress={() => this.props.navigation.navigate(TALK)}
+                                    onPress={() => this.props.navigation.navigate(TALK,arg)}
                                     onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
             } else {
                 isExist = false;
