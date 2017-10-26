@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet,FlatList,Dimensions,ScrollView,Alert} from 'react-native';
+import {View, Text, StyleSheet,FlatList,Dimensions,ScrollView,TouchableOpacity} from 'react-native';
 import {Container, Button, Footer, FooterTab, Input, Thumbnail, Content, Fab} from "native-base";
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons'
+import CommentItem from "./CommentItem";
 
 const ENTRIES=[
     {name:'Fernando Muslera',comment:'Yorum',time:'5 min ago',like:20,picture:'https://tmssl.akamaized.net//images/portrait/header/58088-1473586641.jpeg?lm=1473586671'},
@@ -20,24 +21,7 @@ const POPULARENTRIES=[
 export class TalkComment extends Component {
 
     renderRow (info,key) {
-        return <View  key={key} style={{margin:10,flexDirection:'row',marginTop:15,flex:1}}>
-            <Thumbnail source={{uri:info.picture}} small style={{marginBottom:15,flex:0.1}}/>
-            <View style={{marginLeft:10,flex:0.9}} >
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{fontSize:12,color:'#000',fontWeight:'bold',marginBottom:10}}>{info.name} </Text>
-                    <Text style={{fontSize:12,color:'#000',fontWeight:'bold',marginBottom:10}}> ~ </Text>
-                    <Text style={{fontSize:12,color:'#414042',marginBottom:10}}>{info.time} </Text>
-                </View>
-                <Text style={{fontSize:12,color:'#414042'}}>{info.comment}</Text>
-                <View style={{flexDirection:'row',marginTop:10,justifyContent:'space-between'}}>
-                    <Text>Like ?</Text>
-                    <View style={{flexDirection:'row'}}>
-                        <Text style={{marginRight:5}}>{info.like}</Text>
-                        <Icon name='ios-heart-outline' size={20}/>
-                    </View>
-                </View>
-            </View>
-        </View>
+        return <CommentItem item={info} key={key}/>
 
 
     }
@@ -64,7 +48,7 @@ export class TalkComment extends Component {
                         inactiveSlideOpacity={1}
                         enableMomentum={true}
                         activeSlideAlignment={'start'}
-                        autoplay={true}
+                        autoplay={false}
                         autoplayDelay={500}
                         autoplayInterval={2500}
                         containerCustomStyle={styles.slider}
@@ -83,9 +67,11 @@ export class TalkComment extends Component {
                     containerStyle={{ }}
                     style={{ backgroundColor: '#29B673' }}
                     position="bottomRight"
-                    onPress={() => {}}>
+                    onPress={this.props.question}>
                     <Icon  name="ios-text" />
                 </Fab>
+
+
 
             </View>
 
