@@ -39,6 +39,9 @@ const EventStack = DrawerNavigator({
             [TALK]: {screen: TalkDetailScreen},
         }, {
             headerMode: 'none',
+            navigationOptions: {
+                gesturesEnabled: false
+            }
         })
     },
     [SPEAKERS]: {
@@ -47,6 +50,9 @@ const EventStack = DrawerNavigator({
             [SPEAKERINFO]: {screen: SpeakerInfoScreen}
         }, {
             headerMode: 'none',
+            navigationOptions: {
+                gesturesEnabled: false
+            }
         })
     },
     [INFO]: {screen: InfoScreen},
@@ -57,6 +63,9 @@ const EventStack = DrawerNavigator({
 
 }, {
     headerMode: 'none',
+    navigationOptions: {
+        gesturesEnabled: false
+    },
     drawerWidth: 250,
     drawerPosition: 'right',
     contentOptions: {
@@ -72,7 +81,10 @@ const MainStack = StackNavigator({
 
 }, {
     headerMode: 'none',
-    gesturesEnabled: false
+    navigationOptions: {
+        gesturesEnabled: false
+    }
+
 });
 
 // Manifest of possible screens
@@ -82,6 +94,9 @@ const PrimaryNav = StackNavigator({
     },
     {
         headerMode: 'none',
+        navigationOptions: {
+            gesturesEnabled: false
+        }
     });
 
 export default PrimaryNav
