@@ -1,27 +1,15 @@
-import React, {Component} from 'react'
-import {
-    View,
-    TouchableOpacity,
-    Text,
-    ListView,
-    Image,
-    StyleSheet
-} from 'react-native'
+import React from 'react'
+import {StyleSheet, Text, TouchableOpacity} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-import Icon2 from 'react-native-vector-icons/FontAwesome'
+import Font from "../theme/Font";
 
-const DrawerItem = ({navigation, icon, name, screenName, color, onPress}) =>
-
+const DrawerItem = ({navigation, icon, name, screenName, color,current}) =>
     <TouchableOpacity
         style={styles.menuItem}
-        onPress={() => {
-            navigation.navigate(screenName);
-            onPress();
-        }}
-    >
-        {icon === 'building-o' ? <Icon2 name={icon} size={25} color={color} style={{margin: 15}}/> : <Icon name={icon} size={25} color={color} style={{margin: 15}}/>}
+        onPress={() => {if(current !== screenName) navigation.navigate(screenName);}}>
+        {<Icon name={icon} size={25} color={color} style={{margin: 15,width:25}}/>}
         <Text style={{
-            fontFamily: "Montserrat-Regular",
+            ...Font.regular,
             fontSize: 15,
             margin: 15,
             color: color
@@ -34,6 +22,6 @@ const styles = StyleSheet.create({
     menuItem: {
         flexDirection: 'row'
     },
-})
+});
 
 export default DrawerItem

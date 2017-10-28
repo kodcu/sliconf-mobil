@@ -152,7 +152,6 @@ export const actionCreators = {
         })
 
         try {
-            console.log("try carhdayiz")
             const response = await fetch(API_EVENT)
             const posts = await response.json()
 

@@ -1,36 +1,25 @@
 import React, {Component} from 'react';
+import {Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {
-    View,
-    Text,
-    StyleSheet,
-    ScrollView,
-    Image,
-    TouchableOpacity,
-    FlatList,
-    Dimensions,
-    ListView
-} from 'react-native';
-import {
-    Container,
     Button,
-    Icon,
-    Title,
-    Content,
-    CardItem,
-    Thumbnail,
     Card,
-    List,
-    Item,
+    CardItem,
+    Container,
+    Content,
     Footer,
     FooterTab,
-    Picker,
     Form,
-    Item as FormItem
+    Icon,
+    Item,
+    List,
+    Picker,
+    Thumbnail,
+    Title
 } from 'native-base';
-import AlphabeticView from '../component/AlphabeticView'
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import {SPEAKERINFO} from '../router';
+import {actionCreators} from "../reducks/module/drawer";
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
@@ -43,6 +32,29 @@ class SpeakersScreen extends Component {
         weye: [],
         selected: 0
     }
+    _keyExtractor = (item, index) => index;
+    handleScroll = (event) => {
+        const {weye,} = this.state
+        const DATAS = this.props.event.speakers
+
+        let scrollIndex = Math.floor(event.nativeEvent.contentOffset.y / 205)
+        let leftSpeaker = DATAS[(scrollIndex === -1 ? 0 : scrollIndex) * 2]
+        let nameChar = leftSpeaker.name.charAt(0).toUpperCase()
+        let index = Object.keys(weye).indexOf(nameChar);
+        this.setState({selected: index})
+    }
+    setSelected = (index, item) => {
+        this.setState({selected: index})
+        this.myfunction(item)
+    }
+    myfunction = (letter) => {
+        let DATAS = this.props.event.speakers
+        if (this.state.weye[letter] !== undefined) {
+            let item = this.state.weye[letter][0]
+            this.myFlatList.scrollToIndex({animated: true, index: Math.floor(0.5 * DATAS.indexOf(item))});
+        }
+    }
+    getItemLayout = (data, index) => ({length: 200, offset: 200 * index, index});
 
     speakersList(sp) {
         let changedSpeakersList = [];
@@ -61,8 +73,6 @@ class SpeakersScreen extends Component {
         return changedSpeakersList
     }
 
-    _keyExtractor = (item, index) => index;
-
     renderRow(info) {
         return <TouchableOpacity onPress={() => this.props.navigation.navigate(SPEAKERINFO, info)}><View
             style={styles.card}>
@@ -75,6 +85,9 @@ class SpeakersScreen extends Component {
     }
 
     componentWillMount() {
+        const {dispatch, navigation} = this.props;
+        dispatch(actionCreators.changedDrawer(navigation.state.routeName));
+
         this.setState({
             weye: this.speakersList(this.props.event.speakers)
         })
@@ -83,31 +96,6 @@ class SpeakersScreen extends Component {
     componentWillUpdate(nextProps, nextState) {
         console.log(nextState)
     }
-
-    handleScroll = (event) => {
-        const {weye,} = this.state
-        const DATAS = this.props.event.speakers
-
-        let scrollIndex = Math.floor(event.nativeEvent.contentOffset.y / 205)
-        let leftSpeaker = DATAS[(scrollIndex === -1 ? 0 : scrollIndex) * 2]
-        let nameChar = leftSpeaker.name.charAt(0).toUpperCase()
-        let index = Object.keys(weye).indexOf(nameChar);
-        this.setState({selected: index})
-    }
-
-    setSelected = (index, item) => {
-        this.setState({selected: index})
-        this.myfunction(item)
-    }
-
-    myfunction = (letter) => {
-        let DATAS = this.props.event.speakers
-        if (this.state.weye[letter] !== undefined) {
-            let item = this.state.weye[letter][0]
-            this.myFlatList.scrollToIndex({animated: true, index: Math.floor(0.5 * DATAS.indexOf(item))});
-        }
-    }
-    getItemLayout = (data, index) => ({length: 200, offset: 200 * index, index});
 
     // Hangi harfe basarsa git arrayda o harfin ilk elemanını bul sonra onun indexine flatlistin scrollto özelliği ile git
     render() {
