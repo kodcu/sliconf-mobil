@@ -3,128 +3,81 @@
  */
 
 import React, {Component} from 'react'
-import {
-    View,
-    Text,
-    StyleSheet,
-    Image,
-    TextInput,
-    StatusBar,
-    FlatList,
-    Button,
-    Dimensions,
-    Platform,
-    TouchableOpacity
-} from 'react-native'
-import {Form, Item, Label, Input} from 'native-base';
-import {connect} from 'react-redux'
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import Color from "../theme/Color";
+import Font from "../theme/Font";
+import * as Scale from "../theme/Scale";
+import {EVENT_STACK} from "../router";
 import {actionCreators} from '../reducks/module/event'
+import {connect} from 'react-redux'
+
 import Loading from '../component/Loading'
-import {HOME} from '../router';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import If from '../component/If'
 import Header from "../component/Header";
-import Makiko from "../component/Makiko";
-import Style from '../theme/Style'
+import AnimatedInput from "../component/AnimatedInput";
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
-const {height, width} = Dimensions.get('window');
-const logo = require("../../images/logo.png");
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
+const logo = require("../../images/logo.png");
 
 const mapStateToProps = (state) => ({
     loading: state.event.loading,
     error: state.event.error,
     events: state.event.events,
     errorMessage: state.event.errorMessage
-})
+});
+
 
 class MainScreen extends Component {
 
     state = {
-        value: '',
         search: true,
     };
 
-    static navigationOptions = {
-        header: null
-    };
-
-    _handlePressSearch(value) {
-        // TODO direk arama kosulunu duzenle
-        if (value === 'K404')
-            this.getEvent(value);
-        else
-            this.loadEventList(value);
-
-    }
-
-    loadEventList = async (name) => {
-        const {dispatch, error, loading} = this.props
-        await dispatch(actionCreators.fetchEventList(name))
-
-        if (!error && !loading)
-            this.getEvent("K123")
-
-
-    }
-
+    /**
+     * Girilen etkinkik koduna gore servisten etkinligi getirir
+     * @param code aranan etkinlik kodu
+     * @returns {Promise.<void>}
+     */
     getEvent = async (code) => {
-        const {dispatch,loading} = this.props
-        await dispatch(actionCreators.fetchEvent(code))
-        const {error,errorMessage} =this.props
-        if(error)
+        const {dispatch, loading} = this.props;
+        await dispatch(actionCreators.fetchEvent(code));
+        const {error, errorMessage} = this.props;
+        if (error)
             alert(errorMessage);
 
         if (!error && !loading) {
             //this.props.navigation.dispatch({type: 'drawerStack'});
-            this.props.navigation.navigate('drawerStack')
+            this.props.navigation.navigate(EVENT_STACK)
         }
+    };
+
+    /**
+     * Etkinlik arama islemini tetikler
+     * @param value aranan etkinlik kodu
+     * @private
+     */
+    _handlePressSearch(value) {
+        this.getEvent(value);
     }
 
+    /**
+     * QR code sayfasini kapatir
+     * @private
+     */
     _hide() {
         this.setState({search: true})
     }
 
-    _keyExtractor = (item, index) => item.id;
-
-    _errorDialog() {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                <View
-                    style={{
-                        width: width,
-                        marginTop: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: '#fff',
-                    }}>
-                    <View style={{
-                        alignSelf: 'center',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}>
-
-                        <Text style={{marginTop: 15, fontWeight: 'bold', color: '#d66', textAlign: 'center'}}>Etkinlik Bulunamadı</Text>
-                    </View>
-                </View>
-            </View>
-        )
-    }
-
-
     render() {
-        let {events, loading,} = this.props
-        const {search, value,} = this.state
+        let {loading} = this.props;
+        const {search} = this.state;
 
         return (
             <View style={styles.container}>
+
                 <Loading visible={loading}/>
 
                 <If con={search}>
@@ -132,25 +85,26 @@ class MainScreen extends Component {
                         <KeyboardAwareScrollView>
                             <View style={styles.container}>
                                 <View style={styles.logoContainer}>
-                                    <Image style={styles.image} source={require('../../images/logo.png')}/>
+                                    <Image style={styles.image} source={logo}/>
                                     <Text style={styles.title}>Welcome to SliConf</Text>
                                     <Text style={styles.subtitle}>Conferences at your fingertips</Text>
                                 </View>
 
                                 <View style={styles.containerBottom}>
                                     <View style={styles.search}>
-                                        <Makiko
+                                        <AnimatedInput
                                             label={'Event Code'}
                                             iconClass={FontAwesomeIcon}
                                             iconName={'search'}
-                                            iconColor={'#fff'}
-                                            inputStyle={{ color: '#111' }}
+                                            iconColor={Color.white}
+                                            inputStyle={{color: Color.green}}
                                             onSubmitEditing={(value) => this._handlePressSearch(value)}
                                         />
 
-
-                                        <TouchableOpacity style={{marginTop:20,alignItems:'center'}} onPress={()=>{this.setState({search:false})}}>
-                                            <Icon name ='qrcode-scan' size={50} color={'#414042'}/>
+                                        <TouchableOpacity
+                                            style={styles.qrcode}
+                                            onPress={() => this.setState({search: false})}>
+                                            <Icon name='qrcode-scan' size={50} color={Color.darkGray}/>
                                         </TouchableOpacity>
 
                                     </View>
@@ -163,10 +117,15 @@ class MainScreen extends Component {
                         <View style={styles.container}>
                             <Header rightImage='close'
                                     onPressRight={() => this._hide()}>
-                                <Header.Title title="QR Code" />
+                                <Header.Title title="QR Code"/>
                             </Header>
 
-                            <QRCodeScanner onRead={(e) => {(console.log('QR code scanned!'+' '+e, e));this._hide();this.getEvent(e)}}/>
+                            <QRCodeScanner
+                                onRead={(e) => {
+                                    this._hide();
+                                    this.getEvent(e)
+                                }}
+                            />
 
                             <View/>
 
@@ -185,20 +144,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: Color.white,
 
-    },
-    containerSearch: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 10,
-    },
-    containerTop: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 15,
     },
     containerBottom: {
         flex: 1,
@@ -206,75 +153,37 @@ const styles = StyleSheet.create({
     },
     search: {
         flex: 1,
-        width: Style.DEVICE_WIDTH - 80,
+        width: Scale.width - 80,
         justifyContent: 'flex-start',
-    padding:10},
+        padding: 10
+    },
     image: {
         height: 100,
         width: 100,
         marginBottom: 20,
         marginTop: 60
     },
-    textTitle: {
-        fontFamily: 'Montserrat-Regular',
-        color: '#2AB673',
-        fontSize: 25,
-        fontWeight: 'bold',
-        margin: 5
-    },
-    textSubtitle: {
-        color: '#888',
-        fontSize: 12
-    },
-    box: {
-        borderBottomWidth: (Platform.OS === 'ios') ? 1 : 0,
-        borderBottomColor: '#818284',
-        padding: 5
-    },
     logoContainer: {
         alignItems: 'center',
         justifyContent: 'center'
     },
-    logo: {
-        width: 200,
-        height: 200,
-    },
     title: {
-        color: '#2AB673',
+        ...Font.semiBold,
+        color: Color.green,
         marginTop: 10,
-        width: 200,
         textAlign: 'center',
-        opacity: 0.9,
-        fontFamily: "Montserrat-Bold",
-        fontSize: Style.FONT_SIZE_TITLE_LARGE* 0.8,
-        lineHeight: Style.FONT_SIZE_TITLE_LARGE * 1.3,
+        fontSize: Scale.verticalScale(18),
     },
     subtitle: {
-        fontFamily: "Montserrat-Light",
-        lineHeight: Style.FONT_SIZE_SMALL * 1.5,
-        fontSize: Style.FONT_SIZE_SMALL,
-        marginBottom: 10,
-        color: '#818285'
+        ...Font.light,
+        fontSize: Scale.verticalScale(12),
+        marginBottom: 5,
+        color: Color.darkGray5
     },
-    container2: {
-        padding: 20
-    },
-    input: {
-        height: 40,
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        marginBottom: 10,
-        color: '#000000',
-        paddingHorizontal: 10,
-    },
-    buttonContainer: {
-        backgroundColor: '#2AB673',
-        paddingVertical: 15
-    },
-    buttonText: {
-        textAlign: 'center',
-        color: '#FFFFFF',
-        fontWeight: '700'
+    qrcode: {
+        marginTop: 20,
+        alignItems: 'center'
     }
-})
+});
 
 export default connect(mapStateToProps)(MainScreen)

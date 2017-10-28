@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
     View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image, Animated, Linking,
-    FlatList
+    FlatList,Platform
 } from 'react-native';
 import {Container, Title, Content, Button} from 'native-base';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -9,6 +9,8 @@ import ChosenCard from '../component/ChosenCard'
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import If from '../component/If'
+import Color from "../theme/Color";
+import Font from "../theme/Font";
 
 const phoneW = Dimensions.get('window').width - 50
 const phoneH = Dimensions.get('window').height - 50
@@ -100,7 +102,7 @@ class SpeakerInfoScreen extends Component {
                 </Header>
                 <View style={{alignItems: 'center', height:230}}>
                     <Image source={{uri: speaker.profilePicture}}
-                           style={{borderRadius: 50, width: 120, height: 120, margin: 10}}/>
+                           style={{borderRadius:Platform.OS === 'ios' ? 50 : 90 , width: 120, height: 120, margin: 10}}/>
                     <Text style={{fontSize: 18, color: '#414042'}}>{speaker.name}</Text>
                     <Text style={{fontSize: 12}}>{speaker.workingat}</Text>
                     <View style={{flexDirection: 'row'}}>
@@ -113,13 +115,14 @@ class SpeakerInfoScreen extends Component {
                         <TouchableOpacity style={{margin: 10}} onPress={this.startAnimation}>
                             <View style={{
                                 borderRadius: 20,
-                                backgroundColor: '#29B673',
+                                backgroundColor: Color.green,
                                 width: 90,
                                 height: 30,
                                 justifyContent: 'center'
                             }}>
                                 <Text style={{
-                                    color: '#fff',
+                                    ...Font.regular,
+                                    color: Color.white,
                                     textAlign: 'center',
                                     textAlignVertical: 'center'
                                 }}>ABOUT</Text>
@@ -133,11 +136,11 @@ class SpeakerInfoScreen extends Component {
                     <If.Then>
                         <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', marginTop: 5}}>
                             <AnimatedView
-                                style={{width, height, borderWidth: 1, borderColor: '#29B673',borderRadius:10}}>
+                                style={{width, height, borderWidth: 1, borderColor: Color.green,borderRadius:10}}>
                                 <ScrollView style={{margin: 15}} showsVerticalScrollIndicator={false}>
                                     <Text style={{
+                                        ...Font.regular,
                                         margin: 10,
-                                        fontFamily: 'Montserrat-Regular',
                                     }}>{speaker.about}</Text>
                                 </ScrollView>
                             </AnimatedView>
@@ -150,9 +153,10 @@ class SpeakerInfoScreen extends Component {
                                 justifyContent: 'flex-start',
                                 alignItems: 'center',
                                 margin: 10,
-                                height:(talkList.length*160)
+                                height:(talkList.length*150)
                             }}>
                                 {talkList.map((item, i) => <ChosenCard key={i} item={item} visibleButton={false}/>)}
+
                             </View>
                         </ScrollView>
 

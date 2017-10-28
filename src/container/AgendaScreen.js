@@ -1,22 +1,22 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, ScrollView, Image, TouchableOpacity} from 'react-native';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {
-    Container,
-    Left,
-    Right,
     Button,
-    Icon,
-    Title,
-    Content,
-    CardItem,
-    Thumbnail,
     Card,
-    List,
-    Item,
+    CardItem,
+    Container,
+    Content,
     Footer,
     FooterTab,
-    Picker,
     Form,
+    Icon,
+    Item,
+    Left,
+    List,
+    Picker,
+    Right,
+    Thumbnail,
+    Title,
 } from 'native-base';
 import AgendaCard from '../component/AgendaCard'
 import ChosenCard from '../component/ChosenCard'
@@ -25,6 +25,7 @@ import Filter from '../component/Filter'
 import BreakTimeCard from '../component/BreakTimeCard'
 import If from '../component/If'
 import {connect} from 'react-redux'
+import {actionCreators} from '../reducks/module/drawer'
 import {SEARCHRESULT, TALK} from '../router';
 
 let choosen = [];
@@ -32,7 +33,7 @@ let eventsDates = [];
 
 const mapStateToProps = (state) => ({
     agenda: state.event.event.agenda,
-})
+});
 
 class AgendaScreen extends Component {
 
@@ -44,35 +45,43 @@ class AgendaScreen extends Component {
         filter: false,
         choosen: []
 
-    }
+    };
 
     filterHide = (searchResults) => {
         console.log('Agenda Screendeyim sonuclar')
         console.log(searchResults)
         this.setState({filter: false})
         this.props.navigation.navigate(SEARCHRESULT, searchResults)
-    }
+    };
 
     closeFilter = () => {
         console.log("kapandi")
         this.setState({filter: false})
-    }
-
+    };
+    handleScroll = (event) => {
+        this.roomScroll.scrollTo({x: event.nativeEvent.contentOffset.x, animated: true});
+    };
+    deleteItemFromChosenEvents = (arg) => {
+        let array = choosen;
+        let index = array.indexOf(arg);
+        array.splice(index, 1);
+        this.setState({choosen: choosen})
+    };
 
     eventsList(events) {
         let changedEventsList = [];
         let myMap = new Map();
 
         events.forEach(function (element) {
-            let time = element.time
-            myMap.get(time) ? array = myMap.get(time) : array = []
-            array.push(element)
+            let time = element.time;
+            myMap.get(time) ? array = myMap.get(time) : array = [];
+            array.push(element);
             myMap.set(time, array)
         });
 
         myMap.forEach(function (value, key) {
             changedEventsList = {...changedEventsList, [key]: value}
-        })
+        });
 
         return changedEventsList
     }
@@ -81,15 +90,18 @@ class AgendaScreen extends Component {
         let roomsList = [];
         let tempRoom = events.filter((thing, index, self) => self.findIndex((t) => {
             return t.room === thing.room
-        }) === index)
-        tempRoom.forEach((element) => roomsList.push(element.room))
+        }) === index);
+        tempRoom.forEach((element) => roomsList.push(element.room));
         roomsList.sort();
         return roomsList
     }
 
     componentWillMount() {
+        const {dispatch, navigation} = this.props;
+        dispatch(actionCreators.changedDrawer(navigation.state.routeName));
+
         const data = this.props.agenda;
-        Object.keys(data).forEach((date) => eventsDates.includes(date) ? null : eventsDates.push(date))
+        Object.keys(data).forEach((date) => eventsDates.includes(date) ? null : eventsDates.push(date));
         this.setState({
             rooms: this.roomsList(data[Object.keys(data)[0]]),
             data: this.eventsList(data[Object.keys(data)[0]])
@@ -105,17 +117,6 @@ class AgendaScreen extends Component {
         })
     }
 
-    handleScroll = (event) => {
-        this.roomScroll.scrollTo({x: event.nativeEvent.contentOffset.x, animated: true});
-    }
-
-    deleteItemFromChosenEvents = (arg) => {
-        let array = choosen;
-        let index = array.indexOf(arg)
-        array.splice(index, 1);
-        this.setState({choosen: choosen})
-    }
-
     addItemToChosenEvents(arg) {
         choosen.push(arg);
         console.log(choosen);
@@ -125,7 +126,7 @@ class AgendaScreen extends Component {
         let isExist = false;
         let i, j;
         for (i = 0; i < arg.length; i++) {
-            if (myroom == arg[i].room) {
+            if (myroom === arg[i].room) {
                 isExist = true;
                 for (j = 0; j < choosen.length; j++) {
                     if (arg[i] === choosen[j]) {
@@ -136,7 +137,7 @@ class AgendaScreen extends Component {
                                         isClicked={true}
                                         key={arg[i].key}
                                         choosedEvents={choosen}
-                                        onPress={() => this.props.navigate(TALK,arg)}
+                                        onPress={() => this.props.navigate(TALK, arg)}
                                         onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
                     }
                 }
@@ -146,7 +147,7 @@ class AgendaScreen extends Component {
                                     isClicked={false}
                                     key={arg[i].key}
                                     choosedEvents={choosen}
-                                    onPress={() => this.props.navigation.navigate(TALK,arg)}
+                                    onPress={() => this.props.navigation.navigate(TALK, arg)}
                                     onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
             } else {
                 isExist = false;
@@ -258,7 +259,8 @@ class AgendaScreen extends Component {
 
                                 {choosen.map((choosed, i) =>
                                     <ChosenCard key={i} item={choosed}
-                                                onPressDeleteButton={this.deleteItemFromChosenEvents} visibleButton={true}/>
+                                                onPressDeleteButton={this.deleteItemFromChosenEvents}
+                                                visibleButton={true}/>
                                 )}
                             </View></If.Else>
                     </If>

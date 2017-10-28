@@ -1,4 +1,4 @@
-import {StackNavigator, DrawerNavigator, DrawerItems} from 'react-navigation';
+import {DrawerNavigator, StackNavigator} from 'react-navigation';
 import SplashScreen from './container/SplashScreen';
 import MainScreen from './container/MainScreen';
 import HomeScreen from './container/HomeScreen';
@@ -14,27 +14,30 @@ import LocationScreen from "./container/LocationScreen"
 import FloorPlanScreen from "./container/FloorPlanScreen"
 import TalkDetailScreen from "./container/TalkDetailScreen"
 
-export let SPLASH = 'screen/Splash'
-export let MAIN = 'screen/Main'
-export let HOME = 'screen/Home'
-export let LOGIN = 'screen/Login'
-export let AGENDA = 'screen/Agenda'
-export let SPEAKERS = 'screen/Speakers'
-export let SEARCHRESULT = 'screen/SearchResult'
-export let INFO = 'screen/InfoScreen'
-export let SPEAKERINFO = 'screen/SpeakerInfo'
-export let LOCATION ='screen/Location'
-export let FLOOR ='screen/Floor'
-export let TALK ='screen/Talk'
+export const SPLASH = 'screen/Splash';
+export const MAIN = 'screen/Main';
+export const HOME = 'screen/Home';
+export const LOGIN = 'screen/Login';
+export const AGENDA = 'screen/Agenda';
+export const SPEAKERS = 'screen/Speakers';
+export const SEARCHRESULT = 'screen/SearchResult';
+export const INFO = 'screen/InfoScreen';
+export const SPEAKERINFO = 'screen/SpeakerInfo';
+export const LOCATION = 'screen/Location';
+export const FLOOR = 'screen/Floor';
+export const TALK = 'screen/Talk';
+export const EVENT_STACK = 'stack/Event';
+export const MAIN_STACK = 'stack/Main';
 
-const DrawerStack = DrawerNavigator({
+
+const EventStack = DrawerNavigator({
     [HOME]: {screen: HomeScreen},
     [AGENDA]: {
         screen: StackNavigator({
             [AGENDA]: {screen: AgendaScreen},
             [SEARCHRESULT]: {screen: SearchResult},
-            [TALK] :{screen:TalkDetailScreen},
-        },{
+            [TALK]: {screen: TalkDetailScreen},
+        }, {
             headerMode: 'none',
         })
     },
@@ -42,15 +45,14 @@ const DrawerStack = DrawerNavigator({
         screen: StackNavigator({
             [SPEAKERS]: {screen: SpeakersScreen},
             [SPEAKERINFO]: {screen: SpeakerInfoScreen}
-        },{
-    headerMode: 'none',
-})
+        }, {
+            headerMode: 'none',
+        })
     },
     [INFO]: {screen: InfoScreen},
     [LOGIN]: {screen: LoginScreen},
-    [LOCATION] :{screen:LocationScreen},
-    [FLOOR] :{screen:FloorPlanScreen},
-
+    [LOCATION]: {screen: LocationScreen},
+    [FLOOR]: {screen: FloorPlanScreen},
 
 
 }, {
@@ -62,23 +64,24 @@ const DrawerStack = DrawerNavigator({
         activeBackgroundColor: '#29B673',
     },
     contentComponent: DrawerMenu
-})
+});
 
-const LoginStack = StackNavigator({
+const MainStack = StackNavigator({
     [SPLASH]: {screen: SplashScreen},
     [MAIN]: {screen: MainScreen},
 
-},{
+}, {
     headerMode: 'none',
-})
+    gesturesEnabled: false
+});
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
-        loginStack: {screen: LoginStack},
-        drawerStack: {screen: DrawerStack}
+        [MAIN_STACK]: {screen: MainStack},
+        [EVENT_STACK]: {screen: EventStack}
     },
     {
         headerMode: 'none',
-    })
+    });
 
 export default PrimaryNav

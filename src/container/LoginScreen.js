@@ -77,9 +77,6 @@ const styles = StyleSheet.create({
         fontSize:20,
         fontWeight: 'bold'
     },
-    container2: {
-        padding:20
-    },
     input : {
         height: 40,
         backgroundColor:'rgba(255,255,255,0.2)',
