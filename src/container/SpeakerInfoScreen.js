@@ -35,15 +35,18 @@ class SpeakerInfoScreen extends Component {
         let speaker = this.props.navigation.state.params.item;
         let agenda = this.props.agenda;
 
-        let talk = [];
-        Object.keys(agenda).map((item,index) => {
-            speaker.topic.map((topic) => {
-                const talkFind = (talk) => talk.key === topic
-                talk.push(agenda[item].find(talkFind))
-            })
 
-            //speaker.topic.map((topic) => talk.push(topic.find(this.findTalk)))
-        })
+        let talk = [];
+        if (agenda !== undefined && agenda !==null && !agenda.isEmpty) {
+            Object.keys(agenda).map((item, index) => {
+                speaker.topic.map((topic) => {
+                    const talkFind = (talk) => talk.key === topic
+                    talk.push(agenda[item].find(talkFind))
+                })
+
+                //speaker.topic.map((topic) => talk.push(topic.find(this.findTalk)))
+            })
+        }
 
         this.setState({talkList:talk})
     }

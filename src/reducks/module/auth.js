@@ -2,15 +2,20 @@
  * Created by Muslum on 29.07.2017.
  */
 
+import Request from "../../service/Request";
+
 const types = {
     LOGIN_REQUEST: 'LOGIN_REQUEST',
     LOGIN_RESPONSE_SUC: 'LOGIN_RESPONSE_SUC',
     LOGIN_RESPONSE_FAIL: 'LOGIN_RESPONSE_FAIL',
     LOGOUT_REQUEST: 'LOGOUT_REQUEST',
-    LOGOUT_RESPONSE: 'LOGOUT_RESPONSE'
+    LOGOUT_RESPONSE: 'LOGOUT_RESPONSE',
+    REGISTER_REQUEST: 'REGISTER_REQUEST',
+    REGISTER_RESPONSE_SUC: 'REGISTER_RESPONSE_SUC',
+    REGISTER_RESPONSE_FAIL: 'REGISTER_RESPONSE_FAIL',
 }
 
-import {API_REGISTER, API_LOGIN} from '../API'
+import {API_REGISTER, API_LOGIN, postLOGIN, postREGISTER} from '../API'
 
 const initialState = {
     loading: false,
@@ -50,7 +55,35 @@ export const reducer = (state = initialState, action) => {
                 error: true,
                 login: false,
                 user: {},
-                errorMessage: message
+                errorMessage: payload
+            }
+        }
+        case types.REGISTER_REQUEST: {
+            return {
+                ...state,
+                loading: true,
+                error: false,
+                login: false,
+                user: {},
+            }
+        }
+        case types.REGISTER_RESPONSE_SUC: {
+            return {
+                ...state,
+                loading: false,
+                error: false,
+                login: true,
+                user: payload,
+            }
+        }
+        case types.REGISTER_RESPONSE_FAIL: {
+            return {
+                ...state,
+                loading: false,
+                error: true,
+                login: false,
+                user: {},
+                errorMessage: payload
             }
         }
         case types.LOGOUT_REQUEST: {
@@ -70,6 +103,73 @@ export const reducer = (state = initialState, action) => {
 export const actionCreators = {
 
     login: (username,password) => async (dispatch, getState) => {
+        dispatch({
+            type: types.LOGIN_REQUEST
+        })
+
+        await Request.POST(postLOGIN,{username,password},{
+            '200': (res)=>{
+                if (res.status)
+                    dispatch({
+                        type: types.LOGIN_RESPONSE_SUC,
+                        payload: res.returnObject
+                    })
+                else
+                    dispatch({
+                        type: types.LOGIN_RESPONSE_FAIL,
+                        payload: res.message
+                    })
+            },
+            otherwise:(res)=>{
+                dispatch({
+                    type: types.LOGIN_RESPONSE_FAIL,
+                    payload:res.message
+                })
+            },
+            fail:(err) =>{
+                dispatch({
+                    type: types.LOGIN_RESPONSE_FAIL,
+                    payload: 'İşleminiz gerçekleştirilemiyor!'
+                })
+            }
+        })
+
+    },
+    register: (fullname,username,email,password) => async (dispatch, getState) => {
+        dispatch({
+            type: types.REGISTER_REQUEST
+        })
+
+        await Request.POST(postREGISTER,{username,password,email,fullname},{
+            '200': (res)=>{
+                if (res.status)
+                    dispatch({
+                        type: types.REGISTER_RESPONSE_SUC,
+                        payload: res.returnObject
+                    })
+                else
+                    dispatch({
+                        type: types.LOGIN_RESPONSE_FAIL,
+                        payload: res.message
+                    })
+            },
+            otherwise:(res)=>{
+                dispatch({
+                    type: types.REGISTER_RESPONSE_FAIL,
+                    payload:res.message
+                })
+            },
+            fail:(err) =>{
+                dispatch({
+                    type: types.REGISTER_RESPONSE_FAIL,
+                    payload: 'İşleminiz gerçekleştirilemiyor!'
+                })
+            }
+        })
+
+    },
+
+    login2: (username,password) => async (dispatch, getState) => {
         dispatch({type: types.LOGIN_REQUEST});
 
 

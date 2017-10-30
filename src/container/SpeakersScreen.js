@@ -88,9 +88,13 @@ class SpeakersScreen extends Component {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
 
-        this.setState({
-            weye: this.speakersList(this.props.event.speakers)
-        })
+        const data = this.props.event.speakers;
+
+        if (data !== undefined && data !==null && !data.isEmpty) {
+            this.setState({
+                weye: this.speakersList(data)
+            })
+        }
     }
 
     componentWillUpdate(nextProps, nextState) {

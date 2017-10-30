@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     label: {
         ...Font.medium,
         position: 'absolute',
-        top: PADDING - 5,
+        top: PADDING-3,
         fontSize: 16,
         color: Color.white,
         backgroundColor: Color.transparent,

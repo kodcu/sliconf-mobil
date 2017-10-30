@@ -59,7 +59,7 @@ const EventStack = DrawerNavigator({
     [LOGIN]: {screen: LoginScreen},
     [LOCATION]: {screen: LocationScreen},
     [FLOOR]: {screen: FloorPlanScreen},
-
+    [LOGIN]: {screen: LoginScreen},
 
 }, {
     headerMode: 'none',
@@ -78,6 +78,7 @@ const EventStack = DrawerNavigator({
 const MainStack = StackNavigator({
     [SPLASH]: {screen: SplashScreen},
     [MAIN]: {screen: MainScreen},
+    [LOGIN]: {screen: LoginScreen},
 
 }, {
     headerMode: 'none',

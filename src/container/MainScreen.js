@@ -98,7 +98,7 @@ class MainScreen extends Component {
                                             iconName={'search'}
                                             iconColor={Color.white}
                                             inputStyle={{color: Color.green}}
-                                            onSubmitEditing={(value) => this._handlePressSearch(value)}
+                                            onSubmitEditing={(value) => this._handlePressSearch('pggo')}
                                         />
 
                                         <TouchableOpacity
@@ -123,7 +123,7 @@ class MainScreen extends Component {
                             <QRCodeScanner
                                 onRead={(e) => {
                                     this._hide();
-                                    this.getEvent(e)
+                                    this.getEvent(e.data)
                                 }}
                             />
 
