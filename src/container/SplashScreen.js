@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, NetInfo} from 'react-native'
 import {Image} from 'react-native-animatable'
-import {MAIN} from '../router';
+import {LOGIN, MAIN} from '../router';
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 

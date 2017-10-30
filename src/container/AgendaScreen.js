@@ -35,6 +35,25 @@ const mapStateToProps = (state) => ({
     agenda: state.event.event.agenda,
 });
 
+const mock2 ={ "05-05-2018" : [
+    {
+        "key": "a102",
+        "time": "09:00",
+        "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
+        "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
+        "level": 3,
+        "tags": [
+            "Java",
+            "JVM"
+        ],
+        "room": "Big Saloon",
+        "speaker": "Frédéric Hubin",
+        "star": 4.5,
+        "date": "05-05-2018"
+    }]};
+
+const mock ={ };
+
 class AgendaScreen extends Component {
 
     state = {
@@ -44,7 +63,6 @@ class AgendaScreen extends Component {
         rooms: [],
         filter: false,
         choosen: []
-
     };
 
     filterHide = (searchResults) => {
@@ -88,11 +106,11 @@ class AgendaScreen extends Component {
 
     roomsList(events) {
         let roomsList = [];
-        let tempRoom = events.filter((thing, index, self) => self.findIndex((t) => {
-            return t.room === thing.room
-        }) === index);
-        tempRoom.forEach((element) => roomsList.push(element.room));
-        roomsList.sort();
+            let tempRoom = events.filter((thing, index, self) => self.findIndex((t) => {
+                return t.room === thing.room
+            }) === index);
+            tempRoom.forEach((element) => roomsList.push(element.room));
+            roomsList.sort();
         return roomsList
     }
 
@@ -101,11 +119,15 @@ class AgendaScreen extends Component {
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
 
         const data = this.props.agenda;
-        Object.keys(data).forEach((date) => eventsDates.includes(date) ? null : eventsDates.push(date));
-        this.setState({
-            rooms: this.roomsList(data[Object.keys(data)[0]]),
-            data: this.eventsList(data[Object.keys(data)[0]])
-        })
+
+        if (data !== undefined && data !==null && !data.isEmpty){
+            Object.keys(data).forEach((date) => eventsDates.includes(date) ? null : eventsDates.push(date));
+            this.setState({
+                rooms: this.roomsList(data[Object.keys(data)[0]]),
+                data: this.eventsList(data[Object.keys(data)[0]])
+            })
+        }
+
     }
 
     changeDate(date) {

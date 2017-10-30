@@ -4,13 +4,14 @@ import {Button} from 'native-base'
 import {connect} from 'react-redux'
 import ProfileComponent from '../component/ProfileComponent'
 import DrawerItem from '../component/DrawerItemComponent'
-import {AGENDA, FLOOR, HOME, INFO, LOCATION, SPEAKERS} from "../router";
+import {AGENDA, FLOOR, HOME, INFO, LOCATION, LOGIN, SPEAKERS} from "../router";
 import If from "../component/If";
 import Font from "../theme/Font";
 import Color from "../theme/Color";
 
 const mapStateToProps = (state) => ({
     selectDrawer: state.drawer.drawerIndex,
+    user:state.auth.user
 });
 
 const userData = {
@@ -23,7 +24,12 @@ class DrawerMenu extends Component {
 
     state = {
         logout: false,
-        login: false
+        login: false,
+        userData : {
+            profileUrl: 'https://s-media-cache-ak0.pinimg.com/736x/a3/e3/d6/a3e3d67e30105ca1688565e484370ab8--social-networks-harry-potter.jpg',
+            username: 'Nursel Cıbır',
+            email: 'nurselcibir@gmail.com'
+        }
     };
 
     logout_close = () => this.setState({logout: false});
@@ -80,10 +86,10 @@ class DrawerMenu extends Component {
                     <If con={this.state.login}>
                         <If.Then>
                             <ProfileComponent logout={() => this.logout_open()} profileUrl={userData.profileUrl}
-                                              username={userData.username} email={userData.email}/>
+                                              username={this.props.user.username} email={this.props.user.email}/>
                         </If.Then>
                         <If.Else>
-                            <ProfileComponent.Login login={() => this.setState({login: true})}/>
+                            <ProfileComponent.Login login={() => {this.setState({login: true});this.props.navigation.navigate(LOGIN)}}/>
                         </If.Else>
                     </If>
                 </View>

@@ -25,7 +25,9 @@ export default class Request{
       payload.headers = {
         'Content-Type': 'application/json'
       };
-      payload.body = data;
+      payload.body = JSON.stringify({
+          ...data
+      });
     }
 
     try{
@@ -34,6 +36,7 @@ export default class Request{
       const json = await response.json()
       //TODO Loading popup hide
       if(callbacks[response.status]){
+          console.log('ifffffffffffff')
         callbacks[response.status](json)
         return;
       }else{
@@ -44,6 +47,7 @@ export default class Request{
       }
     }catch(err){
       //TODO Loading popup hide
+        console.log('keşşş '+ err)
       if(callbacks.fail){
         callbacks.fail(err)
       }

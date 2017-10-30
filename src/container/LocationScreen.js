@@ -40,12 +40,25 @@ class LocationScreen extends Component {
     componentWillMount(){
         const {dispatch,navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
+
+
     }
 
 
     render() {
-        const event = this.props.event;
-        const location = event.about.location;
+       const location = this.props.event.location;
+
+        if (location === undefined || location !==null || location.isEmpty){
+            return <View style={styles.container}>
+                <Header leftImage='chevron-left' rightImage='bars'
+                        onPressLeft={() => this.props.navigation.goBack()}
+                        onPressRight={() => {
+                            this.props.navigation.navigate('DrawerOpen')
+                        }}>
+                    <Header.Title title="Location"/>
+                </Header>
+            </View>
+        }
 
         return (
             <View style={styles.container}>
@@ -62,19 +75,19 @@ class LocationScreen extends Component {
                         //provider={PROVIDER_GOOGLE}
                         style={styles.map}
                         initialRegion={{
-                            latitude: location.lat,
-                            longitude: location.lng,
+                            latitude: parseFloat(location.lat),
+                            longitude: parseFloat(location.lng),
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421,
                         }}>
                         <MapView.Marker.Animated
-                            coordinate={{latitude: location.lat, longitude: location.lng}}
+                            coordinate={{latitude: parseFloat(location.lat), longitude: parseFloat(location.lng)}}
                             title={event.name}
                             description={location.description}
-                            onCalloutPress={() => this.redirectToMap(location.lat, location.lng, Platform.OS)}/>
+                            onCalloutPress={() => this.redirectToMap(parseFloat(location.lat), parseFloat(location.lng), Platform.OS)}/>
                     </MapView>
                 </View>
-                <TouchableOpacity onPress={() => this.redirectToMap(location.lat, location.lng, Platform.OS)}>
+                <TouchableOpacity onPress={() => this.redirectToMap(parseFloat(location.lat), parseFloat(location.lng), Platform.OS)}>
                     <View style={styles.getDirections}>
                         <View style={styles.addressContainer}>
                             <Text style={styles.venueName}>{event.name}</Text>

@@ -67,16 +67,16 @@ class HomeScreen extends Component {
                         <View>
                             <View style={styles.date}>
                                 <Icon color={Color.white} name='ios-clock-outline' size={22}/>
-                                <Text style={styles.dateText}>{event.time}</Text>
+                                <Text style={styles.dateText}>{event.startDate.time.hour}:{event.startDate.time.minute}</Text>
                             </View>
 
                             <View style={styles.date}>
                                 <Icon color={Color.white} name='ios-calendar-outline' size={22}/>
-                                <Text style={styles.dateText}>{event.date}</Text>
+                                <Text style={styles.dateText}>{event.startDate.date.day} {event.startDate.date.month} {event.startDate.date.year}</Text>
                             </View>
                         </View>
 
-                        <Image source={{uri: event.logo}}
+                        <Image source={{uri: event.logoPath}}
                                style={styles.eventLogo}
                         />
 

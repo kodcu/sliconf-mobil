@@ -23,8 +23,8 @@ export class About extends Component {
      * @param icon kullanilacak ikon ismi
      * @param type mail - telefon (email-phone)
      */
-    rowItem = (name, icon, type) =>
-        <TouchableOpacity
+    rowItem = (name, icon, type,index) =>
+        <TouchableOpacity key={index}
             style={{flexDirection: 'row', alignItems: 'center'}}
             onPress={() => type === "phone" ? Communications.phonecall(name, true) :
                 Communications.email([name.toString()], null, null, this.props.event.name + ' About', '')}>
@@ -39,8 +39,8 @@ export class About extends Component {
      * @param icon sosyal medya ikonunun ismi
      * @param url sosyal medya linki
      */
-    rowSocial = (icon, url) =>
-        <TouchableOpacity
+    rowSocial = (icon, url,index) =>
+        <TouchableOpacity key={index}
             style={{flexDirection: 'row', alignItems: 'center'}}
             onPress={() => this.redirect(url)}>
             <IconSocial name={icon} size={40} color={Color.darkGray} style={{margin: 10}}/>
@@ -68,6 +68,7 @@ export class About extends Component {
 
     render() {
         const {event} = this.props;
+        console.log(event.sponsors)
         return (
             <View style={styles.container}>
 
@@ -82,7 +83,7 @@ export class About extends Component {
                 <ScrollView>
 
                     <View style={styles.aboutField}>
-                        <Thumbnail large source={{uri: event.logo}}/>
+                        <Thumbnail large source={{uri: event.logoPath}}/>
 
                         <View style={styles.sponsorTagPanel}>
                             <Text style={styles.EventnameText}>{event.name}</Text>
@@ -101,12 +102,12 @@ export class About extends Component {
                              textStyle={styles.tabText}>
                             <View style={styles.contact}>
 
-                                {event.about.email ? this.rowItem(event.about.email, 'ios-at-outline', 'email') : null}
-                                {event.about.phone ? event.about.phone.map((item, index) => this.rowItem(item, 'ios-call-outline'), 'phone') : null}
-                                {event.about.social ?
+                                {event.email ? this.rowItem(event.email, 'ios-at-outline', 'email') : null}
+                                {event.phone ? event.phone.map((item, index) => this.rowItem(item, 'ios-call-outline', 'phone',index)) : null}
+                                {event.social ?
                                     <View style={styles.socialMedia}>
-                                        {Object.keys(event.about.sosial).map((item, index) =>
-                                            this.rowSocial(item + '-with-circle', event.about.sosial[item])
+                                        {Object.keys(event.social).map((item, index) =>
+                                            this.rowSocial(item + '-with-circle', event.social[item],index)
                                         )}
                                     </View> : null
                                 }
@@ -120,28 +121,28 @@ export class About extends Component {
                              activeTabStyle={styles.activeTab}
                              activeTextStyle={[styles.activeTabText, Font.medium]}
                              textStyle={styles.tabText}>
-
                             <View style={styles.sponsorTagPanel}>
-
-                                <View style={styles.sponsor}>
-                                    {Object.keys(event.sponsor).map((item, index) =>
-                                        <View style={styles.sponsorTagPanel}>
-                                            <Text style={styles.sponsorTag}>{item}</Text>
-                                            <View style={styles.sponsorPanel}>
-                                                <FlatList
-                                                    data={event.sponsor[item]}
-                                                    numColumns={index === 0 ? 1 : 2}
-                                                    keyExtractor={(item, i) => i} renderItem={(info) =>
-                                                        <Image source={{uri: info.item.logo}}
-                                                           resizeMode="contain"
-                                                           style={styles.sponsorLogo}
-                                                        />
+                                    <View style={styles.sponsor}>
+                                        {Object.keys(event.sponsors).map((item, index) =>
+                                            <View style={styles.sponsorTagPanel}>
+                                                <Text style={styles.sponsorTag}>{item}</Text>
+                                                <View style={styles.sponsorPanel}>
+                                                    <FlatList
+                                                        data={event.sponsors[item]}
+                                                        numColumns={index === 0 ? 1 : 2}
+                                                        keyExtractor={(item, i) => i}
+                                                        renderItem={(info) =>{
+                                                            console.log('bbb'+info)
+                                                        return <Image source={{uri: info.item.logo}}
+                                                               resizeMode="contain"
+                                                               style={styles.sponsorLogo}
+                                                        />}
                                                     }
-                                                />
+                                                    />
+                                                </View>
                                             </View>
-                                        </View>
-                                    )}
-                                </View>
+                                        )}
+                                    </View>
                             </View>
                         </Tab>
                     </Tabs>

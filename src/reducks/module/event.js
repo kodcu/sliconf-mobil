@@ -15,7 +15,7 @@ const types = {
 
 }
 
-import {API_EVENTLIST, API_EVENT} from '../API'
+import {API_EVENTLIST, API_EVENT, getEvent} from '../API'
 
 const initialState = {
     loading: false,
@@ -146,6 +146,39 @@ export const actionCreators = {
 
     },
     fetchEvent: (code) => async (dispatch, getState) => {
+        dispatch({
+            type: types.EVENT_POSTS_REQUEST
+        })
+
+        await Request.GET(getEvent+code.toUpperCase(),{
+            '200': (res)=>{
+                if (res.status && res.returnObject.status)
+                    dispatch({
+                        type: types.EVENT_POSTS_RESPONSE_SUC,
+                        payload: res.returnObject
+                    })
+                else
+                    dispatch({
+                        type: types.EVENT_POSTS_RESPONSE_FAIL,
+                        payload: '" ' + code + ' " isminde etkinlik bulunamadı!'
+                    })
+            },
+            otherwise:(res)=>{
+                dispatch({
+                    type: types.EVENT_POSTS_RESPONSE_FAIL,
+                    payload: '" ' + code + ' " isminde etkinlik bulunamadı!'
+                })
+            },
+            fail:(err) =>{
+                dispatch({
+                    type: types.EVENT_POSTS_RESPONSE_FAIL,
+                    payload: 'İşleminiz gerçekleştirilemiyor!'
+                })
+            }
+        })
+
+    },
+    fetchEvent2: (code) => async (dispatch, getState) => {
         console.log("dispach yapılıyor.")
         dispatch({
             type: types.EVENT_POSTS_REQUEST
