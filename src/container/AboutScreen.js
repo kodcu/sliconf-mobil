@@ -68,7 +68,10 @@ export class About extends Component {
 
     render() {
         const {event} = this.props;
-        console.log(event.sponsors)
+        let sponsors = [];
+        if (event.sponsors !== undefined && event.sponsors !==null && !event.sponsors.isEmpty)
+            sponsors = event.sponsors;
+
         return (
             <View style={styles.container}>
 
@@ -123,7 +126,7 @@ export class About extends Component {
                              textStyle={styles.tabText}>
                             <View style={styles.sponsorTagPanel}>
                                     <View style={styles.sponsor}>
-                                        {Object.keys(event.sponsors).map((item, index) =>
+                                        {Object.keys(sponsors).map((item, index) =>
                                             <View style={styles.sponsorTagPanel}>
                                                 <Text style={styles.sponsorTag}>{item}</Text>
                                                 <View style={styles.sponsorPanel}>
