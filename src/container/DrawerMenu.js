@@ -85,7 +85,7 @@ class DrawerMenu extends Component {
                     </View>
                     <If con={this.state.login}>
                         <If.Then>
-                            <ProfileComponent logout={() => this.logout_open()} profileUrl={userData.profileUrl}
+                            <ProfileComponent logout={() => this.logout_open()} profileUrl={''}
                                               username={this.props.user.username} email={this.props.user.email}/>
                         </If.Then>
                         <If.Else>
