@@ -35,10 +35,10 @@ const mapStateToProps = (state) => ({
     agenda: state.event.event.agenda,
 });
 
-const mock2 ={ "05-05-2018" : [
+const mock ={ "05-05-2018" : [
     {
         "key": "a102",
-        "time": "09:00",
+        "time": '9:30',
         "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
         "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
         "level": 3,
@@ -49,10 +49,8 @@ const mock2 ={ "05-05-2018" : [
         "room": "Big Saloon",
         "speaker": "Frédéric Hubin",
         "star": 4.5,
-        "date": "05-05-2018"
+        "date": '11-11-2018',
     }]};
-
-const mock ={ };
 
 class AgendaScreen extends Component {
 
@@ -118,7 +116,7 @@ class AgendaScreen extends Component {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
 
-        const data = this.props.agenda;
+        const data =  mock //this.props.agenda;
 
         if (data !== undefined && data !==null && !data.isEmpty){
             Object.keys(data).forEach((date) => eventsDates.includes(date) ? null : eventsDates.push(date));
@@ -131,7 +129,7 @@ class AgendaScreen extends Component {
     }
 
     changeDate(date) {
-        const data = this.props.agenda;
+        const data = mock //this.props.agenda;
         this.setState({
             switchedDay: date,
             rooms: this.roomsList(data[date]),
@@ -189,7 +187,7 @@ class AgendaScreen extends Component {
         DATAS = this.state.data
         rooms = this.state.rooms
         choosen = this.state.choosen
-        const agenda = this.props.agenda;
+        const agenda =  mock//this.props.agenda;
         return (
             <Container style={{backgroundColor: '#fff'}}>
                 <If con={isClicked}>
