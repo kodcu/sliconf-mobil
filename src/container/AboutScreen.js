@@ -66,6 +66,26 @@ export class About extends Component {
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
     }
 
+    _sponsor = () => {Object.keys(sponsors).map((item, index) =>
+        <View key={index} style={styles.sponsorTagPanel}>
+            <Text style={styles.sponsorTag}>{item}</Text>
+            <View style={styles.sponsorPanel}>
+                <FlatList
+                    data={event.sponsors[item]}
+                    numColumns={index === 0 ? 1 : 2}
+                    keyExtractor={(item, i) => i}
+                    renderItem={(info) =>{
+                        console.log('bbb'+info)
+                        return <Image source={{uri: info.item.logo}}
+                                      resizeMode="contain"
+                                      style={styles.sponsorLogo}
+                        />}
+                    }
+                />
+            </View>
+        </View>
+    )}
+
     render() {
         const {event} = this.props;
         let sponsors = [];
@@ -126,25 +146,7 @@ export class About extends Component {
                              textStyle={styles.tabText}>
                             <View style={styles.sponsorTagPanel}>
                                     <View style={styles.sponsor}>
-                                        {Object.keys(sponsors).map((item, index) =>
-                                            <View style={styles.sponsorTagPanel}>
-                                                <Text style={styles.sponsorTag}>{item}</Text>
-                                                <View style={styles.sponsorPanel}>
-                                                    <FlatList
-                                                        data={event.sponsors[item]}
-                                                        numColumns={index === 0 ? 1 : 2}
-                                                        keyExtractor={(item, i) => i}
-                                                        renderItem={(info) =>{
-                                                            console.log('bbb'+info)
-                                                        return <Image source={{uri: info.item.logo}}
-                                                               resizeMode="contain"
-                                                               style={styles.sponsorLogo}
-                                                        />}
-                                                    }
-                                                    />
-                                                </View>
-                                            </View>
-                                        )}
+
                                     </View>
                             </View>
                         </Tab>

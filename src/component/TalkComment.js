@@ -6,17 +6,44 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import CommentItem from "./CommentItem";
 
 const ENTRIES=[
-    {name:'Fernando Muslera',comment:'Yorum',time:'5 min ago',like:20,picture:'https://tmssl.akamaized.net//images/portrait/header/58088-1473586641.jpeg?lm=1473586671'},
-    {name:'Maicon Pereira Roque',comment:'Yorum 1',time:'15 min ago',like:5,picture:'https://tmssl.akamaized.net//images/portrait/header/84695-1445516053.jpg?lm=1445516069'},
-    {name:'Mariano Ferreira Filho',comment:'Yorum 2',time:'30 min ago',like:7,picture:'https://tmssl.akamaized.net//images/portrait/header/54155-1447240277.jpg?lm=1447240309'},
-    {name:'Anonymous',comment:'Yorum 3',time:'1 h ago',like:15,picture:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoJA4PWsyzJCi1QzRbnrNOB9IUUraC-3xUXTQzFJoGN_EQFZQS'},
-    {name:'Younès Belhanda',comment:'Yorum 4',time:'4 h ago',like:9,picture:'https://tmssl.akamaized.net//images/portrait/header/118022-1450861821.jpg?lm=1450861839'},
-    {name:'Bafétimbi Fredius Gomis',comment:'Yorum 5',time:'5 h ago',like:10,picture:'https://tmssl.akamaized.net//bilder/spielerfotos/s_22388_3377_2012_1.jpg?lm=0'},
+    {name:'Fernando Muslera',comment:'Yorum',time:{
+        "hour": 18,
+        "minute": 28,
+        "second": 15,
+        "nano": 484000000
+    },like:0,picture:'https://tmssl.akamaized.net//images/portrait/header/58088-1473586641.jpeg?lm=1473586671'},
+    {name:'Maicon Pereira Roque',comment:'Yorum 1',time:{
+        "hour": 19,
+        "minute": 28,
+        "second": 15,
+        "nano": 484000000
+    },like:5,picture:'https://tmssl.akamaized.net//images/portrait/header/84695-1445516053.jpg?lm=1445516069'},
+    {name:'Mariano Ferreira Filho',comment:'Yorum 2',time:{
+        "hour": 22,
+        "minute": 48,
+        "second": 15,
+        "nano": 484000000
+    },like:9,picture:'https://tmssl.akamaized.net//images/portrait/header/54155-1447240277.jpg?lm=1447240309'},
     ]
 const POPULARENTRIES=[
-    {name:'Fernando Muslera',comment:'Yorum',time:'5 min ago',like:20,picture:'https://tmssl.akamaized.net//images/portrait/header/58088-1473586641.jpeg?lm=1473586671'},
-    {name:'Anonymous',comment:'Yorum 3',time:'1 h ago',like:15,picture:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoJA4PWsyzJCi1QzRbnrNOB9IUUraC-3xUXTQzFJoGN_EQFZQS'},
-    {name:'Bafétimbi Fredius Gomis',comment:'Yorum 5',time:'5 h ago',like:10,picture:'https://tmssl.akamaized.net//bilder/spielerfotos/s_22388_3377_2012_1.jpg?lm=0'},
+    {name:'Fernando Muslera',comment:'Yorum',time:{
+        "hour": 19,
+        "minute": 48,
+        "second": 15,
+        "nano": 484000000
+    },like:20,picture:'https://tmssl.akamaized.net//images/portrait/header/58088-1473586641.jpeg?lm=1473586671'},
+    {name:'Anonymous',comment:'Yorum 3',time:{
+        "hour": 20,
+        "minute": 28,
+        "second": 15,
+        "nano": 484000000
+    },like:15,picture:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoJA4PWsyzJCi1QzRbnrNOB9IUUraC-3xUXTQzFJoGN_EQFZQS'},
+    {name:'Bafétimbi Fredius Gomis',comment:'Yorum 5',time:{
+        "hour": 22,
+        "minute": 28,
+        "second": 15,
+        "nano": 484000000
+    },like:10,picture:'https://tmssl.akamaized.net//bilder/spielerfotos/s_22388_3377_2012_1.jpg?lm=0'},
 ]
 export class TalkComment extends Component {
 
