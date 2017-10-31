@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet,TextInput,View,TouchableOpacity,Dimensions} from 'react-native';
+import {StyleSheet,TextInput,View,TouchableOpacity,Dimensions,Alert} from 'react-native';
 import {Button, Card, CardItem, Container, Content, Footer, FooterTab, Input, Left,Thumbnail} from "native-base";
 import Header from "../component/Header";
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -18,7 +18,6 @@ export class TalkDetail extends Component {
     }
 
     askQuestion=()=>{
-        console.log("burdayik")
         this.setState({ask:!this.state.ask})
     }
 
@@ -69,7 +68,14 @@ export class TalkDetail extends Component {
                                        autoCorrect={false}
                                        style={{width:width-100,justifyContent:'center'}}
                             />
-                            <TouchableOpacity style={{alignSelf:'center'}} onPress={()=>{alert("Yolladım");this.setState({ask:false})}}>
+                            <TouchableOpacity style={{alignSelf:'center'}} onPress={()=>{Alert.alert(
+                                'Warning!',
+                                'You can nor send message',
+                                [
+                                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                ],
+                                { cancelable: false }
+                            );this.setState({ask:false})}}>
                                 <Icon name={"ios-send"} size={30}/>
                             </TouchableOpacity>
                         </View>

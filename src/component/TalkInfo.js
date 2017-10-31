@@ -126,7 +126,7 @@ export class TalkInfo extends Component {
                     <View style={{flexDirection: 'row', alignItems: 'center', width: width * 0.8}}>
                         <Image
                             source={{uri: 'https://javaday.istanbul/wp-content/uploads/2017/01/amadhy-abdelaziz-150x150.jpg'}}
-                            style={{borderRadius: 50, width: 60, height: 60, marginRight: 10}}/>
+                            style={{borderRadius: 30, width: 60, height: 60, marginRight: 10}}/>
                         <Text style={{
                             width: (width * 0.8) - 80,
                             fontSize: moderateScale(16),
