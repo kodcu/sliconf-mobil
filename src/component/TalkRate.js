@@ -76,7 +76,7 @@ export default class TalkRate extends Component {
                                 }}>
 
                                     <Image source={smile}
-                                           style={{borderRadius: 50, width: 80, height: 80, margin: 10}}/>
+                                           style={{borderRadius:30, width: 80, height: 80, margin: 10}}/>
                                     <Text style={{fontFamily: 'Montserrat-Bold',fontSize:18,color:'#333',marginTop:10}}>Did you like talk?</Text>
                                     <Text style={{textAlign:'center',fontSize:15,fontFamily: 'Montserrat-Regular',color:'#888',marginTop:0}}>Use the slide to tell it in the language of Emojis.</Text>
                                     <Slider maximumValue={5} minimumValue={1} step={1}

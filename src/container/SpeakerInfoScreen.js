@@ -117,7 +117,7 @@ class SpeakerInfoScreen extends Component {
                             style={{margin: 10}}/></TouchableOpacity>
                         <TouchableOpacity style={{margin: 10}} onPress={this.startAnimation}>
                             <View style={{
-                                borderRadius: 20,
+                                borderRadius: 10,
                                 backgroundColor: Color.green,
                                 width: 90,
                                 height: 30,

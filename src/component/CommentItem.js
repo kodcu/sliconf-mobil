@@ -17,9 +17,8 @@ export default class CommentItem extends Component {
 
     render() {
         const info =this.state.item
-        const key =this.props.key;
         return (
-            <View  key={key} style={{margin:10,flexDirection:'row',marginTop:15,flex:1}}>
+            <View  key={this.props.key} style={{margin:10,flexDirection:'row',marginTop:15,flex:1}}>
                 <Thumbnail source={{uri:info.picture}} small style={{marginBottom:15,flex:0.1}}/>
                 <View style={{marginLeft:10,flex:0.9}} >
                     <View style={{flexDirection:'row'}}>

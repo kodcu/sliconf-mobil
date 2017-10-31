@@ -27,6 +27,7 @@ import If from '../component/If'
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/drawer'
 import {SEARCHRESULT, TALK} from '../router';
+import FilterEvent from "../component/FilterEvent";
 
 let choosen = [];
 let eventsDates = [];
@@ -192,7 +193,7 @@ class AgendaScreen extends Component {
             <Container style={{backgroundColor: '#fff'}}>
                 <If con={isClicked}>
                     <If.Then>
-                        <Filter visible={filter} onPress={(e) => this.filterHide(e)} onClose={() => this.closeFilter}
+                        <FilterEvent visible={filter} onPress={(e) => this.filterHide(e)} onClose={() => this.closeFilter}
                                 events={agenda}/>
                         <Header leftImage='chevron-left' rightImage='bars'
                                 onPressLeft={() => this.props.navigation.goBack(null)}

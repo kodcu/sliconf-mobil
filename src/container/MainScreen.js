@@ -3,7 +3,7 @@
  */
 
 import React, {Component} from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Image, StyleSheet, Text, TouchableOpacity, View,Alert} from 'react-native'
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 import * as Scale from "../theme/Scale";
@@ -46,7 +46,14 @@ class MainScreen extends Component {
         await dispatch(actionCreators.fetchEvent(code));
         const {error, errorMessage} = this.props;
         if (error)
-            alert(errorMessage);
+            Alert.alert(
+                'Warning!',
+                errorMessage,
+                [
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                { cancelable: false }
+            );
 
         if (!error && !loading) {
             //this.props.navigation.dispatch({type: 'drawerStack'});
