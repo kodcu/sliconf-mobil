@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import {View, Text, StyleSheet,FlatList,Dimensions,ScrollView,TouchableOpacity} from 'react-native';
 import {Container, Button, Footer, FooterTab, Input, Thumbnail, Content, Fab} from "native-base";
 import Icon from 'react-native-vector-icons/Ionicons'
+import moment from "moment";
+import Font from "../theme/Font";
+import Color from "../theme/Color";
 
 
 export default class CommentItem extends Component {
 
     state={
         isClicked:false,
+        isDislike:false,
         item:this.props.item
     }
 
@@ -21,17 +25,27 @@ export default class CommentItem extends Component {
                     <View style={{flexDirection:'row'}}>
                         <Text style={{fontSize:12,color:'#000',fontWeight:'bold',marginBottom:10}}>{info.name} </Text>
                         <Text style={{fontSize:12,color:'#000',fontWeight:'bold',marginBottom:10}}> ~ </Text>
-                        <Text style={{fontSize:12,color:'#414042',marginBottom:10}}>{info.time} </Text>
+                        <Text style={{fontSize:12,color:'#414042',marginBottom:10}}>{moment(info.time).startOf('min').fromNow()}</Text>
                     </View>
                     <Text style={{fontSize:12,color:'#414042'}}>{info.comment}</Text>
                     <View style={{flexDirection:'row',marginTop:10,justifyContent:'space-between'}}>
-                        <Text>Like ?</Text>
-                        <TouchableOpacity onPress={()=> {this.setState({isClicked:!this.state.isClicked});this.state.isClicked ?info.like--:info.like++}}>
+                        {this.state.isClicked ? <Text style={{...Font.semiBold,color:Color.red}}>Liked</Text> : this.state.isDislike ? <Text style={{...Font.semiBold,color:Color.darkGray2}}>Disliked</Text> :<Text style={{...Font.regular,color:Color.darkGray3}}>Like ?</Text>}
+                        <View style={{flexDirection:'row'}}>
+
+                        <TouchableOpacity style={{marginTop:5}} onPress={()=> {this.setState({isDislike:!this.state.isDislike});this.state.isDislike ?info.like++:info.like--}}>
                             <View style={{flexDirection:'row'}}>
-                                <Text style={{marginRight:5}}>{info.like}</Text>
-                                <Icon name={this.state.isClicked ? 'ios-heart':'ios-heart-outline'} size={20} color={this.state.isClicked?"red":null}/>
+                                <Icon name={this.state.isDislike ? 'ios-thumbs-down':'ios-thumbs-down-outline'} size={25} color={this.state.isDislike?"gray":null}/>
                             </View>
                         </TouchableOpacity>
+
+                            <TouchableOpacity onPress={()=> {this.setState({isClicked:!this.state.isClicked});this.state.isClicked ?info.like--:info.like++}}>
+                                <View style={{flexDirection:'row',marginLeft:10}}>
+                                    <Text style={{marginRight:10}}>{info.like}</Text>
+                                    <Icon name={this.state.isClicked ? 'ios-thumbs-up':'ios-thumbs-up-outline'} size={25} color={this.state.isClicked?"red":null}/>
+                                </View>
+                            </TouchableOpacity>
+
+                        </View>
                     </View>
                 </View>
             </View>

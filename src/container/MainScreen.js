@@ -93,12 +93,12 @@ class MainScreen extends Component {
                                 <View style={styles.containerBottom}>
                                     <View style={styles.search}>
                                         <AnimatedInput
-                                            label={'Event Code'}
+                                            label={'Event Code (XF6N)'}
                                             iconClass={FontAwesomeIcon}
                                             iconName={'search'}
                                             iconColor={Color.white}
                                             inputStyle={{color: Color.green}}
-                                            onSubmitEditing={(value) => this._handlePressSearch('pggo')}
+                                            onSubmitEditing={(value) => this._handlePressSearch(value)}
                                         />
 
                                         <TouchableOpacity
