@@ -7,7 +7,7 @@ const ProfileComponent = ({profileUrl, username, email,logout}) =>
     <View style={{flexDirection: 'row'}}>
         <View style={{flex:1,justifyContent:'space-between',flexDirection: 'row'}}>
             <TouchableOpacity style={{flexDirection: 'row', padding: 5,flex:0.8}} onPress={() => {}}>
-                <Image source={{uri: profileUrl}} resizeMode="contain"
+                <Image source={profileUrl === '' ? require('../../images/hi.png') : {uri: profileUrl}} resizeMode="contain"
                        style={{margin: 5, width: 60, height: 60, borderRadius: 40}}/>
                 <View style={{justifyContent: 'center',flex:1}}>
                     <Text style={{fontWeight: '500', fontSize: 15, color: '#444'}}>{username}</Text>

@@ -14,6 +14,7 @@ import If from "../component/If";
 import {actionCreators} from '../reducks/module/auth'
 import {connect} from 'react-redux'
 import {HOME} from "../router";
+import Loading from "../component/Loading";
 
 const logo = require("../../images/logo.png");
 
@@ -60,9 +61,12 @@ class LoginScreen extends Component {
         }
     };
 
+
+
     render() {
 
         const page = this.state.page;
+        const {loading} = this.props;
 
         return (
 
@@ -73,6 +77,8 @@ class LoginScreen extends Component {
                         leftImage='chevron-left'
                         onPressLeft={() => this.props.navigation.goBack(null)}
                     />
+
+                    <Loading visible={loading}/>
 
                     <View style={{justifyContent: 'center', marginTop: 20}}>
 
@@ -99,7 +105,7 @@ class LoginScreen extends Component {
                                         <Input placeholder="Username"
                                                placeholderTextColor={Color.darkGray3}
                                                returnKeyType="next"
-                                               onSubmitEditing={() => this.passwordInput.focus()}
+                                               onSubmitEditing={() => this._loginPasswordInput._root.focus()}
                                                onChangeText={(val) => this.setState({username:val})}
                                                keyboardType="email-address"
                                                autoCapitalize="none"
@@ -111,11 +117,11 @@ class LoginScreen extends Component {
                                     <Item rounded style={{borderRadius: 10, borderColor: Color.green}}>
                                         <Input placeholder="Password"
                                                placeholderTextColor={Color.darkGray3}
-                                               returnKeyType="go"
+                                               returnKeyType="done"
                                                onChangeText={(val) => this.setState({password:val})}
                                                secureTextEntry
                                                style={styles.input}
-                                               ref={(input) => this.passwordInput = input}/>
+                                               ref={c => this._loginPasswordInput = c}/>
                                     </Item>
 
 
@@ -160,6 +166,7 @@ class LoginScreen extends Component {
                                                placeholderTextColor={Color.darkGray3}
                                                returnKeyType="next"
                                                autoCapitalize="none"
+                                               onSubmitEditing={() => this._registerUsernameInput._root.focus()}
                                                onChangeText={(val) => this.setState({fullname:val})}
                                                style={styles.input}
                                                autoCorrect={false}/>
@@ -172,6 +179,8 @@ class LoginScreen extends Component {
                                                returnKeyType="next"
                                                onChangeText={(val) => this.setState({username:val})}
                                                autoCapitalize="none"
+                                               onSubmitEditing={() => this._registerEmailInput._root.focus()}
+                                               ref={c => this._registerUsernameInput = c}
                                                style={styles.input}
                                                autoCorrect={false}/>
                                     </Item>
@@ -183,6 +192,8 @@ class LoginScreen extends Component {
                                                onChangeText={(val) => this.setState({email:val})}
                                                keyboardType="email-address"
                                                autoCapitalize="none"
+                                               onSubmitEditing={() => this._registerPasswordInput._root.focus()}
+                                               ref={c => this._registerEmailInput = c}
                                                style={styles.input}
                                                autoCorrect={false}/>
                                     </Item>
@@ -190,11 +201,11 @@ class LoginScreen extends Component {
                                     <Item rounded style={{borderRadius: 10, borderColor: Color.green}}>
                                         <Input placeholder="Password"
                                                placeholderTextColor={Color.darkGray3}
-                                               returnKeyType="go"
+                                               returnKeyType="done"
                                                onChangeText={(val) => this.setState({password:val})}
+                                               ref={c => this._registerPasswordInput = c}
                                                secureTextEntry
-                                               style={styles.input}
-                                               ref={(input) => this.passwordInput = input}/>
+                                               style={styles.input}/>
                                     </Item>
 
 
