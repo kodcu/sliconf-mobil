@@ -86,11 +86,9 @@ class HomeScreen extends Component {
 
                     <View style={styles.eventName}>
                         <Text style={styles.eventNameText}>
-                            {event.name.substr(0, event.name.indexOf(" ") === -1 ? event.name.length : event.name.indexOf(" "))}
+                            {event.name}
                         </Text>
-                        <Text style={styles.eventNameText}>
-                            {event.name.substr(event.name.indexOf(" ") === -1 ? event.name.length : event.name.indexOf(" "))}
-                        </Text>
+
                     </View>
 
                 </View>
@@ -157,6 +155,7 @@ const styles = StyleSheet.create({
         ...Font.regular,
         color: Color.white,
         fontSize: moderateScale(25),
+        textAlign:'right'
     },
     buttonPanel: {
         flex: 0.55,
