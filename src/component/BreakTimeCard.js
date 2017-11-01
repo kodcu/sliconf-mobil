@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
+import Color from "../theme/Color";
+import Font from "../theme/Font";
+import {moderateScale} from "../theme/Scale";
 
 
 export default class ChosenCard extends Component {
@@ -26,34 +29,34 @@ export default class ChosenCard extends Component {
 const styles = StyleSheet.create({
     container: {
         marginLeft:30,
-        borderBottomWidth:1,
-        borderTopWidth:1,
-        borderColor:'#D1D3D4',
-        margin:5
     },
     detailField:{
         flex:0.7,
-        justifyContent:'space-between'
+        paddingLeft:5,
+        justifyContent:'center'
     },
     cardLine:{
-        backgroundColor:'#fff',
-        borderRadius:15,
+        backgroundColor:Color.white,
+        borderRadius:10,
         flexDirection:'row',
         margin:5,
-        borderColor:'#F1F2F2',
-        borderWidth:1
+        borderColor:Color.gray2,
+        borderWidth:0.5,
+        height:40
     },
     topic: {
-        fontSize:10,
+        ...Font.regular,
+        fontSize:moderateScale(9),
         textAlign:'left',
         textAlignVertical:'center',
-        color:'#000000',
+        color:Color.darkGray,
         margin:5
     },
     line:{
-        borderColor:'#A97B50',
+        borderColor:Color.brown,
         borderWidth:1,
-        margin:5,
+        margin:0,
+        marginLeft:10
     }
 
 })

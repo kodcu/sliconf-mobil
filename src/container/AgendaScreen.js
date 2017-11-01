@@ -28,6 +28,8 @@ import {actionCreators} from '../reducks/module/drawer'
 import {SEARCHRESULT, TALK} from '../router';
 import FilterEvent from "../component/FilterEvent";
 import Color from "../theme/Color";
+import Font from "../theme/Font";
+import {moderateScale} from "../theme/Scale";
 
 let eventsDates = [];
 
@@ -45,13 +47,67 @@ const mock = {
             "level": 3,
             "tags": [
                 "Java",
-                "JVM"
+                "JVM",
+                "Security",
             ],
             "room": "Big Saloon",
             "speaker": "Frédéric Hubin",
             "star": 4.5,
             "date": '11-11-2018',
-        }]
+        },
+        {
+            "key": "a102",
+            "time": '9:40',
+            "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
+            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
+            "level": 0,
+            "room": "Big Saloon",
+            "speaker": "Frédéric Hubin",
+            "star": 4.5,
+            "date": '11-11-2018',
+        },
+        {
+            "key": "a102",
+            "time": '9:50',
+            "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
+            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
+            "level": 3,
+            "room": "Bigboy Saloon",
+            "speaker": "Frédéric Hubin",
+            "star": 4.5,
+            "date": '11-11-2018',
+        },
+        {
+            "key": "a102",
+            "time": '10:50',
+            "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
+            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
+            "level": 1,
+            "tags": [
+                "Java",
+                "JVM"
+            ],
+            "room": "Bigboy Saloon",
+            "speaker": "Frédéric Hubin",
+            "star": 4.5,
+            "date": '11-11-2018',
+        },
+        {
+            "key": "a102",
+            "time": '9:50',
+            "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
+            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
+            "level": 2,
+            "tags": [
+                "Java",
+                "JVM"
+            ],
+            "room": "Bigboy Saloon",
+            "speaker": "Frédéric Hubin22",
+            "star": 4.5,
+            "date": '12-11-2018',
+        }
+    ]
 };
 
 class AgendaScreen extends Component {
@@ -66,8 +122,8 @@ class AgendaScreen extends Component {
     };
 
     /**
-     * Filtreleme sayfasını kapatır ve sonuçların gösterileceği sayfaya yönlendirir.
-     * @param searchResults Filtreleme sonuçlarının bulunduğu array.
+     * Filtreleme sayfasini kapatir ve sonuclarini gosterecegi sayfaya yonlendirir.
+     * @param searchResults Filtreleme sonuclarının bulundugu array.
      */
     filterHide = (searchResults) => {
         this.setState({filter: false});
@@ -75,23 +131,23 @@ class AgendaScreen extends Component {
     };
 
     /**
-     * Filtre popupını kapatır.
+     * Filtre popupini kapatir.
      */
     closeFilter = () => {
         this.setState({filter: false})
     };
 
     /**
-     * Aynı anda hareket etmesi gereken scrollviewlerin pozisyonunu eşitler.
-     * @param event sürükleme haraketi
+     * Aynı anda hareket etmesi gereken scrollviewlerin pozisyonunu esitler.
+     * @param event surukleme haraketi
      */
     handleScroll = (event) => {
         this.roomScroll.scrollTo({x: event.nativeEvent.contentOffset.x, animated: true});
     };
 
     /**
-     * Katılmak istediğin eventleri seçtiklerim listesinden siler.
-     * @param arg Konuşmanın modeli
+     * Katilmak istedigin eventleri sectiklerim listesinden siler.
+     * @param arg Konusmanın modeli
      */
     deleteItemFromChosenEvents = (arg) => {
         let array = choosen;
@@ -101,9 +157,9 @@ class AgendaScreen extends Component {
     };
 
     /**
-     * Ajandaki konuşmaların saatlerine göre saat dizisine çevirir.
-     * @param events gelen konuşmalar
-     * @returns {Array} saatlere göre konuşmaların olduğu dizi
+     * Ajandaki konusmalarin saatlerine gore saat dizisine cevirir.
+     * @param events gelen konusmalar
+     * @returns {Array} saatlere gore konusmaların oldugu dizi
      */
     eventsList(events) {
         let changedEventsList = [];
@@ -124,8 +180,8 @@ class AgendaScreen extends Component {
     }
 
     /**
-     * Konuşmaların verilerinden oda listesi oluşturur.
-     * @param events konuşmalar
+     * Konuşmaların verilerinden oda listesi olusturur.
+     * @param events konusmalar
      * @returns {Array} oda listesi
      */
     roomsList(events) {
@@ -139,8 +195,8 @@ class AgendaScreen extends Component {
     }
 
     /**
-     * Uygulama açılmadan önce gelen veriden tarihlerin ayrıştılması ve ilk günün etkinliklerinin
-     * gösterilmesi
+     * Uygulama acilmadan once gelen veriden tarihlerin ayristilmasi ve ilk gunun etkinliklerinin
+     * gosterilmesi
      */
     componentWillMount() {
         const {dispatch, navigation} = this.props;
@@ -159,7 +215,7 @@ class AgendaScreen extends Component {
     }
 
     /**
-     * Tarih değiştirildiğinde verilerin değiştirlmesini sağlar.
+     * Tarih degiştirildiginde verilerin degistirilmesini saglar.
      * @param date
      */
     changeDate(date) {
@@ -172,18 +228,18 @@ class AgendaScreen extends Component {
     }
 
     /**
-     * Seçtiklerim listesine konuşmayı ekler.
-     * @param arg konuşma detayları
+     * Sectiklerim listesine konusmayi ekler.
+     * @param arg konusma detaylari
      */
     addItemToChosenEvents(arg) {
         choosen.push(arg);
     }
 
     /**
-     *Konuşmacıları bulunduğu odaya göre ekranda gösterir
+     *Konusmacilari bulundugu odaya gore ekranda gosterir
      * @param myroom oda verisi
-     * @param arg konuşma listesi
-     * @returns {XML} ajanda kartı
+     * @param arg konusma listesi
+     * @returns {XML} ajanda karti
      */
     isThereEventInRoom(myroom, arg) {
         let isExist = false;
@@ -218,7 +274,7 @@ class AgendaScreen extends Component {
     }
 
     /**
-     * Seçtiklerim butonuna basıldığında sayfanın değişmesini sağlar.
+     * Sectiklerim butonuna basildiginda sayfanin degişmesini saglar.
      * @private
      */
     _hide() {
@@ -249,7 +305,7 @@ class AgendaScreen extends Component {
                                     selectedValue={this.state.switchedDay}
                                     onValueChange={(itemValue, itemIndex) => this.changeDate(itemValue)}>
                                 {eventsDates.map((item, i) =>
-                                    <Picker.Item key={i + 1} label={"Day " + (i + 1)} value={item}/>
+                                    <Picker.Item  key={i + 1} label={"Day " + (i + 1)} value={item}/>
                                 )}
                             </Picker>
                         </Header>
@@ -281,15 +337,16 @@ class AgendaScreen extends Component {
 
                             <Content>
                                 <View style={{flexDirection: 'row'}}>
-
-                                    <View style={{margin: 5, padding: 5}}>
+                                    <View style={{margin: 0,marginTop:5, padding: 5}}>
                                         {Object.keys(talksList).map((list, i) => (
-
-                                            <View key={i}>{talksList[list][0].level === 0 ?
-                                                <Text style={{margin: 8}}>{list}</Text> :
-                                                <Text style={styles.cardsTime}>{list}</Text>}</View>
+                                            <View style={{borderRightWidth:0,}}  key={i}>
+                                                {talksList[list][0].level === 0 ?
+                                                    <Text style={styles.cardTimeLanch}>{list}</Text> :
+                                                    <Text style={styles.cardsTime}>{list}</Text>}
+                                            </View>
                                         ))}
                                     </View>
+
                                     <ScrollView horizontal onScroll={this.handleScroll} showsHorizontalScrollIndicator={false}>
                                         <ScrollView>
                                             {Object.keys(talksList).map((time, i) => (
@@ -334,12 +391,12 @@ class AgendaScreen extends Component {
                         <Button vertical onPress={() => {
                             this.setState({isChoosenClicked: true})
                         }}>
-                            <Text style={{color: this.state.isChoosenClicked ? Color.green : Color.darkGray}}>All</Text>
+                            <Text style={{...Font.semiBold, fontSize:moderateScale(12),color: this.state.isChoosenClicked ? Color.green : Color.darkGray}}>All</Text>
                         </Button>
                         <Button vertical onPress={() => {
                             this.setState({isChoosenClicked: false})
                         }}>
-                            <Text style={{color: this.state.isChoosenClicked ? Color.darkGray : Color.green}}>Chosen</Text>
+                            <Text style={{...Font.semiBold, fontSize:moderateScale(12),color: this.state.isChoosenClicked ? Color.darkGray : Color.green}}>Chosen</Text>
                         </Button>
                     </FooterTab>
                 </Footer>
@@ -358,7 +415,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     roomText: {
-        width: 200,
+        ...Font.semiBold,
+        fontSize:moderateScale(11),
+        width: 220,
         margin: 5,
         marginLeft: 20
     },
@@ -367,10 +426,19 @@ const styles = StyleSheet.create({
         marginLeft: 30
     },
     cardsTime: {
+        ...Font.semiBold,
+        fontSize:moderateScale(11),
         margin: 8,
         textAlignVertical: 'center',
         textAlign: 'center',
-        height: 92
+        height: 112
+    },
+    cardTimeLanch: {
+        ...Font.semiBold,
+        fontSize:moderateScale(11),
+        margin: 8,
+        textAlign: 'center',
+        height: 32
     },
     filterIcon: {
         marginLeft: 15,
