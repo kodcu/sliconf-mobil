@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet,StatusBar,TouchableOpacity,Image,Dimensions,Platform } from 'react-native';
 import { Container, Header, Left, Body, Right, Button, Icon, Title ,Content,CardItem,Thumbnail,Card,List,Item,Footer,FooterTab,Picker, Form, Item as FormItem} from 'native-base';
 import PropTypes from 'prop-types';
+import Color from "../theme/Color";
+import {moderateScale} from "../theme/Scale";
+import Font from "../theme/Font";
 
 
 export default class AgendaCard extends Component {
@@ -57,7 +60,7 @@ export default class AgendaCard extends Component {
             return(
                 <View  style={styles.container}>
 
-                    <Image source={require('../../images/emptyCard.png')} style={{width:200,height:100}}/>
+                    <Image source={require('../../images/emptyCard.png')} style={{width:220,height:120}}/>
                 </View>
             )
         }else{
@@ -66,7 +69,10 @@ export default class AgendaCard extends Component {
                     <View  style={[styles.cardLine,{borderColor:this.getColorByLevel(item.level)}]}/>
                     <View style={styles.detailField}>
                         <Text style={styles.topic}>{item.topic} </Text>
-                        <Text style={styles.speaker}>{item.speaker}</Text>
+                        <View style={{marginBottom:5}}>
+                            <Text style={styles.speaker}>{item.speaker}</Text>
+                            {item.tags !== undefined && item.tags !== null ? <Text style={styles.tags}>Tags: {item.tags.toString()}</Text> : null}
+                        </View>
                     </View>
                     <View style={styles.actionField}>
                         <Thumbnail source={require('../../images/hi.png')}   />
@@ -87,17 +93,17 @@ export default class AgendaCard extends Component {
 const styles = StyleSheet.create({
     container: {
         flexDirection:'row',
-        width:200,
-        height:100,
+        width:220,
+        height:120,
         margin:5,
         backgroundColor:'#fff',
-        borderWidth:1,
+        borderColor:Color.gray2,
+        borderWidth:0.5,
         borderRadius:15,
-        borderColor:'#F1F2F2',
     },
     cardLineEmpty:{
-        borderColor:'#000',
-        borderWidth:1,
+        borderColor:Color.gray2,
+        borderWidth:0.5,
         margin:10
     },
     cardLine:{
@@ -107,16 +113,29 @@ const styles = StyleSheet.create({
         marginBottom:0
     },
     topic: {
-        fontSize:10,
+        ...Font.regular,
+        fontSize:moderateScale(9),
         textAlign:'left',
         textAlignVertical:'center',
-        color:'#000000',
+        color:Color.black,
         margin:5
     },
     speaker:{
-        fontSize:8,
+        ...Font.light,
+        fontSize:moderateScale(8),
         textAlign:'left',
-        margin:5
+        color:Color.darkGray,
+        margin:5,
+        marginBottom:0
+    },
+    tags:{
+        ...Font.light,
+        fontSize:moderateScale(7),
+        textAlign:'left',
+        color:Color.darkGray3,
+        margin:5,
+        marginTop:0,
+        marginBottom:0
     },
     detailField:{
         flex:0.7,
