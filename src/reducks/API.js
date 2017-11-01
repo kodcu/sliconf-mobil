@@ -13,7 +13,7 @@ export const API_LOGIN = API + '1d28e931-7a1d-11e7-9e0d-9b6c09e3cf27';
 export const API_REGISTER = API + '1d28e931-7a1d-11e7-9e0d-9b6c09e3cf27';
 
 const sliconfAPI__ = 'http://sliconf.com:8090/service/';
-const sliconfAPI = 'http://192.168.43.48:8090/service/';
+const sliconfAPI = 'http://api.sliconf.com/service/';
 export const getEvent = sliconfAPI + 'events/get/with-key/';
 export const postLOGIN = sliconfAPI + 'users/login';
 export const postREGISTER = sliconfAPI + 'users/register';
