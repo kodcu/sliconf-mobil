@@ -142,7 +142,7 @@ class SpeakerInfoScreen extends Component {
                     </If.Then>
                     <If.Else>
                         <ScrollView>
-                            <View style={styles.talksField}>
+                            <View style={[styles.talksField,{height: (talkList.length * 150)}]}>
                                 {talkList.map((item, i) => <ChosenCard key={i} item={item} visibleButton={false}/>)}
                             </View>
                         </ScrollView>
@@ -191,8 +191,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        margin: 10,
-        height: (talkList.length * 150)
+        margin: 10
     }
 
 });
