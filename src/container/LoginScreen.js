@@ -2,7 +2,7 @@
  * Created by anil on 04/07/2017.
  */
 import React, {Component} from 'react';
-import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View,Alert} from 'react-native';
 
 import {Container, Content, Input, Item} from 'native-base';
 import Color from "../theme/Color";
@@ -32,31 +32,50 @@ class LoginScreen extends Component {
         username:'',
         password:'',
         fullname:'',
-        email:''
+        email:'',
+        loadingModal:false
     };
 
     _login = async (username,password) => {
+        this.setState({loadingModal:true});
         const {dispatch, loading} = this.props;
         await dispatch(actionCreators.login(username,password));
         const {error, errorMessage} = this.props;
         if (error)
-            alert(errorMessage);
+            Alert.alert(
+                'Warning!',
+                errorMessage,
+                [
+                    {text: 'OK', onPress: () => this.setState({loadingModal:loading})},
+                ],
+                { cancelable: false }
+            );
 
         if (!error && !loading) {
             //this.props.navigation.dispatch({type: 'drawerStack'});
+            this.setState({loadingModal:loading});
             this.props.navigation.navigate(HOME)
         }
     };
 
     _register = async (fullname,username,email,password) => {
+        this.setState({loadingModal:true});
         const {dispatch, loading} = this.props;
         await dispatch(actionCreators.register(fullname,username,email,password));
         const {error, errorMessage} = this.props;
         if (error)
-            alert(errorMessage);
+            Alert.alert(
+                'Warning!',
+                errorMessage,
+                [
+                    {text: 'OK', onPress: () => this.setState({loadingModal:loading})},
+                ],
+                { cancelable: false }
+            );
 
         if (!error && !loading) {
             //this.props.navigation.dispatch({type: 'drawerStack'});
+            this.setState({loadingModal:loading});
             this.props.navigation.navigate(HOME)
         }
     };
@@ -66,7 +85,7 @@ class LoginScreen extends Component {
     render() {
 
         const page = this.state.page;
-        const {loading} = this.props;
+        const loading = this.state.loadingModal;
 
         return (
 
