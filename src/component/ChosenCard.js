@@ -80,7 +80,11 @@ const styles = StyleSheet.create({
         marginBottom:0
     },
     topic: {
-        fontSize:10,textAlign:'left',textAlignVertical:'center',color:'#000000',margin:5
+        fontSize:10,
+        textAlign:'left',
+        textAlignVertical:'center',
+        color:'#000000',
+        margin:5
     },
     speaker:{
         fontSize:8,

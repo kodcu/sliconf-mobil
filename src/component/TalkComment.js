@@ -1,75 +1,119 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet,FlatList,Dimensions,ScrollView,TouchableOpacity} from 'react-native';
-import {Container, Button, Footer, FooterTab, Input, Thumbnail, Content, Fab} from "native-base";
+import {Dimensions, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Button, Container, Content, Fab, Footer, FooterTab, Input, Thumbnail} from "native-base";
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons'
 import CommentItem from "./CommentItem";
 
-const ENTRIES=[
-    {name:'Fernando Muslera',comment:'Yorum',time:{
+const ENTRIES = [
+    {
+        name: 'Fernando Muslera', comment: 'Yorum', time: {
         "hour": 18,
         "minute": 28,
         "second": 15,
         "nano": 484000000
-    },like:0,picture:'https://tmssl.akamaized.net//images/portrait/header/58088-1473586641.jpeg?lm=1473586671'},
-    {name:'Maicon Pereira Roque',comment:'Yorum 1',time:{
+    }, like: 0, picture: 'https://tmssl.akamaized.net//images/portrait/header/58088-1473586641.jpeg?lm=1473586671'
+    },
+    {
+        name: 'Maicon Pereira Roque', comment: 'Yorum 1', time: {
         "hour": 19,
         "minute": 28,
         "second": 15,
         "nano": 484000000
-    },like:5,picture:'https://tmssl.akamaized.net//images/portrait/header/84695-1445516053.jpg?lm=1445516069'},
-    {name:'Mariano Ferreira Filho',comment:'Yorum 2',time:{
+    }, like: 5, picture: 'https://tmssl.akamaized.net//images/portrait/header/84695-1445516053.jpg?lm=1445516069'
+    },
+    {
+        name: 'Mariano Ferreira Filho', comment: 'Yorum 2', time: {
         "hour": 22,
         "minute": 48,
         "second": 15,
         "nano": 484000000
-    },like:9,picture:'https://tmssl.akamaized.net//images/portrait/header/54155-1447240277.jpg?lm=1447240309'},
-    ]
-const POPULARENTRIES=[
-    {name:'Fernando Muslera',comment:'Yorum',time:{
+    }, like: 9, picture: 'https://tmssl.akamaized.net//images/portrait/header/54155-1447240277.jpg?lm=1447240309'
+    },
+    {
+        name: 'Mariano Ferreira Filho2', comment: 'Yorum 2', time: {
+        "hour": 22,
+        "minute": 48,
+        "second": 15,
+        "nano": 484000000
+    }, like: 9, picture: 'https://tmssl.akamaized.net//images/portrait/header/54155-1447240277.jpg?lm=1447240309'
+    },
+    {
+        name: 'Mariano Ferreira Filho3', comment: 'Yorum 2', time: {
+        "hour": 22,
+        "minute": 48,
+        "second": 15,
+        "nano": 484000000
+    }, like: 9, picture: 'https://tmssl.akamaized.net//images/portrait/header/54155-1447240277.jpg?lm=1447240309'
+    },
+    {
+        name: 'Mariano Ferreira Filho4', comment: 'Yorum 2', time: {
+        "hour": 22,
+        "minute": 48,
+        "second": 15,
+        "nano": 484000000
+    }, like: 9, picture: 'https://tmssl.akamaized.net//images/portrait/header/54155-1447240277.jpg?lm=1447240309'
+    },
+];
+const POPULARENTRIES = [
+    {
+        name: 'Fernando Muslera', comment: 'Yorum', time: {
         "hour": 19,
         "minute": 48,
         "second": 15,
         "nano": 484000000
-    },like:20,picture:'https://tmssl.akamaized.net//images/portrait/header/58088-1473586641.jpeg?lm=1473586671'},
-    {name:'Anonymous',comment:'Yorum 3',time:{
-        "hour": 20,
-        "minute": 28,
-        "second": 15,
-        "nano": 484000000
-    },like:15,picture:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoJA4PWsyzJCi1QzRbnrNOB9IUUraC-3xUXTQzFJoGN_EQFZQS'},
-    {name:'Bafétimbi Fredius Gomis',comment:'Yorum 5',time:{
+    }, like: 20, picture: 'https://tmssl.akamaized.net//images/portrait/header/58088-1473586641.jpeg?lm=1473586671'
+    },
+    {
+        name: 'Anonymous',
+        comment: 'Yorum 3',
+        time: {
+            "hour": 20,
+            "minute": 28,
+            "second": 15,
+            "nano": 484000000
+        },
+        like: 15,
+        picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoJA4PWsyzJCi1QzRbnrNOB9IUUraC-3xUXTQzFJoGN_EQFZQS'
+    },
+    {
+        name: 'Bafétimbi Fredius Gomis', comment: 'Yorum 5', time: {
         "hour": 22,
         "minute": 28,
         "second": 15,
         "nano": 484000000
-    },like:10,picture:'https://tmssl.akamaized.net//bilder/spielerfotos/s_22388_3377_2012_1.jpg?lm=0'},
-]
+    }, like: 10, picture: 'https://tmssl.akamaized.net//bilder/spielerfotos/s_22388_3377_2012_1.jpg?lm=0'
+    },
+];
+
 export class TalkComment extends Component {
 
-    renderRow (info,key) {
+    _keyExtractor = (item, index) => index;
+
+    renderRow(info, key) {
         return <CommentItem item={info} key={key}/>
 
 
     }
-    _renderItem ({item, index}) {
+
+    _renderItem({item, index}) {
         return (
-            <View  style={styles.card}>
-                <Thumbnail source={{uri:item.picture}}  small style={{marginBottom:15}}/>
-                <Text style={{fontSize:12,color:'#000'}}>{item.name}</Text>
-                <Text style={{fontSize:10,color:'#BCBEC0',textAlign:'center',margin:2}}>{item.comment}</Text>
+            <View style={styles.card}>
+                <Thumbnail source={{uri: item.picture}} small style={{marginBottom: 15}}/>
+                <Text style={{fontSize: 12, color: '#000'}}>{item.name}</Text>
+                <Text style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.comment}</Text>
             </View>
         );
     }
-    _keyExtractor = (item, index) => index;
+
     render() {
         return (
-            <View style={{flex:1}}>
-                <View style={{height:220,alignSelf:'center'}}>
+            <View style={{flex: 1}}>
+                <View style={{height: 220, alignSelf: 'center'}}>
                     <Carousel
                         data={POPULARENTRIES}
                         renderItem={this._renderItem}
-                        sliderWidth={(width/2)+40}
+                        sliderWidth={(width / 2) + 40}
                         itemWidth={(width / 2) - 20}
                         inactiveSlideScale={1}
                         inactiveSlideOpacity={1}
@@ -83,22 +127,20 @@ export class TalkComment extends Component {
                         removeClippedSubviews={false}/>
 
                 </View>
-                <View style={{height:height-355}}>
+                <View style={{height: height - 360}}>
                     <ScrollView>
-                        {ENTRIES.map((item,key)=> this.renderRow(item,item.key))}</ScrollView>
+                        {ENTRIES.map((item, key) => this.renderRow(item, item.key))}</ScrollView>
                 </View>
 
                 <Fab
                     active={true}
                     direction="left"
-                    containerStyle={{ }}
-                    style={{ backgroundColor: '#29B673' }}
+                    containerStyle={{}}
+                    style={{backgroundColor: '#29B673'}}
                     position="bottomRight"
                     onPress={this.props.question}>
-                    <Icon  name="ios-text" />
+                    <Icon name="ios-text"/>
                 </Fab>
-
-
 
             </View>
 
@@ -106,8 +148,8 @@ export class TalkComment extends Component {
     }
 }
 
-const width = Dimensions.get('window').width
-const height = Dimensions.get('window').height
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     container: {
@@ -147,8 +189,7 @@ const styles = StyleSheet.create({
     slider: {
         marginTop: 25,
     },
-    sliderContentContainer: {
-    },
+    sliderContentContainer: {},
     paginationContainer: {
         paddingVertical: 8
     },
@@ -162,12 +203,12 @@ const styles = StyleSheet.create({
         width: (width / 2) - 20,
         height: 190,
         marginLeft: 10,
-        backgroundColor:'#fff',
-        borderWidth:1,
-        borderRadius:15,
-        borderColor:'#F1F2F2',
-        justifyContent:'center',
-        alignItems:'center'
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderRadius: 15,
+        borderColor: '#F1F2F2',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 

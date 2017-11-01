@@ -14,6 +14,11 @@ export default class AgendaCard extends Component {
         isClicked:this.props.isClicked
     }
 
+    /**
+     * Konusmanin leveline gore renk dondurur.
+     * @param level
+     * @returns {*}
+     */
     getColorByLevel(level){
         switch(level){
             case 1:
@@ -36,6 +41,11 @@ export default class AgendaCard extends Component {
             }
         )
     }
+
+    /**
+     * Cardların ustundeki butonların ne olacagini ayarlar.
+     * @param obj
+     */
     handleClick(obj){
         this.setButtonIcon();
         let tempObject=obj;
@@ -47,6 +57,11 @@ export default class AgendaCard extends Component {
 
     }
 
+    /**
+     * Card verisi sectiklerim listesinde varsa true yoksa false dondurur.
+     * @param data
+     * @returns {boolean}
+     */
     isSameData(data){
         let choosedOne=this.props.choosedEvents;
         let obj = choosedOne.find((data2)=>data===data2)
