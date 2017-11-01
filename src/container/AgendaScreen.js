@@ -202,7 +202,7 @@ class AgendaScreen extends Component {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
 
-        const data = mock; //this.props.agenda;
+        const data = this.props.agenda;//mock;
 
         if (data !== undefined && data !== null && !data.isEmpty) {
             Object.keys(data).forEach((date) => eventsDates.includes(date) ? null : eventsDates.push(date));
@@ -219,7 +219,7 @@ class AgendaScreen extends Component {
      * @param date
      */
     changeDate(date) {
-        const data = mock; //this.props.agenda;
+        const data =  this.props.agenda; //mock;
         this.setState({
             switchedDay: date,
             rooms: this.roomsList(data[date]),
@@ -287,7 +287,7 @@ class AgendaScreen extends Component {
         talksList = this.state.data;
         rooms = this.state.rooms;
         choosen = this.state.choosen;
-        const agendaData = mock;//this.props.agenda;
+        const agendaData = this.props.agenda;//mock
         return (
             <Container style={{backgroundColor: '#fff'}}>
                 <If con={isChoosenClicked}>
