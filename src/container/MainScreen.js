@@ -34,6 +34,7 @@ class MainScreen extends Component {
 
     state = {
         search: true,
+        loadingModal:false
     };
 
     /**
@@ -42,21 +43,23 @@ class MainScreen extends Component {
      * @returns {Promise.<void>}
      */
     getEvent = async (code) => {
+        this.setState({loadingModal:true});
         const {dispatch, loading} = this.props;
         await dispatch(actionCreators.fetchEvent(code));
         const {error, errorMessage} = this.props;
-        if (error)
+        if (error) 
             Alert.alert(
                 'Warning!',
                 errorMessage,
                 [
-                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    {text: 'OK', onPress: () => this.setState({loadingModal:loading})},
                 ],
                 { cancelable: false }
             );
 
         if (!error && !loading) {
             //this.props.navigation.dispatch({type: 'drawerStack'});
+            this.setState({loadingModal:loading});
             this.props.navigation.navigate(EVENT_STACK)
         }
     };
@@ -67,7 +70,8 @@ class MainScreen extends Component {
      * @private
      */
     _handlePressSearch(value) {
-        this.getEvent(value);
+        if(!!value)
+            this.getEvent(value);
     }
 
     /**
@@ -79,7 +83,7 @@ class MainScreen extends Component {
     }
 
     render() {
-        let {loading} = this.props;
+        const loading = this.state.loadingModal;
         const {search} = this.state;
 
         return (
@@ -93,7 +97,7 @@ class MainScreen extends Component {
                             <View style={styles.container}>
                                 <View style={styles.logoContainer}>
                                     <Image style={styles.image} source={logo}/>
-                                    <Text style={styles.title}>Welcome to SliConf</Text>
+                                    <Text style={styles.title}>Welcome to SliConf {loading.toString()}</Text>
                                     <Text style={styles.subtitle}>Conferences at your fingertips</Text>
                                 </View>
 
