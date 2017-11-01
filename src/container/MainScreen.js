@@ -100,7 +100,7 @@ class MainScreen extends Component {
                                 <View style={styles.containerBottom}>
                                     <View style={styles.search}>
                                         <AnimatedInput
-                                            label={'Event Code (XF6N)'}
+                                            label={'Event Code'}
                                             iconClass={FontAwesomeIcon}
                                             iconName={'search'}
                                             iconColor={Color.white}
