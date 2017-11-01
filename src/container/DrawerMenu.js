@@ -16,22 +16,11 @@ const mapStateToProps = (state) => ({
     login:state.auth.login
 });
 
-const userData = {
-    profileUrl: 'https://s-media-cache-ak0.pinimg.com/736x/a3/e3/d6/a3e3d67e30105ca1688565e484370ab8--social-networks-harry-potter.jpg',
-    username: 'Nursel Cıbır',
-    email: 'nurselcibir@gmail.com'
-};
-
 class DrawerMenu extends Component {
 
     state = {
         logout: false,
         login: false,
-        userData : {
-            profileUrl: 'https://s-media-cache-ak0.pinimg.com/736x/a3/e3/d6/a3e3d67e30105ca1688565e484370ab8--social-networks-harry-potter.jpg',
-            username: 'Nursel Cıbır',
-            email: 'nurselcibir@gmail.com'
-        }
     };
 
     logout_close = () => this.setState({logout: false});
