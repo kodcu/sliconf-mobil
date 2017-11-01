@@ -85,7 +85,7 @@ export class TalkComment extends Component {
                 </View>
                 <View style={{height:height-355}}>
                     <ScrollView>
-                        {ENTRIES.map((item,key)=> this.renderRow(item,key))}</ScrollView>
+                        {ENTRIES.map((item,key)=> this.renderRow(item,item.key))}</ScrollView>
                 </View>
 
                 <Fab
@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 8
     },
     card: {
-        backgroundColor: 'red',
         width: (width / 2) - 20,
         height: 190,
         marginLeft: 10,

@@ -21,63 +21,78 @@ import {
 import AgendaCard from '../component/AgendaCard'
 import ChosenCard from '../component/ChosenCard'
 import Header from '../component/Header'
-import Filter from '../component/Filter'
 import BreakTimeCard from '../component/BreakTimeCard'
 import If from '../component/If'
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/drawer'
 import {SEARCHRESULT, TALK} from '../router';
 import FilterEvent from "../component/FilterEvent";
+import Color from "../theme/Color";
 
-let choosen = [];
 let eventsDates = [];
 
 const mapStateToProps = (state) => ({
     agenda: state.event.event.agenda,
 });
 
-const mock ={ "05-05-2018" : [
-    {
-        "key": "a102",
-        "time": '9:30',
-        "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
-        "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
-        "level": 3,
-        "tags": [
-            "Java",
-            "JVM"
-        ],
-        "room": "Big Saloon",
-        "speaker": "Frédéric Hubin",
-        "star": 4.5,
-        "date": '11-11-2018',
-    }]};
+const mock = {
+    "05-05-2018": [
+        {
+            "key": "a102",
+            "time": '9:30',
+            "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
+            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
+            "level": 3,
+            "tags": [
+                "Java",
+                "JVM"
+            ],
+            "room": "Big Saloon",
+            "speaker": "Frédéric Hubin",
+            "star": 4.5,
+            "date": '11-11-2018',
+        }]
+};
 
 class AgendaScreen extends Component {
 
     state = {
         switchedDay: 'Day 1',
-        isClicked: true,
+        isChoosenClicked: true,
         data: [],
         rooms: [],
         filter: false,
         choosen: []
     };
 
+    /**
+     * Filtreleme sayfasını kapatır ve sonuçların gösterileceği sayfaya yönlendirir.
+     * @param searchResults Filtreleme sonuçlarının bulunduğu array.
+     */
     filterHide = (searchResults) => {
-        console.log('Agenda Screendeyim sonuclar')
-        console.log(searchResults)
-        this.setState({filter: false})
+        this.setState({filter: false});
         this.props.navigation.navigate(SEARCHRESULT, searchResults)
     };
 
+    /**
+     * Filtre popupını kapatır.
+     */
     closeFilter = () => {
-        console.log("kapandi")
         this.setState({filter: false})
     };
+
+    /**
+     * Aynı anda hareket etmesi gereken scrollviewlerin pozisyonunu eşitler.
+     * @param event sürükleme haraketi
+     */
     handleScroll = (event) => {
         this.roomScroll.scrollTo({x: event.nativeEvent.contentOffset.x, animated: true});
     };
+
+    /**
+     * Katılmak istediğin eventleri seçtiklerim listesinden siler.
+     * @param arg Konuşmanın modeli
+     */
     deleteItemFromChosenEvents = (arg) => {
         let array = choosen;
         let index = array.indexOf(arg);
@@ -85,6 +100,11 @@ class AgendaScreen extends Component {
         this.setState({choosen: choosen})
     };
 
+    /**
+     * Ajandaki konuşmaların saatlerine göre saat dizisine çevirir.
+     * @param events gelen konuşmalar
+     * @returns {Array} saatlere göre konuşmaların olduğu dizi
+     */
     eventsList(events) {
         let changedEventsList = [];
         let myMap = new Map();
@@ -103,23 +123,32 @@ class AgendaScreen extends Component {
         return changedEventsList
     }
 
+    /**
+     * Konuşmaların verilerinden oda listesi oluşturur.
+     * @param events konuşmalar
+     * @returns {Array} oda listesi
+     */
     roomsList(events) {
         let roomsList = [];
-            let tempRoom = events.filter((thing, index, self) => self.findIndex((t) => {
-                return t.room === thing.room
-            }) === index);
-            tempRoom.forEach((element) => roomsList.push(element.room));
-            roomsList.sort();
+        let tempRoom = events.filter((thing, index, self) => self.findIndex((t) => {
+            return t.room === thing.room
+        }) === index);
+        tempRoom.forEach((element) => roomsList.push(element.room));
+        roomsList.sort();
         return roomsList
     }
 
+    /**
+     * Uygulama açılmadan önce gelen veriden tarihlerin ayrıştılması ve ilk günün etkinliklerinin
+     * gösterilmesi
+     */
     componentWillMount() {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
 
-        const data =  mock //this.props.agenda;
+        const data = mock; //this.props.agenda;
 
-        if (data !== undefined && data !==null && !data.isEmpty){
+        if (data !== undefined && data !== null && !data.isEmpty) {
             Object.keys(data).forEach((date) => eventsDates.includes(date) ? null : eventsDates.push(date));
             this.setState({
                 rooms: this.roomsList(data[Object.keys(data)[0]]),
@@ -129,8 +158,12 @@ class AgendaScreen extends Component {
 
     }
 
+    /**
+     * Tarih değiştirildiğinde verilerin değiştirlmesini sağlar.
+     * @param date
+     */
     changeDate(date) {
-        const data = mock //this.props.agenda;
+        const data = mock; //this.props.agenda;
         this.setState({
             switchedDay: date,
             rooms: this.roomsList(data[date]),
@@ -138,17 +171,25 @@ class AgendaScreen extends Component {
         })
     }
 
+    /**
+     * Seçtiklerim listesine konuşmayı ekler.
+     * @param arg konuşma detayları
+     */
     addItemToChosenEvents(arg) {
         choosen.push(arg);
-        console.log(choosen);
     }
 
+    /**
+     *Konuşmacıları bulunduğu odaya göre ekranda gösterir
+     * @param myroom oda verisi
+     * @param arg konuşma listesi
+     * @returns {XML} ajanda kartı
+     */
     isThereEventInRoom(myroom, arg) {
         let isExist = false;
         let i, j;
         for (i = 0; i < arg.length; i++) {
             if (myroom === arg[i].room) {
-                isExist = true;
                 for (j = 0; j < choosen.length; j++) {
                     if (arg[i] === choosen[j]) {
                         return (
@@ -170,31 +211,34 @@ class AgendaScreen extends Component {
                                     choosedEvents={choosen}
                                     onPress={() => this.props.navigation.navigate(TALK, arg)}
                                     onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
-            } else {
-                isExist = false;
             }
         }
         if (!isExist)
             return (<AgendaCard isEmpty={true}/>)
     }
 
+    /**
+     * Seçtiklerim butonuna basıldığında sayfanın değişmesini sağlar.
+     * @private
+     */
     _hide() {
-        this.setState({isClicked: true})
+        this.setState({isChoosenClicked: true})
     }
 
 
     render() {
-        const {isClicked, filter} = this.state
-        DATAS = this.state.data
-        rooms = this.state.rooms
-        choosen = this.state.choosen
-        const agenda =  mock//this.props.agenda;
+        const {isChoosenClicked, filter} = this.state;
+        talksList = this.state.data;
+        rooms = this.state.rooms;
+        choosen = this.state.choosen;
+        const agendaData = mock;//this.props.agenda;
         return (
             <Container style={{backgroundColor: '#fff'}}>
-                <If con={isClicked}>
+                <If con={isChoosenClicked}>
                     <If.Then>
-                        <FilterEvent visible={filter} onPress={(e) => this.filterHide(e)} onClose={() => this.closeFilter}
-                                events={agenda}/>
+                        <FilterEvent visible={filter} onPress={(e) => this.filterHide(e)}
+                                     onClose={() => this.closeFilter}
+                                     events={agendaData}/>
                         <Header leftImage='chevron-left' rightImage='bars'
                                 onPressLeft={() => this.props.navigation.goBack(null)}
                                 onPressRight={() => {
@@ -225,14 +269,13 @@ class AgendaScreen extends Component {
                         </View>
                     </If.Then>
                     <If.Else>
-                        <Header leftImage='chevron-left'
-                                onPressLeft={() => this._hide()}>
+                        <Header leftImage='chevron-left' onPressLeft={() => this._hide()}>
                             <Header.Title title="Schedule"/>
                         </Header>
                     </If.Else>
                 </If>
                 <Content>
-                    <If con={isClicked}>
+                    <If con={isChoosenClicked}>
 
                         <If.Then>
 
@@ -240,30 +283,28 @@ class AgendaScreen extends Component {
                                 <View style={{flexDirection: 'row'}}>
 
                                     <View style={{margin: 5, padding: 5}}>
-                                        {Object.keys(DATAS).map((list, i) => (
+                                        {Object.keys(talksList).map((list, i) => (
 
-                                            <View key={i}>{DATAS[list][0].level === 0 ?
+                                            <View key={i}>{talksList[list][0].level === 0 ?
                                                 <Text style={{margin: 8}}>{list}</Text> :
                                                 <Text style={styles.cardsTime}>{list}</Text>}</View>
                                         ))}
                                     </View>
-                                    <ScrollView horizontal onScroll={this.handleScroll}
-                                                showsHorizontalScrollIndicator={false}>
+                                    <ScrollView horizontal onScroll={this.handleScroll} showsHorizontalScrollIndicator={false}>
                                         <ScrollView>
-                                            {Object.keys(DATAS).map((time, i) => (
+                                            {Object.keys(talksList).map((time, i) => (
                                                 <View key={i}>
-                                                    <If con={DATAS[time][0].level !== 0}>
+                                                    <If con={talksList[time][0].level !== 0}>
                                                         <If.Then>
                                                             <View style={styles.cardsField}>
 
                                                                 {rooms.map((myroom, i) => (
-                                                                    <View
-                                                                        key={i}>{this.isThereEventInRoom(myroom, DATAS[time])}</View>
+                                                                    <View key={i}>{this.isThereEventInRoom(myroom, talksList[time])}</View>
                                                                 ))}
                                                             </View>
                                                         </If.Then>
                                                         <If.Else>
-                                                            <BreakTimeCard item={DATAS[time][0]}/>
+                                                            <BreakTimeCard item={talksList[time][0]}/>
                                                         </If.Else>
                                                     </If>
                                                 </View>
@@ -291,14 +332,14 @@ class AgendaScreen extends Component {
                 <Footer>
                     <FooterTab style={{backgroundColor: '#fff'}}>
                         <Button vertical onPress={() => {
-                            this.setState({isClicked: true})
+                            this.setState({isChoosenClicked: true})
                         }}>
-                            <Text style={{color: this.state.isClicked ? '#29B673' : '#414042'}}>All</Text>
+                            <Text style={{color: this.state.isChoosenClicked ? Color.green : Color.darkGray}}>All</Text>
                         </Button>
                         <Button vertical onPress={() => {
-                            this.setState({isClicked: false})
+                            this.setState({isChoosenClicked: false})
                         }}>
-                            <Text style={{color: this.state.isClicked ? '#414042' : '#29B673'}}>Chosen</Text>
+                            <Text style={{color: this.state.isChoosenClicked ? Color.darkGray : Color.green}}>Chosen</Text>
                         </Button>
                     </FooterTab>
                 </Footer>
@@ -337,6 +378,6 @@ const styles = StyleSheet.create({
         margin: 8
     }
 
-})
+});
 
 export default connect(mapStateToProps)(AgendaScreen)

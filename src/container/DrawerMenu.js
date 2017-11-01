@@ -8,10 +8,12 @@ import {AGENDA, FLOOR, HOME, INFO, LOCATION, LOGIN, SPEAKERS} from "../router";
 import If from "../component/If";
 import Font from "../theme/Font";
 import Color from "../theme/Color";
+import {actionCreators} from "../reducks/module/auth";
 
 const mapStateToProps = (state) => ({
     selectDrawer: state.drawer.drawerIndex,
-    user:state.auth.user
+    user:state.auth.user,
+    login:state.auth.login
 });
 
 const userData = {
@@ -74,7 +76,7 @@ class DrawerMenu extends Component {
                         }}>
                             <Button transparent onPress={() => {
                                 this.logout_close();
-                                this.setState({login: false})
+                                this.props.dispatch(actionCreators.logout())
                             }}>
                                 <Text style={{color: '#fff'}}>Yes</Text>
                             </Button>
@@ -83,7 +85,7 @@ class DrawerMenu extends Component {
                             </Button>
                         </View>
                     </View>
-                    <If con={this.state.login}>
+                    <If con={this.props.login}>
                         <If.Then>
                             <ProfileComponent logout={() => this.logout_open()} profileUrl={''}
                                               username={this.props.user.username} email={this.props.user.email}/>
