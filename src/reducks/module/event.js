@@ -90,61 +90,6 @@ export const reducer = (state = initialState, action) => {
 
 export const actionCreators = {
 
-    fetchEventList: (name) => async (dispatch, getState) => {
-      dispatch({
-          type: types.EVENTLIST_POSTS_REQUEST
-      })
-
-      await Request.GET(API_EVENTLIST,{
-        '200': (res)=>{
-          dispatch({
-              type: types.EVENTLIST_POSTS_RESPONSE_SUC,
-              payload: res.events
-          })
-        },
-        otherwise:(res)=>{
-          dispatch({
-              type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
-              payload: '" ' + {name} + ' " isminde etkinlik bulunamadı!'
-          })
-        },
-        fail:(err) =>{
-          dispatch({
-              type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
-              payload: 'İşleminiz gerçekleştirilemiyor!'
-          })
-        }
-      })
-    },
-
-    fetchEventList2: (name) => async (dispatch, getState) => {
-        dispatch({
-            type: types.EVENTLIST_POSTS_REQUEST
-        })
-
-        try {
-            const response = await fetch(API_EVENTLIST)
-            const posts = await response.json()
-
-            if (name === 'hata')
-                dispatch({
-                    type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
-                    payload: '" ' + {name} + ' " isminde etkinlik bulunamadı!'
-                })
-            else
-                dispatch({
-                    type: types.EVENTLIST_POSTS_RESPONSE_SUC,
-                    payload: posts.events
-                })
-
-        } catch (e) {
-            dispatch({
-                type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
-                payload: 'İşleminiz gerçekleştirilemiyor!'
-            })
-        }
-
-    },
     fetchEvent: (code) => async (dispatch, getState) => {
         dispatch({
             type: types.EVENT_POSTS_REQUEST
@@ -160,46 +105,26 @@ export const actionCreators = {
                 else
                     dispatch({
                         type: types.EVENT_POSTS_RESPONSE_FAIL,
-                        payload: '" ' + code + ' " isminde etkinlik bulunamadı!'
+                        payload: '" ' + code + ' " can not found!'
                     })
             },
             otherwise:(res)=>{
                 dispatch({
                     type: types.EVENT_POSTS_RESPONSE_FAIL,
-                    payload: '" ' + code + ' " isminde etkinlik bulunamadı!'
+                    payload: '" ' + code + ' " can not found!'
                 })
             },
             fail:(err) =>{
                 dispatch({
                     type: types.EVENT_POSTS_RESPONSE_FAIL,
-                    payload: 'İşleminiz gerçekleştirilemiyor!'
+                    payload: 'Can not be processed at this time!'
                 })
             }
         })
 
     },
-    fetchEvent2: (code) => async (dispatch, getState) => {
-        console.log("dispach yapılıyor.")
-        dispatch({
-            type: types.EVENT_POSTS_REQUEST
-        })
 
-        try {
-            const response = await fetch(API_EVENT)
-            const posts = await response.json()
 
-            dispatch({
-                type: types.EVENT_POSTS_RESPONSE_SUC,
-                payload: posts.event
-            })
-        } catch (e) {
-            console.log("hata yakaladık")
-            dispatch({
-                type: types.EVENT_POSTS_RESPONSE_FAIL,
-                payload: 'İşleminiz gerçekleştirilemiyor!'
-            })
-        }
-    }
 
 }
 
