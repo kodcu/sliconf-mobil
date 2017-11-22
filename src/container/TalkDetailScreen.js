@@ -7,6 +7,7 @@ import If from "../component/If";
 import TalkInfo from "../component/TalkInfo";
 import TalkComment from "../component/TalkComment";
 import TalkRate from "../component/TalkRate";
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
 const {height, width} = Dimensions.get('window');
 export class TalkDetail extends Component {
@@ -25,7 +26,23 @@ export class TalkDetail extends Component {
 
         const {tab, rate} = this.state
         const {state} = this.props.navigation;
-        let talk = state.params
+        let talk = [{
+            "key": "a102",
+            "time": '9:30',
+            "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
+            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
+            "level": 3,
+            "tags": [
+                "Java",
+                "JVM",
+                "Security",
+            ],
+            "room": "Big Saloon",
+            "speaker": "Frédéric Hubin",
+            "star": 4.5,
+            "date": '11-11-2018',
+        }]
+        //state.params
         return (
             <Container style={styles.container}>
 
@@ -36,7 +53,6 @@ export class TalkDetail extends Component {
                         }}>
                     <Header.Title title="Talk Detail"/>
                 </Header>
-
                 <Content>
                     <TalkRate visible={rate} onPressDismiss={() => {
                         this.setState({rate: false})
@@ -53,10 +69,14 @@ export class TalkDetail extends Component {
                     </If>
                 </Content>
 
+
                 <If con={this.state.ask}>
                     <If.Then>
-                <Footer>
+
+                <Footer >
+
                     <FooterTab style={{backgroundColor: '#fff'}}>
+
                         <View style={{flexDirection:'row'}}>
                             <Thumbnail source={require("../../images/person.png")}  small style={{margin:10}}/>
                             <TextInput placeholder="Your comments"
@@ -81,6 +101,8 @@ export class TalkDetail extends Component {
                         </View>
                     </FooterTab>
                 </Footer>
+
+
                     </If.Then>
                     <If.Else>
                 <Footer>

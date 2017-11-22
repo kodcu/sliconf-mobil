@@ -79,6 +79,7 @@ const MainStack = StackNavigator({
     [SPLASH]: {screen: SplashScreen},
     [MAIN]: {screen: MainScreen},
     [LOGIN]: {screen: LoginScreen},
+    [TALK]: {screen: TalkDetailScreen},
 
 }, {
     headerMode: 'none',

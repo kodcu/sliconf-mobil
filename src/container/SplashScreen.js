@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, View, Text, NetInfo} from 'react-native'
+import {StyleSheet, View, Text, NetInfo,BackHandler,Alert} from 'react-native'
+import RNExitApp from 'react-native-exit-app';
 import {Image} from 'react-native-animatable'
-import {LOGIN, MAIN} from '../router';
+import {LOGIN, MAIN, TALK} from '../router';
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 
@@ -20,8 +21,20 @@ class SplashScreen extends React.Component {
      * @private
      */
     _handleConnectionInfoChange = (isConnected) => {
+        //return this.props.navigation.navigate(TALK);
         if (isConnected)
             setTimeout(() => this.props.navigation.dispatch({type: MAIN}), 1000);
+        else
+            //TODO: try again duzunlenecek
+            Alert.alert(
+                'Warning!',
+                "...",
+                [
+                    {text: 'Exit', onPress: () => RNExitApp.exitApp()},
+                    {text: 'Try again', onPress: () => this._handleConnectionInfoChange(false)},
+                ],
+                { cancelable: false }
+            );
     };
 
     componentWillMount() {
