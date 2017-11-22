@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet,TextInput,View,TouchableOpacity,Dimensions,Alert} from 'react-native';
+import {StyleSheet,TextInput,View,TouchableOpacity,Dimensions,Alert,KeyboardAvoidingView} from 'react-native';
 import {Button, Card, CardItem, Container, Content, Footer, FooterTab, Input, Left,Thumbnail} from "native-base";
 import Header from "../component/Header";
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -26,24 +26,9 @@ export class TalkDetail extends Component {
 
         const {tab, rate} = this.state
         const {state} = this.props.navigation;
-        let talk = [{
-            "key": "a102",
-            "time": '9:30',
-            "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
-            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
-            "level": 3,
-            "tags": [
-                "Java",
-                "JVM",
-                "Security",
-            ],
-            "room": "Big Saloon",
-            "speaker": "Frédéric Hubin",
-            "star": 4.5,
-            "date": '11-11-2018',
-        }]
-        //state.params
+        let talk = state.params
         return (
+            
             <Container style={styles.container}>
 
                 <Header leftImage='chevron-left' rightText='Rate'
@@ -53,7 +38,7 @@ export class TalkDetail extends Component {
                         }}>
                     <Header.Title title="Talk Detail"/>
                 </Header>
-                <Content>
+            <Content>
                     <TalkRate visible={rate} onPressDismiss={() => {
                         this.setState({rate: false})
                     }}/>
@@ -67,13 +52,14 @@ export class TalkDetail extends Component {
                         </If.Else>
 
                     </If>
+                    
                 </Content>
-
-
+                
+                <KeyboardAvoidingView behavior='position'>
                 <If con={this.state.ask}>
                     <If.Then>
 
-                <Footer >
+                        <Footer >
 
                     <FooterTab style={{backgroundColor: '#fff'}}>
 
@@ -102,6 +88,7 @@ export class TalkDetail extends Component {
                     </FooterTab>
                 </Footer>
 
+                
 
                     </If.Then>
                     <If.Else>
@@ -123,7 +110,11 @@ export class TalkDetail extends Component {
                 </Footer>
                     </If.Else>
                 </If>
+                
+</KeyboardAvoidingView>
             </Container>
+
+
         )
     }
 }
