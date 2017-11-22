@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     eventLogo:{
         width: height * 0.15,
         height: height * 0.15,
-        borderRadius: Platform.OS ==='ios' ? 50: 90
+        borderRadius: Platform.OS==='ios' ? scale(45): 90
     },
     date: {
         flexDirection: 'row',

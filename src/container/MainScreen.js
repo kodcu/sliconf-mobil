@@ -93,11 +93,11 @@ class MainScreen extends Component {
 
                 <If con={search}>
                     <If.Then>
-                        <KeyboardAwareScrollView>
+                        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
                             <View style={styles.container}>
                                 <View style={styles.logoContainer}>
                                     <Image style={styles.image} source={logo}/>
-                                    <Text style={styles.title}>Welcome to SliConf {loading.toString()}</Text>
+                                    <Text style={styles.title}>Welcome to SliConf</Text>
                                     <Text style={styles.subtitle}>Conferences at your fingertips</Text>
                                 </View>
 
