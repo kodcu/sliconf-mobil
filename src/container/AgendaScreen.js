@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View,Alert} from 'react-native';
 import {
     Button,
     Card,
@@ -16,7 +16,7 @@ import {
     Picker,
     Right,
     Thumbnail,
-    Title,
+    Title
 } from 'native-base';
 import AgendaCard from '../component/AgendaCard'
 import ChosenCard from '../component/ChosenCard'
@@ -25,24 +25,27 @@ import BreakTimeCard from '../component/BreakTimeCard'
 import If from '../component/If'
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/drawer'
-import {SEARCHRESULT, TALK} from '../router';
+import {LOGIN, SEARCHRESULT,TALK} from '../router';
 import FilterEvent from "../component/FilterEvent";
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 import {moderateScale} from "../theme/Scale";
+import moment from "moment";
 
 let eventsDates = [];
 
 const mapStateToProps = (state) => ({
     agenda: state.event.event.agenda,
+    user:state.auth.user,
+    login:state.auth.login
 });
 
 const mock = {
-    "05-05-2018": [
+    "1525510807": [
         {
             "key": "a102",
             "time": '9:30',
-            "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
+            "topic": "CI/CD of blockchain smart1 contracts using Java and eDuke",
             "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
             "level": 3,
             "tags": [
@@ -53,34 +56,39 @@ const mock = {
             "room": "Big Saloon",
             "speaker": "Frédéric Hubin",
             "star": 4.5,
-            "date": '11-11-2018',
+            "date": '1525510807',
         },
         {
             "key": "a102",
             "time": '9:40',
-            "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
+            "topic": "CI/CD of blockchain smart2 contracts using Java and eDuke",
             "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
             "level": 0,
             "room": "Big Saloon",
             "speaker": "Frédéric Hubin",
+
             "star": 4.5,
-            "date": '11-11-2018',
+            "date": '1525510807',
         },
         {
             "key": "a102",
             "time": '9:50',
-            "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
+            "topic": "CI/CD of blockchain smart3 contracts using Java and eDuke",
             "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
             "level": 3,
+            "tags": [
+                "Java",
+                "JVM"
+            ],
             "room": "Bigboy Saloon",
             "speaker": "Frédéric Hubin",
             "star": 4.5,
-            "date": '11-11-2018',
+            "date": '1525510807',
         },
         {
             "key": "a102",
             "time": '10:50',
-            "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
+            "topic": "CI/CD of blockchain smart4 contracts using Java and eDuke",
             "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
             "level": 1,
             "tags": [
@@ -90,12 +98,12 @@ const mock = {
             "room": "Bigboy Saloon",
             "speaker": "Frédéric Hubin",
             "star": 4.5,
-            "date": '11-11-2018',
+            "date": '1525510807',
         },
         {
             "key": "a102",
             "time": '9:50',
-            "topic": "CI/CD of blockchain smart contracts using Java and eDuke",
+            "topic": "CI/CD of blockchain  contracts using Java and eDuke",
             "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
             "level": 2,
             "tags": [
@@ -105,7 +113,26 @@ const mock = {
             "room": "Bigboy Saloon",
             "speaker": "Frédéric Hubin22",
             "star": 4.5,
-            "date": '12-11-2018',
+            "date": '1525510807',
+        },
+
+    ],
+    "1525597207": [
+        {
+            "key": "a102",
+            "time": '9:30',
+            "topic": "CI/CD of blockchain smart11 contracts using Java and eDuke",
+            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
+            "level": 2,
+            "tags": [
+                "Java",
+                "JVM",
+                "Security",
+            ],
+            "room": "Big Saloon",
+            "speaker": "Frédéric Hubin",
+            "star": 4.5,
+            "date": '1525597207',
         }
     ]
 };
@@ -202,7 +229,7 @@ class AgendaScreen extends Component {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
 
-        const data = this.props.agenda;//mock;
+        const data = mock //this.props.agenda;
 
         if (data !== undefined && data !== null && !data.isEmpty) {
             Object.keys(data).forEach((date) => eventsDates.includes(date) ? null : eventsDates.push(date));
@@ -219,7 +246,7 @@ class AgendaScreen extends Component {
      * @param date
      */
     changeDate(date) {
-        const data =  this.props.agenda; //mock;
+        const data = mock // this.props.agenda;
         this.setState({
             switchedDay: date,
             rooms: this.roomsList(data[date]),
@@ -255,7 +282,15 @@ class AgendaScreen extends Component {
                                         isClicked={true}
                                         key={arg[i].key}
                                         choosedEvents={choosen}
-                                        onPress={() => this.props.navigate(TALK, arg)}
+                                        onPress={() => this.props.login ? this.props.navigation.navigate(TALK, arg) : Alert.alert(
+                                            'Warning!',
+                                            'Please log in for more information.',
+                                            [
+                                                {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
+                                                {text: 'CANCEL', onPress: () => console.log('cancel')}
+                                            ],
+                                            {cancelable: false}
+                                        ) }
                                         onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
                     }
                 }
@@ -265,12 +300,30 @@ class AgendaScreen extends Component {
                                     isClicked={false}
                                     key={arg[i].key}
                                     choosedEvents={choosen}
-                                    onPress={() => this.props.navigation.navigate(TALK, arg)}
+                                    onPress={() => this.props.login ? this.props.navigation.navigate(TALK, arg) : Alert.alert(
+                                        'Warning!',
+                                        'Please log in for more information.',
+                                        [
+                                            {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
+                                            {text: 'CANCEL', onPress: () => console.log('cancel')}
+                                        ],
+                                        {cancelable: false}
+                                    ) }
                                     onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
             }
         }
         if (!isExist)
             return (<AgendaCard isEmpty={true}/>)
+
+        Alert.alert(
+            'Warning!',
+            'Please log in for more information.',
+            [
+                {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
+                {text: 'CANCEL', onPress: () => console.log('cancel')}
+            ],
+            {cancelable: false}
+        );
     }
 
     /**
@@ -287,7 +340,8 @@ class AgendaScreen extends Component {
         talksList = this.state.data;
         rooms = this.state.rooms;
         choosen = this.state.choosen;
-        const agendaData = this.props.agenda;//mock
+        const agendaData = mock//this.props.agenda;
+        console.log("tar"+eventsDates)
         return (
             <Container style={{backgroundColor: '#fff'}}>
                 <If con={isChoosenClicked}>
@@ -305,7 +359,7 @@ class AgendaScreen extends Component {
                                     selectedValue={this.state.switchedDay}
                                     onValueChange={(itemValue, itemIndex) => this.changeDate(itemValue)}>
                                 {eventsDates.map((item, i) =>
-                                    <Picker.Item  key={i + 1} label={"Day " + (i + 1)} value={item}/>
+                                    <Picker.Item key={i + 1} label={moment.unix(item).format('dddd')} value={item}/>
                                 )}
                             </Picker>
                         </Header>
