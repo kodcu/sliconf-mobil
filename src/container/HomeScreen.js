@@ -53,7 +53,6 @@ class HomeScreen extends Component {
 
     render() {
         const {event} = this.props;
-        console.log('bakk '+moment(event.startDate.date).format("MMM Do YY"));
         return (
             <View style={styles.container}>
 
@@ -69,12 +68,12 @@ class HomeScreen extends Component {
                         <View>
                             <View style={styles.date}>
                                 <Icon color={Color.white} name='ios-clock-outline' size={22}/>
-                                <Text style={styles.dateText}>{moment(event.startDate.time).format('h:mm a')}</Text>
+                                <Text style={styles.dateText}>{moment.unix(event.startDate).format('h:mm a')}</Text>
                             </View>
 
                             <View style={styles.date}>
                                 <Icon color={Color.white} name='ios-calendar-outline' size={22}/>
-                                <Text style={styles.dateText}>{moment(event.startDate.date).format("Do MMM  YYYY")}</Text>
+                                <Text style={styles.dateText}>{moment.unix(event.startDate).format("Do MMM  YYYY")}</Text>
                             </View>
                         </View>
 
