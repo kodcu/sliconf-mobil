@@ -17,3 +17,4 @@ const sliconfAPI = 'http://api.sliconf.com/service/';
 export const getEvent = sliconfAPI + 'events/get/with-key/';
 export const postLOGIN = sliconfAPI + 'users/login';
 export const postREGISTER = sliconfAPI + 'users/register';
+export const postFORGOT = sliconfAPI + 'users/password-reset/send/';

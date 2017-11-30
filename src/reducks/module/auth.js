@@ -13,9 +13,12 @@ const types = {
     REGISTER_REQUEST: 'REGISTER_REQUEST',
     REGISTER_RESPONSE_SUC: 'REGISTER_RESPONSE_SUC',
     REGISTER_RESPONSE_FAIL: 'REGISTER_RESPONSE_FAIL',
+    FORGOT_PASS_REQUEST: 'FORGOT_PASS_REQUEST',
+    FORGOT_PASS_RESPONSE_SUC: 'FORGOT_PASS_RESPONSE_SUC',
+    FORGOT_PASS_RESPONSE_FAIL: 'FORGOT_PASS_RESPONSE_FAIL',
 }
 
-import {API_REGISTER, API_LOGIN, postLOGIN, postREGISTER} from '../API'
+import {API_REGISTER, API_LOGIN, postLOGIN, postREGISTER,postFORGOT} from '../API'
 
 const initialState = {
     loading: false,
@@ -95,6 +98,33 @@ export const reducer = (state = initialState, action) => {
                 user: {},
             }
         }
+        case types.FORGOT_PASS_REQUEST: {
+            return {
+                ...state,
+                loading: true,
+                error: false,
+                login: false,
+                user: {},
+            }
+        }
+        case types.FORGOT_PASS_RESPONSE_SUC: {
+            return {
+                ...state,
+                loading: false,
+                error: false,
+                login: false,
+            }
+        }
+        case types.FORGOT_PASS_RESPONSE_FAIL: {
+            return {
+                ...state,
+                loading: false,
+                error: true,
+                login: false,
+                user: {},
+                errorMessage: payload
+            }
+        }
     }
     return state;
 
@@ -162,6 +192,40 @@ export const actionCreators = {
             fail:(err) =>{
                 dispatch({
                     type: types.REGISTER_RESPONSE_FAIL,
+                    payload: 'İşleminiz gerçekleştirilemiyor!'
+                })
+            }
+        })
+
+    },
+
+    forgotPassword: (email) => async (dispatch, getState) => {
+        dispatch({
+            type: types.LOGIN_REQUEST
+        })
+
+        await Request.POST(postFORGOT+email,{email},{
+            '200': (res)=>{
+                if (res.status)
+                    dispatch({
+                        type: types.FORGOT_PASS_RESPONSE_SUC,
+                        payload: res.returnObject
+                    })
+                else
+                    dispatch({
+                        type: types.FORGOT_PASS_RESPONSE_FAIL,
+                        payload: res.message
+                    })
+            },
+            otherwise:(res)=>{
+                dispatch({
+                    type: types.FORGOT_PASS_RESPONSE_FAIL,
+                    payload:res.message
+                })
+            },
+            fail:(err) =>{
+                dispatch({
+                    type: types.FORGOT_PASS_RESPONSE_FAIL,
                     payload: 'İşleminiz gerçekleştirilemiyor!'
                 })
             }
