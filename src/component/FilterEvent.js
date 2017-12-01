@@ -150,7 +150,7 @@ export default class FilterEvent extends Component {
 
     componentWillMount() {
 
-            const events = this.props.events;
+        const events = this.props.events;
         if (events !== undefined && events !== null && !events.isEmpty) {
             let stateData = this.state.data;
             let stateSelected = this.state.searchFilter;
@@ -159,7 +159,7 @@ export default class FilterEvent extends Component {
                 data.map(ev => {
                         if (ev.tags !== undefined && ev.tags !== null)
                             ev.tags.forEach(tag => {
-                                if (!stateData.find(t => t.name === tag)){
+                                if (!stateData.find(t => t.name === tag)) {
                                     stateData.push({name: tag, checked: true});
                                     stateSelected.push(tag)
                                 }
@@ -238,7 +238,11 @@ export default class FilterEvent extends Component {
                                 <View style={{height: 40, flexDirection: 'row', paddingBottom: 30}}>
                                     <CheckBox
                                         key={this.state.beginnerLevel.toString() + 1}
-                                        rightTextStyle={styles.fontCheckItem}
+                                        rightTextStyle={{
+                                            ...Font.regular,
+                                            fontSize: moderateScale(12),
+                                            color: Color.darkGray
+                                        }}
                                         style={{padding: 10, width: width * 0.3}}
                                         onClick={() => this.setState({beginnerLevel: !this.state.beginnerLevel})}
                                         isChecked={this.state.beginnerLevel}
@@ -247,7 +251,11 @@ export default class FilterEvent extends Component {
                                     />
                                     <CheckBox
                                         key={this.state.mediumLevel.toString() + 2}
-                                        rightTextStyle={styles.fontCheckItem}
+                                        rightTextStyle={{
+                                            ...Font.regular,
+                                            fontSize: moderateScale(12),
+                                            color: Color.darkGray
+                                        }}
                                         style={{padding: 10, width: width * 0.3}}
                                         onClick={() => this.setState({mediumLevel: !this.state.mediumLevel})}
                                         isChecked={this.state.mediumLevel}
@@ -256,7 +264,11 @@ export default class FilterEvent extends Component {
                                     />
                                     <CheckBox
                                         key={this.state.expertLevel.toString() + 3}
-                                        rightTextStyle={styles.fontCheckItem}
+                                        rightTextStyle={{
+                                            ...Font.regular,
+                                            fontSize: moderateScale(12),
+                                            color: Color.darkGray
+                                        }}
                                         style={{padding: 10, width: width * 0.3}}
                                         onClick={() => this.setState({expertLevel: !this.state.expertLevel})}
                                         isChecked={this.state.expertLevel}

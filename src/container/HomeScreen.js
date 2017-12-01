@@ -9,6 +9,8 @@ import {moderateScale, scale, verticalScale} from '../theme/Scale';
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 import moment from "moment";
+import getImage from "../helpers/getImageHelper"
+
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
@@ -77,7 +79,7 @@ class HomeScreen extends Component {
                             </View>
                         </View>
 
-                        <Image source={{uri: event.logoPath}}
+                        <Image source={{uri: getImage(event.logoPath)}}
                                style={styles.eventLogo}
                         />
 
