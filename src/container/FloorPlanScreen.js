@@ -5,9 +5,10 @@ import Header from "../component/Header";
 import {connect} from 'react-redux'
 import Color from "../theme/Color";
 import Icon from 'react-native-vector-icons/Ionicons'
-import {height,width} from "../theme/Scale";
+import {height, moderateScale, width} from "../theme/Scale";
 import Font from "../theme/Font";
 import {actionCreators} from "../reducks/module/drawer";
+import imageHelper from "../helpers/getImageHelper"
 
 const mapStateToProps = (state) => ({
     floorplan: state.event.event.floorPlan,
@@ -27,7 +28,7 @@ class FloorPlan extends Component {
     render() {
         let floorplan = this.props.floorplan;
         const selected = this.state.selected;
-
+        console.log(floorplan)
         return (
             <View style={styles.container}>
                 <Header leftImage='chevron-left' rightImage='bars'
@@ -49,7 +50,7 @@ class FloorPlan extends Component {
                     :
 
                     <View style={styles.container}>
-                        <FloorImage style={styles.container} source={{uri: floorplan[selected]}}/>
+                        <FloorImage style={styles.container} source={{uri:imageHelper(floorplan[selected].image)}}/>
 
                         <TouchableOpacity
                             style={[styles.change,{right: 5,}]}
@@ -70,6 +71,8 @@ class FloorPlan extends Component {
 
                 <Image style={styles.zoom}
                        source={require('../../images/zoom-out.png')}/>
+
+                <Text style={styles.floorName}>{floorplan[selected].name}</Text>
 
             </View>
         )
@@ -104,6 +107,15 @@ const styles = StyleSheet.create({
         bottom: 3,
         width: 40,
         height: 40
+    } ,
+    floorName:{
+        ...Font.semiBold,
+        color:Color.darkGray,
+        fontSize: moderateScale(20),
+        position: 'absolute',
+        left: 3,
+        bottom: 3,
+
     }
 });
 

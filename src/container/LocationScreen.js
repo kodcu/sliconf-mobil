@@ -37,8 +37,8 @@ class LocationScreen extends Component {
         }
     }
 
-    componentWillMount(){
-        const {dispatch,navigation} = this.props;
+    componentWillMount() {
+        const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
 
 
@@ -46,9 +46,10 @@ class LocationScreen extends Component {
 
 
     render() {
-       const location = this.props.event.location;
+        const event = this.props.event
+        const location = event.about.location;
 
-        if (location === undefined || location !==null || location.isEmpty){
+        if (location === undefined || location === null || location.isEmpty) {
             return <View style={styles.container}>
                 <Header leftImage='chevron-left' rightImage='bars'
                         onPressLeft={() => this.props.navigation.goBack()}
@@ -87,7 +88,8 @@ class LocationScreen extends Component {
                             onCalloutPress={() => this.redirectToMap(parseFloat(location.lat), parseFloat(location.lng), Platform.OS)}/>
                     </MapView>
                 </View>
-                <TouchableOpacity onPress={() => this.redirectToMap(parseFloat(location.lat), parseFloat(location.lng), Platform.OS)}>
+                <TouchableOpacity
+                    onPress={() => this.redirectToMap(parseFloat(location.lat), parseFloat(location.lng), Platform.OS)}>
                     <View style={styles.getDirections}>
                         <View style={styles.addressContainer}>
                             <Text style={styles.venueName}>{event.name}</Text>
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
         ...Font.regular,
         fontSize: 10,
         letterSpacing: 0,
-        color:Color. green
+        color: Color.green
     },
     getDirections: {
         flexDirection: 'row',

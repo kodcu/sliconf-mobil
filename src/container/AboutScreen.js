@@ -10,6 +10,7 @@ import Communications from 'react-native-communications';
 import Font from "../theme/Font";
 import Color from "../theme/Color";
 import * as Scale from "../theme/Scale";
+import getImage from "../helpers/getImageHelper"
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
@@ -87,7 +88,8 @@ export class About extends Component {
     )}
 
     render() {
-        const {event} = this.props;
+        const event = this.props.event;
+        const about = event.about;
         let sponsors = [];
         if (event.sponsors !== undefined && event.sponsors !==null && !event.sponsors.isEmpty)
             sponsors = event.sponsors;
@@ -106,7 +108,7 @@ export class About extends Component {
                 <ScrollView>
 
                     <View style={styles.aboutField}>
-                        <Thumbnail large source={{uri: event.logoPath}}/>
+                        <Thumbnail large source={{uri: getImage(event.logoPath)}}/>
 
                         <View style={styles.sponsorTagPanel}>
                             <Text style={styles.EventnameText}>{event.name}</Text>
@@ -125,12 +127,12 @@ export class About extends Component {
                              textStyle={styles.tabText}>
                             <View style={styles.contact}>
 
-                                {event.email ? this.rowItem(event.email, 'ios-at-outline', 'email') : null}
-                                {event.phone ? event.phone.map((item, index) => this.rowItem(item, 'ios-call-outline', 'phone',index)) : null}
-                                {event.social ?
+                                {about.email ? this.rowItem(about.email, 'ios-at-outline', 'email') : null}
+                                {about.phone ? about.phone.map((item, index) => this.rowItem(item, 'ios-call-outline', 'phone',index)) : null}
+                                {about.social ?
                                     <View style={styles.socialMedia}>
-                                        {Object.keys(event.social).map((item, index) =>
-                                            this.rowSocial(item + '-with-circle', event.social[item],index)
+                                        {Object.keys(about.social).map((item, index) =>
+                                            this.rowSocial(item + '-with-circle', about.social[item],index)
                                         )}
                                     </View> : null
                                 }
@@ -146,7 +148,25 @@ export class About extends Component {
                              textStyle={styles.tabText}>
                             <View style={styles.sponsorTagPanel}>
                                     <View style={styles.sponsor}>
-
+                                        {Object.keys(event.sponsors).map((item, index) =>
+                                            <View key={index} style={styles.sponsorTagPanel}>
+                                                <Text style={styles.sponsorTag}>{event.sponsorTags[item]}</Text>
+                                                <View style={styles.sponsorPanel}>
+                                                    <FlatList
+                                                        data={event.sponsors[item]}
+                                                        numColumns={index === 0 ? 1 : 2}
+                                                        keyExtractor={(item, i) => i}
+                                                        renderItem={(info) =>{
+                                                            console.log('bbb'+info)
+                                                            return <Image source={{uri: getImage(info.item.logo)}}
+                                                                          resizeMode="contain"
+                                                                          style={styles.sponsorLogo}
+                                                            />}
+                                                        }
+                                                    />
+                                                </View>
+                                            </View>
+                                        )}
                                     </View>
                             </View>
                         </Tab>
