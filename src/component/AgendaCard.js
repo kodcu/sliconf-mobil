@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Color from "../theme/Color";
 import {moderateScale} from "../theme/Scale";
 import Font from "../theme/Font";
+import getImage from "../helpers/getImageHelper"
 
 
 export default class AgendaCard extends Component {
@@ -21,13 +22,13 @@ export default class AgendaCard extends Component {
      */
     getColorByLevel(level){
         switch(level){
-            case 1:
+            case 0:
                 return '#29B673';
                 break;
-            case 2:
+            case 1:
                 return '#FBB041';
                 break;
-            case 3:
+            case 2:
                 return '#EE5E5F';
                 break;
             default :
@@ -71,6 +72,8 @@ export default class AgendaCard extends Component {
     }
     render() {
         const item =this.props.item;
+        const speaker=this.props.speaker;
+        console.log(speaker)
         if(this.props.isEmpty){
             return(
                 <View  style={styles.container}>
@@ -85,12 +88,12 @@ export default class AgendaCard extends Component {
                     <View style={styles.detailField}>
                         <Text style={styles.topic}>{item.topic} </Text>
                         <View style={{marginBottom:5}}>
-                            <Text style={styles.speaker}>{item.speaker}</Text>
+                            <Text style={styles.speaker}>{speaker.name}</Text>
                             {item.tags !== undefined && item.tags !== null ? <Text style={styles.tags}>Tags: {item.tags.toString()}</Text> : null}
                         </View>
                     </View>
                     <View style={styles.actionField}>
-                        <Thumbnail source={require('../../images/hi.png')}   />
+                        <Thumbnail source={!speaker.profilePicture.trim()?require('../../images/hi.png'):{uri:getImage(speaker.profilePicture)}}   />
                         <TouchableOpacity
                             onPress={() => this.handleClick(item)} >
                             <View style={styles.buttonField}>

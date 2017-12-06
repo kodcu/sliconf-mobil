@@ -39,16 +39,20 @@ export default class FilterEvent extends Component {
                 onClick={() => this.onClick(data)}
                 isChecked={data.checked}
                 leftText={leftText}
-                leftTextStyle={styles.fontCheckItem}
+                leftTextStyle={{
+                    ...Font.regular,
+                    fontSize: moderateScale(12),
+                    color: Color.darkGray
+                }}
             />)
     }
 
     checkLevel(level) {
-        if (level === 1)
+        if (level === 0)
             return this.state.beginnerLevel;
-        if (level === 2)
+        if (level === 1)
             return this.state.mediumLevel;
-        if (level === 3)
+        if (level === 2)
             return this.state.expertLevel;
 
         return false;
@@ -259,7 +263,7 @@ export default class FilterEvent extends Component {
                                         style={{padding: 10, width: width * 0.3}}
                                         onClick={() => this.setState({mediumLevel: !this.state.mediumLevel})}
                                         isChecked={this.state.mediumLevel}
-                                        rightText='Med'
+                                        rightText='Int'
                                         checkBoxColor={Color.yellow}
                                     />
                                     <CheckBox
@@ -272,7 +276,7 @@ export default class FilterEvent extends Component {
                                         style={{padding: 10, width: width * 0.3}}
                                         onClick={() => this.setState({expertLevel: !this.state.expertLevel})}
                                         isChecked={this.state.expertLevel}
-                                        rightText='Exp'
+                                        rightText='Adv'
                                         checkBoxColor={Color.red}
                                     />
                                 </View>

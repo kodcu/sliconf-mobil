@@ -3,21 +3,23 @@ import {View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView}
 import {Button, Input} from "native-base";
 import Icon from 'react-native-vector-icons/Ionicons'
 import {moderateScale} from "../theme/Scale";
+import {connect} from "react-redux";
+import * as moment from "moment";
 
-let vee = 'Autonomy is one of the three psychological needs humans require to feel happy, motivated, ' +
-    'and perform our best work. That’s why software teams with high autonomy are happier and more innovative.' +
-    ' But achieving high autonomy requires a fundamental rethink to every aspect of organizations - especially ' +
-    'the alignment between business strategy, development team boundaries, and software architecture, to enable teams ' +
-    'to own problems end-to-end. In this talk, you will see how organizations with high autonomy are at the leading edge ' +
-    'of digital product development using continuous discovery and delivery. You’ll see the cultural, organizational, and ' +
-    'technical principles that enable high autonomy. You’ll see how to engage your software developers and business stakeholders' +
-    ' to collaboratively design organizations and software architecture so teams have high autonomy, enabling them to continuously ' +
-    'discover and deliver business value.'
+const mapStateToProps = (state) => ({
+    rooms: state.event.event.rooms,
+});
+class TalkInfo extends Component {
 
-export class TalkInfo extends Component {
+    getRoomName(roomId){
+        const roomsTags = this.props.rooms;
+        const room = roomsTags.find(room => room.id === roomId)
+        return room.label;
+    }
+
     render() {
 
-        const Talk = this.props.Talk[0];
+        const talk = this.props.talk[0];
 
         return (
             <View style={styles.container}>
@@ -35,7 +37,7 @@ export class TalkInfo extends Component {
                         textAlign: 'center',
                         paddingLeft: 10,
                         paddingRight: 10
-                    }}>{Talk.topic}</Text>
+                    }}>{talk.topic}</Text>
 
                     <View style={{
                         alignItems:'center',
@@ -55,7 +57,7 @@ export class TalkInfo extends Component {
                             fontFamily: 'Montserrat-Regular',
                             color: '#333',
                             textAlign: 'center',
-                        }}>{Talk.level === 1 ? 'Beginner' : Talk.level === 2 ? 'Intermediate' : 'Expert'}</Text>
+                        }}>{talk.level === 1 ? 'Beginner' : talk.level === 2 ? 'Intermediate' : 'Expert'}</Text>
                     </View>
 
                     <View style={{
@@ -78,7 +80,7 @@ export class TalkInfo extends Component {
                             fontFamily: 'Montserrat-Regular',
                             color: '#333',
                             textAlign: 'center',
-                        }}>{Talk.tags}</Text>
+                        }}>{talk.tags.toString()}</Text>
                     </View>
 
                     <View style={{
@@ -101,7 +103,7 @@ export class TalkInfo extends Component {
                             fontFamily: 'Montserrat-Regular',
                             color: '#333',
                             textAlign: 'center',
-                        }}>{Talk.room}</Text>
+                        }}>{this.getRoomName(talk.room)}</Text>
                     </View>
 
                     <ScrollView style={{padding:10}}>
@@ -111,7 +113,7 @@ export class TalkInfo extends Component {
                             fontSize: moderateScale(11),
                             textAlign: 'center',
                             paddingBottom:10
-                        }}>{Talk.topicDetail}</Text>
+                        }}>{talk.detail}</Text>
                     </ScrollView>
                 </View>
 
@@ -132,13 +134,13 @@ export class TalkInfo extends Component {
                             fontSize: moderateScale(16),
                             fontFamily: 'Montserrat-Medium',
                             color: '#333',
-                        }}>{Talk.speaker}</Text>
+                        }}>{talk.speaker}</Text>
                     </View>
 
                     <View style={{alignItems: 'flex-end', width: width * 0.2}}>
                         <View style={{flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 2,}}>
                             <Text
-                                style={{color: '#333', fontFamily: 'Montserrat-Regular', fontSize: moderateScale(11)}}>{Talk.time}</Text>
+                                style={{color: '#333', fontFamily: 'Montserrat-Regular', fontSize: moderateScale(11)}}>{moment.unix(talk.date).format("HH:mm")}</Text>
                             <Icon style={{paddingLeft: 10}} color='#333' name='ios-clock-outline' size={18}/>
                         </View>
 
@@ -148,7 +150,7 @@ export class TalkInfo extends Component {
                                     color: '#333',
                                     fontFamily: 'Montserrat-Regular',
                                     fontSize: moderateScale(11)
-                                }}>5 May</Text>
+                                }}>{moment.unix(talk.date).format("DD MMM")}</Text>
                                 <Icon style={{paddingLeft: 10}} color='#333' name='ios-calendar-outline' size={18}/>
                             </View>
                         </View>
@@ -168,4 +170,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TalkInfo;
+export default connect(mapStateToProps)(TalkInfo)
