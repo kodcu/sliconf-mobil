@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import {Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Container,Thumbnail} from 'native-base';
+import {Container, Thumbnail} from 'native-base';
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import {SPEAKERINFO} from '../router';
 import {actionCreators} from "../reducks/module/drawer";
 import Font from "../theme/Font";
 import Color from "../theme/Color";
+import getImage from "../helpers/getImageHelper"
+import {moderateScale} from "../theme/Scale";
+
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
@@ -99,12 +102,10 @@ class SpeakersScreen extends Component {
     renderRow(info) {
         return <TouchableOpacity onPress={() => this.props.navigation.navigate(SPEAKERINFO, info)}><View
             style={styles.card}>
-            <Thumbnail source={{uri: info.item.profilePicture}} large style={{marginBottom: 15}}/>
-            <Text style={{fontSize: 15, color: '#000'}}>{info.item.name}</Text>
-            <Text style={{fontSize: 12, color: '#BCBEC0'}}>{info.item.workingat}</Text>
+            <Thumbnail source={!info.item.profilePicture.trim()?require('../../images/hi.png'):{uri: getImage(info.item.profilePicture)}} large style={{marginBottom: 15}}/>
+            <Text style={styles.speakerName}>{info.item.name}</Text>
+            <Text style={styles.speakerWorking}>{info.item.workingAt}</Text>
         </View></TouchableOpacity>
-
-
     }
 
     componentWillMount() {
@@ -127,10 +128,12 @@ class SpeakersScreen extends Component {
             <Container style={{backgroundColor: '#fff'}}>
                 <Header leftImage='chevron-left' rightImage='bars'
                         onPressLeft={() => this.props.navigation.goBack(null)}
-                        onPressRight={() => {this.props.navigation.navigate('DrawerOpen')}}>
+                        onPressRight={() => {
+                            this.props.navigation.navigate('DrawerOpen')
+                        }}>
                     <Header.Title title="Speakers"/>
                 </Header>
-                {(this.props.event.speakers=== undefined ||this.props.event.spakers=== null)  ?
+                {(this.props.event.speakers === undefined || this.props.event.spakers === null) ?
 
                     <View style={styles.notFoundPanel}>
                         <Text style={styles.notFoundText}>
@@ -140,30 +143,34 @@ class SpeakersScreen extends Component {
 
                     :
 
-                <View style={{flexDirection: 'row', flex: 1}}>
-                    <View style={{flexGrow: 0.8}}>
-                        <FlatList
-                            data={this.props.event.speakers}
-                            renderItem={(info) => this.renderRow(info)}
-                            keyExtractor={this._keyExtractor}
-                            numColumns={2}
-                            ref={(list) => this.myFlatList = list}
-                            getItemLayout={this.getItemLayout}
-                            onScroll={this.handleScroll}
-                        />
-                    </View>
-                    <View style={styles.alphabeticPart}>
-                        {Object.keys(this.state.speakersList).map((speakersFirstLetter, index) =>
-                            <TouchableOpacity onPress={() => this.setSelected(index, speakersFirstLetter)} key={index}>
-                                <Text style={{
-                                    fontFamily: "Montserrat-Regular",
-                                    fontSize: selectedIndex === index ? 35 : ( (selectedIndex - 1) === index || (selectedIndex + 1) === index ) ? 27 : ( (selectedIndex - 2) === index || (selectedIndex + 2) === index ) ? 20 : 15
-                                }}>{speakersFirstLetter}</Text>
-                            </TouchableOpacity>
-                        )}
+                    <View style={{flexDirection: 'row', flex: 1}}>
+                        <View style={{flexGrow: 0.8}}>
+                            <FlatList
+                                data={this.props.event.speakers}
+                                renderItem={(info) => this.renderRow(info)}
+                                keyExtractor={this._keyExtractor}
+                                numColumns={2}
+                                ref={(list) => this.myFlatList = list}
+                                getItemLayout={this.getItemLayout}
+                                onScroll={this.handleScroll}
+                            />
+                        </View>
+                        <View style={styles.alphabeticPart}>
+                            {Object.keys(this.state.speakersList).map((speakersFirstLetter, index) =>
+                                <TouchableOpacity onPress={() => this.setSelected(index, speakersFirstLetter)}
+                                                  key={index}>
+                                    <Text style={{
+                                        fontFamily: "Montserrat-Regular",
+                                        fontSize: selectedIndex === index ? moderateScale(22) :
+                                            ( (selectedIndex - 1) === index || (selectedIndex + 1) === index ) ? moderateScale(16) :
+                                            ( (selectedIndex - 2) === index || (selectedIndex + 2) === index ) ? moderateScale(12) :
+                                                moderateScale(9)
+                                    }}>{speakersFirstLetter}</Text>
+                                </TouchableOpacity>
+                            )}
 
+                        </View>
                     </View>
-                </View>
                 }
 
             </Container>
@@ -199,15 +206,25 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         flexGrow: 0.2
     },
-    notFoundText:{
+    notFoundText: {
         ...Font.thin,
-        color:Color.darkGray
+        color: Color.darkGray
     },
-    notFoundPanel:{
+    notFoundPanel: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },
+    speakerName: {
+        ...Font.regular,
+        fontSize: moderateScale(15),
+        color: Color.darkGray
+    },
+    speakerWorking:{
+        ...Font.light,
+        fontSize: moderateScale(12),
+        color: Color.darkGray3
+    }
 });
 
 export default connect(mapStateToProps)(SpeakersScreen)

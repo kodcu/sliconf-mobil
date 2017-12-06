@@ -7,83 +7,88 @@ import CommentItem from "./CommentItem";
 
 const ENTRIES = [
     {
-        name: 'Fernando Muslera', comment: 'Yorum', time: {
-        "hour": 18,
-        "minute": 28,
-        "second": 15,
-        "nano": 484000000
-    }, like: 0, picture: 'https://tmssl.akamaized.net//images/portrait/header/58088-1473586641.jpeg?lm=1473586671'
+        id: '123',
+        eventId: '123456',
+        sessionId: '123456',
+        userId:'123456',
+        time:1512118026,
+        like:8,
+        dislike:2,
+        likes:["Anıl Coşar","Hüseyin Akdoğan"],
+        dislikes:["Nursel Cıbır"],
+        commentValue:"Tuvalet nerede ? ",
+        approved:"APPROVED",
+        commentType:"normal"
+    },{
+        id: '1234',
+        eventId: '123456',
+        sessionId: '123456',
+        userId:'123456',
+        time:1512118206,
+        like:7,
+        dislike:15,
+        likes:["Anıl Coşar","Hüseyin Akdoğan"],
+        dislikes:["Nursel Cıbır"],
+        commentValue:"Tuvalet nerede ? 2",
+        approved:"APPROVED",
+        commentType:"anonymous"
+    },{
+        id: '12345',
+        eventId: '123456',
+        sessionId: '123456',
+        userId:'123456',
+        time:1512119406,
+        like:20,
+        dislike:10,
+        likes:["Anıl Coşar","Hüseyin Akdoğan"],
+        dislikes:["Nursel Cıbır"],
+        commentValue:"Tuvalet nerede ? 3",
+        approved:"APPROVED",
+        commentType:"normal"
+    },{
+        id: '1234567',
+        eventId: '123456',
+        sessionId: '123456',
+        userId:'123456',
+        time:1512119706,
+        like:0,
+        dislike:0,
+        likes:["Anıl Coşar","Hüseyin Akdoğan"],
+        dislikes:["Nursel Cıbır"],
+        commentValue:"Tuvalet nerede ? 5",
+        approved:"APPROVED",
+        commentType:"normal"
+    },{
+        id: '12345678',
+        eventId: '123456',
+        sessionId: '123456',
+        userId:'123456',
+        time:1512119766,
+        like:2,
+        dislike:1,
+        likes:["Anıl Coşar","Hüseyin Akdoğan"],
+        dislikes:["Nursel Cıbır"],
+        commentValue:"Tuvalet nerede ? 6",
+        approved:"APPROVED",
+        commentType:"normal"
     },
-    {
-        name: 'Maicon Pereira Roque', comment: 'Yorum 1', time: {
-        "hour": 19,
-        "minute": 28,
-        "second": 15,
-        "nano": 484000000
-    }, like: 5, picture: 'https://tmssl.akamaized.net//images/portrait/header/84695-1445516053.jpg?lm=1445516069'
-    },
-    {
-        name: 'Mariano Ferreira Filho', comment: 'Yorum 2', time: {
-        "hour": 22,
-        "minute": 48,
-        "second": 15,
-        "nano": 484000000
-    }, like: 9, picture: 'https://tmssl.akamaized.net//images/portrait/header/54155-1447240277.jpg?lm=1447240309'
-    },
-    {
-        name: 'Mariano Ferreira Filho2', comment: 'Yorum 2', time: {
-        "hour": 22,
-        "minute": 48,
-        "second": 15,
-        "nano": 484000000
-    }, like: 9, picture: 'https://tmssl.akamaized.net//images/portrait/header/54155-1447240277.jpg?lm=1447240309'
-    },
-    {
-        name: 'Mariano Ferreira Filho3', comment: 'Yorum 2', time: {
-        "hour": 22,
-        "minute": 48,
-        "second": 15,
-        "nano": 484000000
-    }, like: 9, picture: 'https://tmssl.akamaized.net//images/portrait/header/54155-1447240277.jpg?lm=1447240309'
-    },
-    {
-        name: 'Mariano Ferreira Filho4', comment: 'Yorum 2', time: {
-        "hour": 22,
-        "minute": 48,
-        "second": 15,
-        "nano": 484000000
-    }, like: 9, picture: 'https://tmssl.akamaized.net//images/portrait/header/54155-1447240277.jpg?lm=1447240309'
-    },
+
 ];
 const POPULARENTRIES = [
     {
-        name: 'Fernando Muslera', comment: 'Yorum', time: {
-        "hour": 19,
-        "minute": 48,
-        "second": 15,
-        "nano": 484000000
-    }, like: 20, picture: 'https://tmssl.akamaized.net//images/portrait/header/58088-1473586641.jpeg?lm=1473586671'
-    },
-    {
-        name: 'Anonymous',
-        comment: 'Yorum 3',
-        time: {
-            "hour": 20,
-            "minute": 28,
-            "second": 15,
-            "nano": 484000000
-        },
-        like: 15,
-        picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoJA4PWsyzJCi1QzRbnrNOB9IUUraC-3xUXTQzFJoGN_EQFZQS'
-    },
-    {
-        name: 'Bafétimbi Fredius Gomis', comment: 'Yorum 5', time: {
-        "hour": 22,
-        "minute": 28,
-        "second": 15,
-        "nano": 484000000
-    }, like: 10, picture: 'https://tmssl.akamaized.net//bilder/spielerfotos/s_22388_3377_2012_1.jpg?lm=0'
-    },
+        id: '123456',
+        eventId: '123456',
+        sessionId: '123456',
+        userId:'123456',
+        time:1512119706,
+        like:20,
+        dislike:1,
+        likes:["Anıl Coşar","Hüseyin Akdoğan"],
+        dislikes:["Nursel Cıbır"],
+        commentValue:"Tuvalet nerede ? 4",
+        approved:"APPROVED",
+        commentType:"normal"
+    }
 ];
 
 export class TalkComment extends Component {
@@ -99,9 +104,9 @@ export class TalkComment extends Component {
     _renderItem({item, index}) {
         return (
             <View style={styles.card}>
-                <Thumbnail source={{uri: item.picture}} small style={{marginBottom: 15}}/>
-                <Text style={{fontSize: 12, color: '#000'}}>{item.name}</Text>
-                <Text style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.comment}</Text>
+                <Thumbnail source={require('../../images/person.png')} small style={{marginBottom: 15}}/>
+                <Text style={{fontSize: 12, color: '#000'}}>{item.userId}</Text>
+                <Text style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>
             </View>
         );
     }

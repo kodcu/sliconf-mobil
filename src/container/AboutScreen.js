@@ -127,7 +127,7 @@ export class About extends Component {
                              textStyle={styles.tabText}>
                             <View style={styles.contact}>
 
-                                {about.email ? this.rowItem(about.email, 'ios-at-outline', 'email') : null}
+                                {about.email  ? this.rowItem(about.email, 'ios-at-outline', 'email') : null}
                                 {about.phone ? about.phone.map((item, index) => this.rowItem(item, 'ios-call-outline', 'phone',index)) : null}
                                 {about.social ?
                                     <View style={styles.socialMedia}>
@@ -270,7 +270,8 @@ const styles = StyleSheet.create({
         ...Font.medium,
         fontSize: 25,
         color: Color.darkGray,
-        margin: 10
+        margin: 10,
+        textAlign:'center'
     },
     aboutText: {
         ...Font.regular,

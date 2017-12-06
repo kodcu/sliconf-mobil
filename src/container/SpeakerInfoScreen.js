@@ -19,6 +19,9 @@ import {connect} from 'react-redux'
 import If from '../component/If'
 import Color from "../theme/Color";
 import Font from "../theme/Font";
+import getImage from "../helpers/getImageHelper"
+import {moderateScale} from "../theme/Scale";
+
 
 const phoneW = Dimensions.get('window').width - 50;
 const phoneH = Dimensions.get('window').height - 50;
@@ -64,15 +67,19 @@ class SpeakerInfoScreen extends Component {
 
 
         let talk = [];
-        if (agenda !== undefined && agenda !== null && !agenda.isEmpty) {
+        /*if (agenda !== undefined && agenda !== null && !agenda.isEmpty) {
             Object.keys(agenda).map((item, index) => {
-                speaker.topic.map((topic) => {
+                speaker.topics.map((topic) => {
                     const talkFind = (talk) => talk.key === topic;
-                    talk.push(agenda[item].find(talkFind))
+                    //talk.push(agenda[item].find(talkFind))
                 })
 
                 //speaker.topic.map((topic) => talk.push(topic.find(this.findTalk)))
             })
+        }*/
+
+        if (agenda !== undefined && agenda !== null && !agenda.isEmpty){
+            talk = agenda.filter(talk => talk.speaker === speaker.name)
         }
 
         this.setState({talkList: talk})
@@ -110,16 +117,16 @@ class SpeakerInfoScreen extends Component {
                     <Header.Title title="Speaker Info"/>
                 </Header>
                 <View style={{alignItems: 'center', height: 230}}>
-                    <Image source={{uri: speaker.profilePicture}} style={styles.profilePicture}/>
-                    <Text style={{fontSize: 18, color: '#414042'}}>{speaker.name}</Text>
-                    <Text style={{fontSize: 12}}>{speaker.workingat}</Text>
+                    <Image source={!speaker.profilePicture.trim()?require('../../images/hi.png'):{uri: getImage(speaker.profilePicture)}} style={styles.profilePicture}/>
+                    <Text style={styles.speakerName}>{speaker.name}</Text>
+                    <Text style={styles.speakerWorking}>{speaker.workingAt}</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={() => this.redirect(speaker.twitter)}>
+                        {speaker.twitter === '' ? null : <TouchableOpacity onPress={() => this.redirect(speaker.twitter)}>
                             <Icon name='twitter-with-circle' size={30} color="#379BD9"
-                                  style={{margin: 10}}/></TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.redirect(speaker.linkedin)}>
+                                  style={{margin: 10}}/></TouchableOpacity>}
+                        {speaker.linkedin === '' ? null :<TouchableOpacity onPress={() => this.redirect(speaker.linkedin)}>
                             <Icon name='linkedin-with-circle' size={30} color="#1574AE"
-                                  style={{margin: 10}}/></TouchableOpacity>
+                                  style={{margin: 10}}/></TouchableOpacity>}
                         <TouchableOpacity style={{margin: 10}} onPress={this.startAnimation}>
                             <View style={styles.aboutButtonField}>
                                 <Text style={styles.aboutButtonText}>ABOUT</Text>
@@ -142,7 +149,7 @@ class SpeakerInfoScreen extends Component {
                     </If.Then>
                     <If.Else>
                         <ScrollView>
-                            <View style={[styles.talksField,{height: (talkList.length * 150)}]}>
+                            <View style={[styles.talksField,{height: (talkList.length * moderateScale(145))}]}>
                                 {talkList.map((item, i) => <ChosenCard key={i} item={item} visibleButton={false}/>)}
                             </View>
                         </ScrollView>
@@ -181,7 +188,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        marginTop: 5
+        marginTop: 10
     },
     aboutText: {
         ...Font.regular,
@@ -192,6 +199,16 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         margin: 10
+    },
+    speakerName: {
+        ...Font.regular,
+        fontSize: moderateScale(15),
+        color: Color.darkGray
+    },
+    speakerWorking:{
+        ...Font.light,
+        fontSize: moderateScale(12),
+        color: Color.darkGray3
     }
 
 });

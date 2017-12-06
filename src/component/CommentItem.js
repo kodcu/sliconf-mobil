@@ -19,14 +19,14 @@ export default class CommentItem extends Component {
         const info =this.state.item
         return (
             <View  key={this.props.key} style={{margin:10,flexDirection:'row',marginTop:15,flex:1}}>
-                <Thumbnail source={{uri:info.picture}} small style={{marginBottom:15,flex:0.1}}/>
+                <Thumbnail source={require('../../images/person.png')} small style={{marginBottom:15,flex:0.1}}/>
                 <View style={{marginLeft:10,flex:0.9}} >
                     <View style={{flexDirection:'row'}}>
-                        <Text style={{fontSize:12,color:'#000',fontWeight:'bold',marginBottom:10}}>{info.name} </Text>
+                        <Text style={{fontSize:12,color:'#000',fontWeight:'bold',marginBottom:10}}>{info.userId} </Text>
                         <Text style={{fontSize:12,color:'#000',fontWeight:'bold',marginBottom:10}}> ~ </Text>
-                        <Text style={{fontSize:12,color:'#414042',marginBottom:10}}>{moment(info.time).startOf('min').fromNow()}</Text>
+                        <Text style={{fontSize:12,color:'#414042',marginBottom:10}}>{moment.unix(info.time).startOf('second').fromNow()}</Text>
                     </View>
-                    <Text style={{fontSize:12,color:'#414042'}}>{info.comment}</Text>
+                    <Text style={{fontSize:12,color:'#414042'}}>{info.commentValue}</Text>
                     <View style={{flexDirection:'row',marginTop:10,justifyContent:'space-between'}}>
                         {this.state.isClicked ? <Text style={{...Font.semiBold,color:Color.red}}>Liked</Text> : this.state.isDislike ? <Text style={{...Font.semiBold,color:Color.darkGray2}}>Disliked</Text> :<Text style={{...Font.regular,color:Color.darkGray3}}>Like ?</Text>}
                         <View style={{flexDirection:'row'}}>

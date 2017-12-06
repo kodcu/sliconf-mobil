@@ -36,6 +36,8 @@ let eventsDates = [];
 
 const mapStateToProps = (state) => ({
     agenda: state.event.event.agenda,
+    rooms: state.event.event.rooms,
+    speakers: state.event.event.speakers,
     user:state.auth.user,
     login:state.auth.login
 });
@@ -145,8 +147,28 @@ class AgendaScreen extends Component {
         data: [],
         rooms: [],
         filter: false,
-        choosen: []
+        choosen: [],
+        agendaData:[]
     };
+
+    convertToDateArray(agenda) {
+        let newAgendaData = [];
+        let dateMap = new Map();
+
+        agenda.forEach(function (element)  {
+            let date = moment.unix(element.date).format("MM-DD-YYYY")
+            dateMap.get(date) ? array = dateMap.get(date) : array = [];
+            array.push(element)
+            dateMap.set(date, array)
+        });
+
+        dateMap.forEach(function (value, key) {
+            newAgendaData = {...newAgendaData, [key]: value}
+        });
+
+        return newAgendaData
+    }
+
 
     /**
      * Filtreleme sayfasini kapatir ve sonuclarini gosterecegi sayfaya yonlendirir.
@@ -193,7 +215,7 @@ class AgendaScreen extends Component {
         let myMap = new Map();
 
         events.forEach(function (element) {
-            let time = element.time;
+            let time = moment.unix(element.date).format("HH:mm");
             myMap.get(time) ? array = myMap.get(time) : array = [];
             array.push(element);
             myMap.set(time, array)
@@ -229,13 +251,16 @@ class AgendaScreen extends Component {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
 
-        const data = this.props.agenda;
+        let agenda = this.convertToDateArray(this.props.agenda);
+        this.setState({agendaData:agenda});
+        const data = agenda;
 
         if (data !== undefined && data !== null && !data.isEmpty) {
             Object.keys(data).forEach((date) => eventsDates.includes(date) ? null : eventsDates.push(date));
             this.setState({
                 rooms: this.roomsList(data[Object.keys(data)[0]]),
-                data: this.eventsList(data[Object.keys(data)[0]])
+                data: this.eventsList(data[Object.keys(data)[0]]),
+                switchedDay: moment(Object.keys(data)[0],"MM-DD-YYYY").format("dddd")
             })
         }
 
@@ -246,7 +271,7 @@ class AgendaScreen extends Component {
      * @param date
      */
     changeDate(date) {
-        const data =  this.props.agenda;
+        const data =  this.state.agendaData;
         this.setState({
             switchedDay: date,
             rooms: this.roomsList(data[date]),
@@ -277,6 +302,7 @@ class AgendaScreen extends Component {
                     if (arg[i] === choosen[j]) {
                         return (
                             <AgendaCard item={arg[i]}
+                                        speaker={this.getSpeaker(arg[i].speaker)}
                                         isEmpty={false}
                                         onPressAddButton={this.addItemToChosenEvents}
                                         isClicked={true}
@@ -295,6 +321,7 @@ class AgendaScreen extends Component {
                     }
                 }
                 return (<AgendaCard item={arg[i]}
+                                    speaker={this.getSpeaker(arg[i].speaker)}
                                     isEmpty={false}
                                     onPressAddButton={this.addItemToChosenEvents}
                                     isClicked={false}
@@ -334,13 +361,25 @@ class AgendaScreen extends Component {
         this.setState({isChoosenClicked: true})
     }
 
+    getRoomName(roomId){
+        const roomsTags = this.props.rooms;
+        const room = roomsTags.find(room => room.id === roomId)
+        return room.label;
+    }
+
+    getSpeaker(speakerId){
+        console.log(speakerId);
+        const speakerData=this.props.speakers;
+        return speakerData.find(speaker=> speaker.name===speakerId)
+    }
+
 
     render() {
         const {isChoosenClicked, filter} = this.state;
         talksList = this.state.data;
         rooms = this.state.rooms;
         choosen = this.state.choosen;
-        const agendaData = this.props.agenda;
+        const agendaData = this.state.agendaData;
         return (
             <Container style={{backgroundColor: '#fff'}}>
                 <If con={isChoosenClicked}>
@@ -354,11 +393,11 @@ class AgendaScreen extends Component {
                                     this.props.navigation.navigate('DrawerOpen')
                                 }}>
                             <Picker style={{width: 140}}
-                                    placeholder="Day 1"
+                                    placeholder={this.state.switchedDay}
                                     selectedValue={this.state.switchedDay}
                                     onValueChange={(itemValue, itemIndex) => this.changeDate(itemValue)}>
                                 {eventsDates.map((item, i) =>
-                                    <Picker.Item key={i + 1} label={moment.unix(item).format('dddd')} value={item}/>
+                                    <Picker.Item key={i + 1} label={moment(item,"MM-DD-YYYY").format("dddd")} value={item}/>
                                 )}
                             </Picker>
                         </Header>
@@ -370,9 +409,8 @@ class AgendaScreen extends Component {
                                 <ScrollView horizontal ref={(el) => {
                                     this.roomScroll = el;
                                 }} showsHorizontalScrollIndicator={false}>
-                                    {rooms.map((oda, i) =>
-                                        <Text key={i} style={styles.roomText}>{oda}</Text>
-                                    )}
+                                    {rooms.map((room, i) =>
+                                        <Text key={i} style={styles.roomText}>{this.getRoomName(room)}</Text>)}
                                 </ScrollView>
                             </View>
                         </View>
@@ -391,11 +429,11 @@ class AgendaScreen extends Component {
                             <Content>
                                 <View style={{flexDirection: 'row'}}>
                                     <View style={{margin: 0,marginTop:5, padding: 5}}>
-                                        {Object.keys(talksList).map((list, i) => (
+                                        {Object.keys(talksList).map((date, i) => (
                                             <View style={{borderRightWidth:0,}}  key={i}>
-                                                {talksList[list][0].level === 0 ?
-                                                    <Text style={styles.cardTimeLanch}>{list}</Text> :
-                                                    <Text style={styles.cardsTime}>{list}</Text>}
+                                                {talksList[date][0].level === -1 ?
+                                                    <Text style={styles.cardTimeLanch}>{date}</Text> :
+                                                    <Text style={styles.cardsTime}>{date}</Text>}
                                             </View>
                                         ))}
                                     </View>
@@ -404,7 +442,7 @@ class AgendaScreen extends Component {
                                         <ScrollView>
                                             {Object.keys(talksList).map((time, i) => (
                                                 <View key={i}>
-                                                    <If con={talksList[time][0].level !== 0}>
+                                                    <If con={talksList[time][0].level !== -1}>
                                                         <If.Then>
                                                             <View style={styles.cardsField}>
 

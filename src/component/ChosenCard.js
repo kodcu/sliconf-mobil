@@ -3,20 +3,25 @@ import { View, Text, StyleSheet,StatusBar,TouchableOpacity,Image,Dimensions,Plat
 import { Container, Header, Left, Body, Right, Button, Icon, Title ,Content,CardItem,Thumbnail,Card,List,Item,Footer,FooterTab,Picker, Form, Item as FormItem} from 'native-base';
 import PropTypes from 'prop-types';
 import If from '../component/If'
+import moment from "moment";
+import {connect} from "react-redux";
+import Font from "../theme/Font";
+import {moderateScale} from "../theme/Scale";
 
-export default class ChosenCard extends Component {
-
-
+const mapStateToProps = (state) => ({
+    rooms: state.event.event.rooms,
+});
+class ChosenCard extends Component {
 
     getColorByLevel(level){
         switch(level){
-            case 1:
+            case 0:
                 return '#29B673';
                 break;
-            case 2:
+            case 1:
                 return '#FBB041';
                 break;
-            case 3:
+            case 2:
                 return '#EE5E5F';
                 break;
             default :
@@ -24,37 +29,41 @@ export default class ChosenCard extends Component {
         }
     }
 
-
+    getRoomName(roomId){
+        const roomsTags = this.props.rooms;
+        const room = roomsTags.find(room => room.id === roomId)
+        return room.label;
+    }
 
     render() {
         const item =this.props.item;
         const buttonVisible=this.props.visibleButton
         return(
 
-                <View  style={styles.container}>
-                    <View  style={[styles.cardLine,{borderColor:this.getColorByLevel(item.level)}]}/>
-                    <View style={styles.detailField}>
-                        <Text style={styles.topic}>{item.topic}</Text>
-                        <Text style={styles.speaker}>{item.speaker}</Text>
-                        <View style={styles.infoField}>
-                            <Text style={styles.topic}>{item.time}</Text>
-                            <Text style={styles.topic}>{item.date}</Text>
-                            <Text style={styles.topic}>{item.room}</Text>
-                        </View>
+            <View  style={styles.container}>
+                <View  style={[styles.cardLine,{borderColor:this.getColorByLevel(item.level)}]}/>
+                <View style={styles.detailField}>
+                    <Text style={styles.topic}>{item.topic}</Text>
+                    <Text style={styles.speaker}>{item.speaker}</Text>
+                    <View style={styles.infoField}>
+                        <Text style={styles.topic}>{moment.unix(item.date).format("HH:mm")}</Text>
+                        <Text style={styles.topic}>{moment.unix(item.date).format("DD MMM YYYY")}</Text>
+                        <Text style={styles.topic}>{this.getRoomName(item.room)}</Text>
                     </View>
-                        <View style={styles.actionField}>
-                            <If con={buttonVisible}>
-                                <If.Then>
+                </View>
+                <View style={styles.actionField}>
+                    <If con={buttonVisible}>
+                        <If.Then>
                             <TouchableOpacity onPress={(item) => this.props.onPressDeleteButton(item)} >
                                 <View style={styles.buttonField}>
                                     <Icon name='ios-close' style={{alignSelf:'center'}}/>
                                 </View>
                             </TouchableOpacity>
-                                </If.Then>
-                            </If>
-                        </View>
-
+                        </If.Then>
+                    </If>
                 </View>
+
+            </View>
 
         )
     }
@@ -80,14 +89,16 @@ const styles = StyleSheet.create({
         marginBottom:0
     },
     topic: {
-        fontSize:10,
+        ...Font.regular,
+        fontSize:moderateScale(9),
         textAlign:'left',
         textAlignVertical:'center',
         color:'#000000',
         margin:5
     },
     speaker:{
-        fontSize:8,
+        ...Font.regular,
+        fontSize:moderateScale(7),
         textAlign:'left',
         margin:5
     },
@@ -110,3 +121,5 @@ const styles = StyleSheet.create({
     }
 
 })
+
+export default connect(mapStateToProps)(ChosenCard)

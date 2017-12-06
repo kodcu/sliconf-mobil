@@ -50,7 +50,7 @@ class FloorPlan extends Component {
                     :
 
                     <View style={styles.container}>
-                        <FloorImage style={styles.container} source={{uri:imageHelper(floorplan[selected].image)}}/>
+                        {floorplan[selected].image.trim() ? <FloorImage style={styles.container} source={{uri:imageHelper(floorplan[selected].image)}}/> : null}
 
                         <TouchableOpacity
                             style={[styles.change,{right: 5,}]}
