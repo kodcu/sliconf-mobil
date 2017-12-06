@@ -31,7 +31,6 @@ export class About extends Component {
                 Communications.email([name.toString()], null, null, this.props.event.name + ' About', '')}>
             <Icon name={icon} size={40} color={Color.darkGray} style={{margin: 15}}/>
             <Text style={styles.aboutText}>{name}</Text>
-
         </TouchableOpacity>
 
 
@@ -132,7 +131,7 @@ export class About extends Component {
                                 {about.social ?
                                     <View style={styles.socialMedia}>
                                         {Object.keys(about.social).map((item, index) =>
-                                            this.rowSocial(item + '-with-circle', about.social[item],index)
+                                        {!item.trim() ? this.rowSocial(item + '-with-circle', about.social[item],index):null}
                                         )}
                                     </View> : null
                                 }
@@ -148,7 +147,7 @@ export class About extends Component {
                              textStyle={styles.tabText}>
                             <View style={styles.sponsorTagPanel}>
                                     <View style={styles.sponsor}>
-                                        {Object.keys(event.sponsors).map((item, index) =>
+                                        {Object.keys(sponsors).map((item, index) =>
                                             <View key={index} style={styles.sponsorTagPanel}>
                                                 <Text style={styles.sponsorTag}>{event.sponsorTags[item]}</Text>
                                                 <View style={styles.sponsorPanel}>
@@ -157,7 +156,6 @@ export class About extends Component {
                                                         numColumns={index === 0 ? 1 : 2}
                                                         keyExtractor={(item, i) => i}
                                                         renderItem={(info) =>{
-                                                            console.log('bbb'+info)
                                                             return <Image source={{uri: getImage(info.item.logo)}}
                                                                           resizeMode="contain"
                                                                           style={styles.sponsorLogo}
