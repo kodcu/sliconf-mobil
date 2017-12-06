@@ -368,9 +368,8 @@ class AgendaScreen extends Component {
     }
 
     getSpeaker(speakerId){
-        console.log(speakerId);
         const speakerData=this.props.speakers;
-        return speakerData.find(speaker=> speaker.name===speakerId)
+        return speakerData.find(speaker=> speaker.id===speakerId)
     }
 
 

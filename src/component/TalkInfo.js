@@ -5,9 +5,11 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import {moderateScale} from "../theme/Scale";
 import {connect} from "react-redux";
 import * as moment from "moment";
+import getImageHelper from "../helpers/getImageHelper";
 
 const mapStateToProps = (state) => ({
     rooms: state.event.event.rooms,
+    speakers:state.event.event.speakers
 });
 class TalkInfo extends Component {
 
@@ -17,10 +19,16 @@ class TalkInfo extends Component {
         return room.label;
     }
 
+    getSpeaker(speakerId){
+        const speakers = this.props.speakers;
+        const speaker = speakers.find(speaker => speaker.id === speakerId)
+        return speaker;
+    }
+
     render() {
 
         const talk = this.props.talk[0];
-
+        const speaker=this.getSpeaker(talk.speaker)
         return (
             <View style={styles.container}>
 
@@ -127,14 +135,14 @@ class TalkInfo extends Component {
                 }}>
                     <View style={{flexDirection: 'row', alignItems: 'center', width: width * 0.8}}>
                         <Image
-                            source={{uri: 'https://javaday.istanbul/wp-content/uploads/2017/01/amadhy-abdelaziz-150x150.jpg'}}
+                            source={{uri: getImageHelper(speaker.profilePicture)}}
                             style={{borderRadius: 30, width: 60, height: 60, marginRight: 10}}/>
                         <Text style={{
                             width: (width * 0.8) - 80,
                             fontSize: moderateScale(16),
                             fontFamily: 'Montserrat-Medium',
                             color: '#333',
-                        }}>{talk.speaker}</Text>
+                        }}>{speaker.name}</Text>
                     </View>
 
                     <View style={{alignItems: 'flex-end', width: width * 0.2}}>

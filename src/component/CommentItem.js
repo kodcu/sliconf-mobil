@@ -18,7 +18,7 @@ export default class CommentItem extends Component {
     render() {
         const info =this.state.item
         return (
-            <View  key={this.props.key} style={{margin:10,flexDirection:'row',marginTop:15,flex:1}}>
+            <View  key={info.id} style={{margin:10,flexDirection:'row',marginTop:15,flex:1}}>
                 <Thumbnail source={require('../../images/person.png')} small style={{marginBottom:15,flex:0.1}}/>
                 <View style={{marginLeft:10,flex:0.9}} >
                     <View style={{flexDirection:'row'}}>
@@ -39,7 +39,7 @@ export default class CommentItem extends Component {
 
                             <TouchableOpacity onPress={()=> {this.setState({isClicked:!this.state.isClicked});this.state.isClicked ?info.like--:info.like++}}>
                                 <View style={{flexDirection:'row',marginLeft:10}}>
-                                    <Text style={{marginRight:10}}>{info.like}</Text>
+                                    <Text style={{marginRight:10}}>{info.like-info.dislike}</Text>
                                     <Icon name={this.state.isClicked ? 'ios-thumbs-up':'ios-thumbs-up-outline'} size={25} color={this.state.isClicked?"red":null}/>
                                 </View>
                             </TouchableOpacity>

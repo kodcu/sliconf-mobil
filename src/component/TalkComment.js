@@ -95,15 +95,15 @@ export class TalkComment extends Component {
 
     _keyExtractor = (item, index) => index;
 
-    renderRow(info, key) {
-        return <CommentItem item={info} key={key}/>
+    renderRow(info) {
+        return <CommentItem item={info} key={info.id} />
 
 
     }
 
     _renderItem({item, index}) {
         return (
-            <View style={styles.card}>
+            <View style={styles.card} key={index}>
                 <Thumbnail source={require('../../images/person.png')} small style={{marginBottom: 15}}/>
                 <Text style={{fontSize: 12, color: '#000'}}>{item.userId}</Text>
                 <Text style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>

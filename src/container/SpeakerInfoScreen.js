@@ -79,7 +79,7 @@ class SpeakerInfoScreen extends Component {
         }*/
 
         if (agenda !== undefined && agenda !== null && !agenda.isEmpty){
-            talk = agenda.filter(talk => talk.speaker === speaker.name)
+            talk = agenda.filter(talk => talk.speaker === speaker.id)
         }
 
         this.setState({talkList: talk})
