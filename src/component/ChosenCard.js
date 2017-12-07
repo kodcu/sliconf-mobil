@@ -10,6 +10,7 @@ import {moderateScale} from "../theme/Scale";
 
 const mapStateToProps = (state) => ({
     rooms: state.event.event.rooms,
+    speakers:state.event.event.speakers
 });
 class ChosenCard extends Component {
 
@@ -35,6 +36,10 @@ class ChosenCard extends Component {
         return room.label;
     }
 
+    getSpeakerName(speakerId){
+        return this.props.speakers.find(speaker => speaker.id === speakerId).name
+    }
+
     render() {
         const item =this.props.item;
         const buttonVisible=this.props.visibleButton
@@ -44,7 +49,7 @@ class ChosenCard extends Component {
                 <View  style={[styles.cardLine,{borderColor:this.getColorByLevel(item.level)}]}/>
                 <View style={styles.detailField}>
                     <Text style={styles.topic}>{item.topic}</Text>
-                    <Text style={styles.speaker}>{item.speaker}</Text>
+                    <Text style={styles.speaker}>{this.getSpeakerName(item.speaker)}</Text>
                     <View style={styles.infoField}>
                         <Text style={styles.topic}>{moment.unix(item.date).format("HH:mm")}</Text>
                         <Text style={styles.topic}>{moment.unix(item.date).format("DD MMM YYYY")}</Text>
