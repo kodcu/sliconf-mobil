@@ -201,7 +201,7 @@ export const actionCreators = {
 
     forgotPassword: (email) => async (dispatch, getState) => {
         dispatch({
-            type: types.LOGIN_REQUEST
+            type: types.FORGOT_PASS_REQUEST
         })
 
         await Request.POST(postFORGOT+email,{email},{
