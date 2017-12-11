@@ -110,6 +110,7 @@ class LoginScreen extends Component {
                     ],
                     {cancelable: false}
                 );
+            this.setState({page:'login'});
 
             if (!error && !loading) {
                 //this.props.navigation.dispatch({type: 'drawerStack'});
@@ -124,8 +125,7 @@ class LoginScreen extends Component {
                 );
             }
         }else
-            alert("hata")
-            //this._forgotPassEmail.isThereError(true,"Please enter a valid email.")
+            this._forgotPassEmail.isThereError(true,"Please enter a valid email.")
 
 
     };

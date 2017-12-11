@@ -21,7 +21,6 @@ class SplashScreen extends React.Component {
      * @private
      */
     _handleConnectionInfoChange = (isConnected) => {
-        //return this.props.navigation.navigate(TALK);
         if (isConnected)
             setTimeout(() => this.props.navigation.dispatch({type: MAIN}), 1000);
         else
