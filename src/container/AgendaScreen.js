@@ -236,7 +236,7 @@ class AgendaScreen extends Component {
     roomsList(events) {
         let roomsList = [];
         let tempRoom = events.filter((thing, index, self) => self.findIndex((t) => {
-            return t.room === thing.room
+            return t.room === thing.room && thing.room.trim()
         }) === index);
         tempRoom.forEach((element) => roomsList.push(element.room));
         roomsList.sort();
