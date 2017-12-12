@@ -40,8 +40,9 @@ class LocationScreen extends Component {
     componentWillMount() {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
-
-
+        const location = this.props.event.about.location
+        if(!(location === undefined || location === null || location.isEmpty))
+            Object.values(location).every((key) => (key === '')?  delete this.props.event.about.location:false );
     }
 
 
@@ -58,6 +59,11 @@ class LocationScreen extends Component {
                         }}>
                     <Header.Title title="Location"/>
                 </Header>
+                <View style={styles.notFoundPanel}>
+                    <Text style={styles.notFoundText}>
+                        Location Not Found
+                    </Text>
+                </View>
             </View>
         }
 
@@ -158,6 +164,15 @@ const styles = StyleSheet.create({
     addressContainer: {
         flex: 4,
         marginLeft: 5
+    },
+    notFoundText:{
+        ...Font.thin,
+        color:Color.darkGray
+    },
+    notFoundPanel:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
 });

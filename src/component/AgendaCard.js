@@ -73,7 +73,6 @@ export default class AgendaCard extends Component {
     render() {
         const item =this.props.item;
         const speaker=this.props.speaker;
-        console.log(speaker)
         if(this.props.isEmpty){
             return(
                 <View  style={styles.container}>
