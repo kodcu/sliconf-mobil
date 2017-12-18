@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
-import {Alert, Dimensions, KeyboardAvoidingView, StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+    Alert, Dimensions, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity,
+    View
+} from 'react-native';
 import {Button, Card, CardItem, Container, Content, Footer, FooterTab, Input, Left, Thumbnail} from "native-base";
 import Header from "../component/Header";
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -8,20 +11,56 @@ import TalkInfo from "../component/TalkInfo";
 import TalkComment from "../component/TalkComment";
 import TalkRate from "../component/TalkRate";
 import moment from "moment";
+import {actionCreators} from '../reducks/module/comment'
+import {connect} from 'react-redux'
+import {EVENT_STACK} from "../router";
+import Color from "../theme/Color";
 
 const {height, width} = Dimensions.get('window');
 
+const mapStateToProps = (state) => ({
+    loading: state.comment.loading,
+    user:state.auth.user,
+    error: state.comment.error,
+    event: state.event.event,
+    errorMessage: state.comment.errorMessage
+});
 
 export class TalkDetail extends Component {
 
     state = {
         tab: 'info',
         rate: false,
-        ask: false
+        ask: false,
+        commentValue:""
     }
 
     askQuestion = () => {
         this.setState({ask: !this.state.ask})
+    }
+
+    async sendComment(){
+        const comment={eventId:this.props.event.id,
+            sessionId:this.props.navigation.state.params[0].id,
+            userId:this.props.user.id,
+            commentValue:this.state.commentValue,
+            time:moment().unix()
+        };
+        const {dispatch, loading,error,errorMessage} = this.props;
+        await dispatch(actionCreators.postComment(comment.eventId,comment.sessionId,comment.userId,comment.commentValue,comment.time));
+        if (error)
+            Alert.alert(
+                'Warning!',
+                errorMessage,
+                [
+                    {text: 'OK'}
+                ],
+                { cancelable: false }
+            );
+
+        if (!error && !loading) {
+            this.askQuestion()
+        }
     }
 
     render() {
@@ -59,20 +98,20 @@ export class TalkDetail extends Component {
                         </If.Then>
 
                         <If.Else>
-                            <TalkComment question={this.askQuestion}/>
+                            <TalkComment question={this.askQuestion} session={talk[0].id}/>
                         </If.Else>
 
                     </If>
 
                 </Content>
 
-                <KeyboardAvoidingView behavior='position'>
+                <KeyboardAvoidingView behavior='height'>
                     <If con={this.state.ask}>
                         <If.Then>
 
                             <Footer>
 
-                                <FooterTab style={{backgroundColor: '#fff'}}>
+                                <FooterTab style={{backgroundColor: Color.white}}>
 
                                     <View style={{flexDirection: 'row'}}>
                                         <Thumbnail source={require("../../images/person.png")} small
@@ -80,22 +119,23 @@ export class TalkDetail extends Component {
                                         <TextInput placeholder="Your comments"
                                                    placeholderTextColor='rgba(0,0,0,0.7)'
                                                    returnKeyType="send"
-                                                   onSubmitEditing={() => {
-                                                   }}
+                                                   onChangeText={(val) => this.setState({commentValue: val})}
                                                    keyboardType="default"
                                                    autoCapitalize="none"
                                                    autoCorrect={false}
+                                                   maxLength={200}
                                                    style={{width: width - 100, justifyContent: 'center'}}
                                         />
                                         <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => {
-                                            Alert.alert(
+                                           /* Alert.alert(
                                                 'Warning!',
                                                 'You can nor send message',
                                                 [
                                                     {text: 'OK', onPress: () => console.log('OK Pressed')},
                                                 ],
                                                 {cancelable: false}
-                                            );
+                                            );*/
+                                           this.sendComment()
                                             this.setState({ask: false})
                                         }}>
                                             <Icon name={"ios-send"} size={30}/>
@@ -149,4 +189,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TalkDetail;
+export default connect(mapStateToProps)(TalkDetail)

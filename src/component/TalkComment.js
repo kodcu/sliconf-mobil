@@ -1,76 +1,78 @@
 import React, {Component} from 'react';
-import {Dimensions, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Alert, Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import {Button, Container, Content, Fab, Footer, FooterTab, Input, Thumbnail} from "native-base";
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons'
 import CommentItem from "./CommentItem";
+import {actionCreators} from '../reducks/module/comment'
+import {connect} from 'react-redux'
 
 const ENTRIES = [
     {
         id: '123',
         eventId: '123456',
         sessionId: '123456',
-        userId:'123456',
-        time:1512118026,
-        like:8,
-        dislike:2,
-        likes:["Anıl Coşar","Hüseyin Akdoğan"],
-        dislikes:["Nursel Cıbır"],
-        commentValue:"Tuvalet nerede ? ",
-        approved:"APPROVED",
-        commentType:"normal"
-    },{
+        userId: '123456',
+        time: 1512118026,
+        like: 8,
+        dislike: 2,
+        likes: ["Anıl Coşar", "Hüseyin Akdoğan"],
+        dislikes: ["Nursel Cıbır"],
+        commentValue: "Tuvalet nerede ? ",
+        approved: "APPROVED",
+        commentType: "normal"
+    }, {
         id: '1234',
         eventId: '123456',
         sessionId: '123456',
-        userId:'123456',
-        time:1512118206,
-        like:7,
-        dislike:15,
-        likes:["Anıl Coşar","Hüseyin Akdoğan"],
-        dislikes:["Nursel Cıbır"],
-        commentValue:"Tuvalet nerede ? 2",
-        approved:"APPROVED",
-        commentType:"anonymous"
-    },{
+        userId: '123456',
+        time: 1512118206,
+        like: 7,
+        dislike: 15,
+        likes: ["Anıl Coşar", "Hüseyin Akdoğan"],
+        dislikes: ["Nursel Cıbır"],
+        commentValue: "Tuvalet nerede ? 2",
+        approved: "APPROVED",
+        commentType: "anonymous"
+    }, {
         id: '12345',
         eventId: '123456',
         sessionId: '123456',
-        userId:'123456',
-        time:1512119406,
-        like:20,
-        dislike:10,
-        likes:["Anıl Coşar","Hüseyin Akdoğan"],
-        dislikes:["Nursel Cıbır"],
-        commentValue:"Tuvalet nerede ? 3",
-        approved:"APPROVED",
-        commentType:"normal"
-    },{
+        userId: '123456',
+        time: 1512119406,
+        like: 20,
+        dislike: 10,
+        likes: ["Anıl Coşar", "Hüseyin Akdoğan"],
+        dislikes: ["Nursel Cıbır"],
+        commentValue: "Tuvalet nerede ? 3",
+        approved: "APPROVED",
+        commentType: "normal"
+    }, {
         id: '1234567',
         eventId: '123456',
         sessionId: '123456',
-        userId:'123456',
-        time:1512119706,
-        like:0,
-        dislike:0,
-        likes:["Anıl Coşar","Hüseyin Akdoğan"],
-        dislikes:["Nursel Cıbır"],
-        commentValue:"Tuvalet nerede ? 5",
-        approved:"APPROVED",
-        commentType:"normal"
-    },{
+        userId: '123456',
+        time: 1512119706,
+        like: 0,
+        dislike: 0,
+        likes: ["Anıl Coşar", "Hüseyin Akdoğan"],
+        dislikes: ["Nursel Cıbır"],
+        commentValue: "Tuvalet nerede ? 5",
+        approved: "APPROVED",
+        commentType: "normal"
+    }, {
         id: '12345678',
         eventId: '123456',
         sessionId: '123456',
-        userId:'123456',
-        time:1512119766,
-        like:2,
-        dislike:1,
-        likes:["Anıl Coşar","Hüseyin Akdoğan"],
-        dislikes:["Nursel Cıbır"],
-        commentValue:"Tuvalet nerede ? 6",
-        approved:"APPROVED",
-        commentType:"normal"
+        userId: '123456',
+        time: 1512119766,
+        like: 2,
+        dislike: 1,
+        likes: ["Anıl Coşar", "Hüseyin Akdoğan"],
+        dislikes: ["Nursel Cıbır"],
+        commentValue: "Tuvalet nerede ? 6",
+        approved: "APPROVED",
+        commentType: "normal"
     },
 
 ];
@@ -79,26 +81,34 @@ const POPULARENTRIES = [
         id: '123456',
         eventId: '123456',
         sessionId: '123456',
-        userId:'123456',
-        time:1512119706,
-        like:20,
-        dislike:1,
-        likes:["Anıl Coşar","Hüseyin Akdoğan"],
-        dislikes:["Nursel Cıbır"],
-        commentValue:"Tuvalet nerede ? 4",
-        approved:"APPROVED",
-        commentType:"normal"
+        userId: '123456',
+        time: 1512119706,
+        like: 20,
+        dislike: 1,
+        likes: ["Anıl Coşar", "Hüseyin Akdoğan"],
+        dislikes: ["Nursel Cıbır"],
+        commentValue: "Tuvalet nerede ? 4",
+        approved: "APPROVED",
+        commentType: "normal"
     }
 ];
+
+const mapStateToProps = (state) => ({
+    loading: state.comment.loading,
+    user: state.auth.user,
+    error: state.comment.error,
+    event: state.event.event,
+    errorMessage: state.comment.errorMessage,
+    commentList: state.comment.commentList,
+    commentListByUser: state.comment.commentListByUser
+});
 
 export class TalkComment extends Component {
 
     _keyExtractor = (item, index) => index;
 
     renderRow(info) {
-        return <CommentItem item={info} key={info.id} />
-
-
+        return <CommentItem item={info.item} userAgent={this.props.user.id} key={info.item.id}/>
     }
 
     _renderItem({item, index}) {
@@ -106,15 +116,39 @@ export class TalkComment extends Component {
             <View style={styles.card} key={index}>
                 <Thumbnail source={require('../../images/person.png')} small style={{marginBottom: 15}}/>
                 <Text style={{fontSize: 12, color: '#000'}}>{item.userId}</Text>
-                <Text style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>
+                <Text
+                    style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>
             </View>
         );
+    }
+
+    async getComments() {
+        const comment = {
+            eventId: this.props.event.id,
+            sessionId: this.props.session,
+            userId: this.props.user.id,
+        };
+        const {dispatch, loading, error, errorMessage} = this.props;
+        await dispatch(actionCreators.getCommentsSession(comment.eventId, comment.sessionId));
+        if (error)
+            Alert.alert(
+                'Warning!',
+                errorMessage,
+                [
+                    {text: 'OK'}
+                ],
+                {cancelable: false}
+            );
+    }
+
+    componentWillMount() {
+        this.getComments()
     }
 
     render() {
         return (
             <View style={{flex: 1}}>
-                <View style={{height: 220, alignSelf: 'center'}}>
+                <View style={{height: 220, alignSelf: 'center', marginBottom: 10}}>
                     <Carousel
                         data={POPULARENTRIES}
                         renderItem={this._renderItem}
@@ -132,9 +166,13 @@ export class TalkComment extends Component {
                         removeClippedSubviews={false}/>
 
                 </View>
-                <View style={{height: height - 360}}>
-                    <ScrollView>
-                        {ENTRIES.map((item, key) => this.renderRow(item, item.key))}</ScrollView>
+
+                <View style={{height: height - 370}}>
+                    <FlatList
+                        data={this.props.commentList}
+                        renderItem={(item) => this.renderRow(item)}
+                        keyExtractor={(item, index) => index}
+                    />
                 </View>
 
                 <Fab
@@ -217,4 +255,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default TalkComment;
+export default connect(mapStateToProps)(TalkComment);
