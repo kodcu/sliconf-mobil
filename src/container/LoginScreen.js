@@ -22,7 +22,7 @@ const logo = require("../../images/logo.png");
 const mapStateToProps = (state) => ({
     loading: state.auth.loading,
     error: state.auth.error,
-    events: state.auth.user,
+    user: state.auth.user,
     errorMessage: state.auth.errorMessage
 });
 

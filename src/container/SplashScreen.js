@@ -23,17 +23,6 @@ class SplashScreen extends React.Component {
     _handleConnectionInfoChange = (isConnected) => {
         if (isConnected)
             setTimeout(() => this.props.navigation.dispatch({type: MAIN}), 1000);
-        else
-            //TODO: try again duzunlenecek
-            Alert.alert(
-                'Warning!',
-                "...",
-                [
-                    {text: 'Exit', onPress: () => RNExitApp.exitApp()},
-                    {text: 'Try again', onPress: () => this._handleConnectionInfoChange(false)},
-                ],
-                { cancelable: false }
-            );
     };
 
     componentWillMount() {
