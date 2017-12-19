@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
         height: 50,
         backgroundColor: Color.transparent,
         position: 'absolute',
-        top: (height / 2) - 25,
+        top: (height / 2) - 75,
         justifyContent: 'center'
     },
     notFoundText:{

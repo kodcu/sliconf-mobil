@@ -3,8 +3,9 @@ import {FlatList, StyleSheet, Text, View,} from "react-native"
 import {Button} from 'native-base'
 import {connect} from 'react-redux'
 import ProfileComponent from '../component/ProfileComponent'
+import SignInComponent from '../component/SignInComponent'
 import DrawerItem from '../component/DrawerItemComponent'
-import {AGENDA, FLOOR, HOME, INFO, LOCATION, LOGIN, SPEAKERS} from "../router";
+import {AGENDA, FLOOR, HOME, INFO, LOCATION, LOGIN, SPEAKERS, SPONSOR} from "../router";
 import If from "../component/If";
 import Font from "../theme/Font";
 import Color from "../theme/Color";
@@ -12,8 +13,8 @@ import {actionCreators} from "../reducks/module/auth";
 
 const mapStateToProps = (state) => ({
     selectDrawer: state.drawer.drawerIndex,
-    user:state.auth.user,
-    login:state.auth.login
+    user: state.auth.user,
+    login: state.auth.login
 });
 
 class DrawerMenu extends Component {
@@ -34,9 +35,9 @@ class DrawerMenu extends Component {
             {icon: "ios-microphone-outline", name: "Speakers", screenName: SPEAKERS, key: 3},
             {icon: "ios-compass-outline", name: "Location", screenName: LOCATION, key: 4},
             {icon: "ios-menu-outline", name: "Floor Plan", screenName: FLOOR, key: 5},
-            {icon: "ios-information-circle-outline", name: "Info", screenName: INFO, key: 6},
-
-            ];
+            {icon: "ios-ribbon-outline", name: "Sponsors", screenName: SPONSOR, key: 6},
+            {icon: "ios-information-circle-outline", name: "General Info", screenName: INFO, key: 7},
+        ];
 
         const selected = this.props.selectDrawer;
 
@@ -45,32 +46,34 @@ class DrawerMenu extends Component {
 
                 <FlatList
                     data={menuData}
-                    renderItem={({item}) => <DrawerItem navigation={this.props.navigation} screenName={item.screenName}
-                                                        icon={item.icon} name={item.name} key={item.key} current={selected}
-                                                        color={selected === item.screenName ? Color.green : Color.darkGray}/>}
+                    renderItem={({item}) =>
+                        <DrawerItem navigation={this.props.navigation}
+                                    screenName={item.screenName}
+                                    icon={item.icon}
+                                    name={item.name}
+                                    key={item.key}
+                                    current={selected}
+                        />}
                 />
                 <View>
                     <View style={{
                         height: this.state.logout ? 70 : 0,
-                        backgroundColor: this.state.logout ? '#29B673' : '#fff',
+                        backgroundColor: Color.green,
                         alignItems: 'center',
                         justifyContent: 'space-around'
                     }}>
-                        <Text style={{color: '#fff', paddingTop: 10}}>Are you sure?</Text>
-                        <View style={{
-                            flexDirection: 'row',
-                            flex: 1,
-                            justifyContent: 'space-around',
-                            alignItems: 'center'
-                        }}>
-                            <Button transparent onPress={() => {
-                                this.logout_close();
-                                this.props.dispatch(actionCreators.logout())
-                            }}>
-                                <Text style={{color: '#fff'}}>Yes</Text>
+                        <Text style={styles.question}>Are you sure?</Text>
+                        <View style={styles.questionTab}>
+                            <Button transparent style={{width: 40, justifyContent: 'center', marginRight: 10}}
+                                    onPress={() => {
+                                        this.logout_close();
+                                        this.props.dispatch(actionCreators.logout())
+                                    }}>
+                                <Text style={styles.questionText}>Yes</Text>
                             </Button>
-                            <Button transparent onPress={() => this.logout_close()}>
-                                <Text style={{color: '#fff'}}>No</Text>
+                            <Button transparent style={{width: 40, justifyContent: 'center'}}
+                                    onPress={() => this.logout_close()}>
+                                <Text style={styles.questionText}>No</Text>
                             </Button>
                         </View>
                     </View>
@@ -80,7 +83,10 @@ class DrawerMenu extends Component {
                                               username={this.props.user.username} email={this.props.user.email}/>
                         </If.Then>
                         <If.Else>
-                            <ProfileComponent.Login login={() => {this.setState({login: true});this.props.navigation.navigate(LOGIN)}}/>
+                            <SignInComponent login={() => {
+                                this.setState({login: true});
+                                this.props.navigation.navigate(LOGIN)
+                            }}/>
                         </If.Else>
                     </If>
                 </View>
@@ -92,7 +98,7 @@ class DrawerMenu extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.43)',
+        backgroundColor: Color.white,
         //justifyContent: 'space-between',
         paddingTop: 30
     },
@@ -103,6 +109,21 @@ const styles = StyleSheet.create({
         ...Font.medium,
         fontSize: 15,
         margin: 15,
+    },
+    question: {
+        ...Font.semiBold,
+        paddingTop:5,
+        color: Color.white
+    },
+    questionText: {
+        ...Font.semiBold,
+        color: Color.white
+    },
+    questionTab:{
+        flexDirection: 'row',
+        flex: 1,
+        justifyContent: 'space-around',
+        alignItems: 'center'
     }
 });
 

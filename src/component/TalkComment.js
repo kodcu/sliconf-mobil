@@ -152,7 +152,7 @@ export class TalkComment extends Component {
         return (
             <View style={{flex: 1}}>
                 <If con={!this.props.lite}>
-                <View style={{alignSelf: 'center', marginBottom: 10,height: Dimensions.get('window').height / 3}}>
+                <View style={{alignSelf: 'center', marginBottom: 10,height: 220}}>
                     <Carousel
                         data={POPULARENTRIES}
                         renderItem={this._renderItem}
@@ -172,7 +172,7 @@ export class TalkComment extends Component {
                 </View>
                 </If>
 
-                <View style={{height: this.props.lite ? Dimensions.get('window').height*1.2/2:Dimensions.get('window').height*1.3 / 3}}>
+                <View style={{height: this.props.lite ? null : height-368}}>
                     <FlatList
                         data={this.props.commentList}
                         renderItem={(item) => this.renderRow(item)}

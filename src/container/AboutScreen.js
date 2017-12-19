@@ -116,16 +116,9 @@ export class About extends Component {
 
                     </View>
 
-                    <Tabs tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
-                          style={{marginTop: 10}}>
-                        <Tab heading="Contact Us"
-                             key={1}
-                             tabStyle={styles.tab}
-                             activeTabStyle={styles.activeTab}
-                             activeTextStyle={[styles.activeTabText, Font.medium]}
-                             textStyle={styles.tabText}>
+                        <View style={styles.tab}>
+                            <Text style={styles.activeTabText}>Contact Us</Text>
                             <View style={styles.contact}>
-
                                 {about.email  ? this.rowItem(about.email, 'ios-at-outline', 'email') : null}
                                 {about.phone ? about.phone.map((item, index) => this.rowItem(item, 'ios-call-outline', 'phone',index)) : null}
                                 {about.social ?
@@ -137,38 +130,7 @@ export class About extends Component {
                                 }
 
                             </View>
-                        </Tab>
-
-                        <Tab heading="Sponsor"
-                             tabStyle={styles.tab}
-                             key={2}
-                             activeTabStyle={styles.activeTab}
-                             activeTextStyle={[styles.activeTabText, Font.medium]}
-                             textStyle={styles.tabText}>
-                            <View style={styles.sponsorTagPanel}>
-                                    <View style={styles.sponsor}>
-                                        {Object.keys(sponsors).map((item, index) =>
-                                            <View key={index} style={styles.sponsorTagPanel}>
-                                                <Text style={styles.sponsorTag}>{event.sponsorTags[item]}</Text>
-                                                <View style={styles.sponsorPanel}>
-                                                    <FlatList
-                                                        data={event.sponsors[item]}
-                                                        numColumns={index === 0 ? 1 : 2}
-                                                        keyExtractor={(item, i) => i}
-                                                        renderItem={(info) =>{
-                                                            return <Image source={{uri: getImage(info.item.logo)}}
-                                                                          resizeMode="contain"
-                                                                          style={styles.sponsorLogo}
-                                                            />}
-                                                        }
-                                                    />
-                                                </View>
-                                            </View>
-                                        )}
-                                    </View>
-                            </View>
-                        </Tab>
-                    </Tabs>
+                        </View>
                 </ScrollView>
             </View>
         )
@@ -184,10 +146,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: Color.white,
-        borderBottomWidth: 1,
-        borderBottomColor: Color.darkGray4,
-        borderTopWidth: 1,
-        borderTopColor: Color.darkGray4,
     },
     activeTab: {
         backgroundColor: Color.white,
@@ -226,7 +184,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         flex: 1,
-        marginTop: 10
+        margin: 5
     },
     socialMedia: {
         flexDirection: 'row',

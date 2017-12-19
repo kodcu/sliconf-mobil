@@ -102,7 +102,7 @@ export default class FilterEvent extends Component {
             let myArray = [];
 
             if (this.state.eventName === '') {
-                Object.values(sourceData).map((data) => {
+                Object.values(sourceData).map((data) =>
                     data.map((data2) => {
                         this.state.searchFilter.map((myFilter) => {
                             if (data2.tags.find((data2) => myFilter === data2) !== undefined && myArray.find((myArrayData) => data2 === myArrayData) === undefined)
@@ -111,9 +111,9 @@ export default class FilterEvent extends Component {
                     })
 
 
-                })
+                )
             } else {
-                Object.values(sourceData).map((data) => {
+                Object.values(sourceData).map((data) =>
                     data.map((data2) => {
                         if (data2.topic.toLowerCase().includes(this.state.eventName.toLowerCase()) && this.state.searchFilter.length === 0)
                             myArray.push(data2)
@@ -127,7 +127,7 @@ export default class FilterEvent extends Component {
                         })
                     })
 
-                })
+                )
             }
             if (myArray.length !== 0) {
                 this.props.onPress(myArray)
