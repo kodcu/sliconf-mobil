@@ -31,7 +31,7 @@ export default class CommentItem extends Component {
                             fontSize: moderateScale(11.5),
                             color: Color.black,
                             marginBottom: 5
-                        }}>{info.userId}</Text>
+                        }}>{info.username}</Text>
                         <Text style={{
                             ...Font.light,
                             fontSize: moderateScale(10),

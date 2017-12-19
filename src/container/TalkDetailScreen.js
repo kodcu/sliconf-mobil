@@ -98,7 +98,7 @@ export class TalkDetail extends Component {
                         </If.Then>
 
                         <If.Else>
-                            <TalkComment question={this.askQuestion} session={talk[0].id}/>
+                            <TalkComment question={this.askQuestion} session={talk[0].id} lite={false}/>
                         </If.Else>
 
                     </If>

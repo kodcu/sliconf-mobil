@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import CommentItem from "./CommentItem";
 import {actionCreators} from '../reducks/module/comment'
 import {connect} from 'react-redux'
+import If from "./If";
 
 const ENTRIES = [
     {
@@ -108,10 +109,12 @@ export class TalkComment extends Component {
     _keyExtractor = (item, index) => index;
 
     renderRow(info) {
+        console.log(info)
         return <CommentItem item={info.item} userAgent={this.props.user.id} key={info.item.id}/>
     }
 
     _renderItem({item, index}) {
+
         return (
             <View style={styles.card} key={index}>
                 <Thumbnail source={require('../../images/person.png')} small style={{marginBottom: 15}}/>
@@ -148,7 +151,8 @@ export class TalkComment extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <View style={{height: 220, alignSelf: 'center', marginBottom: 10}}>
+                <If con={!this.props.lite}>
+                <View style={{alignSelf: 'center', marginBottom: 10,height: Dimensions.get('window').height / 3}}>
                     <Carousel
                         data={POPULARENTRIES}
                         renderItem={this._renderItem}
@@ -166,8 +170,9 @@ export class TalkComment extends Component {
                         removeClippedSubviews={false}/>
 
                 </View>
+                </If>
 
-                <View style={{height: height - 370}}>
+                <View style={{height: this.props.lite ? Dimensions.get('window').height*1.2/2:Dimensions.get('window').height*1.3 / 3}}>
                     <FlatList
                         data={this.props.commentList}
                         renderItem={(item) => this.renderRow(item)}
@@ -175,6 +180,7 @@ export class TalkComment extends Component {
                     />
                 </View>
 
+                <If con={!this.props.lite}>
                 <Fab
                     active={true}
                     direction="left"
@@ -184,6 +190,7 @@ export class TalkComment extends Component {
                     onPress={this.props.question}>
                     <Icon name="ios-text"/>
                 </Fab>
+                </If>
 
             </View>
 
