@@ -1,8 +1,7 @@
 import React from 'react';
-import {StyleSheet, View, Text, NetInfo,BackHandler,Alert} from 'react-native'
-import RNExitApp from 'react-native-exit-app';
+import {NetInfo, StyleSheet, Text, View} from 'react-native'
 import {Image} from 'react-native-animatable'
-import {LOGIN, MAIN, TALK} from '../router';
+import {MAIN} from '../router';
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 

@@ -68,7 +68,7 @@ class AskScreen extends Component {
                         }}>
                     <Header.Title title="Ask Question"/>
                 </Header>
-                <Picker style={{width: 140, alignSelf: 'center'}}
+                <Picker style={{width: Scale.width-20, alignSelf: 'center'}}
                         placeholder={"Select a Session"}
                         selectedValue={this.state.sessionId}
                         onValueChange={(itemValue, itemIndex) => this.changeSession(itemValue)}>
@@ -88,6 +88,7 @@ class AskScreen extends Component {
                         placeholder='Enter question...'
                         underlineColorAndroid={'transparent'}
                         textAlignVertical={'top'}
+                        value={this.state.commentValue}
                         onChangeText={(text) => this.setState({commentValue: text})}
                         style={{
                             ...Font.light,
@@ -102,7 +103,7 @@ class AskScreen extends Component {
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => this.sendComment()}>
                     <Text style={styles.buttonText}>Send Question</Text>
                 </TouchableOpacity>
-                <View style={{flex: 0.5, marginTop: 20}}>
+                <View style={{flex: 1, marginTop: 20}}>
                     {this.state.sessionId.trim() ? <TalkComment session={this.state.sessionId} lite={true}/> : null}
                 </View>
             </View>
