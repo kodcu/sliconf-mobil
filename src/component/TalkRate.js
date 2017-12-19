@@ -132,7 +132,7 @@ export default class TalkRate extends Component {
         )
     }
 }
-width = Dimensions.get('window').width-80;
+const width = Dimensions.get('window').width-80;
 const styles = StyleSheet.create({
     container: {
         flex:1,

@@ -131,7 +131,7 @@ export class TalkComment extends Component {
             sessionId: this.props.session,
             userId: this.props.user.id,
         };
-        const {dispatch, loading, error, errorMessage} = this.props;
+        const {dispatch, error, errorMessage} = this.props;
         await dispatch(actionCreators.getCommentsSession(comment.eventId, comment.sessionId));
         if (error)
             Alert.alert(
@@ -152,27 +152,27 @@ export class TalkComment extends Component {
         return (
             <View style={{flex: 1}}>
                 <If con={!this.props.lite}>
-                <View style={{alignSelf: 'center', marginBottom: 10,height: 220}}>
-                    <Carousel
-                        data={POPULARENTRIES}
-                        renderItem={this._renderItem}
-                        sliderWidth={(width / 2) + 40}
-                        itemWidth={(width / 2) - 20}
-                        inactiveSlideScale={1}
-                        inactiveSlideOpacity={1}
-                        enableMomentum={true}
-                        activeSlideAlignment={'start'}
-                        autoplay={false}
-                        autoplayDelay={500}
-                        autoplayInterval={2500}
-                        containerCustomStyle={styles.slider}
-                        contentContainerCustomStyle={styles.sliderContentContainer}
-                        removeClippedSubviews={false}/>
+                    <View style={{alignSelf: 'center', marginBottom: 10, height: 220}}>
+                        <Carousel
+                            data={POPULARENTRIES}
+                            renderItem={this._renderItem}
+                            sliderWidth={(width / 2) + 40}
+                            itemWidth={(width / 2) - 20}
+                            inactiveSlideScale={1}
+                            inactiveSlideOpacity={1}
+                            enableMomentum={true}
+                            activeSlideAlignment={'start'}
+                            autoplay={false}
+                            autoplayDelay={500}
+                            autoplayInterval={2500}
+                            containerCustomStyle={styles.slider}
+                            contentContainerCustomStyle={styles.sliderContentContainer}
+                            removeClippedSubviews={false}/>
 
-                </View>
+                    </View>
                 </If>
 
-                <View style={{height: this.props.lite ? null : height-368}}>
+                <View style={{height: this.props.lite ? null : height - 368}}>
                     <FlatList
                         data={this.props.commentList}
                         renderItem={(item) => this.renderRow(item)}
@@ -181,15 +181,15 @@ export class TalkComment extends Component {
                 </View>
 
                 <If con={!this.props.lite}>
-                <Fab
-                    active={true}
-                    direction="left"
-                    containerStyle={{}}
-                    style={{backgroundColor: '#29B673'}}
-                    position="bottomRight"
-                    onPress={this.props.question}>
-                    <Icon name="ios-text"/>
-                </Fab>
+                    <Fab
+                        active={true}
+                        direction="left"
+                        containerStyle={{}}
+                        style={{backgroundColor: '#29B673'}}
+                        position="bottomRight"
+                        onPress={this.props.question}>
+                        <Icon name="ios-text"/>
+                    </Fab>
                 </If>
 
             </View>

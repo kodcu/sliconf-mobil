@@ -82,6 +82,7 @@ class SpeakersScreen extends Component {
         let speakersMap = new Map();
         speakers.forEach(function (element) {
             let char = element.name.charAt(0).toUpperCase();
+            let array;
             speakersMap.get(char) ? array = speakersMap.get(char) : array = [];
             array.push(element);
             speakersMap.set(char, array)
@@ -102,7 +103,9 @@ class SpeakersScreen extends Component {
     renderRow(info) {
         return <TouchableOpacity onPress={() => this.props.navigation.navigate(SPEAKERINFO, info)}><View
             style={styles.card}>
-            <Thumbnail source={!info.item.profilePicture.trim()?require('../../images/hi.png'):{uri: getImage(info.item.profilePicture)}} large style={{marginBottom: 15}}/>
+            <Thumbnail
+                source={!info.item.profilePicture.trim() ? require('../../images/hi.png') : {uri: getImage(info.item.profilePicture)}}
+                large style={{marginBottom: 15}}/>
             <Text style={styles.speakerName}>{info.item.name}</Text>
             <Text style={styles.speakerWorking}>{info.item.workingAt}</Text>
         </View></TouchableOpacity>
@@ -162,9 +165,9 @@ class SpeakersScreen extends Component {
                                     <Text style={{
                                         fontFamily: "Montserrat-Regular",
                                         fontSize: selectedIndex === index ? moderateScale(22) :
-                                            ( (selectedIndex - 1) === index || (selectedIndex + 1) === index ) ? moderateScale(16) :
-                                            ( (selectedIndex - 2) === index || (selectedIndex + 2) === index ) ? moderateScale(12) :
-                                                moderateScale(9)
+                                            ((selectedIndex - 1) === index || (selectedIndex + 1) === index) ? moderateScale(16) :
+                                                ((selectedIndex - 2) === index || (selectedIndex + 2) === index) ? moderateScale(12) :
+                                                    moderateScale(9)
                                     }}>{speakersFirstLetter}</Text>
                                 </TouchableOpacity>
                             )}
@@ -220,7 +223,7 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(15),
         color: Color.darkGray
     },
-    speakerWorking:{
+    speakerWorking: {
         ...Font.light,
         fontSize: moderateScale(12),
         color: Color.darkGray3

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, Image, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Container, Tab, Tabs, Thumbnail} from 'native-base'
 import Header from "../component/Header";
 import {connect} from 'react-redux'
@@ -24,11 +24,11 @@ export class About extends Component {
      * @param icon kullanilacak ikon ismi
      * @param type mail - telefon (email-phone)
      */
-    rowItem = (name, icon, type,index) =>
+    rowItem = (name, icon, type, index) =>
         <TouchableOpacity key={index}
-            style={{flexDirection: 'row', alignItems: 'center'}}
-            onPress={() => type === "phone" ? Communications.phonecall(name, true) :
-                Communications.email([name.toString()], null, null, this.props.event.name + ' About', '')}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}
+                          onPress={() => type === "phone" ? Communications.phonecall(name, true) :
+                              Communications.email([name.toString()], null, null, this.props.event.name + ' About', '')}>
             <Icon name={icon} size={40} color={Color.darkGray} style={{margin: 15}}/>
             <Text style={styles.aboutText}>{name}</Text>
         </TouchableOpacity>
@@ -39,10 +39,10 @@ export class About extends Component {
      * @param icon sosyal medya ikonunun ismi
      * @param url sosyal medya linki
      */
-    rowSocial = (icon, url,index) =>
+    rowSocial = (icon, url, index) =>
         <TouchableOpacity key={index}
-            style={{flexDirection: 'row', alignItems: 'center'}}
-            onPress={() => this.redirect(url)}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}
+                          onPress={() => this.redirect(url)}>
             <IconSocial name={icon} size={40} color={Color.darkGray} style={{margin: 10}}/>
         </TouchableOpacity>
 
@@ -61,37 +61,15 @@ export class About extends Component {
         }).catch(err => console.error('An error occurred', err));
     }
 
-    componentWillMount(){
-        const {dispatch,navigation} = this.props;
+    componentWillMount() {
+        const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
     }
 
-    _sponsor = () => {Object.keys(sponsors).map((item, index) =>
-        <View key={index} style={styles.sponsorTagPanel}>
-            <Text style={styles.sponsorTag}>{item}</Text>
-            <View style={styles.sponsorPanel}>
-                <FlatList
-                    data={event.sponsors[item]}
-                    numColumns={index === 0 ? 1 : 2}
-                    keyExtractor={(item, i) => i}
-                    renderItem={(info) =>{
-                        console.log('bbb'+info)
-                        return <Image source={{uri: info.item.logo}}
-                                      resizeMode="contain"
-                                      style={styles.sponsorLogo}
-                        />}
-                    }
-                />
-            </View>
-        </View>
-    )}
 
     render() {
         const event = this.props.event;
         const about = event.about;
-        let sponsors = [];
-        if (event.sponsors !== undefined && event.sponsors !==null && !event.sponsors.isEmpty)
-            sponsors = event.sponsors;
 
         return (
             <View style={styles.container}>
@@ -109,39 +87,46 @@ export class About extends Component {
                     <View style={styles.aboutField}>
                         <Thumbnail large source={{uri: getImage(event.logoPath)}}/>
 
-                        <View style={styles.sponsorTagPanel}>
+                        <View style={styles.aboutPanel}>
                             <Text style={styles.EventnameText}>{event.name}</Text>
                             <Text style={styles.descText}>{event.description}</Text>
                         </View>
 
                     </View>
 
-                        <View style={styles.tab}>
-                            <Text style={styles.activeTabText}>Contact Us</Text>
-                            <View style={styles.contact}>
-                                {about.email  ? this.rowItem(about.email, 'ios-at-outline', 'email') : null}
-                                {about.phone ? about.phone.map((item, index) => this.rowItem(item, 'ios-call-outline', 'phone',index)) : null}
-                                {about.social ?
-                                    <View style={styles.socialMedia}>
-                                        {Object.keys(about.social).map((item, index) =>
-                                        {!item.trim() ? this.rowSocial(item + '-with-circle', about.social[item],index):null}
-                                        )}
-                                    </View> : null
-                                }
+                    <View style={styles.panel}>
+                        <Text style={styles.activeTabText}>Contact Us</Text>
+                        <View style={styles.contact}>
+                            {about.email ? this.rowItem(about.email, 'ios-at-outline', 'email') : null}
+                            {about.phone ? about.phone.map((item, index) => this.rowItem(item, 'ios-call-outline', 'phone', index)) : null}
+                            {about.social ?
+                                <View style={styles.socialMedia}>
+                                    {Object.keys(about.social).map((item, index) => {
+                                            !item.trim() ? this.rowSocial(item + '-with-circle', about.social[item], index) : null
+                                        }
+                                    )}
+                                </View> : null
+                            }
 
-                            </View>
                         </View>
+                    </View>
                 </ScrollView>
             </View>
         )
     }
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Color.white
     },
-    tab: {
+    aboutPanel: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1
+    },
+    panel: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
@@ -191,32 +176,6 @@ const styles = StyleSheet.create({
         marginLeft: 50,
         marginRight: 50
     },
-    sponsorLogo: {
-        margin: 5,
-        width: (Scale.width - 30) * 0.4,
-        height: (Scale.width - 30) * 0.4
-    },
-    sponsorPanel: {
-        alignItems: 'center',
-        flex: 1
-    },
-    sponsorTag: {
-        ...Font.bold,
-        fontSize: 20,
-        color: Color.green,
-        margin: 10,
-        marginTop: 20
-    },
-    sponsorTagPanel: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1
-    },
-    sponsor: {
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        flex: 1
-    },
     descText: {
         ...Font.light,
         color: Color.darkGray3,
@@ -227,7 +186,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: Color.darkGray,
         margin: 10,
-        textAlign:'center'
+        textAlign: 'center'
     },
     aboutText: {
         ...Font.regular,

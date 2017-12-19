@@ -68,7 +68,6 @@ export default class FilterEvent extends Component {
     }
 
     searchEvent() {
-        const state = this.state;
         const firstEvents = this.props.events;
         const searchName = this.state.eventName.trim().toUpperCase();
         let searchArray = [];
@@ -109,8 +108,6 @@ export default class FilterEvent extends Component {
                                 myArray.push(data2)
                         })
                     })
-
-
                 )
             } else {
                 Object.values(sourceData).map((data) =>
@@ -126,7 +123,6 @@ export default class FilterEvent extends Component {
 
                         })
                     })
-
                 )
             }
             if (myArray.length !== 0) {
@@ -179,7 +175,7 @@ export default class FilterEvent extends Component {
     }
 
     render() {
-        const {visible, onPress, onClose} = this.props;
+        const {visible} = this.props;
         let DATAS = this.state.data;
         return (
             <View style={styles.container}>
@@ -301,7 +297,11 @@ export default class FilterEvent extends Component {
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
                                             }}>
-                                        <Text style={{...Font.medium, color: '#fff', fontSize: moderateScale(20)}}>Search</Text>
+                                        <Text style={{
+                                            ...Font.medium,
+                                            color: '#fff',
+                                            fontSize: moderateScale(20)
+                                        }}>Search</Text>
                                     </Button>
 
                                     <Button vertical transparent onPress={this.props.onClose()}
@@ -311,7 +311,11 @@ export default class FilterEvent extends Component {
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
                                             }}>
-                                        <Text style={{...Font.medium, color: '#fff', fontSize: moderateScale(20)}}>Cancel</Text>
+                                        <Text style={{
+                                            ...Font.medium,
+                                            color: '#fff',
+                                            fontSize: moderateScale(20)
+                                        }}>Cancel</Text>
                                     </Button>
 
 
@@ -325,7 +329,7 @@ export default class FilterEvent extends Component {
         )
     }
 }
-width = Dimensions.get('window').width - 80;
+const width = Dimensions.get('window').width - 80;
 const styles = StyleSheet.create({
     container: {
         flex: 1,

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View,Alert} from 'react-native';
+import {Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {
     Button,
     Card,
@@ -25,7 +25,7 @@ import BreakTimeCard from '../component/BreakTimeCard'
 import If from '../component/If'
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/drawer'
-import {LOGIN, SEARCHRESULT,TALK} from '../router';
+import {LOGIN, SEARCHRESULT, TALK} from '../router';
 import FilterEvent from "../component/FilterEvent";
 import Color from "../theme/Color";
 import Font from "../theme/Font";
@@ -38,8 +38,8 @@ const mapStateToProps = (state) => ({
     agenda: state.event.event.agenda,
     rooms: state.event.event.rooms,
     speakers: state.event.event.speakers,
-    user:state.auth.user,
-    login:state.auth.login
+    user: state.auth.user,
+    login: state.auth.login
 });
 
 const mock = {
@@ -148,15 +148,48 @@ class AgendaScreen extends Component {
         rooms: [],
         filter: false,
         choosen: [],
-        agendaData:[]
+        agendaData: []
+    };
+    /**
+     * Filtreleme sayfasini kapatir ve sonuclarini gosterecegi sayfaya yonlendirir.
+     * @param searchResults Filtreleme sonuclarının bulundugu array.
+     */
+    filterHide = (searchResults) => {
+        this.setState({filter: false});
+        this.props.navigation.navigate(SEARCHRESULT, searchResults)
+    };
+    /**
+     * Filtre popupini kapatir.
+     */
+    closeFilter = () => {
+        this.setState({filter: false})
+    };
+    /**
+     * Aynı anda hareket etmesi gereken scrollviewlerin pozisyonunu esitler.
+     * @param event surukleme haraketi
+     */
+    handleScroll = (event) => {
+        this.roomScroll.scrollTo({x: event.nativeEvent.contentOffset.x, animated: true});
+    };
+    /**
+     * Katilmak istedigin eventleri sectiklerim listesinden siler.
+     * @param arg Konusmanın modeli
+     */
+    deleteItemFromChosenEvents = (arg) => {
+        let array = choosen;
+        let index = array.indexOf(arg);
+        array.splice(index, 1);
+        this.setState({choosen: choosen})
     };
 
     convertToDateArray(agenda) {
         let newAgendaData = [];
         let dateMap = new Map();
 
-        agenda.forEach(function (element)  {
+
+        agenda.forEach(function (element) {
             let date = moment.unix(element.date).format("MM-DD-YYYY")
+            let array;
             dateMap.get(date) ? array = dateMap.get(date) : array = [];
             array.push(element)
             dateMap.set(date, array)
@@ -169,42 +202,6 @@ class AgendaScreen extends Component {
         return newAgendaData
     }
 
-
-    /**
-     * Filtreleme sayfasini kapatir ve sonuclarini gosterecegi sayfaya yonlendirir.
-     * @param searchResults Filtreleme sonuclarının bulundugu array.
-     */
-    filterHide = (searchResults) => {
-        this.setState({filter: false});
-        this.props.navigation.navigate(SEARCHRESULT, searchResults)
-    };
-
-    /**
-     * Filtre popupini kapatir.
-     */
-    closeFilter = () => {
-        this.setState({filter: false})
-    };
-
-    /**
-     * Aynı anda hareket etmesi gereken scrollviewlerin pozisyonunu esitler.
-     * @param event surukleme haraketi
-     */
-    handleScroll = (event) => {
-        this.roomScroll.scrollTo({x: event.nativeEvent.contentOffset.x, animated: true});
-    };
-
-    /**
-     * Katilmak istedigin eventleri sectiklerim listesinden siler.
-     * @param arg Konusmanın modeli
-     */
-    deleteItemFromChosenEvents = (arg) => {
-        let array = choosen;
-        let index = array.indexOf(arg);
-        array.splice(index, 1);
-        this.setState({choosen: choosen})
-    };
-
     /**
      * Ajandaki konusmalarin saatlerine gore saat dizisine cevirir.
      * @param events gelen konusmalar
@@ -216,6 +213,7 @@ class AgendaScreen extends Component {
 
         events.forEach(function (element) {
             let time = moment.unix(element.date).format("HH:mm");
+            let array;
             myMap.get(time) ? array = myMap.get(time) : array = [];
             array.push(element);
             myMap.set(time, array)
@@ -252,7 +250,7 @@ class AgendaScreen extends Component {
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
 
         let agenda = this.convertToDateArray(this.props.agenda);
-        this.setState({agendaData:agenda});
+        this.setState({agendaData: agenda});
         const data = agenda;
 
         if (data !== undefined && data !== null && !data.isEmpty) {
@@ -260,7 +258,7 @@ class AgendaScreen extends Component {
             this.setState({
                 rooms: this.roomsList(data[Object.keys(data)[0]]),
                 data: this.eventsList(data[Object.keys(data)[0]]),
-                switchedDay: moment(Object.keys(data)[0],"MM-DD-YYYY").format("dddd")
+                switchedDay: moment(Object.keys(data)[0], "MM-DD-YYYY").format("dddd")
             })
         }
 
@@ -271,7 +269,7 @@ class AgendaScreen extends Component {
      * @param date
      */
     changeDate(date) {
-        const data =  this.state.agendaData;
+        const data = this.state.agendaData;
         this.setState({
             switchedDay: date,
             rooms: this.roomsList(data[date]),
@@ -301,42 +299,10 @@ class AgendaScreen extends Component {
                 for (j = 0; j < choosen.length; j++) {
                     if (arg[i] === choosen[j]) {
                         return (
-                            <AgendaCard item={arg[i]}
-                                        speaker={this.getSpeaker(arg[i].speaker)}
-                                        isEmpty={false}
-                                        onPressAddButton={this.addItemToChosenEvents}
-                                        isClicked={true}
-                                        key={arg[i].key}
-                                        choosedEvents={choosen}
-                                        onPress={() => this.props.login ? this.props.navigation.navigate(TALK, arg) : Alert.alert(
-                                            'Warning!',
-                                            'Please log in for more information.',
-                                            [
-                                                {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
-                                                {text: 'CANCEL', onPress: () => console.log('cancel')}
-                                            ],
-                                            {cancelable: false}
-                                        ) }
-                                        onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
+                            this.getAgendaCard(arg, i,true))
                     }
                 }
-                return (<AgendaCard item={arg[i]}
-                                    speaker={this.getSpeaker(arg[i].speaker)}
-                                    isEmpty={false}
-                                    onPressAddButton={this.addItemToChosenEvents}
-                                    isClicked={false}
-                                    key={arg[i].key}
-                                    choosedEvents={choosen}
-                                    onPress={() => this.props.login ? this.props.navigation.navigate(TALK, arg) : Alert.alert(
-                                        'Warning!',
-                                        'Please log in for more information.',
-                                        [
-                                            {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
-                                            {text: 'CANCEL', onPress: () => console.log('cancel')}
-                                        ],
-                                        {cancelable: false}
-                                    ) }
-                                    onPressDeleteButton={this.deleteItemFromChosenEvents}/>)
+                return (this.getAgendaCard(arg, i,false))
             }
         }
         if (!isExist)
@@ -353,6 +319,26 @@ class AgendaScreen extends Component {
         );
     }
 
+    getAgendaCard(arg, i,isClicked) {
+        return <AgendaCard item={arg[i]}
+                           speaker={this.getSpeaker(arg[i].speaker)}
+                           isEmpty={false}
+                           onPressAddButton={this.addItemToChosenEvents}
+                           isClicked={isClicked}
+                           key={arg[i].key}
+                           choosedEvents={choosen}
+                           onPress={() => this.props.login ? this.props.navigation.navigate(TALK, arg) : Alert.alert(
+                               'Warning!',
+                               'Please log in for more information.',
+                               [
+                                   {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
+                                   {text: 'CANCEL', onPress: () => console.log('cancel')}
+                               ],
+                               {cancelable: false}
+                           )}
+                           onPressDeleteButton={this.deleteItemFromChosenEvents}/>;
+    }
+
     /**
      * Sectiklerim butonuna basildiginda sayfanin degişmesini saglar.
      * @private
@@ -361,15 +347,15 @@ class AgendaScreen extends Component {
         this.setState({isChoosenClicked: true})
     }
 
-    getRoomName(roomId){
+    getRoomName(roomId) {
         const roomsTags = this.props.rooms;
         const room = roomsTags.find(room => room.id === roomId)
         return room.label;
     }
 
-    getSpeaker(speakerId){
-        const speakerData=this.props.speakers;
-        return speakerData.find(speaker=> speaker.id===speakerId)
+    getSpeaker(speakerId) {
+        const speakerData = this.props.speakers;
+        return speakerData.find(speaker => speaker.id === speakerId)
     }
 
 
@@ -396,7 +382,8 @@ class AgendaScreen extends Component {
                                     selectedValue={this.state.switchedDay}
                                     onValueChange={(itemValue, itemIndex) => this.changeDate(itemValue)}>
                                 {eventsDates.map((item, i) =>
-                                    <Picker.Item key={i + 1} label={moment(item,"MM-DD-YYYY").format("dddd")} value={item}/>
+                                    <Picker.Item key={i + 1} label={moment(item, "MM-DD-YYYY").format("dddd")}
+                                                 value={item}/>
                                 )}
                             </Picker>
                         </Header>
@@ -427,9 +414,9 @@ class AgendaScreen extends Component {
 
                             <Content>
                                 <View style={{flexDirection: 'row'}}>
-                                    <View style={{margin: 0,marginTop:5, padding: 5}}>
+                                    <View style={{margin: 0, marginTop: 5, padding: 5}}>
                                         {Object.keys(talksList).map((date, i) => (
-                                            <View style={{borderRightWidth:0,}}  key={i}>
+                                            <View style={{borderRightWidth: 0,}} key={i}>
                                                 {talksList[date][0].level === -1 ?
                                                     <Text style={styles.cardTimeLanch}>{date}</Text> :
                                                     <Text style={styles.cardsTime}>{date}</Text>}
@@ -437,7 +424,8 @@ class AgendaScreen extends Component {
                                         ))}
                                     </View>
 
-                                    <ScrollView horizontal onScroll={this.handleScroll} showsHorizontalScrollIndicator={false}>
+                                    <ScrollView horizontal onScroll={this.handleScroll}
+                                                showsHorizontalScrollIndicator={false}>
                                         <ScrollView>
                                             {Object.keys(talksList).map((time, i) => (
                                                 <View key={i}>
@@ -446,7 +434,8 @@ class AgendaScreen extends Component {
                                                             <View style={styles.cardsField}>
 
                                                                 {rooms.map((myroom, i) => (
-                                                                    <View key={i}>{this.isThereEventInRoom(myroom, talksList[time])}</View>
+                                                                    <View
+                                                                        key={i}>{this.isThereEventInRoom(myroom, talksList[time])}</View>
                                                                 ))}
                                                             </View>
                                                         </If.Then>
@@ -481,12 +470,20 @@ class AgendaScreen extends Component {
                         <Button vertical onPress={() => {
                             this.setState({isChoosenClicked: true})
                         }}>
-                            <Text style={{...Font.semiBold, fontSize:moderateScale(12),color: this.state.isChoosenClicked ? Color.green : Color.darkGray}}>All</Text>
+                            <Text style={{
+                                ...Font.semiBold,
+                                fontSize: moderateScale(12),
+                                color: this.state.isChoosenClicked ? Color.green : Color.darkGray
+                            }}>All</Text>
                         </Button>
                         <Button vertical onPress={() => {
                             this.setState({isChoosenClicked: false})
                         }}>
-                            <Text style={{...Font.semiBold, fontSize:moderateScale(12),color: this.state.isChoosenClicked ? Color.darkGray : Color.green}}>Chosen</Text>
+                            <Text style={{
+                                ...Font.semiBold,
+                                fontSize: moderateScale(12),
+                                color: this.state.isChoosenClicked ? Color.darkGray : Color.green
+                            }}>Chosen</Text>
                         </Button>
                     </FooterTab>
                 </Footer>
@@ -506,7 +503,7 @@ const styles = StyleSheet.create({
     },
     roomText: {
         ...Font.semiBold,
-        fontSize:moderateScale(11),
+        fontSize: moderateScale(11),
         width: 220,
         margin: 5,
         marginLeft: 20
@@ -517,7 +514,7 @@ const styles = StyleSheet.create({
     },
     cardsTime: {
         ...Font.semiBold,
-        fontSize:moderateScale(11),
+        fontSize: moderateScale(11),
         margin: 8,
         textAlignVertical: 'center',
         textAlign: 'center',
@@ -525,7 +522,7 @@ const styles = StyleSheet.create({
     },
     cardTimeLanch: {
         ...Font.semiBold,
-        fontSize:moderateScale(11),
+        fontSize: moderateScale(11),
         margin: 8,
         textAlign: 'center',
         height: 32
