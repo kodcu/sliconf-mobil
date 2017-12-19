@@ -3,6 +3,7 @@
  */
 
 import Request from "../../service/Request";
+import {API_LOGIN, API_REGISTER, postFORGOT, postLOGIN, postREGISTER} from '../API'
 
 const types = {
     LOGIN_REQUEST: 'LOGIN_REQUEST',
@@ -18,8 +19,6 @@ const types = {
     FORGOT_PASS_RESPONSE_FAIL: 'FORGOT_PASS_RESPONSE_FAIL',
 }
 
-import {API_REGISTER, API_LOGIN, postLOGIN, postREGISTER,postFORGOT} from '../API'
-
 const initialState = {
     loading: false,
     error: false,
@@ -30,7 +29,7 @@ const initialState = {
 };
 
 export const reducer = (state = initialState, action) => {
-    const {type, payload, message} = action;
+    const {type, payload} = action;
 
     switch (type) {
         case types.LOGIN_REQUEST: {
@@ -132,13 +131,13 @@ export const reducer = (state = initialState, action) => {
 
 export const actionCreators = {
 
-    login: (username,password) => async (dispatch, getState) => {
+    login: (username, password) => async (dispatch, getState) => {
         dispatch({
             type: types.LOGIN_REQUEST
         })
 
-        await Request.POST(postLOGIN,{username,password},{
-            '200': (res)=>{
+        await Request.POST(postLOGIN, {username, password}, {
+            '200': (res) => {
                 if (res.status)
                     dispatch({
                         type: types.LOGIN_RESPONSE_SUC,
@@ -150,13 +149,13 @@ export const actionCreators = {
                         payload: res.message
                     })
             },
-            otherwise:(res)=>{
+            otherwise: (res) => {
                 dispatch({
                     type: types.LOGIN_RESPONSE_FAIL,
-                    payload:res.message
+                    payload: res.message
                 })
             },
-            fail:(err) =>{
+            fail: (err) => {
                 dispatch({
                     type: types.LOGIN_RESPONSE_FAIL,
                     payload: 'İşleminiz gerçekleştirilemiyor!'
@@ -165,13 +164,13 @@ export const actionCreators = {
         })
 
     },
-    register: (fullname,username,email,password) => async (dispatch, getState) => {
+    register: (fullname, username, email, password) => async (dispatch, getState) => {
         dispatch({
             type: types.REGISTER_REQUEST
         })
 
-        await Request.POST(postREGISTER,{username,password,email,fullname},{
-            '200': (res)=>{
+        await Request.POST(postREGISTER, {username, password, email, fullname}, {
+            '200': (res) => {
                 if (res.status)
                     dispatch({
                         type: types.REGISTER_RESPONSE_SUC,
@@ -183,13 +182,13 @@ export const actionCreators = {
                         payload: res.message
                     })
             },
-            otherwise:(res)=>{
+            otherwise: (res) => {
                 dispatch({
                     type: types.REGISTER_RESPONSE_FAIL,
-                    payload:res.message
+                    payload: res.message
                 })
             },
-            fail:(err) =>{
+            fail: (err) => {
                 dispatch({
                     type: types.REGISTER_RESPONSE_FAIL,
                     payload: 'İşleminiz gerçekleştirilemiyor!'
@@ -204,8 +203,8 @@ export const actionCreators = {
             type: types.FORGOT_PASS_REQUEST
         })
 
-        await Request.POST(postFORGOT+email,{email},{
-            '200': (res)=>{
+        await Request.POST(postFORGOT + email, {email}, {
+            '200': (res) => {
                 if (res.status)
                     dispatch({
                         type: types.FORGOT_PASS_RESPONSE_SUC,
@@ -217,13 +216,13 @@ export const actionCreators = {
                         payload: res.message
                     })
             },
-            otherwise:(res)=>{
+            otherwise: (res) => {
                 dispatch({
                     type: types.FORGOT_PASS_RESPONSE_FAIL,
-                    payload:res.message
+                    payload: res.message
                 })
             },
-            fail:(err) =>{
+            fail: (err) => {
                 dispatch({
                     type: types.FORGOT_PASS_RESPONSE_FAIL,
                     payload: 'İşleminiz gerçekleştirilemiyor!'
@@ -233,7 +232,7 @@ export const actionCreators = {
 
     },
 
-    login2: (username,password) => async (dispatch, getState) => {
+    login2: (username, password) => async (dispatch, getState) => {
         dispatch({type: types.LOGIN_REQUEST});
 
 
@@ -248,12 +247,11 @@ export const actionCreators = {
             } catch (e) {
                 dispatch({type: types.LOGIN_RESPONSE_FAIL, message: 'hata'})
             }
-        }else
+        } else
             dispatch({
                 type: types.LOGIN_RESPONSE_FAIL,
                 message: 'Girdiğiniz bilgiler hatali veya eksik'
             })
-
 
 
     },

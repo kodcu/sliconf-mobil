@@ -6,7 +6,7 @@ import {moderateScale, scale} from "../theme/Scale";
 import Font from "../theme/Font";
 import Color from "../theme/Color";
 
-export default SignInComponent = ({login}) =>
+const SignInComponent = ({login}) =>
     <View style={{flexDirection: 'row'}}>
         <TouchableOpacity style={{
             flexDirection: 'row',
@@ -27,3 +27,4 @@ export default SignInComponent = ({login}) =>
 
     </View>
 
+export default SignInComponent;

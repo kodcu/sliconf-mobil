@@ -39,7 +39,7 @@ export class SponsorScreen extends Component {
                     <Header.Title title="Sponsors"/>
                 </Header>
 
-                <ScrollView style={styles.tab}>
+                <ScrollView style={styles.panel}>
                     <View style={styles.sponsorTagPanel}>
                         <View style={styles.sponsor}>
                             {Object.keys(sponsors).map((item, index) =>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Color.white
     },
-    tab: {
+    panel: {
         flex: 1,
         backgroundColor: Color.white,
     },
