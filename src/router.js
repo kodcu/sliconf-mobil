@@ -13,6 +13,7 @@ import DrawerMenu from "./container/DrawerMenu";
 import LocationScreen from "./container/LocationScreen"
 import FloorPlanScreen from "./container/FloorPlanScreen"
 import TalkDetailScreen from "./container/TalkDetailScreen"
+import AskScreen from "./container/AskScreen"
 
 export const SPLASH = 'screen/Splash';
 export const MAIN = 'screen/Main';
@@ -28,6 +29,7 @@ export const FLOOR = 'screen/Floor';
 export const TALK = 'screen/Talk';
 export const EVENT_STACK = 'stack/Event';
 export const MAIN_STACK = 'stack/Main';
+export const ASK = 'screen/Ask';
 
 
 const EventStack = DrawerNavigator({
@@ -60,6 +62,7 @@ const EventStack = DrawerNavigator({
     [LOCATION]: {screen: LocationScreen},
     [FLOOR]: {screen: FloorPlanScreen},
     [LOGIN]: {screen: LoginScreen},
+    [ASK] :{screen:AskScreen}
 
 }, {
     headerMode: 'none',

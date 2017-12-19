@@ -3,13 +3,14 @@ import {Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View,Pl
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/drawer'
-import {AGENDA, FLOOR, INFO, LOCATION, SPEAKERS} from '../router';
+import {AGENDA, FLOOR, INFO, LOCATION, SPEAKERS,ASK} from '../router';
 import Icon from 'react-native-vector-icons/Ionicons'
 import {moderateScale, scale, verticalScale} from '../theme/Scale';
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 import moment from "moment";
 import getImage from "../helpers/getImageHelper"
+
 
 
 const mapStateToProps = (state) => ({
@@ -24,7 +25,7 @@ class HomeScreen extends Component {
             {name: 'Speakers', icon: 'ios-microphone-outline', nav: SPEAKERS},
             {name: 'Location', icon: 'ios-map-outline', nav: LOCATION},
             {name: 'Floor Plan', icon: 'ios-menu-outline', nav: FLOOR},
-            {name: 'Buy Ticket', icon: 'ios-cash-outline',},
+            {name: 'Ask Question', icon: 'ios-help-outline',nav: ASK},
             {name: 'Info', icon: 'ios-information-outline', nav: INFO},
         ]
     };
