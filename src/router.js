@@ -68,6 +68,9 @@ const EventStack = DrawerNavigator({
     [ASK] :{screen:AskScreen}
 
 }, {
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggle',
     headerMode: 'none',
     navigationOptions: {
         gesturesEnabled: false
