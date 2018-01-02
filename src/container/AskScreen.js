@@ -83,7 +83,7 @@ class AskScreen extends Component {
                 }}
                 >
                     <TextInput
-                        numberOfLines={2}
+                        numberOfLines={6}
                         multiline={true}
                         placeholder='Enter question...'
                         underlineColorAndroid={'transparent'}
@@ -121,10 +121,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 30
+        marginHorizontal: 30,
     },
     buttonText: {
-        ...Font.semiBold,
+        ...Font.regular,
         textAlign: 'center',
         color: Color.white,
         fontSize: Scale.verticalScale(20),
