@@ -49,14 +49,14 @@ export default class CommentItem extends Component {
                         <View style={{flexDirection: 'row'}}>
 
                             {user === info.userId ? null :
-                                <TouchableOpacity style={{marginTop: 5}} onPress={() => {
+                                <TouchableOpacity style={{marginTop: 5}} onPress={!this.state.isClicked ?() => {
                                     this.setState({isDislike: !this.state.isDislike});
                                     this.state.isDislike ? info.like++ : info.like--
-                                }}>
+                                }:null}>
                                     <View style={{flexDirection: 'row', marginRight: 10}}>
                                         <Icon
                                             name={this.state.isDislike ? 'ios-thumbs-down' : 'ios-thumbs-down-outline'}
-                                            size={25} color={this.state.isDislike ? "gray" : null}/>
+                                            size={25} color={this.state.isDislike && !this.state.isClicked ? "gray" : null}/>
                                     </View>
                                 </TouchableOpacity>
                             }
@@ -64,13 +64,13 @@ export default class CommentItem extends Component {
                             <Text style={{...Font.light,}}>{info.like - info.dislike}</Text>
 
                             {user === info.userId ? null :
-                                <TouchableOpacity onPress={() => {
+                                <TouchableOpacity onPress={!this.state.isDislike ?() =>{
                                     this.setState({isClicked: !this.state.isClicked});
                                     this.state.isClicked ? info.like-- : info.like++
-                                }}>
+                                }:null}>
                                     <View style={{flexDirection: 'row', marginLeft: 10}}>
                                         <Icon name={this.state.isClicked ? 'ios-thumbs-up' : 'ios-thumbs-up-outline'}
-                                              size={25} color={this.state.isClicked ? "red" : null}/>
+                                              size={25} color={this.state.isClicked && !this.state.isDislike ? "red" : null}/>
                                     </View>
                                 </TouchableOpacity>
                             }
