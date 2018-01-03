@@ -114,13 +114,11 @@ export class TalkComment extends Component {
     }
 
     _renderItem({item, index}) {
-
         return (
             <View style={styles.card} key={index}>
                 <Thumbnail source={require('../../images/person.png')} small style={{marginBottom: 15}}/>
                 <Text style={{fontSize: 12, color: '#000'}}>{item.userId}</Text>
-                <Text
-                    style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>
+                <Text style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>
             </View>
         );
     }
@@ -129,7 +127,6 @@ export class TalkComment extends Component {
         const comment = {
             eventId: this.props.event.id,
             sessionId: this.props.session,
-            userId: this.props.user.id,
         };
         const {dispatch, error, errorMessage} = this.props;
         await dispatch(actionCreators.getCommentsSession(comment.eventId, comment.sessionId));

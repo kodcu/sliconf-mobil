@@ -16,6 +16,9 @@ import {connect} from 'react-redux'
 import {HOME} from "../router";
 import Loading from "../component/Loading";
 import TextInputComponent from '../component/TextInputComponent'
+import LinkedInModal from "react-native-linkedin";
+import IconSocial from 'react-native-vector-icons/Entypo'
+
 
 const logo = require("../../images/logo.png");
 
@@ -217,6 +220,32 @@ class LoginScreen extends Component {
         this._registerEmailInput.isThereError(false)
     }
 
+    async getUser({access_token},type) {
+        //this.setState({loading: true})
+        const baseApi = 'https://api.linkedin.com/v1/people/'
+        const params = [
+            'first-name',
+            'last-name',
+            'picture-urls::(original)',
+            'email-address',
+        ]
+
+        const response = await fetch(`${baseApi}~:(${params.join(',')})?format=json`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + access_token,
+            },
+        })
+        const payload = await response.json()
+        console.log(payload);
+        //this.setState({...payload, loading: false})
+
+        /*if (type === 'login')
+            this._login(payload.emailAddress,access_token)
+        else if (type === 'register')
+            this._register(payload.firstName+' ' + payload.lastName,payload.emailAddress,payload.emailAddress,access_token)*/
+    }
+
     render() {
 
         const page = this.state.page;
@@ -327,7 +356,6 @@ class LoginScreen extends Component {
                                     marginBottom: 15
                                 }}>
 
-
                                     <TextInputComponent
                                         placeholder="Full Name"
                                         placeholderTextColor={Color.darkGray3}
@@ -344,8 +372,6 @@ class LoginScreen extends Component {
                                             this._registerFullnameInput = t2;
                                         }}
                                     />
-
-
                                     <TextInputComponent placeholder="Username"
                                                         placeholderTextColor={Color.darkGray3}
                                                         returnKeyType="next"
@@ -358,8 +384,6 @@ class LoginScreen extends Component {
                                                         ref={c => this._registerUsernameInput = c}
                                                         style={styles.input}
                                                         autoCorrect={false}/>
-
-
                                     <TextInputComponent placeholder="Email"
                                                         placeholderTextColor={Color.darkGray3}
                                                         returnKeyType="next"
@@ -373,8 +397,6 @@ class LoginScreen extends Component {
                                                         ref={c => this._registerEmailInput = c}
                                                         style={styles.input}
                                                         autoCorrect={false}/>
-
-
                                     <TextInputComponent placeholder="Password"
                                                         placeholderTextColor={Color.darkGray3}
                                                         returnKeyType="done"
@@ -386,14 +408,23 @@ class LoginScreen extends Component {
                                                         secure={true}
                                                         style={styles.input}/>
 
-
                                 </View>
-
 
                                 <TouchableOpacity style={styles.buttonContainer}
                                                   onPress={() => this._register(this.state.fullname, this.state.username, this.state.email, this.state.password)}>
                                     <Text style={styles.buttonText}>REGISTER</Text>
                                 </TouchableOpacity>
+
+                                <View style={{alignItems: 'center',
+                                    justifyContent: 'center',margin:10}}>
+                                <LinkedInModal
+                                    clientID="77rqbrrvlxy5d7"
+                                    clientSecret="3qOrHVSErIJ9bPOl"
+                                    redirectUri="https://sliconf.com/"
+                                    onSuccess={data => this.getUser(data,'register')}
+                                    renderButton={() =>  <IconSocial name='linkedin' size={40} color={Color.darkGray}/>}
+                                />
+                                </View>
 
                                 <TouchableOpacity onPress={() => {
                                     this.setState({page: 'login'})

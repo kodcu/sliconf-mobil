@@ -21,7 +21,7 @@ export default class Request{
   static async request(url,method,data,callbacks){
     let payload = {method};
 
-    if(method != 'get'){
+    if(method !== 'get'){
       payload.headers = {
         'Content-Type': 'application/json'
       };
@@ -31,12 +31,9 @@ export default class Request{
     }
 
     try{
-      //TODO Loading popup show
       const response = await fetch(url,payload)
       const json = await response.json()
-      //TODO Loading popup hide
       if(callbacks[response.status]){
-          console.log('ifffffffffffff')
         callbacks[response.status](json)
         return;
       }else{
@@ -46,8 +43,6 @@ export default class Request{
         }
       }
     }catch(err){
-      //TODO Loading popup hide
-        console.log('keşşş '+ err)
       if(callbacks.fail){
         callbacks.fail(err)
       }
