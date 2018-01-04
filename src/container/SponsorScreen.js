@@ -7,6 +7,7 @@ import Color from "../theme/Color";
 import * as Scale from "../theme/Scale";
 import Font from "../theme/Font";
 import Header from "../component/Header";
+import {moderateScale} from "../theme/Scale";
 
 const mapStateToProps = (state) => ({
     sponsors: state.event.event.sponsors,
@@ -20,14 +21,20 @@ export class SponsorScreen extends Component {
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
     }
 
+    sponsorTagIndex(tag){
+
+    }
+
     render() {
 
         const sponsorEv = this.props.sponsors;
         const sponsorTags = this.props.sponsorTags;
         let sponsors = [];
+        console.log(sponsorTags)
 
         if (sponsorEv !== undefined && sponsorEv !==null && !sponsorEv.isEmpty)
             sponsors = sponsorEv;
+
 
         return (
             <View style={styles.container}>
@@ -45,18 +52,10 @@ export class SponsorScreen extends Component {
                             {Object.keys(sponsors).map((item, index) =>
                                 <View key={index} style={styles.sponsorTagPanel}>
                                     <Text style={styles.sponsorTag}>{sponsorTags[item]}</Text>
-
-                                        <FlatList
-                                            data={sponsors[item]}
-                                            numColumns={2}
-                                            keyExtractor={(item, i) => i}
-                                            renderItem={(info) =>{
-                                                return <Image source={{uri: getImage(info.item.logo)}}
-                                                              resizeMode="contain"
-                                                              style={styles.sponsorLogo}
-                                                />}
-                                            }
-                                        />
+                                    {sponsors[item].map((item, index) => <View>
+                                        {this.renderItem(item)}
+                                    </View>
+                                    )}
                                     </View>
                             )}
                         </View>
@@ -64,6 +63,15 @@ export class SponsorScreen extends Component {
                 </ScrollView>
             </View>
         )
+    }
+
+    renderItem(info) {
+        if (info.logo.trim())
+            return <Image source={{uri: getImage(info.logo)}}
+                      resizeMode="contain"
+                      style={styles.sponsorLogo}/>
+        else
+            return  <Text style={styles.sponsorName}>{info.name}</Text>
     }
 }
 
@@ -77,9 +85,16 @@ const styles = StyleSheet.create({
         backgroundColor: Color.white,
     },
     sponsorLogo: {
-        margin: 5,
+        padding: 5,
         width: (Scale.width - 30) * 0.4,
-        height: (Scale.width - 30) * 0.4
+        height: (Scale.width - 30) * 0.4,
+    },
+    sponsorName: {
+        ...Font.regular,
+        color:Color.darkGray2,
+        fontSize:moderateScale(20),
+        padding: 20,
+        textAlign:'center'
     },
     sponsorPanel: {
         alignItems: 'center',
@@ -95,7 +110,7 @@ const styles = StyleSheet.create({
     sponsorTagPanel: {
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1
+        flex: 1,
     },
     sponsor: {
         justifyContent: 'flex-start',

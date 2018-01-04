@@ -79,23 +79,29 @@ class AskScreen extends Component {
                 </Picker>
                 <View style={{
                     borderBottomColor: '#000000',
-                    borderWidth: 0.2, margin: 20
+                    borderWidth: 0.2, margin: 10
                 }}
                 >
                     <TextInput
-                        numberOfLines={6}
+                        numberOfLines={5}
                         multiline={true}
                         placeholder='Enter question...'
                         underlineColorAndroid={'transparent'}
                         textAlignVertical={'top'}
                         value={this.state.commentValue}
+                        maxLength={200}
                         onChangeText={(text) => this.setState({commentValue: text})}
                         style={{
                             ...Font.light,
                             backgroundColor: Color.transparent,
                             color: Color.black,
                             fontSize: Scale.verticalScale(18),
-                            padding: 5
+                            padding: 10,
+                            marginLeft:10,
+                            marginRight:10,
+                            borderWidth:1,
+                            borderRadius:10,
+                            borderColor:Color.green
                         }}
                     />
                 </View>
@@ -121,7 +127,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 30,
+        marginHorizontal: 20,
+        height:40
     },
     buttonText: {
         ...Font.regular,

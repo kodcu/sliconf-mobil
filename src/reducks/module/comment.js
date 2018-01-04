@@ -11,12 +11,12 @@ const types = {
     COMMENT_GET_SESSION_REQUEST: 'COMMENT_GET_SESSION_REQUEST',
     COMMENT_GET_SESSION_SUC: 'COMMENT_GET_SESSION_SUC',
     COMMENT_GET_SESSION_FAIL: 'COMMENT_GET_SESSION_FAIL',
-    COMMENT_GET_USER_REQUEST: 'COMMENT_GET_USER_REQUEST',
-    COMMENT_GET_USER_SUC: 'COMMENT_GET_USER_SUC',
-    COMMENT_GET_USER_FAIL: 'COMMENT_GET_USER_FAIL',
+    COMMENT_VOTE_REQUEST: 'COMMENT_VOTE_REQUEST',
+    COMMENT_VOTE_SUC: 'COMMENT_VOTE_SUC',
+    COMMENT_VOTE_FAIL: 'COMMENT_VOTE_FAIL',
 }
 
-import {getCOMMENT, getEvent, postCOMMENT} from '../API'
+import {getCOMMENT, getEvent, postCOMMENT, postVOTE} from '../API'
 
 const initialState = {
     loading: false,
@@ -82,7 +82,7 @@ export const reducer = (state = initialState, action) => {
                 errorMessage: payload
             }
         }
-        case types.COMMENT_GET_USER_REQUEST: {
+        case types.COMMENT_VOTE_REQUEST: {
             return {
                 ...state,
                 loading: true,
@@ -90,7 +90,7 @@ export const reducer = (state = initialState, action) => {
                 commentListByUser: [],
             }
         }
-        case types.COMMENT_GET_USER_SUC: {
+        case types.COMMENT_VOTE_SUC: {
             return {
                 ...state,
                 loading: false,
@@ -98,7 +98,7 @@ export const reducer = (state = initialState, action) => {
                 commentListByUser: payload,
             }
         }
-        case types.COMMENT_GET_USER_FAIL: {
+        case types.COMMENT_VOTE_FAIL: {
             return {
                 ...state,
                 loading: false,
@@ -152,8 +152,7 @@ export const actionCreators = {
         dispatch({
             type: types.COMMENT_GET_SESSION_REQUEST
         })
-        console.log(eventId+" "+sessionId+" "+getCOMMENT)
-        await Request.GET(getCOMMENT+eventId+"/"+sessionId,{
+        await Request.GET(getCOMMENT+'pending'+'/'+eventId+"/"+sessionId,{
             '200': (res)=>{
                 console.log(res)
                 if (res.status)
@@ -182,6 +181,20 @@ export const actionCreators = {
         })
 
     },
+    postCommentVote: (commentId,userId,vote) => async (dispatch, getState) => {
+        //TODO burayı dediklerime gore fuzelt returnu falan filan yaparsin sen
+        await Request.POST(postVOTE+commentId+'/'+userId+'/'+vote,{},{
+            '200': (res)=>{
+                return {bool: res.status,comment:res.returnObject}
+            },
+            otherwise:(res)=>{
+                return false
+            },
+            fail:(err) =>{
+                return false;
+            }
+        })
+    }
 
 }
 
