@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, FlatList, Image, ScrollView} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/drawer'
 import getImage from "../helpers/getImageHelper";
 import Color from "../theme/Color";
 import * as Scale from "../theme/Scale";
+import {moderateScale} from "../theme/Scale";
 import Font from "../theme/Font";
 import Header from "../component/Header";
-import {moderateScale} from "../theme/Scale";
 
 const mapStateToProps = (state) => ({
     sponsors: state.event.event.sponsors,
@@ -16,23 +16,29 @@ const mapStateToProps = (state) => ({
 
 export class SponsorScreen extends Component {
 
-    componentWillMount(){
-        const {dispatch,navigation} = this.props;
+    componentWillMount() {
+        const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
-    }
-
-    sponsorTagIndex(tag){
 
     }
+
+    sortSponsorsByTag(sponsors) {
+        const sorted = {};
+        Object.keys(sponsors).sort().forEach(function (key) {
+            sorted[key] = sponsors[key];
+        });
+        return sorted;
+    }
+
 
     render() {
 
-        const sponsorEv = this.props.sponsors;
+        const sponsorEv = this.sortSponsorsByTag(this.props.sponsors);
         const sponsorTags = this.props.sponsorTags;
         let sponsors = [];
-        console.log(sponsorTags)
 
-        if (sponsorEv !== undefined && sponsorEv !==null && !sponsorEv.isEmpty)
+
+        if (sponsorEv !== undefined && sponsorEv !== null && !sponsorEv.isEmpty)
             sponsors = sponsorEv;
 
 
@@ -52,11 +58,11 @@ export class SponsorScreen extends Component {
                             {Object.keys(sponsors).map((item, index) =>
                                 <View key={index} style={styles.sponsorTagPanel}>
                                     <Text style={styles.sponsorTag}>{sponsorTags[item]}</Text>
-                                    {sponsors[item].map((item, index) => <View>
-                                        {this.renderItem(item)}
-                                    </View>
+                                    {sponsors[item].map((item, index) => <View key={index}>
+                                            {this.renderItem(item)}
+                                        </View>
                                     )}
-                                    </View>
+                                </View>
                             )}
                         </View>
                     </View>
@@ -68,10 +74,10 @@ export class SponsorScreen extends Component {
     renderItem(info) {
         if (info.logo.trim())
             return <Image source={{uri: getImage(info.logo)}}
-                      resizeMode="contain"
-                      style={styles.sponsorLogo}/>
+                          resizeMode="contain"
+                          style={styles.sponsorLogo}/>
         else
-            return  <Text style={styles.sponsorName}>{info.name}</Text>
+            return <Text style={styles.sponsorName}>{info.name}</Text>
     }
 }
 
@@ -91,10 +97,10 @@ const styles = StyleSheet.create({
     },
     sponsorName: {
         ...Font.regular,
-        color:Color.darkGray2,
-        fontSize:moderateScale(20),
+        color: Color.darkGray2,
+        fontSize: moderateScale(20),
         padding: 20,
-        textAlign:'center'
+        textAlign: 'center'
     },
     sponsorPanel: {
         alignItems: 'center',

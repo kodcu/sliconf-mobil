@@ -9,11 +9,13 @@ import * as Scale from "../theme/Scale";
 import Font from "../theme/Font";
 import moment from "moment/moment";
 import {actionCreators} from "../reducks/module/comment";
+import {HOME, LOGIN} from "../router";
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
     loading: state.comment.loading,
     user: state.auth.user,
+    login: state.auth.login,
     error: state.comment.error,
     errorMessage: state.comment.errorMessage
 });
@@ -57,6 +59,19 @@ class AskScreen extends Component {
         }
     }
 
+    componentWillMount() {
+        if (!this.props.login)
+            Alert.alert(
+                'Warning!',
+                'Please log in for more information.',
+                [
+                    {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
+                    {text: 'CANCEL', onPress: () => this.props.navigation.navigate(HOME)}
+                ],
+                {cancelable: false}
+            )
+    }
+
     render() {
         const agenda = this.props.event.agenda;
         return (
@@ -68,7 +83,7 @@ class AskScreen extends Component {
                         }}>
                     <Header.Title title="Ask Question"/>
                 </Header>
-                <Picker style={{width: Scale.width-20, alignSelf: 'center'}}
+                <Picker style={{width: Scale.width - 20, alignSelf: 'center'}}
                         placeholder={"Select a Session"}
                         selectedValue={this.state.sessionId}
                         onValueChange={(itemValue, itemIndex) => this.changeSession(itemValue)}>
@@ -78,8 +93,7 @@ class AskScreen extends Component {
                     )}
                 </Picker>
                 <View style={{
-                    borderBottomColor: '#000000',
-                    borderWidth: 0.2, margin: 10
+                    margin: 10
                 }}
                 >
                     <TextInput
@@ -97,11 +111,11 @@ class AskScreen extends Component {
                             color: Color.black,
                             fontSize: Scale.verticalScale(18),
                             padding: 10,
-                            marginLeft:10,
-                            marginRight:10,
-                            borderWidth:1,
-                            borderRadius:10,
-                            borderColor:Color.green
+                            marginLeft: 10,
+                            marginRight: 10,
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            borderColor: Color.green
                         }}
                     />
                 </View>
@@ -128,7 +142,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginHorizontal: 20,
-        height:40
+        height: 40
     },
     buttonText: {
         ...Font.regular,

@@ -23,7 +23,7 @@ const initialState = {
     error: false,
     comment: Object,
     commentList:Array,
-    commentListByUser:Array,
+    commentVoted:Object,
     errorMessage: String,
 
 };
@@ -87,7 +87,7 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: true,
                 error: false,
-                commentListByUser: [],
+                commentVoted: {},
             }
         }
         case types.COMMENT_VOTE_SUC: {
@@ -95,7 +95,7 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: false,
-                commentListByUser: payload,
+                commentVoted: payload,
             }
         }
         case types.COMMENT_VOTE_FAIL: {
@@ -103,7 +103,7 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: true,
-                commentListByUser: [],
+                commentVoted: {},
                 errorMessage: payload
             }
         }
@@ -152,7 +152,7 @@ export const actionCreators = {
         dispatch({
             type: types.COMMENT_GET_SESSION_REQUEST
         })
-        await Request.GET(getCOMMENT+'pending'+'/'+eventId+"/"+sessionId,{
+        await Request.GET(getCOMMENT+'approved'+'/'+eventId+"/"+sessionId,{
             '200': (res)=>{
                 console.log(res)
                 if (res.status)
@@ -182,16 +182,35 @@ export const actionCreators = {
 
     },
     postCommentVote: (commentId,userId,vote) => async (dispatch, getState) => {
-        //TODO burayı dediklerime gore fuzelt returnu falan filan yaparsin sen
+        dispatch({
+            type: types.COMMENT_VOTE_REQUEST
+        })
+        console.log("Istek Yapıldı")
         await Request.POST(postVOTE+commentId+'/'+userId+'/'+vote,{},{
             '200': (res)=>{
-                return {bool: res.status,comment:res.returnObject}
+                console.log(res)
+                if (res.status)
+                    dispatch({
+                        type: types.COMMENT_VOTE_SUC,
+                        payload: res.returnObject
+                    })
+                else
+                    dispatch({
+                        type: types.COMMENT_VOTE_FAIL,
+                        payload: res.message
+                    })
             },
             otherwise:(res)=>{
-                return false
+                dispatch({
+                    type: types.COMMENT_VOTE_FAIL,
+                    payload: res.message
+                })
             },
             fail:(err) =>{
-                return false;
+                dispatch({
+                    type: types.COMMENT_VOTE_FAIL,
+                    payload: 'Can not be processed at this time!'
+                })
             }
         })
     }

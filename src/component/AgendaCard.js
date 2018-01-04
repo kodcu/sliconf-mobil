@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet,StatusBar,TouchableOpacity,Image,Dimensions,Platform } from 'react-native';
-import { Container, Header, Left, Body, Right, Button, Icon, Title ,Content,CardItem,Thumbnail,Card,List,Item,Footer,FooterTab,Picker, Form, Item as FormItem} from 'native-base';
-import PropTypes from 'prop-types';
+import React, {Component} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+    Button, Card, CardItem, Container, Content, Footer, FooterTab, Form, Header, Icon, Item, Left, List, Picker,
+    Right, Thumbnail, Title
+} from 'native-base';
 import Color from "../theme/Color";
 import {moderateScale} from "../theme/Scale";
 import Font from "../theme/Font";
@@ -10,9 +12,9 @@ import getImage from "../helpers/getImageHelper"
 
 export default class AgendaCard extends Component {
 
-    state={
-        isExist:true,
-        isClicked:this.props.isClicked
+    state = {
+        isExist: true,
+        isClicked: this.props.isClicked
     }
 
     /**
@@ -20,8 +22,8 @@ export default class AgendaCard extends Component {
      * @param level
      * @returns {*}
      */
-    getColorByLevel(level){
-        switch(level){
+    getColorByLevel(level) {
+        switch (level) {
             case 0:
                 return '#29B673';
                 break;
@@ -35,10 +37,11 @@ export default class AgendaCard extends Component {
                 return '#ffffff';
         }
     }
-    setButtonIcon(){
+
+    setButtonIcon() {
         this.setState(
             {
-                isClicked:!this.state.isClicked
+                isClicked: !this.state.isClicked
             }
         )
     }
@@ -47,12 +50,12 @@ export default class AgendaCard extends Component {
      * Cardların ustundeki butonların ne olacagini ayarlar.
      * @param obj
      */
-    handleClick(obj){
+    handleClick(obj) {
         this.setButtonIcon();
-        let tempObject=obj;
-        if(this.isSameData(obj)){
+        let tempObject = obj;
+        if (this.isSameData(obj)) {
             this.props.onPressDeleteButton(tempObject);
-        }else{
+        } else {
             this.props.onPressAddButton(tempObject);
         }
 
@@ -63,41 +66,44 @@ export default class AgendaCard extends Component {
      * @param data
      * @returns {boolean}
      */
-    isSameData(data){
-        let choosedOne=this.props.choosedEvents;
-        let obj = choosedOne.find((data2)=>data===data2)
-        if(obj!== undefined)
+    isSameData(data) {
+        let choosedOne = this.props.choosedEvents;
+        let obj = choosedOne.find((data2) => data === data2)
+        if (obj !== undefined)
             return true
         return false
     }
-    render() {
-        const item =this.props.item;
-        const speaker=this.props.speaker;
-        if(this.props.isEmpty){
-            return(
-                <View  style={styles.container}>
 
-                    <Image source={require('../../images/emptyCard.png')} style={{width:220,height:120}}/>
+    render() {
+        const item = this.props.item;
+        const speaker = this.props.speaker;
+        if (this.props.isEmpty) {
+            return (
+                <View style={styles.container}>
+
+                    <Image source={require('../../images/emptyCard.png')} style={{width: 220, height: 120}}/>
                 </View>
             )
-        }else{
+        } else {
             return (
-                <TouchableOpacity  style={styles.container} onPress={this.props.onPress}>
-                    <View  style={[styles.cardLine,{borderColor:this.getColorByLevel(item.level)}]}/>
+                <TouchableOpacity style={styles.container} onPress={this.props.onPress}>
+                    <View style={[styles.cardLine, {borderColor: this.getColorByLevel(item.level)}]}/>
                     <View style={styles.detailField}>
                         <Text style={styles.topic}>{item.topic} </Text>
-                        <View style={{marginBottom:5}}>
+                        <View style={{marginBottom: 5}}>
                             <Text style={styles.speaker}>{speaker.name}</Text>
-                            {item.tags !== undefined && item.tags !== null ? <Text style={styles.tags}>Tags: {item.tags.toString()}</Text> : null}
+                            {item.tags !== undefined && item.tags !== null ?
+                                <Text style={styles.tags}>Tags: {item.tags.toString()}</Text> : null}
                         </View>
                     </View>
                     <View style={styles.actionField}>
-                        <Thumbnail source={!speaker.profilePicture.trim()?require('../../images/hi.png'):{uri:getImage(speaker.profilePicture)}}   />
+                        <Thumbnail
+                            source={!speaker.profilePicture.trim() ? require('../../images/hi.png') : {uri: getImage(speaker.profilePicture)}}/>
                         <TouchableOpacity
-                            onPress={() => this.handleClick(item)} >
+                            onPress={() => this.handleClick(item)}>
                             <View style={styles.buttonField}>
-                                <Icon name={this.state.isClicked? 'ios-checkmark':'ios-add'}
-                                      style={{alignSelf:'center'}}/>
+                                <Icon name={this.state.isClicked ? 'ios-checkmark' : 'ios-add'}
+                                      style={{alignSelf: 'center'}}/>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -109,66 +115,66 @@ export default class AgendaCard extends Component {
 }
 const styles = StyleSheet.create({
     container: {
-        flexDirection:'row',
-        width:220,
-        height:120,
-        margin:5,
-        backgroundColor:'#fff',
-        borderColor:Color.gray2,
-        borderWidth:0.5,
-        borderRadius:15,
+        flexDirection: 'row',
+        width: 220,
+        height: 120,
+        margin: 5,
+        backgroundColor: '#fff',
+        borderColor: Color.gray2,
+        borderWidth: 0.5,
+        borderRadius: 15,
     },
-    cardLineEmpty:{
-        borderColor:Color.gray2,
-        borderWidth:0.5,
-        margin:10
+    cardLineEmpty: {
+        borderColor: Color.gray2,
+        borderWidth: 0.5,
+        margin: 10
     },
-    cardLine:{
-        borderWidth:1,
-        margin:10,
-        marginTop:0,
-        marginBottom:0
+    cardLine: {
+        borderWidth: 1,
+        margin: 10,
+        marginTop: 0,
+        marginBottom: 0
     },
     topic: {
         ...Font.regular,
-        fontSize:moderateScale(9),
-        textAlign:'left',
-        textAlignVertical:'center',
-        color:Color.black,
-        margin:5
+        fontSize: moderateScale(9),
+        textAlign: 'left',
+        textAlignVertical: 'center',
+        color: Color.black,
+        margin: 5
     },
-    speaker:{
+    speaker: {
         ...Font.light,
-        fontSize:moderateScale(8),
-        textAlign:'left',
-        color:Color.darkGray,
-        margin:5,
-        marginBottom:0
+        fontSize: moderateScale(8),
+        textAlign: 'left',
+        color: Color.darkGray,
+        margin: 5,
+        marginBottom: 0
     },
-    tags:{
+    tags: {
         ...Font.light,
-        fontSize:moderateScale(7),
-        textAlign:'left',
-        color:Color.darkGray3,
-        margin:5,
-        marginTop:0,
-        marginBottom:0
+        fontSize: moderateScale(7),
+        textAlign: 'left',
+        color: Color.darkGray3,
+        margin: 5,
+        marginTop: 0,
+        marginBottom: 0
     },
-    detailField:{
-        flex:0.7,
-        justifyContent:'space-between'
+    detailField: {
+        flex: 0.7,
+        justifyContent: 'space-between'
     },
-    actionField:{
-        flex:0.3,
-        marginRight:10,
-        justifyContent:'space-around'
+    actionField: {
+        flex: 0.3,
+        marginRight: 10,
+        justifyContent: 'space-around'
     },
-    buttonField:{
-        backgroundColor:'#F1F2F2',
-        width:30,
-        height:30,
-        borderRadius:100,
-        alignSelf:'flex-end'
+    buttonField: {
+        backgroundColor: '#F1F2F2',
+        width: 30,
+        height: 30,
+        borderRadius: 100,
+        alignSelf: 'flex-end'
     }
 
 })
