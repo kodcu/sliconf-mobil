@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
+import {Alert, Dimensions, FlatList, StyleSheet, Text, View,ScrollView} from 'react-native';
 import {Button, Container, Content, Fab, Footer, FooterTab, Input, Thumbnail} from "native-base";
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -7,6 +7,7 @@ import CommentItem from "./CommentItem";
 import {actionCreators} from '../reducks/module/comment'
 import {connect} from 'react-redux'
 import If from "./If";
+import AgendaCard from "./AgendaCard";
 
 const ENTRIES = [
     {
@@ -91,6 +92,19 @@ const POPULARENTRIES = [
         commentValue: "Tuvalet nerede ? 4",
         approved: "APPROVED",
         commentType: "normal"
+    },{
+        id: '1234567',
+        eventId: '1234567',
+        sessionId: '1234567',
+        userId: '1234567',
+        time: 1512119706,
+        like: 20,
+        dislike: 1,
+        likes: ["Anıl Coşar", "Hüseyin Akdoğan"],
+        dislikes: ["Nursel Cıbır"],
+        commentValue: "Tuvalet nerede ? 1",
+        approved: "APPROVED",
+        commentType: "normal"
     }
 ];
 
@@ -100,8 +114,7 @@ const mapStateToProps = (state) => ({
     error: state.comment.error,
     event: state.event.event,
     errorMessage: state.comment.errorMessage,
-    commentList: state.comment.commentList,
-    commentListByUser: state.comment.commentListByUser
+    commentList: state.comment.commentList
 });
 
 export class TalkComment extends Component {
@@ -110,17 +123,15 @@ export class TalkComment extends Component {
 
     renderRow(info) {
         console.log(info)
-        return <CommentItem item={info.item} userAgent={this.props.user.id} key={info.item.id}/>
+        return <CommentItem item={info} userAgent={this.props.user.id} key={info.id}/>
     }
 
-    _renderItem({item, index}) {
-
+    _renderItem ({item, index}) {
         return (
             <View style={styles.card} key={index}>
                 <Thumbnail source={require('../../images/person.png')} small style={{marginBottom: 15}}/>
                 <Text style={{fontSize: 12, color: '#000'}}>{item.userId}</Text>
-                <Text
-                    style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>
+                <Text style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>
             </View>
         );
     }
@@ -148,36 +159,36 @@ export class TalkComment extends Component {
         this.getComments()
     }
 
+    componentDidMount() {
+        this.interval = setInterval(() => this.getComments(), 30000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
     render() {
+        let comments = [];
+        if (this.props.commentList !== undefined && this.props.commentList !== null && !this.props.commentList.isEmpty)
+            comments = this.props.commentList;
         return (
             <View style={{flex: 1}}>
                 <If con={!this.props.lite}>
                     <View style={{alignSelf: 'center', marginBottom: 10, height: 220}}>
-                        <Carousel
-                            data={POPULARENTRIES}
-                            renderItem={this._renderItem}
-                            sliderWidth={(width / 2) + 40}
-                            itemWidth={(width / 2) - 20}
-                            inactiveSlideScale={1}
-                            inactiveSlideOpacity={1}
-                            enableMomentum={true}
-                            activeSlideAlignment={'start'}
-                            autoplay={false}
-                            autoplayDelay={500}
-                            autoplayInterval={2500}
-                            containerCustomStyle={styles.slider}
-                            contentContainerCustomStyle={styles.sliderContentContainer}
-                            removeClippedSubviews={false}/>
-
+                        <AgendaCard isEmpty={true}/>
+                        <Text style={{textAlign:'center',fontSize:24,fontWeight:'bold'}}>Yapım Aşamasında</Text>
                     </View>
                 </If>
 
+
                 <View style={{height: this.props.lite ? null : height - 368}}>
-                    <FlatList
-                        data={this.props.commentList}
-                        renderItem={(item) => this.renderRow(item)}
-                        keyExtractor={(item, index) => index}
-                    />
+                    <ScrollView>
+                    {Object.values(comments).map((item, index) => <View key={index}>
+                            {this.renderRow(item)}
+                        </View>
+                    )}
+                    </ScrollView>
+
                 </View>
 
                 <If con={!this.props.lite}>
