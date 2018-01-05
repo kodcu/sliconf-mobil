@@ -1,31 +1,55 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, Dimensions, Platform} from 'react-native';
-import {Header as NBHeader, Button,} from 'native-base'
+import {Dimensions, Platform, StyleSheet, Text, View} from 'react-native';
+import {Button, Header as NBHeader,} from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import If from './If'
+import Color from "../theme/Color";
+import {connect} from 'react-redux'
+import {moderateScale} from "../theme/Scale";
+
+const mapStateToProps = (state) => ({
+    connection: state.connection.connectionStatus
+});
 
 export class Header extends Component {
 
-
     render() {
-        const {leftImage, rightImage, rightText, onPressRight, onPressLeft, children,active} = this.props;
+        const {leftImage, rightImage, rightText, onPressRight, onPressLeft, children, active,connection} = this.props;
+
+        let backgroundColor = Color.white;
+        let textColor = Color.darkGray;
+        let statusBar = 'dark-content';
+        if (connection){
+            if (active){
+                backgroundColor = Color.green;
+                textColor = Color.white;
+                statusBar = 'light-content'
+            }
+
+        } else{
+            backgroundColor = Color.red;
+            textColor = Color.white;
+            statusBar = 'light-content'
+        }
+
         return (
-            <NBHeader backgroundColor="#fff" iosBarStyle={active === undefined || active === null ? "dark-content" : 'light-content'} androidStatusBarColor={active === undefined || active === null ? '#fff' : '#29B673'}
-                      noShadow={true} style={{backgroundColor: '#fff',paddingTop:0,borderBottomWidth:0}}>
-                <View style={[styles.header, this.props.headerStyle,{paddingTop:Platform.OS === 'ios' ? 20 : 0}]}>
-                    <Button style={{backgroundColor: 'rgba(0,0,0,0)', shadowColor: '#fff', elevation: 0}} onPress={onPressLeft}>
-                        <Icon color={active === undefined || active === null ? '#333' : '#fff'}  name={leftImage} size={18}/>
+            <NBHeader backgroundColor={Color.white}
+                      iosBarStyle={statusBar}
+                      androidStatusBarColor={backgroundColor}
+                      noShadow={true} style={{backgroundColor: Color.white, paddingTop: 0, borderBottomWidth: 0,}}>
+                <View style={[styles.header, this.props.headerStyle, {paddingTop: Platform.OS === 'ios' ? 20 : 0,
+                     backgroundColor : backgroundColor }]}>
+                    <Button style={{backgroundColor: Color.transparent, shadowColor: Color.white, elevation: 0}}
+                            onPress={onPressLeft}>
+                        <Icon color={textColor} name={leftImage} size={18}/>
                     </Button>
 
                     <View>
-                        {children}
+                        {connection ? children : <Text style={[styles.HeaderText,{color:Color.white}]}>Connection Fail</Text>}
                     </View>
 
-                    <Button style={{backgroundColor: 'rgba(0,0,0,0)', shadowColor: '#fff', elevation: 0}} onPress={onPressRight}>
-                        {rightText ? <Text style={{fontFamily: 'Montserrat-Medium', fontSize: 14,
-                            color:active === undefined || active === null ? '#333' : '#fff'}}>{rightText} </Text> : null}
-                        {rightImage ? <Icon color={active === undefined || active === null ? '#333' : '#fff'} name={rightImage} size={18}/> : null}
-
+                    <Button style={{backgroundColor: Color.transparent, shadowColor: Color.white, elevation: 0}} onPress={onPressRight}>
+                        {rightText ? <Text style={{fontFamily: 'Montserrat-Medium', fontSize: 14, color: textColor}}>{rightText}</Text> : null}
+                        {rightImage ? <Icon color={textColor} name={rightImage} size={18}/> : null}
                     </Button>
                 </View>
             </NBHeader>
@@ -47,15 +71,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#fff'
     },
     HeaderText: {
         fontFamily: 'Montserrat-Medium',
-        fontSize: 18,
-        color: '#666'
+        fontSize: moderateScale(18),
+        color: Color.darkGray
     }
 });
 
 Header.Title = Title;
 
-export default Header;
+export default connect(mapStateToProps)(Header);
