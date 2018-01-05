@@ -56,6 +56,7 @@ class DrawerMenu extends Component {
                         />}
                 />
                 <View>
+                    <If con={this.state.logout}>
                     <View style={{
                         height: this.state.logout ? 70 : 0,
                         backgroundColor: Color.green,
@@ -76,7 +77,7 @@ class DrawerMenu extends Component {
                                 <Text style={styles.questionText}>No</Text>
                             </Button>
                         </View>
-                    </View>
+                    </View></If>
                     <If con={this.props.login}>
                         <If.Then>
                             <ProfileComponent logout={() => this.logout_open()} profileUrl={''}

@@ -87,7 +87,6 @@ class AskScreen extends Component {
                         placeholder={"Select a Session"}
                         selectedValue={this.state.sessionId}
                         onValueChange={(itemValue, itemIndex) => this.changeSession(itemValue)}>
-                    <Picker.Item key={-1} label={'Select a Session Id'} value={""}/>
                     {agenda.filter(talk => talk.level !== -1).map((item, i) =>
                         <Picker.Item key={i + 1} label={item.topic} value={item.id}/>
                     )}
