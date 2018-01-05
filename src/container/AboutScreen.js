@@ -98,7 +98,7 @@ export class About extends Component {
                         <Text style={styles.activeTabText}>Contact Us</Text>
                         <View style={styles.contact}>
                             {about.email ? this.rowItem(about.email, 'ios-at-outline', 'email') : null}
-                            {about.phone ? about.phone.map((item, index) => this.rowItem(item, 'ios-call-outline', 'phone', index)) : null}
+                            {about.phone ? about.phone.map((item, index) => item.trim() ? this.rowItem(item, 'ios-call-outline', 'phone', index) : null) : null}
                             {about.social ?
                                 <View style={styles.socialMedia}>
                                     {Object.keys(about.social).map((item, index) => {
