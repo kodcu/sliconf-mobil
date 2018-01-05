@@ -17,6 +17,7 @@ import TalkDetailScreen from "./container/TalkDetailScreen"
 import SponsorScreen from "./container/SponsorScreen"
 import AskScreen from "./container/AskScreen"
 import { Easing, Animated } from "react-native";
+import animation from './helpers/navigateAnimation'
 
 export const SPLASH = 'screen/Splash';
 export const MAIN = 'screen/Main';
@@ -36,7 +37,6 @@ export const MAIN_STACK = 'stack/Main';
 export const ASK = 'screen/Ask';
 
 
-
 const EventStack = DrawerNavigator({
     [HOME]: {screen: HomeScreen},
     [AGENDA]: {
@@ -49,30 +49,7 @@ const EventStack = DrawerNavigator({
             navigationOptions: {
                 gesturesEnabled: false
             },
-            transitionConfig:  () => ({
-                transitionSpec: {
-                    duration: 350,
-                    easing: Easing.inOut(Easing.poly(4)),
-                    timing: Animated.timing,
-                },
-                screenInterpolator: sceneProps => {
-                    const { layout, position, scene } = sceneProps;
-                    const { index } = scene;
-
-                    const height = layout.initHeight;
-                    const translateY = position.interpolate({
-                        inputRange: [index - 1, index, index + 1],
-                        outputRange: [height, 0, 0],
-                    });
-
-                    const opacity = position.interpolate({
-                        inputRange: [index - 1, index - 0.99, index],
-                        outputRange: [0, 1, 1],
-                    });
-
-                    return { opacity, transform: [{ translateY }] };
-                },
-            })
+            transitionConfig: animation
         })
     },
     [SPEAKERS]: {
@@ -84,30 +61,7 @@ const EventStack = DrawerNavigator({
             navigationOptions: {
                 gesturesEnabled: false
             },
-            transitionConfig:  () => ({
-                transitionSpec: {
-                    duration: 350,
-                    easing: Easing.inOut(Easing.poly(4)),
-                    timing: Animated.timing,
-                },
-                screenInterpolator: sceneProps => {
-                    const { layout, position, scene } = sceneProps;
-                    const { index } = scene;
-
-                    const height = layout.initHeight;
-                    const translateY = position.interpolate({
-                        inputRange: [index - 1, index, index + 1],
-                        outputRange: [height, 0, 0],
-                    });
-
-                    const opacity = position.interpolate({
-                        inputRange: [index - 1, index - 0.99, index],
-                        outputRange: [0, 1, 1],
-                    });
-
-                    return { opacity, transform: [{ translateY }] };
-                },
-            })
+            transitionConfig:  animation
         })
     },
     [INFO]: {screen: InfoScreen},
@@ -126,6 +80,7 @@ const EventStack = DrawerNavigator({
     navigationOptions: {
         gesturesEnabled: false
     },
+    transitionConfig:  animation,
     drawerWidth: 250,
     drawerPosition: 'right',
     contentOptions: {
@@ -145,30 +100,7 @@ const MainStack = StackNavigator({
     navigationOptions: {
         gesturesEnabled: false
     },
-    transitionConfig:  () => ({
-        transitionSpec: {
-            duration: 350,
-            easing: Easing.inOut(Easing.poly(4)),
-            timing: Animated.timing,
-        },
-        screenInterpolator: sceneProps => {
-            const { layout, position, scene } = sceneProps;
-            const { index } = scene;
-
-            const height = layout.initHeight;
-            const translateY = position.interpolate({
-                inputRange: [index - 1, index, index + 1],
-                outputRange: [height, 0, 0],
-            });
-
-            const opacity = position.interpolate({
-                inputRange: [index - 1, index - 0.99, index],
-                outputRange: [0, 1, 1],
-            });
-
-            return { opacity, transform: [{ translateY }] };
-        },
-    })
+    transitionConfig:  animation
 
 });
 
@@ -182,30 +114,8 @@ const PrimaryNav = StackNavigator({
         navigationOptions: {
             gesturesEnabled: false
         },
-        transitionConfig:  () => ({
-            transitionSpec: {
-                duration: 350,
-                easing: Easing.inOut(Easing.poly(4)),
-                timing: Animated.timing,
-            },
-            screenInterpolator: sceneProps => {
-                const { layout, position, scene } = sceneProps;
-                const { index } = scene;
-
-                const height = layout.initHeight;
-                const translateY = position.interpolate({
-                    inputRange: [index - 1, index, index + 1],
-                    outputRange: [height, 0, 0],
-                });
-
-                const opacity = position.interpolate({
-                    inputRange: [index - 1, index - 0.99, index],
-                    outputRange: [0, 1, 1],
-                });
-
-                return { opacity, transform: [{ translateY }] };
-            },
-        })
+        transitionConfig:  animation
     });
+
 
 export default PrimaryNav
