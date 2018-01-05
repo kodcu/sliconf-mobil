@@ -1,4 +1,5 @@
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
+
 import SplashScreen from './container/SplashScreen';
 import MainScreen from './container/MainScreen';
 import HomeScreen from './container/HomeScreen';
@@ -15,6 +16,7 @@ import FloorPlanScreen from "./container/FloorPlanScreen"
 import TalkDetailScreen from "./container/TalkDetailScreen"
 import SponsorScreen from "./container/SponsorScreen"
 import AskScreen from "./container/AskScreen"
+import { Easing, Animated } from "react-native";
 
 export const SPLASH = 'screen/Splash';
 export const MAIN = 'screen/Main';
@@ -34,6 +36,7 @@ export const MAIN_STACK = 'stack/Main';
 export const ASK = 'screen/Ask';
 
 
+
 const EventStack = DrawerNavigator({
     [HOME]: {screen: HomeScreen},
     [AGENDA]: {
@@ -45,7 +48,31 @@ const EventStack = DrawerNavigator({
             headerMode: 'none',
             navigationOptions: {
                 gesturesEnabled: false
-            }
+            },
+            transitionConfig:  () => ({
+                transitionSpec: {
+                    duration: 350,
+                    easing: Easing.inOut(Easing.poly(4)),
+                    timing: Animated.timing,
+                },
+                screenInterpolator: sceneProps => {
+                    const { layout, position, scene } = sceneProps;
+                    const { index } = scene;
+
+                    const height = layout.initHeight;
+                    const translateY = position.interpolate({
+                        inputRange: [index - 1, index, index + 1],
+                        outputRange: [height, 0, 0],
+                    });
+
+                    const opacity = position.interpolate({
+                        inputRange: [index - 1, index - 0.99, index],
+                        outputRange: [0, 1, 1],
+                    });
+
+                    return { opacity, transform: [{ translateY }] };
+                },
+            })
         })
     },
     [SPEAKERS]: {
@@ -56,7 +83,31 @@ const EventStack = DrawerNavigator({
             headerMode: 'none',
             navigationOptions: {
                 gesturesEnabled: false
-            }
+            },
+            transitionConfig:  () => ({
+                transitionSpec: {
+                    duration: 350,
+                    easing: Easing.inOut(Easing.poly(4)),
+                    timing: Animated.timing,
+                },
+                screenInterpolator: sceneProps => {
+                    const { layout, position, scene } = sceneProps;
+                    const { index } = scene;
+
+                    const height = layout.initHeight;
+                    const translateY = position.interpolate({
+                        inputRange: [index - 1, index, index + 1],
+                        outputRange: [height, 0, 0],
+                    });
+
+                    const opacity = position.interpolate({
+                        inputRange: [index - 1, index - 0.99, index],
+                        outputRange: [0, 1, 1],
+                    });
+
+                    return { opacity, transform: [{ translateY }] };
+                },
+            })
         })
     },
     [INFO]: {screen: InfoScreen},
@@ -93,7 +144,31 @@ const MainStack = StackNavigator({
     headerMode: 'none',
     navigationOptions: {
         gesturesEnabled: false
-    }
+    },
+    transitionConfig:  () => ({
+        transitionSpec: {
+            duration: 350,
+            easing: Easing.inOut(Easing.poly(4)),
+            timing: Animated.timing,
+        },
+        screenInterpolator: sceneProps => {
+            const { layout, position, scene } = sceneProps;
+            const { index } = scene;
+
+            const height = layout.initHeight;
+            const translateY = position.interpolate({
+                inputRange: [index - 1, index, index + 1],
+                outputRange: [height, 0, 0],
+            });
+
+            const opacity = position.interpolate({
+                inputRange: [index - 1, index - 0.99, index],
+                outputRange: [0, 1, 1],
+            });
+
+            return { opacity, transform: [{ translateY }] };
+        },
+    })
 
 });
 
@@ -106,7 +181,31 @@ const PrimaryNav = StackNavigator({
         headerMode: 'none',
         navigationOptions: {
             gesturesEnabled: false
-        }
+        },
+        transitionConfig:  () => ({
+            transitionSpec: {
+                duration: 350,
+                easing: Easing.inOut(Easing.poly(4)),
+                timing: Animated.timing,
+            },
+            screenInterpolator: sceneProps => {
+                const { layout, position, scene } = sceneProps;
+                const { index } = scene;
+
+                const height = layout.initHeight;
+                const translateY = position.interpolate({
+                    inputRange: [index - 1, index, index + 1],
+                    outputRange: [height, 0, 0],
+                });
+
+                const opacity = position.interpolate({
+                    inputRange: [index - 1, index - 0.99, index],
+                    outputRange: [0, 1, 1],
+                });
+
+                return { opacity, transform: [{ translateY }] };
+            },
+        })
     });
 
 export default PrimaryNav
