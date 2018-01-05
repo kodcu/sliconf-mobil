@@ -114,10 +114,12 @@ class CommentItem extends Component {
 
     componentWillMount() {
         const comment=this.props.item;
-        if(comment.likes.find(likes => likes.userId === this.props.userAgent)!==undefined)
-            this.setState({isClicked:true})
-        if(comment.dislikes.find(dislikes => dislikes.userId === this.props.userAgent)!==undefined)
-            this.setState({isDislike:true})
+        if (comment.likes !== undefined && comment.likes !== null){
+            if(comment.likes.find(likes => likes.userId === this.props.userAgent)!==undefined)
+                this.setState({isClicked:true})
+            if(comment.dislikes.find(dislikes => dislikes.userId === this.props.userAgent)!==undefined)
+                this.setState({isDislike:true})
+        }
     }
 
     render() {
