@@ -15,6 +15,7 @@ import getImage from "../helpers/getImageHelper"
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
+    connection: state.connection.connectionStatus
 });
 
 class HomeScreen extends Component {
@@ -56,7 +57,6 @@ class HomeScreen extends Component {
 
     render() {
         const {event} = this.props;
-        console.log(event)
         return (
             <View style={styles.container}>
 

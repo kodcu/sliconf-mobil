@@ -4,32 +4,33 @@ import {Image} from 'react-native-animatable'
 import {MAIN} from '../router';
 import Color from "../theme/Color";
 import Font from "../theme/Font";
+import {connect} from 'react-redux'
+import {actionCreators} from '../reducks/module/connection'
 
 const logo = require("../../images/logo.png");
 
+const mapStateToProps = (state) => ({});
+
 class SplashScreen extends React.Component {
-
-
-    state = {
-        network: false
-    };
-
     /**
-     * internet kontrol durumuna gore uygulamayi baslatir
+     * internet kontrol durumuna kontrol eder
      * @param isConnected internet durumu
      * @private
      */
     _handleConnectionInfoChange = (isConnected) => {
-        if (isConnected)
-            setTimeout(() => this.props.navigation.dispatch({type: MAIN}), 1000);
+        this.props.dispatch(actionCreators.changedConnection(isConnected));
     };
 
     componentWillMount() {
         NetInfo.isConnected.addEventListener('change', this._handleConnectionInfoChange);
     }
 
-    componentWillUnmount() {
-        NetInfo.isConnected.removeEventListener('change', this._handleConnectionInfoChange);
+    // componentWillUnmount() {
+    //     NetInfo.isConnected.removeEventListener('change', this._handleConnectionInfoChange);
+    // }
+
+    componentDidMount(){
+        setTimeout(() => this.props.navigation.dispatch({type: MAIN}), 1000);
     }
 
     render() {
@@ -68,4 +69,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SplashScreen;
+export default connect(mapStateToProps)(SplashScreen)

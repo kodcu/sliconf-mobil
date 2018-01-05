@@ -4,11 +4,13 @@ import AuthReducer from './auth'
 import EventReducer from './event'
 import CommentReducer from './comment'
 import DrawerReducer from './drawer'
+import ConnectionReducer from './connection'
 
 export default combineReducers({
     auth: AuthReducer,
     event:EventReducer,
     nav: NavReducer,
     drawer: DrawerReducer,
-    comment:CommentReducer
+    comment:CommentReducer,
+    connection:ConnectionReducer
 });

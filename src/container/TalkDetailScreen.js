@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
     Alert, Dimensions, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity,
-    View
+    View,Platform
 } from 'react-native';
 import {Button, Card, CardItem, Container, Content, Footer, FooterTab, Input, Left, Thumbnail} from "native-base";
 import Header from "../component/Header";
@@ -105,7 +105,7 @@ export class TalkDetail extends Component {
 
                 </Content>
 
-                <KeyboardAvoidingView behavior='height'>
+                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                     <If con={this.state.ask}>
                         <If.Then>
 

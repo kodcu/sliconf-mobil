@@ -95,6 +95,7 @@ class MainScreen extends Component {
                     <If.Then>
                         <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
                             <View style={styles.container}>
+                                <Header/>
                                 <View style={styles.logoContainer}>
                                     <Image style={styles.image} source={logo}/>
                                     <Text style={styles.title}>Welcome to SliConf</Text>
