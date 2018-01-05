@@ -183,7 +183,8 @@ export class TalkComment extends Component {
 
                 <View style={{height: this.props.lite ? null : height - 368}}>
                     <ScrollView>
-                    {Object.values(comments).map((item, index) => <View key={index}>
+                    {Object.values(comments).map((item, index) =>
+                        <View key={index}>
                             {this.renderRow(item)}
                         </View>
                     )}
