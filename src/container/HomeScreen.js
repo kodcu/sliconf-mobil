@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
-import {Dimensions, FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {
+    AsyncStorage, Dimensions, FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity,
+    View
+} from 'react-native'
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/drawer'
@@ -11,11 +14,14 @@ import Font from "../theme/Font";
 import moment from "moment";
 import getImage from "../helpers/getImageHelper"
 import If from "../component/If";
+import * as login from '../reducks/module/auth'
+
 
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
-    connection: state.connection.connectionStatus
+    connection: state.connection.connectionStatus,
+    login: state.auth.login,
 });
 
 class HomeScreen extends Component {
@@ -34,6 +40,20 @@ class HomeScreen extends Component {
     componentWillMount() {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
+        this.getLoggedUser()
+    }
+
+    /**
+     * Giriş yapmış kullanıcıyı hafızadan getirir.
+     * @returns {Promise<void>}
+     */
+    async getLoggedUser(){
+        let responseUsername = await AsyncStorage.getItem('username');
+        let responsePass = await AsyncStorage.getItem('password');
+        if(responseUsername!==null&&responsePass!==null&&!this.props.login){
+            const {dispatch} = this.props;
+            dispatch(login.actionCreators.login(responseUsername,responsePass));
+        }
     }
 
     /**
@@ -64,6 +84,8 @@ class HomeScreen extends Component {
             </TouchableOpacity>
         )
     };
+
+
 
     render() {
         const {event} = this.props;
