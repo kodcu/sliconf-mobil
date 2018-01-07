@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
-import {Button, Input} from "native-base";
+import {Button, Input, Thumbnail} from "native-base";
 import Icon from 'react-native-vector-icons/Ionicons'
 import {moderateScale} from "../theme/Scale";
 import {connect} from "react-redux";
@@ -60,7 +60,8 @@ class TalkInfo extends Component {
                             fontFamily: 'Montserrat-Bold',
                             color: '#333',
                             textAlign: 'center',
-                        }}>Level: </Text><Text style={{
+                        }}>Level: </Text>
+                        <Text style={{
                             fontSize: moderateScale(9),
                             fontFamily: 'Montserrat-Regular',
                             color: '#333',
@@ -134,9 +135,10 @@ class TalkInfo extends Component {
                     width
                 }}>
                     <View style={{flexDirection: 'row', alignItems: 'center', width: width * 0.8}}>
-                        <Image
-                            source={{uri: getImageHelper(speaker.profilePicture)}}
-                            style={{borderRadius: 30, width: 60, height: 60, marginRight: 10}}/>
+                        <Thumbnail
+                            source={!speaker.profilePicture.trim() ? require('../../images/hi.png') :
+                                {uri: getImageHelper(speaker.profilePicture)}}
+                            style={{marginRight: 10}}/>
                         <Text style={{
                             width: (width * 0.8) - 80,
                             fontSize: moderateScale(16),

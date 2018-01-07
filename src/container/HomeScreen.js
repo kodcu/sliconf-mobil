@@ -6,7 +6,7 @@ import {
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/drawer'
-import {AGENDA, ASK, FLOOR, INFO, LOCATION, SPEAKERS} from '../router';
+import {AGENDA, ASK, FLOOR, INFO, LOCATION, SPEAKERS, SPONSOR} from '../router';
 import Icon from 'react-native-vector-icons/Ionicons'
 import {moderateScale, scale, verticalScale} from '../theme/Scale';
 import Color from "../theme/Color";
@@ -31,7 +31,7 @@ class HomeScreen extends Component {
             {name: 'Schedule', icon: 'ios-calendar-outline', nav: AGENDA},
             {name: 'Speakers', icon: 'ios-microphone-outline', nav: SPEAKERS},
             {name: 'Location', icon: 'ios-map-outline', nav: LOCATION},
-            {name: 'Floor Plan', icon: 'ios-menu-outline', nav: FLOOR},
+            {name: 'Sponsors', icon: 'ios-ribbon-outline', nav: SPONSOR},
             {name: 'Info', icon: 'ios-information-outline', nav: INFO},
             {name: 'Ask Question', icon: 'ios-help-outline', nav: ASK},
         ]
@@ -79,8 +79,8 @@ class HomeScreen extends Component {
                         </View>
                     </If.Else>
                 </If>
-
-                <Text style={styles.buttonText}>{btn.item.name}</Text>
+                <Text style={btn.item.name==="Ask Question" ? {...Font.semiBold,color:Color.green} :
+                    styles.buttonText}>{btn.item.name}</Text>
             </TouchableOpacity>
         )
     };

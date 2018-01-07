@@ -21,7 +21,7 @@ export default class Request{
   static async request(url,method,data,callbacks){
     let payload = {method};
 
-    if(method != 'get'){
+    if(method !== 'get'){
       payload.headers = {
         'Content-Type': 'application/json'
       };

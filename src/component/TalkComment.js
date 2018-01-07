@@ -117,7 +117,7 @@ const mapStateToProps = (state) => ({
     commentList: state.comment.commentList
 });
 
-export class TalkComment extends Component {
+class TalkComment extends Component {
 
     _keyExtractor = (item, index) => index;
 
@@ -129,7 +129,7 @@ export class TalkComment extends Component {
     _renderItem ({item, index}) {
         return (
             <View style={styles.card} key={index}>
-                <Thumbnail source={require('../../images/person.png')} small style={{marginBottom: 15}}/>
+                <Thumbnail source={require('../../images/hi.png')} small style={{marginBottom: 15}}/>
                 <Text style={{fontSize: 12, color: '#000'}}>{item.userId}</Text>
                 <Text style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>
             </View>

@@ -1,25 +1,24 @@
 import React, {Component} from 'react'
 import {Image, Platform, Text, TouchableOpacity, View} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-import {Button} from 'native-base'
+import {Button, Thumbnail} from 'native-base'
 import {moderateScale, scale} from "../theme/Scale";
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 
 const ProfileComponent = ({profileUrl, username, email, logout}) =>
     <View style={{flexDirection: 'row'}}>
-        <View style={{flex: 1, justifyContent: 'space-between', flexDirection: 'row'}}>
-            <TouchableOpacity style={{flexDirection: 'row', padding: 5, flex: 0.8}} onPress={() => {
+        <View style={{flex: 1, justifyContent: 'space-between', flexDirection: 'row',}}>
+            <TouchableOpacity style={{flexDirection: 'row', padding: 5, flex: 0.85}} onPress={() => {
             }}>
-                <Image source={profileUrl === '' ? require('../../images/hi.png') : {uri: profileUrl}}
-                       resizeMode="contain"
-                       style={{margin: 5, width: 60, height: 60, borderRadius: Platform.OS === 'ios' ? scale(30) : 90}}/>
+                <Thumbnail source={require('../../images/hi.png')}
+                       style={{margin: 5,}}/>
                 <View style={{justifyContent: 'center', flex: 1}}>
                     <Text style={{...Font.semiBold, fontSize: moderateScale(15), color: Color.darkGray}}>{username}</Text>
                     <Text style={{...Font.regular, color: Color.darkGray4, fontSize: moderateScale(8)}}>{email}</Text>
                 </View>
             </TouchableOpacity>
-            <View style={{flex: 0.2, justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{flex: 0.15, justifyContent: 'center', alignItems: 'center'}}>
                 <Button transparent
                         onPress={logout}>
                     <Icon name='ios-log-out-outline' size={20}/>
