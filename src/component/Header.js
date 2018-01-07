@@ -26,7 +26,7 @@ export class Header extends Component {
             }
 
         } else{
-            backgroundColor = Color.red;
+            backgroundColor = Color.red2;
             textColor = Color.white;
             statusBar = 'light-content'
         }

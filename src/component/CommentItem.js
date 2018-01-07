@@ -10,6 +10,8 @@ import {connect} from "react-redux";
 import {actionCreators} from '../reducks/module/comment'
 import Request from "../service/Request";
 import {postVOTE} from "../reducks/API";
+const personLogo = require('../../images/hi.png');
+
 
 const mapStateToProps = (state) => ({
     loading: state.comment.loading,
@@ -125,9 +127,10 @@ class CommentItem extends Component {
     render() {
         const info = this.state.item;
         const user = this.state.userAgent;
+
         return (
             <View key={info.id} style={{padding: 10, flexDirection: 'row', marginTop: 0, flex: 1}}>
-                <Thumbnail source={require('../../images/person.png')} small style={{marginBottom: 15, flex: 0.1}}/>
+                <Thumbnail source={personLogo} small style={{marginBottom: 15, flex: 0.1}}/>
                 <View style={{marginLeft: 10, flex: 0.9}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <Text style={{
@@ -171,7 +174,7 @@ class CommentItem extends Component {
                                         <Icon
                                             name={this.state.isDislike ? 'ios-thumbs-down' : 'ios-thumbs-down-outline'}
                                             size={25}
-                                            color={this.state.isDislike && !this.state.isClicked ? "gray" : null}/>
+                                            color={this.state.isDislike && !this.state.isClicked ? Color.darkGray2 : null}/>
                                     </View>
                                 </TouchableOpacity>
                             }
@@ -183,7 +186,7 @@ class CommentItem extends Component {
                                     <View style={{flexDirection: 'row', marginLeft: 10}}>
                                         <Icon name={this.state.isClicked ? 'ios-thumbs-up' : 'ios-thumbs-up-outline'}
                                               size={25}
-                                              color={this.state.isClicked && !this.state.isDislike ? "red" : null}/>
+                                              color={this.state.isClicked && !this.state.isDislike ? Color.red : null}/>
                                     </View>
                                 </TouchableOpacity>
                             }
