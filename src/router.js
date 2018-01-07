@@ -1,4 +1,5 @@
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
+
 import SplashScreen from './container/SplashScreen';
 import MainScreen from './container/MainScreen';
 import HomeScreen from './container/HomeScreen';
@@ -15,6 +16,8 @@ import FloorPlanScreen from "./container/FloorPlanScreen"
 import TalkDetailScreen from "./container/TalkDetailScreen"
 import SponsorScreen from "./container/SponsorScreen"
 import AskScreen from "./container/AskScreen"
+import { Easing, Animated } from "react-native";
+import animation from './helpers/navigateAnimation'
 
 export const SPLASH = 'screen/Splash';
 export const MAIN = 'screen/Main';
@@ -45,7 +48,8 @@ const EventStack = DrawerNavigator({
             headerMode: 'none',
             navigationOptions: {
                 gesturesEnabled: false
-            }
+            },
+            transitionConfig: animation
         })
     },
     [SPEAKERS]: {
@@ -56,7 +60,8 @@ const EventStack = DrawerNavigator({
             headerMode: 'none',
             navigationOptions: {
                 gesturesEnabled: false
-            }
+            },
+            transitionConfig:  animation
         })
     },
     [INFO]: {screen: InfoScreen},
@@ -75,6 +80,7 @@ const EventStack = DrawerNavigator({
     navigationOptions: {
         gesturesEnabled: false
     },
+    transitionConfig:  animation,
     drawerWidth: 250,
     drawerPosition: 'right',
     contentOptions: {
@@ -93,7 +99,8 @@ const MainStack = StackNavigator({
     headerMode: 'none',
     navigationOptions: {
         gesturesEnabled: false
-    }
+    },
+    transitionConfig:  animation
 
 });
 
@@ -106,7 +113,9 @@ const PrimaryNav = StackNavigator({
         headerMode: 'none',
         navigationOptions: {
             gesturesEnabled: false
-        }
+        },
+        transitionConfig:  animation
     });
+
 
 export default PrimaryNav

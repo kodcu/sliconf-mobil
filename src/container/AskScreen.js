@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View,Platform} from 'react-native';
 import {connect} from "react-redux";
 import Header from "../component/Header";
 import Color from "../theme/Color";
@@ -10,6 +10,7 @@ import Font from "../theme/Font";
 import moment from "moment/moment";
 import {actionCreators} from "../reducks/module/comment";
 import {HOME, LOGIN} from "../router";
+import If from "../component/If";
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
@@ -74,6 +75,7 @@ class AskScreen extends Component {
 
     render() {
         const agenda = this.props.event.agenda;
+        console.log(this.state.sessionId)
         return (
             <View style={styles.container}>
                 <Header leftImage='chevron-left' rightImage='bars'
@@ -87,7 +89,7 @@ class AskScreen extends Component {
                         placeholder={"Select a Session"}
                         selectedValue={this.state.sessionId}
                         onValueChange={(itemValue, itemIndex) => this.changeSession(itemValue)}>
-                    <Picker.Item key={-1} label={'Select a Session Id'} value={""}/>
+                    {Platform.OS==='android'? <Picker.Item key={-1} label={'Select a Session Id'} value={""}/>:null}
                     {agenda.filter(talk => talk.level !== -1).map((item, i) =>
                         <Picker.Item key={i + 1} label={item.topic} value={item.id}/>
                     )}
