@@ -16,6 +16,8 @@ import {connect} from 'react-redux'
 import {HOME} from "../router";
 import Loading from "../component/Loading";
 import TextInputComponent from '../component/TextInputComponent'
+import CheckBox from "react-native-check-box";
+import {moderateScale} from "../theme/Scale";
 
 const logo = require("../../images/logo.png");
 
@@ -34,7 +36,8 @@ class LoginScreen extends Component {
         password: '',
         fullname: '',
         email: '',
-        loadingModal: false
+        loadingModal: false,
+        rememberMe:true
     };
 
     _login = async (username, password) => {
@@ -62,8 +65,11 @@ class LoginScreen extends Component {
                 //this.props.navigation.dispatch({type: 'drawerStack'});
                 this.setState({loadingModal: loading});
                 this.props.navigation.navigate(HOME)
-                AsyncStorage.setItem('username', username);
-                AsyncStorage.setItem('password', password);
+                if (this.state.rememberMe){
+                    AsyncStorage.setItem('username', username);
+                    AsyncStorage.setItem('password', password);
+                }
+
             }
         }
 
@@ -280,6 +286,19 @@ class LoginScreen extends Component {
                                                         secure={true}
                                                         ref={c => this._loginPasswordInput = c}/>
 
+
+                                    <CheckBox
+                                        style={{width:width-70}}
+                                        checkBoxColor={Color.green}
+                                        onClick={() => {this.setState({rememberMe:!this.state.rememberMe})}}
+                                        isChecked={this.state.rememberMe}
+                                        rightText='Remember Me'
+                                        rightTextStyle={{
+                                            ...Font.regular,
+                                            fontSize: moderateScale(12),
+                                            color: Color.darkGray3
+                                        }}
+                                    />
 
                                 </View>
 

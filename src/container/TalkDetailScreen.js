@@ -123,7 +123,7 @@ export class TalkDetail extends Component {
                                 <FooterTab style={{backgroundColor: Color.white}}>
 
                                     <View style={{flexDirection: 'row'}}>
-                                        <Thumbnail source={require("../../images/person.png")} small
+                                        <Thumbnail source={require("../../images/hi.png")} small
                                                    style={{margin: 10}}/>
                                         <TextInput placeholder="Your comments"
                                                    placeholderTextColor='rgba(0,0,0,0.7)'

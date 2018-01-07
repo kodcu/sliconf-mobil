@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import ProfileComponent from '../component/ProfileComponent'
 import SignInComponent from '../component/SignInComponent'
 import DrawerItem from '../component/DrawerItemComponent'
-import {AGENDA, FLOOR, HOME, INFO, LOCATION, LOGIN, SPEAKERS, SPONSOR} from "../router";
+import {AGENDA, ASK, FLOOR, HOME, INFO, LOCATION, LOGIN, SPEAKERS, SPONSOR} from "../router";
 import If from "../component/If";
 import Font from "../theme/Font";
 import Color from "../theme/Color";
@@ -36,7 +36,8 @@ class DrawerMenu extends Component {
             {icon: "ios-compass-outline", name: "Location", screenName: LOCATION, key: 4},
             {icon: "ios-menu-outline", name: "Floor Plan", screenName: FLOOR, key: 5},
             {icon: "ios-ribbon-outline", name: "Sponsors", screenName: SPONSOR, key: 6},
-            {icon: "ios-information-circle-outline", name: "General Info", screenName: INFO, key: 7},
+            {icon: "ios-information-circle-outline", name: "Info", screenName: INFO, key: 7},
+            {icon: "ios-help-circle-outline", name: "Ask Question", screenName: ASK, key: 8},
         ];
 
         const selected = this.props.selectDrawer;
@@ -82,7 +83,7 @@ class DrawerMenu extends Component {
                     </View></If>
                     <If con={this.props.login}>
                         <If.Then>
-                            <ProfileComponent logout={() => this.logout_open()} profileUrl={''}
+                            <ProfileComponent logout={() => this.logout_open()}
                                               username={this.props.user.username} email={this.props.user.email}/>
                         </If.Then>
                         <If.Else>
