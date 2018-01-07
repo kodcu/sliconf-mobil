@@ -231,6 +231,7 @@ export default class AnimatedInput extends React.Component {
                     onChange={this._onChange}
                     onFocus={this._onFocus}
                     underlineColorAndroid={'transparent'}
+                    autoCapitalize="characters"
                 />
 
                 <AnimatedIcon
