@@ -19,6 +19,7 @@
     "react-native-exit-app": "^1.0.0",
     "react-native-keyboard-aware-scroll-view": "^0.3.0",
     "react-native-maps": "^0.16.4",
+    "react-native-multi-toggle-switch": "^1.1.1",
     "react-native-qrcode-scanner": "0.0.17",
     "react-native-responsive-dimensions": "^1.0.1",
     "react-native-snap-carousel": "^3.5.0",
@@ -38,7 +39,8 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.0",
-    "jest": "20.0.4",
+    "jest": "^20.0.4",
+    "jest-cli": "^22.0.4",
     "react-dom": "^16.2.0",
     "react-test-renderer": "16.0.0-alpha.12",
     "sinon": "^4.1.3"
