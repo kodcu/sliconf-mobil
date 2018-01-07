@@ -2,7 +2,7 @@
  * Created by anil on 04/07/2017.
  */
 import React, {Component} from 'react';
-import {Alert, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View,AsyncStorage} from 'react-native';
 
 import {Container, Content, Input, Item} from 'native-base';
 import Color from "../theme/Color";
@@ -62,6 +62,8 @@ class LoginScreen extends Component {
                 //this.props.navigation.dispatch({type: 'drawerStack'});
                 this.setState({loadingModal: loading});
                 this.props.navigation.navigate(HOME)
+                AsyncStorage.setItem('username', username);
+                AsyncStorage.setItem('password', password);
             }
         }
 
