@@ -40,6 +40,7 @@ export class TalkDetail extends Component {
     }
 
     async sendComment(){
+        //TODO comment validasyonu yap
         const comment={eventId:this.props.event.id,
             sessionId:this.props.navigation.state.params[0].id,
             userId:this.props.user.id,
@@ -60,6 +61,14 @@ export class TalkDetail extends Component {
 
         if (!error && !loading) {
             this.askQuestion()
+            Alert.alert(
+                'Info!',
+                "Your comment has been sent.After a comment is approved,it will be shown",
+                [
+                    {text: 'OK'}
+                ],
+                {cancelable: true}
+            );
         }
     }
 
