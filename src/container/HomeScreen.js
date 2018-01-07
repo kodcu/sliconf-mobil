@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
-import {Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View,Platform} from 'react-native'
+import {Dimensions, FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/drawer'
-import {AGENDA, FLOOR, INFO, LOCATION, SPEAKERS,ASK} from '../router';
+import {AGENDA, ASK, FLOOR, INFO, LOCATION, SPEAKERS} from '../router';
 import Icon from 'react-native-vector-icons/Ionicons'
 import {moderateScale, scale, verticalScale} from '../theme/Scale';
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 import moment from "moment";
 import getImage from "../helpers/getImageHelper"
-
+import If from "../component/If";
 
 
 const mapStateToProps = (state) => ({
@@ -21,18 +21,18 @@ const mapStateToProps = (state) => ({
 class HomeScreen extends Component {
 
     state = {
-        buttons : [
+        buttons: [
             {name: 'Schedule', icon: 'ios-calendar-outline', nav: AGENDA},
             {name: 'Speakers', icon: 'ios-microphone-outline', nav: SPEAKERS},
             {name: 'Location', icon: 'ios-map-outline', nav: LOCATION},
             {name: 'Floor Plan', icon: 'ios-menu-outline', nav: FLOOR},
-            {name: 'Ask Question', icon: 'ios-help-outline',nav: ASK},
             {name: 'Info', icon: 'ios-information-outline', nav: INFO},
+            {name: 'Ask Question', icon: 'ios-help-outline', nav: ASK},
         ]
     };
 
-    componentWillMount(){
-        const {dispatch,navigation} = this.props;
+    componentWillMount() {
+        const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
     }
 
@@ -47,9 +47,19 @@ class HomeScreen extends Component {
                 style={styles.button}
                 onPress={() => this.props.navigation.navigate(btn.item.nav)}
             >
-                <View style={styles.buttonIcon}>
-                    <Icon name={btn.item.icon} size={40} color={Color.darkGray}/>
-                </View>
+                <If con={btn.item.name==="Ask Question"}>
+                    <If.Then>
+                        <View style={[styles.buttonIcon,{backgroundColor:Color.green,borderColor:Color.green}]}>
+                            <Icon name={btn.item.icon} size={40} color={Color.white}/>
+                        </View>
+                    </If.Then>
+                    <If.Else>
+                        <View style={styles.buttonIcon}>
+                            <Icon name={btn.item.icon} size={40} color={Color.darkGray}/>
+                        </View>
+                    </If.Else>
+                </If>
+
                 <Text style={styles.buttonText}>{btn.item.name}</Text>
             </TouchableOpacity>
         )
@@ -72,12 +82,14 @@ class HomeScreen extends Component {
                         <View>
                             <View style={styles.date}>
                                 <Icon color={Color.white} name='ios-clock-outline' size={22}/>
-                                <Text style={styles.dateText}>{moment.unix(event.startDate/1000).format('HH:mm')}</Text>
+                                <Text
+                                    style={styles.dateText}>{moment.unix(event.startDate / 1000).format('HH:mm')}</Text>
                             </View>
 
                             <View style={styles.date}>
                                 <Icon color={Color.white} name='ios-calendar-outline' size={22}/>
-                                <Text style={styles.dateText}>{moment.unix(event.startDate/1000).format("Do MMM YYYY")}</Text>
+                                <Text
+                                    style={styles.dateText}>{moment.unix(event.startDate / 1000).format("Do MMM YYYY")}</Text>
                             </View>
                         </View>
 
@@ -132,10 +144,10 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         paddingTop: 5
     },
-    eventLogo:{
+    eventLogo: {
         width: height * 0.15,
         height: height * 0.15,
-        borderRadius: Platform.OS==='ios' ? scale(45): 90
+        borderRadius: Platform.OS === 'ios' ? scale(45) : 90
     },
     date: {
         flexDirection: 'row',
@@ -158,7 +170,7 @@ const styles = StyleSheet.create({
         ...Font.regular,
         color: Color.white,
         fontSize: moderateScale(25),
-        textAlign:'right'
+        textAlign: 'right'
     },
     buttonPanel: {
         flex: 0.55,
@@ -170,7 +182,7 @@ const styles = StyleSheet.create({
     buttonIcon: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: Platform.OS ==='ios' ? 50: 90,
+        borderRadius: Platform.OS === 'ios' ? 50 : 90,
         borderWidth: 1,
         width: scale(60),
         height: scale(60),
