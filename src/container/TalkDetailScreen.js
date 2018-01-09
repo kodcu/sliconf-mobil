@@ -157,7 +157,7 @@ export class TalkDetail extends Component {
                         </If.Then>
                         <If.Else>
                             <Footer>
-                                <FooterTab style={{backgroundColor: '#fff'}}>
+                                <FooterTab style={{backgroundColor: '#fff',borderTopWidth:0.25,borderColor:Color.gray}}>
                                     <Button vertical onPress={() => this.setState({tab: 'info'})}>
                                         <Icon size={25} name={tab === 'info' ? 'ios-paper' : 'ios-paper-outline'}
                                               color={tab === 'info' ? '#29B673' : '#333'}/>

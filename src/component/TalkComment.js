@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
-import {Alert, Dimensions, FlatList, StyleSheet, Text, View,ScrollView} from 'react-native';
+import {Alert, Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Button, Container, Content, Fab, Footer, FooterTab, Input, Thumbnail} from "native-base";
-import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons'
 import CommentItem from "./CommentItem";
 import {actionCreators} from '../reducks/module/comment'
 import {connect} from 'react-redux'
 import If from "./If";
-import AgendaCard from "./AgendaCard";
+import Color from "../theme/Color";
+import {moderateScale} from "../theme/Scale";
+import Font from "../theme/Font";
+import Carousel, {Pagination} from "react-native-snap-carousel";
 
 const ENTRIES = [
     {
@@ -92,7 +94,7 @@ const POPULARENTRIES = [
         commentValue: "Tuvalet nerede ? 4",
         approved: "APPROVED",
         commentType: "normal"
-    },{
+    }, {
         id: '1234567',
         eventId: '1234567',
         sessionId: '1234567',
@@ -119,6 +121,10 @@ const mapStateToProps = (state) => ({
 
 class TalkComment extends Component {
 
+    state={
+        activeSlide:0
+    }
+
     _keyExtractor = (item, index) => index;
 
     renderRow(info) {
@@ -126,12 +132,13 @@ class TalkComment extends Component {
         return <CommentItem item={info} userAgent={this.props.user.id} key={info.id}/>
     }
 
-    _renderItem ({item, index}) {
+    _renderItem({item, index}) {
         return (
             <View style={styles.card} key={index}>
                 <Thumbnail source={require('../../images/hi.png')} small style={{marginBottom: 15}}/>
                 <Text style={{fontSize: 12, color: '#000'}}>{item.userId}</Text>
-                <Text style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>
+                <Text
+                    style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>
             </View>
         );
     }
@@ -167,41 +174,183 @@ class TalkComment extends Component {
         clearInterval(this.interval);
     }
 
+    mymetot({item, index}){
+        let message = 'when an unknown printer took a galley of money.'
+        return(
+            <View style={{
+                alignSelf: 'center', margin:0, width: width-40, height: 150, backgroundColor: Color.green, borderRadius:20,
+                elevation:3
+            }}>
+                <View style={{
+                    alignItems:'center',
+                    justifyContent:'center',
+                    height:25,
+                    marginTop: 0,
+                    borderRadius:10
+                }}>
+                <Text style={{
+                    ...Font.medium,
+                    padding: 5,
+                    backgroundColor: Color.white,
+                    margin: 1,
+                    fontSize: moderateScale(10),
+                    width: moderateScale(7 * 21),
+                    color: Color.darkGray,
+                    height:25,
+                    textAlign:'center',
+                    borderBottomLeftRadius:10,
+                    borderBottomRightRadius:10,
+                }}>
+                    Altuğ Bilgin Altıntaş
+                </Text>
+                </View>
+                <View style={{
+                    padding: 10,
+                    paddingTop:0,
+                    paddingBottom:0,
+                    alignItems:'center',
+                    justifyContent:'center',
+                    height:75
+                }}>
+                    <Text style={{
+                        ...Font.medium,
+                        fontSize: moderateScale(11),
+                        color: Color.white,
+                        textAlign: 'center',
+                        alignItems:'center',
+                    }}>{message}</Text>
+                </View>
+
+                <View style={{
+                    alignSelf: 'center',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 28,
+                    width,
+                    backgroundColor: Color.transparent,
+                    flexDirection: 'row',
+
+                }}>
+
+                    <TouchableOpacity
+                        style={{
+                            width: 100,
+                            height: 28,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderWidth: 1,
+                            borderRadius: 0,
+                            borderTopLeftRadius: 20,
+                            borderBottomLeftRadius: 20,
+                            borderRightWidth: 0,
+                            borderColor: Color.white,
+                            flexDirection: 'row',
+                            backgroundColor:Color.white
+                        }}>
+                        <Icon name='ios-happy' size={20} color={Color.green}/>
+                        <Text style={{...Font.semiBold, color: Color.green, fontSize: moderateScale(12),marginLeft:10}}>123</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={{
+                            width: 100,
+                            height: 28,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderWidth: 1,
+                            borderRadius: 0,
+                            borderTopRightRadius: 20,
+                            borderBottomRightRadius: 20,
+                            borderLeftWidth: 0,
+                            borderColor: Color.white,
+                            flexDirection: 'row'
+                        }}>
+                        <Icon name='ios-sad' size={20} color={Color.white}/>
+                        <Text style={{...Font.semiBold, color: '#fff', fontSize: moderateScale(12),marginLeft:10}}>5</Text>
+                    </TouchableOpacity>
+
+                </View>
+
+            </View>
+        )
+    }
+
+    _renderItem ({item, index}) {
+        return (
+            <View style={{ width:30,height:30,backgroundColor:Color.yellow}} />
+        );
+    }
+
     render() {
         let comments = [];
         if (this.props.commentList !== undefined && this.props.commentList !== null && !this.props.commentList.isEmpty)
             comments = this.props.commentList;
         return (
             <View style={{flex: 1}}>
-                <If con={!this.props.lite}>
-                    <View style={{alignSelf: 'center', marginBottom: 10, height: 220}}>
-                        <AgendaCard isEmpty={true}/>
-                        <Text style={{textAlign:'center',fontSize:24,fontWeight:'bold'}}>Yapım Aşamasında</Text>
+                {/*<If con={!this.props.lite}>*/}
+
+                    <View style={{alignSelf: 'center',height:150}}>
+
+                        <Carousel
+                            data={POPULARENTRIES}
+                            renderItem={this.mymetot}
+                            sliderWidth={(width ) - 40}
+                            itemWidth={(width ) - 40}
+                            inactiveSlideScale={1}
+                            inactiveSlideOpacity={1}
+                            enableMomentum={true}
+                            activeSlideAlignment={'start'}
+                            autoplay={true}
+                            autoplayDelay={2000}
+                            autoplayInterval={2000}
+                            containerCustomStyle={styles.slider}
+                            contentContainerCustomStyle={styles.sliderContentContainer}
+                            removeClippedSubviews={false}
+                            onSnapToItem={(index) => this.setState({ activeSlide: index }) }/>
+
+                        <Pagination
+                            dotsLength={POPULARENTRIES.length}
+                            activeDotIndex={this.state.activeSlide}
+                            containerStyle={{width:width-40, position:'absolute',bottom:-23,backgroundColor: 'rgba(0, 0, 0, 0)'}}
+                            dotStyle={{
+                                width: 6,
+                                height: 6,
+                                borderRadius: 5,
+                                backgroundColor: '#fff'
+                            }}
+                            inactiveDotStyle={{
+                                backgroundColor:'#fff'
+                            }}
+                            inactiveDotOpacity={0.4}
+                            inactiveDotScale={0.6}
+                        />
+
                     </View>
-                </If>
+                {/*</If>*/}
 
 
-                <View style={{height: this.props.lite ? null : height - 368}}>
+                <View style={{height: this.props.lite ? null : height - 285,paddingTop:5}}>
                     <ScrollView>
-                    {Object.values(comments).map((item, index) =>
-                        <View key={index}>
-                            {this.renderRow(item)}
-                        </View>
-                    )}
+                        {Object.values(comments).map((item, index) =>
+                            <View key={index}>
+                                {this.renderRow(item)}
+                            </View>
+                        )}
                     </ScrollView>
 
                 </View>
 
                 <If con={!this.props.lite}>
-                    <Fab
-                        active={true}
-                        direction="left"
-                        containerStyle={{}}
-                        style={{backgroundColor: '#29B673'}}
-                        position="bottomRight"
-                        onPress={this.props.question}>
-                        <Icon name="ios-text"/>
-                    </Fab>
+                        <Fab
+                            active={true}
+                            direction="left"
+                            containerStyle={{}}
+                            style={{backgroundColor: '#29B673',position:'absolute',bottom:-60,left:(width-120)*0.5,
+                                width:80,height:80,borderRadius:50}}
+                            position="bottomLeft"
+                            onPress={this.props.question}>
+                            <Icon style={{paddingBottom:30}} name="ios-text"  size={80} color={Color.white}/>
+                        </Fab>
                 </If>
 
             </View>
@@ -249,9 +398,11 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     slider: {
-        marginTop: 25,
+        marginTop: 0,
     },
-    sliderContentContainer: {},
+    sliderContentContainer: {
+
+    },
     paginationContainer: {
         paddingVertical: 8
     },
