@@ -112,9 +112,12 @@ export class TalkDetail extends Component {
 
                     </If>
 
+
+
                 </Content>
 
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+
                     <If con={this.state.ask}>
                         <If.Then>
 
@@ -157,13 +160,14 @@ export class TalkDetail extends Component {
                         </If.Then>
                         <If.Else>
                             <Footer>
-                                <FooterTab style={{backgroundColor: '#fff',borderTopWidth:0.25,borderColor:Color.gray}}>
-                                    <Button vertical onPress={() => this.setState({tab: 'info'})}>
+                                <FooterTab style={{backgroundColor: '#fff',borderTopWidth:0.25,borderColor:Color.green}}>
+                                    <Button vertical style={{paddingRight:30}} onPress={() => this.setState({tab: 'info'})}>
                                         <Icon size={25} name={tab === 'info' ? 'ios-paper' : 'ios-paper-outline'}
                                               color={tab === 'info' ? '#29B673' : '#333'}/>
                                     </Button>
 
-                                    <Button vertical onPress={() => moment().isAfter(moment.unix(talk[0].date)) ?
+
+                                    <Button vertical style={{paddingLeft:30}} onPress={() => moment().isAfter(moment.unix(talk[0].date)) ?
                                         this.setState({tab: 'comment'}) :
                                         Alert.alert(
                                             'Warning!',
@@ -182,9 +186,17 @@ export class TalkDetail extends Component {
 
                             </Footer>
                         </If.Else>
+
                     </If>
 
+
                 </KeyboardAvoidingView>
+
+                <TouchableOpacity style={{width:80,height:80,bottom:-10,right:(width/2)-40,
+                    backgroundColor:Color.green,borderRadius:50,position:'absolute',justifyContent:'center',
+                    alignItems:'center'}}>
+                    <Icon name="md-add"  size={35} color={Color.white}/>
+                </TouchableOpacity>
             </Container>
 
 
