@@ -175,7 +175,7 @@ class TalkComment extends Component {
     }
 
     mymetot({item, index}){
-        let message = 'when an unknown printer took a galley of money.'
+        let message = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of money.'
         return(
             <View style={{
                 alignSelf: 'center', margin:0, width: width-40, height: 150, backgroundColor: Color.green, borderRadius:20,
@@ -286,8 +286,8 @@ class TalkComment extends Component {
         if (this.props.commentList !== undefined && this.props.commentList !== null && !this.props.commentList.isEmpty)
             comments = this.props.commentList;
         return (
-            <View style={{flex: 1}}>
-                {/*<If con={!this.props.lite}>*/}
+            <View style={{flex:1}}>
+                <If con={!this.props.lite}>
 
                     <View style={{alignSelf: 'center',height:150}}>
 
@@ -326,10 +326,10 @@ class TalkComment extends Component {
                         />
 
                     </View>
-                {/*</If>*/}
+                </If>
 
 
-                <View style={{height: this.props.lite ? null : height - 285,paddingTop:5}}>
+                <View style={{paddingTop:5,height:height-285}}>
                     <ScrollView>
                         {Object.values(comments).map((item, index) =>
                             <View key={index}>
@@ -339,20 +339,6 @@ class TalkComment extends Component {
                     </ScrollView>
 
                 </View>
-
-                <If con={!this.props.lite}>
-                        <Fab
-                            active={true}
-                            direction="left"
-                            containerStyle={{}}
-                            style={{backgroundColor: '#29B673',position:'absolute',bottom:-60,left:(width-120)*0.5,
-                                width:80,height:80,borderRadius:50}}
-                            position="bottomLeft"
-                            onPress={this.props.question}>
-                            <Icon style={{paddingBottom:30}} name="ios-text"  size={80} color={Color.white}/>
-                        </Fab>
-                </If>
-
             </View>
 
         )
