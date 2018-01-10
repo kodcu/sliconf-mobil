@@ -16,6 +16,7 @@
     "react-native-camera": "^0.10.0",
     "react-native-check-box": "^2.0.1",
     "react-native-communications": "latest",
+    "react-native-device-info": "^0.13.0",
     "react-native-exit-app": "^1.0.0",
     "react-native-keyboard-aware-scroll-view": "^0.3.0",
     "react-native-maps": "^0.16.4",

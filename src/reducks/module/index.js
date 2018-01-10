@@ -5,6 +5,7 @@ import EventReducer from './event'
 import CommentReducer from './comment'
 import DrawerReducer from './drawer'
 import ConnectionReducer from './connection'
+import AuthDeviceReducer from './authDevice'
 
 export default combineReducers({
     auth: AuthReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
     nav: NavReducer,
     drawer: DrawerReducer,
     comment:CommentReducer,
-    connection:ConnectionReducer
+    connection:ConnectionReducer,
+    authDevice:AuthDeviceReducer
 });

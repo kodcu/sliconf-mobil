@@ -1,8 +1,17 @@
-const sliconfAPI = 'http://api.sliconf.com/service/';
-export const getEvent = sliconfAPI + 'events/get/with-key/';
-export const postLOGIN = sliconfAPI + 'users/login';
-export const postREGISTER = sliconfAPI + 'users/register';
-export const postFORGOT = sliconfAPI + 'users/password-reset/send/';
-export const postCOMMENT = sliconfAPI + 'events/comment/add-new';
-export const getCOMMENT = sliconfAPI + 'events/comment/list/';
-export const postVOTE = sliconfAPI + 'events/comment/vote/';
+const baseApi = 'http://api.sliconf.com/service/';
+
+//event
+export const getEvent = baseApi + 'events/get/with-key/';
+
+//auth
+export const postLogin = baseApi + 'users/login';
+export const postLoginDevice = postLogin + '/anonymous/';
+export const postRegister = baseApi + 'users/register';
+export const postRegisterDevice = postRegister + '/anonymous/';
+export const postForgot = baseApi + 'users/password-reset/send/';
+
+//comment
+export const postComment = baseApi + 'events/comment/add-new';
+export const getComments = baseApi + 'events/comment/list/';
+export const postVote = baseApi + 'events/comment/vote/';
+

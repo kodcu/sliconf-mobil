@@ -16,7 +16,7 @@ const types = {
     COMMENT_VOTE_FAIL: 'COMMENT_VOTE_FAIL',
 }
 
-import {getCOMMENT, getEvent, postCOMMENT, postVOTE} from '../API'
+import {getComments, getEvent, postComment, postVote} from '../API'
 
 const initialState = {
     loading: false,
@@ -119,7 +119,7 @@ export const actionCreators = {
             type: types.COMMENT_ADD_REQUEST
         })
 
-        await Request.POST(postCOMMENT,{eventId,sessionId,userId,commentValue,time},{
+        await Request.POST(postComment,{eventId,sessionId,userId,commentValue,time},{
             '200': (res)=>{
                 console.log(res)
                 if (res.status )
@@ -152,7 +152,7 @@ export const actionCreators = {
         dispatch({
             type: types.COMMENT_GET_SESSION_REQUEST
         })
-        await Request.GET(getCOMMENT+'approved'+'/'+eventId+"/"+sessionId,{
+        await Request.GET(getComments+'approved'+'/'+eventId+"/"+sessionId,{
             '200': (res)=>{
                 console.log(res)
                 if (res.status)
@@ -186,7 +186,7 @@ export const actionCreators = {
             type: types.COMMENT_VOTE_REQUEST
         })
         console.log("Istek Yapıldı")
-        await Request.POST(postVOTE+commentId+'/'+userId+'/'+vote,{},{
+        await Request.POST(postVote+commentId+'/'+userId+'/'+vote,{},{
             '200': (res)=>{
                 console.log(res)
                 if (res.status)
