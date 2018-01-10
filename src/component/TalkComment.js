@@ -82,31 +82,63 @@ const ENTRIES = [
 ];
 const POPULARENTRIES = [
     {
-        id: '123456',
-        eventId: '123456',
-        sessionId: '123456',
-        userId: '123456',
-        time: 1512119706,
-        like: 20,
-        dislike: 1,
-        likes: ["Anıl Coşar", "Hüseyin Akdoğan"],
-        dislikes: ["Nursel Cıbır"],
-        commentValue: "Tuvalet nerede ? 4",
-        approved: "APPROVED",
-        commentType: "normal"
-    }, {
-        id: '1234567',
-        eventId: '1234567',
-        sessionId: '1234567',
-        userId: '1234567',
-        time: 1512119706,
-        like: 20,
-        dislike: 1,
-        likes: ["Anıl Coşar", "Hüseyin Akdoğan"],
-        dislikes: ["Nursel Cıbır"],
-        commentValue: "Tuvalet nerede ? 1",
-        approved: "APPROVED",
-        commentType: "normal"
+        id: "ea81775b-cf51-4b23-b7d2-53d87903993d",
+        eventId: "b9b5ada2-f2d6-42c9-83d9-f07abedb9a3f",
+        sessionId: "d9f0de15-8ead-4da6-ac85-8c982c6a79dd",
+        userId: "aec2cd77-9920-42da-9438-e343b84b3dad",
+        time: 1515360534,
+        like: 2,
+        dislike: 0,
+        likes: [
+            {
+                userId: "c14f5584-8e13-41b8-82ea-bf4e72038cba",
+                username: "muslum1",
+                fullname: "Guest"
+            },
+            {
+                userId: "d1524b28-1a39-457c-b946-9ce03f1bbab2",
+                username: "developer",
+                fullname: "Mr Programmer"
+            }
+        ],
+        dislikes: [
+            {
+                userId: "f5855313-ca45-4831-868b-a14e57060155",
+                username: "anil",
+                fullname: "Mr Robot"
+            }
+        ],
+        commentValue: "vnbxvnxcbvx cbxjv xcvjxk cvxöv xchbv xch vgbxcnvgxch bvx cvh xcghvb xc vxc vjhxc vhxc vxc vhgxcv xc vxc vjkxc",
+        approved: "approved",
+        username: "muslum",
+        fullname: "Guest",
+        roomName: "dfd",
+        topic: "ReactNative neden var?",
+        rate: 2
+    },
+    {
+        id: "2f0c6125-5818-4728-b384-4a0f604a80fc",
+        eventId: "b9b5ada2-f2d6-42c9-83d9-f07abedb9a3f",
+        sessionId: "d9f0de15-8ead-4da6-ac85-8c982c6a79dd",
+        userId: "c14f5584-8e13-41b8-82ea-bf4e72038cba",
+        time: 1515360494,
+        like: 1,
+        dislike: 0,
+        likes: [
+            {
+                userId: "f5855313-ca45-4831-868b-a14e57060155",
+                username: "anil",
+                fullname: "Mr Robot"
+            }
+        ],
+        dislikes: [],
+        commentValue: "deneme123",
+        approved: "approved",
+        username: "muslum1",
+        fullname: "Guest",
+        roomName: "dfd",
+        topic: "ReactNative neden var?",
+        rate: 1
     }
 ];
 
@@ -116,14 +148,16 @@ const mapStateToProps = (state) => ({
     error: state.comment.error,
     event: state.event.event,
     errorMessage: state.comment.errorMessage,
-    commentList: state.comment.commentList
+    commentList: state.comment.commentList,
+    popularCommentList: state.comment.popularCommentList,
 });
 
 class TalkComment extends Component {
 
     state={
         activeSlide:0,
-        commentData:[]
+        commentData:[],
+        popularCommentData:[]
     }
 
     _keyExtractor = (item, index) => index;
@@ -136,7 +170,7 @@ class TalkComment extends Component {
         return (
             <View style={styles.card} key={index}>
                 <Thumbnail source={require('../../images/hi.png')} small style={{marginBottom: 15}}/>
-                <Text style={{fontSize: 12, color: '#000'}}>{item.userId}</Text>
+                <Text style={{fontSize: 12, color: '#000'}}>{item.username}</Text>
                 <Text
                     style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>
             </View>
@@ -160,6 +194,27 @@ class TalkComment extends Component {
                 ],
                 {cancelable: false}
             );
+        this.getPopularComments()
+    }
+
+    async getPopularComments() {
+        const comment = {
+            eventId: this.props.event.id,
+            sessionId: this.props.session,
+            userId: this.props.user.id,
+        };
+        const {dispatch, error, errorMessage} = this.props;
+        await dispatch(actionCreators.getPopularCommentsSession(comment.eventId, comment.sessionId));
+        if (error)
+            Alert.alert(
+                'Warning!',
+                errorMessage,
+                [
+                    {text: 'OK'}
+                ],
+                {cancelable: false}
+            );
+
     }
 
     componentWillMount() {
@@ -181,6 +236,11 @@ class TalkComment extends Component {
                     commentData: nextProps.commentList
                 })
             }
+            if (!_.isEqual(this.state.popularCommentData, nextProps.popularCommentList)) {
+                this.setState({
+                    popularCommentData: nextProps.popularCommentList
+                })
+            }
         }
     }
 
@@ -191,118 +251,27 @@ class TalkComment extends Component {
             commentData:data
         })
     }
-
-    mymetot({item, index}){
-        let message = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of money.'
-        return(
-            <View style={{
-                alignSelf: 'center', margin:0, width: width-40, height: 150, backgroundColor: Color.green, borderRadius:20,
-                elevation:3
-            }}>
-                <View style={{
-                    alignItems:'center',
-                    justifyContent:'center',
-                    height:25,
-                    marginTop: 0,
-                    borderRadius:10
-                }}>
-                <Text style={{
-                    ...Font.medium,
-                    padding: 5,
-                    backgroundColor: Color.white,
-                    margin: 1,
-                    fontSize: moderateScale(10),
-                    width: moderateScale(7 * 21),
-                    color: Color.darkGray,
-                    height:25,
-                    textAlign:'center',
-                    borderBottomLeftRadius:10,
-                    borderBottomRightRadius:10,
-                }}>
-                    Altuğ Bilgin Altıntaş
-                </Text>
-                </View>
-                <View style={{
-                    padding: 10,
-                    paddingTop:0,
-                    paddingBottom:0,
-                    alignItems:'center',
-                    justifyContent:'center',
-                    height:75
-                }}>
-                    <Text style={{
-                        ...Font.medium,
-                        fontSize: moderateScale(11),
-                        color: Color.white,
-                        textAlign: 'center',
-                        alignItems:'center',
-                    }}>{message}</Text>
-                </View>
-
-                <View style={{
-                    alignSelf: 'center',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: 28,
-                    width,
-                    backgroundColor: Color.transparent,
-                    flexDirection: 'row',
-
-                }}>
-
-                    <TouchableOpacity
-                        style={{
-                            width: 100,
-                            height: 28,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderWidth: 1,
-                            borderRadius: 0,
-                            borderTopLeftRadius: 20,
-                            borderBottomLeftRadius: 20,
-                            borderRightWidth: 0,
-                            borderColor: Color.white,
-                            flexDirection: 'row',
-                            backgroundColor:Color.white
-                        }}>
-                        <Icon name='ios-happy' size={20} color={Color.green}/>
-                        <Text style={{...Font.semiBold, color: Color.green, fontSize: moderateScale(12),marginLeft:10}}>123</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={{
-                            width: 100,
-                            height: 28,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderWidth: 1,
-                            borderRadius: 0,
-                            borderTopRightRadius: 20,
-                            borderBottomRightRadius: 20,
-                            borderLeftWidth: 0,
-                            borderColor: Color.white,
-                            flexDirection: 'row'
-                        }}>
-                        <Icon name='ios-sad' size={20} color={Color.white}/>
-                        <Text style={{...Font.semiBold, color: '#fff', fontSize: moderateScale(12),marginLeft:10}}>5</Text>
-                    </TouchableOpacity>
-
-                </View>
-
-            </View>
-        )
+    changePopularComment=(comment, index)=>{
+        let data=this.state.popularCommentData;
+        data[index]=comment;
+        this.setState({
+            popularCommentData:data
+        })
     }
 
-    _renderItem ({item, index}) {
-        return (
-            <View style={{ width:30,height:30,backgroundColor:Color.yellow}} />
-        );
+    renderPopularComments({item, index},userId){
+        return(
+            <CommentItem item={item} userAgent={userId} index={index} changeComment={this.changePopularComment} popular={true}/>
+        )
     }
 
     render() {
         let comments = [];
+        let popularComments = [];
         if (this.state.commentData !== undefined && this.state.commentData !== null && !this.state.commentData.isEmpty)
             comments = this.state.commentData;
+        if (this.state.popularCommentData !== undefined && this.state.popularCommentData !== null && !this.state.popularCommentData.isEmpty)
+            popularComments = this.state.popularCommentData;
         return (
             <View style={{flex:1}}>
                 <If con={!this.props.lite}>
@@ -310,8 +279,8 @@ class TalkComment extends Component {
                     <View style={{alignSelf: 'center',height:150}}>
 
                         <Carousel
-                            data={POPULARENTRIES}
-                            renderItem={this.mymetot}
+                            data={popularComments}
+                            renderItem={(item)=>this.renderPopularComments(item,this.props.user.id)}
                             sliderWidth={(width ) - 40}
                             itemWidth={(width ) - 40}
                             inactiveSlideScale={1}
@@ -319,7 +288,7 @@ class TalkComment extends Component {
                             enableMomentum={true}
                             activeSlideAlignment={'start'}
                             autoplay={true}
-                            autoplayDelay={2000}
+                            autoplayDelay={10000}
                             autoplayInterval={2000}
                             containerCustomStyle={styles.slider}
                             contentContainerCustomStyle={styles.sliderContentContainer}
@@ -327,7 +296,7 @@ class TalkComment extends Component {
                             onSnapToItem={(index) => this.setState({ activeSlide: index }) }/>
 
                         <Pagination
-                            dotsLength={POPULARENTRIES.length}
+                            dotsLength={popularComments.length}
                             activeDotIndex={this.state.activeSlide}
                             containerStyle={{width:width-40, position:'absolute',bottom:-23,backgroundColor: 'rgba(0, 0, 0, 0)'}}
                             dotStyle={{
@@ -347,7 +316,7 @@ class TalkComment extends Component {
                 </If>
 
 
-                <View style={{paddingTop:5,height:height-285}}>
+                <View style={{paddingTop:5,height:height-290}}>
                     <ScrollView>
                         {Object.values(comments).map((item, index) =>
                             <View key={index}>
