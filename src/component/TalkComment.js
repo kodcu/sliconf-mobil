@@ -1,15 +1,12 @@
 import React, {Component} from 'react';
-import {Alert, Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Dimensions, ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Container, Content, Fab, Footer, FooterTab, Input, Thumbnail} from "native-base";
-import Icon from 'react-native-vector-icons/Ionicons'
 import CommentItem from "./CommentItem";
 import {actionCreators} from '../reducks/module/comment'
 import {connect} from 'react-redux'
 import If from "./If";
-import Color from "../theme/Color";
-import {moderateScale} from "../theme/Scale";
-import Font from "../theme/Font";
 import Carousel, {Pagination} from "react-native-snap-carousel";
+import Loading from "./Loading";
 
 const ENTRIES = [
     {
@@ -145,6 +142,8 @@ const POPULARENTRIES = [
 const mapStateToProps = (state) => ({
     loading: state.comment.loading,
     user: state.auth.user,
+    login: state.auth.login,
+    userDevice: state.authDevice.user,
     error: state.comment.error,
     event: state.event.event,
     errorMessage: state.comment.errorMessage,
@@ -154,27 +153,30 @@ const mapStateToProps = (state) => ({
 
 class TalkComment extends Component {
 
-    state={
-        activeSlide:0,
-        commentData:[],
-        popularCommentData:[]
+    state = {
+        activeSlide: 0,
+        commentData: [],
+        popularCommentData: [],
+        loading:true
+    }
+    changeComment = (comment, index) => {
+        let data = this.state.commentData;
+        data[index] = comment;
+        this.setState({
+            commentData: data
+        })
+    }
+    changePopularComment = (comment, index) => {
+        let data = this.state.popularCommentData;
+        data[index] = comment;
+        this.setState({
+            popularCommentData: data
+        })
     }
 
-    _keyExtractor = (item, index) => index;
-
-    renderRow(info,index) {
-        return <CommentItem item={info} userAgent={this.props.user.id} index={index} changeComment={this.changeComment}/>
-    }
-
-    _renderItem({item, index}) {
-        return (
-            <View style={styles.card} key={index}>
-                <Thumbnail source={require('../../images/hi.png')} small style={{marginBottom: 15}}/>
-                <Text style={{fontSize: 12, color: '#000'}}>{item.username}</Text>
-                <Text
-                    style={{fontSize: 10, color: '#BCBEC0', textAlign: 'center', margin: 2}}>{item.commentValue}</Text>
-            </View>
-        );
+    renderRow(info, index) {
+        return <CommentItem item={info} userAgent={this.props.login ? this.props.user.id : this.props.userDevice.id}
+                            index={index} changeComment={this.changeComment}/>
     }
 
     async getComments() {
@@ -194,7 +196,6 @@ class TalkComment extends Component {
                 ],
                 {cancelable: false}
             );
-        this.getPopularComments()
     }
 
     async getPopularComments() {
@@ -214,15 +215,18 @@ class TalkComment extends Component {
                 ],
                 {cancelable: false}
             );
-
     }
 
     componentWillMount() {
-        this.getComments()
+        this.getComments();
+        this.props.lite ? this.getPopularComments() : null
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => this.getComments(), 30000);
+        this.interval = setInterval(() => {
+            this.getComments();
+            this.props.lite ? this.getPopularComments() : null
+        }, 10000);
     }
 
     componentWillUnmount() {
@@ -244,24 +248,10 @@ class TalkComment extends Component {
         }
     }
 
-    changeComment=(comment, index)=>{
-        let data=this.state.commentData;
-        data[index]=comment;
-        this.setState({
-            commentData:data
-        })
-    }
-    changePopularComment=(comment, index)=>{
-        let data=this.state.popularCommentData;
-        data[index]=comment;
-        this.setState({
-            popularCommentData:data
-        })
-    }
-
-    renderPopularComments({item, index},userId){
-        return(
-            <CommentItem item={item} userAgent={userId} index={index} changeComment={this.changePopularComment} popular={true}/>
+    renderPopularComments({item, index}, userId) {
+        return (
+            <CommentItem item={item} userAgent={userId} index={index} changeComment={this.changePopularComment}
+                         popular={true}/>
         )
     }
 
@@ -273,16 +263,17 @@ class TalkComment extends Component {
         if (this.state.popularCommentData !== undefined && this.state.popularCommentData !== null && !this.state.popularCommentData.isEmpty)
             popularComments = this.state.popularCommentData;
         return (
-            <View style={{flex:1}}>
+            <View style={{flex: 1}}>
+
                 <If con={!this.props.lite}>
 
-                    <View style={{alignSelf: 'center',height:150}}>
+                    <View style={{alignSelf: 'center', height: 150}}>
 
                         <Carousel
                             data={popularComments}
-                            renderItem={(item)=>this.renderPopularComments(item,this.props.user.id)}
-                            sliderWidth={(width ) - 40}
-                            itemWidth={(width ) - 40}
+                            renderItem={(item) => this.renderPopularComments(item, this.props.user.id)}
+                            sliderWidth={(width) - 40}
+                            itemWidth={(width) - 40}
                             inactiveSlideScale={1}
                             inactiveSlideOpacity={1}
                             enableMomentum={true}
@@ -293,12 +284,17 @@ class TalkComment extends Component {
                             containerCustomStyle={styles.slider}
                             contentContainerCustomStyle={styles.sliderContentContainer}
                             removeClippedSubviews={false}
-                            onSnapToItem={(index) => this.setState({ activeSlide: index }) }/>
+                            onSnapToItem={(index) => this.setState({activeSlide: index})}/>
 
                         <Pagination
                             dotsLength={popularComments.length}
                             activeDotIndex={this.state.activeSlide}
-                            containerStyle={{width:width-40, position:'absolute',bottom:-23,backgroundColor: 'rgba(0, 0, 0, 0)'}}
+                            containerStyle={{
+                                width: width - 40,
+                                position: 'absolute',
+                                bottom: -23,
+                                backgroundColor: 'rgba(0, 0, 0, 0)'
+                            }}
                             dotStyle={{
                                 width: 6,
                                 height: 6,
@@ -306,7 +302,7 @@ class TalkComment extends Component {
                                 backgroundColor: '#fff'
                             }}
                             inactiveDotStyle={{
-                                backgroundColor:'#fff'
+                                backgroundColor: '#fff'
                             }}
                             inactiveDotOpacity={0.4}
                             inactiveDotScale={0.6}
@@ -316,11 +312,11 @@ class TalkComment extends Component {
                 </If>
 
 
-                <View style={{paddingTop:5,height:height-290}}>
+                <View style={{paddingTop: 5, height: this.props.lite ? null : height - 290}}>
                     <ScrollView>
                         {Object.values(comments).map((item, index) =>
                             <View key={index}>
-                                {this.renderRow(item,index)}
+                                {this.renderRow(item, index)}
                             </View>
                         )}
                     </ScrollView>
@@ -373,9 +369,7 @@ const styles = StyleSheet.create({
     slider: {
         marginTop: 0,
     },
-    sliderContentContainer: {
-
-    },
+    sliderContentContainer: {},
     paginationContainer: {
         paddingVertical: 8
     },

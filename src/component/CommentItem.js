@@ -137,6 +137,7 @@ class CommentItem extends Component {
 
     render() {
         const info = this.props.item;
+        const name = info.anonymous ? info.fullname : info.username;
         const user = this.state.userAgent;
         if (!this.props.popular){
             return (
@@ -149,7 +150,7 @@ class CommentItem extends Component {
                                 fontSize: moderateScale(11.5),
                                 color: Color.black,
                                 marginBottom: 5
-                            }}>{info.username}</Text>
+                            }}>{name}</Text>
                             <Text style={{
                                 ...Font.light,
                                 fontSize: moderateScale(10),
@@ -240,7 +241,7 @@ class CommentItem extends Component {
                         borderBottomLeftRadius: 10,
                         borderBottomRightRadius: 10,
                     }}>
-                        {info.username}
+                        {name}
                     </Text>
                 </View>
                 <View style={{

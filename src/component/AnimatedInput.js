@@ -36,7 +36,7 @@ export default class AnimatedInput extends React.Component {
         const value = props.value || props.defaultValue;
 
         this.state = {
-            value,
+            value : '',
             focusedAnim: new Animated.Value(value ? 1 : 0),
         };
     }
@@ -147,8 +147,17 @@ export default class AnimatedInput extends React.Component {
         const {
             width,
             focusedAnim,
-            value,
+            value
         } = this.state;
+
+        // let value;
+        // const stateVal = this.state.value;
+        // if(stateVal)
+        //     value = stateVal.toUpperCase();
+        // else
+        //     value = stateVal;
+
+
         const AnimatedIcon = Animated.createAnimatedComponent(iconClass);
 
         return (
@@ -226,7 +235,7 @@ export default class AnimatedInput extends React.Component {
                     ]}
                     returnKeyType="search"
                     onSubmitEditing={() => onSubmitEditing(value)}
-                    value={value}
+                    value={value.toUpperCase()}
                     onBlur={this._onBlur}
                     onChange={this._onChange}
                     onFocus={this._onFocus}

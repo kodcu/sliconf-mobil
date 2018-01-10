@@ -14,7 +14,6 @@ import Font from "../theme/Font";
 import moment from "moment";
 import getImage from "../helpers/getImageHelper"
 import If from "../component/If";
-import * as login from '../reducks/module/auth'
 
 
 
@@ -29,32 +28,21 @@ class HomeScreen extends Component {
     state = {
         buttons: [
             {name: 'Schedule', icon: 'ios-calendar-outline', nav: AGENDA},
+            {name: 'Ask Question', icon: 'ios-chatbubbles', nav: ASK},
             {name: 'Speakers', icon: 'ios-microphone-outline', nav: SPEAKERS},
             {name: 'Location', icon: 'ios-map-outline', nav: LOCATION},
             {name: 'Sponsors', icon: 'ios-ribbon-outline', nav: SPONSOR},
             {name: 'Info', icon: 'ios-information-outline', nav: INFO},
-            {name: 'Ask Question', icon: 'ios-help-outline', nav: ASK},
+
         ]
     };
 
     componentWillMount() {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
-        this.getLoggedUser()
     }
 
-    /**
-     * Giriş yapmış kullanıcıyı hafızadan getirir.
-     * @returns {Promise<void>}
-     */
-    async getLoggedUser(){
-        let responseUsername = await AsyncStorage.getItem('username');
-        let responsePass = await AsyncStorage.getItem('password');
-        if(responseUsername!==null&&responsePass!==null&&!this.props.login){
-            const {dispatch} = this.props;
-            dispatch(login.actionCreators.login(responseUsername,responsePass));
-        }
-    }
+
 
     /**
      *Bir buton tasarimi
