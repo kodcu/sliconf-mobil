@@ -158,7 +158,7 @@ export const actionCreators = {
             fail: (err) => {
                 dispatch({
                     type: types.LOGIN_RESPONSE_FAIL,
-                    payload: 'İşleminiz gerçekleştirilemiyor!'
+                    payload: 'Can not be processed at this time!'
                 })
             }
         })

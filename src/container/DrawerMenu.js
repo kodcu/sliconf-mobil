@@ -10,6 +10,9 @@ import If from "../component/If";
 import Font from "../theme/Font";
 import Color from "../theme/Color";
 import {actionCreators} from "../reducks/module/auth";
+import {actionCreators as actionCreatorsDevice} from "../reducks/module/authDevice";
+import DeviceInfo from 'react-native-device-info';
+
 
 const mapStateToProps = (state) => ({
     selectDrawer: state.drawer.drawerIndex,
@@ -67,9 +70,11 @@ class DrawerMenu extends Component {
                         <Text style={styles.question}>Are you sure?</Text>
                         <View style={styles.questionTab}>
                             <Button transparent style={{width: 40, justifyContent: 'center', marginRight: 10}}
-                                    onPress={() => {
+                                    onPress={async () => {
                                         this.logout_close();
-                                        this.props.dispatch(actionCreators.logout())
+                                        await this.props.dispatch(actionCreatorsDevice.loginDevice(DeviceInfo.getUniqueID()));
+                                        this.props.navigation.navigate(HOME);
+                                        this.props.dispatch(actionCreators.logout());
                                         AsyncStorage.setItem('username', "");
                                         AsyncStorage.setItem('password', "");
                                     }}>

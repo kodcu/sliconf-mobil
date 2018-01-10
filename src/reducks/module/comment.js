@@ -143,12 +143,47 @@ export const reducer = (state = initialState, action) => {
 
 export const actionCreators = {
 
-    postComment: (eventId,sessionId,userId,commentValue,time) => async (dispatch, getState) => {
+    postComment: (eventId,sessionId,userId,commentValue,time,anonymous) => async (dispatch, getState) => {
         dispatch({
             type: types.COMMENT_ADD_REQUEST
         })
 
-        await Request.POST(postComment,{eventId,sessionId,userId,commentValue,time},{
+        await Request.POST(postComment,{eventId,sessionId,userId,commentValue,time,anonymous},{
+            '200': (res)=>{
+                console.log(res)
+                if (res.status )
+                    dispatch({
+                        type: types.COMMENT_ADD_SUC,
+                        payload: res.returnObject
+                    })
+                else
+                    dispatch({
+                        type: types.COMMENT_ADD_FAIL,
+                        payload: res.message
+                    })
+            },
+            otherwise:(res)=>{
+                dispatch({
+                    type: types.COMMENT_ADD_FAIL,
+                    payload:res.message
+                })
+            },
+            fail:(err) =>{
+                dispatch({
+                    type: types.COMMENT_ADD_FAIL,
+                    payload: 'Can not be processed at this time!'
+                })
+            }
+        })
+
+    },
+    postCommentAnonymous: (eventId,sessionId,userId,commentValue,time,fullname) => async (dispatch, getState) => {
+        dispatch({
+            type: types.COMMENT_ADD_REQUEST
+        })
+
+        const anonymous = true;
+        await Request.POST(postComment,{eventId,sessionId,userId,commentValue,time,anonymous,fullname},{
             '200': (res)=>{
                 console.log(res)
                 if (res.status )

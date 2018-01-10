@@ -1,15 +1,26 @@
 import React from 'react';
-import {NetInfo, StyleSheet, Text, View} from 'react-native'
+import {Alert, AsyncStorage, NetInfo, StyleSheet, Text, View} from 'react-native'
 import {Image} from 'react-native-animatable'
 import {MAIN} from '../router';
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 import {connect} from 'react-redux'
-import {actionCreators} from '../reducks/module/connection'
+import {actionCreators as actionCreatorsConnection} from '../reducks/module/connection'
+import {actionCreators as actionCreatorsDevice} from '../reducks/module/authDevice'
+import {actionCreators as actionCreatorsUser} from '../reducks/module/auth'
+import DeviceInfo from 'react-native-device-info';
+import RNExitApp from "react-native-exit-app";
 
 const logo = require("../../images/logo.png");
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+    errorDevice: state.authDevice.error,
+    loginDevice: state.authDevice.login,
+    errorMessageDevice: state.authDevice.errorMessage,
+    login: state.auth.login,
+    error: state.auth.error,
+    errorMessage: state.auth.errorMessage
+});
 
 class SplashScreen extends React.Component {
     /**
@@ -18,7 +29,7 @@ class SplashScreen extends React.Component {
      * @private
      */
     _handleConnectionInfoChange = (isConnected) => {
-        this.props.dispatch(actionCreators.changedConnection(isConnected));
+        this.props.dispatch(actionCreatorsConnection.changedConnection(isConnected));
     };
 
     componentWillMount() {
@@ -29,8 +40,57 @@ class SplashScreen extends React.Component {
     //     NetInfo.isConnected.removeEventListener('change', this._handleConnectionInfoChange);
     // }
 
-    componentDidMount(){
-        setTimeout(() => this.props.navigation.dispatch({type: MAIN}), 1000);
+    /**
+     * Cihaz id ile user bilgilerini alir
+     * @returns {Promise<void>}
+     */
+    async anonymousUser() {
+        const uniqueID = await DeviceInfo.getUniqueID();
+        await this.props.dispatch(actionCreatorsDevice.loginDevice(uniqueID));
+        if (!this.props.loginDevice)
+            await this.props.dispatch(actionCreatorsDevice.registerDevice(uniqueID));
+
+        return this.props.loginDevice;
+    }
+
+    /**
+     * Giriş yapmış kullanıcıyı hafızadan getirir.
+     * @returns {Promise<void>}
+     */
+    async getLoggedUser() {
+        const responseUsername = await AsyncStorage.getItem('username');
+        const responsePass = await AsyncStorage.getItem('password');
+
+        if (responseUsername !== null && responsePass !== null)
+            await this.props.dispatch(actionCreatorsUser.login(responseUsername, responsePass));
+
+        return this.props.login;
+    }
+
+
+    /**
+     *
+     * @returns {Promise<*>}
+     */
+    async checkUser(){
+        if (await this.getLoggedUser()) return true;
+        return await this.anonymousUser();
+
+    }
+
+    //TODO ingilizce metin
+    async componentDidMount() {
+        if(await this.checkUser())
+            setTimeout(() => this.props.navigation.dispatch({type: MAIN}), 500);
+        else
+            Alert.alert(
+                'Warning!',
+                "Please check your connection.",
+                [
+                    {text: 'Exit', onPress: () => RNExitApp.exitApp()},
+                ],
+                {cancelable: false}
+            );
     }
 
     render() {
