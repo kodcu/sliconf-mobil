@@ -3,7 +3,7 @@
  */
 
 import Request from "../../service/Request";
-import {API_LOGIN, API_REGISTER, postFORGOT, postLOGIN, postREGISTER} from '../API'
+import {API_LOGIN, API_REGISTER, postForgot, postLogin, postRegister} from '../API'
 
 const types = {
     LOGIN_REQUEST: 'LOGIN_REQUEST',
@@ -136,7 +136,7 @@ export const actionCreators = {
             type: types.LOGIN_REQUEST
         })
 
-        await Request.POST(postLOGIN, {username, password}, {
+        await Request.POST(postLogin, {username, password}, {
             '200': (res) => {
                 if (res.status)
                     dispatch({
@@ -169,7 +169,7 @@ export const actionCreators = {
             type: types.REGISTER_REQUEST
         })
 
-        await Request.POST(postREGISTER, {username, password, email, fullname}, {
+        await Request.POST(postRegister, {username, password, email, fullname}, {
             '200': (res) => {
                 if (res.status)
                     dispatch({
@@ -203,7 +203,7 @@ export const actionCreators = {
             type: types.FORGOT_PASS_REQUEST
         })
 
-        await Request.POST(postFORGOT + email, {email}, {
+        await Request.POST(postForgot + email, {email}, {
             '200': (res) => {
                 if (res.status)
                     dispatch({

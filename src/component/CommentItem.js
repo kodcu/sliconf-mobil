@@ -9,7 +9,7 @@ import {moderateScale} from "../theme/Scale";
 import {connect} from "react-redux";
 import {actionCreators} from '../reducks/module/comment'
 import Request from "../service/Request";
-import {postVOTE} from "../reducks/API";
+import {postVote} from "../reducks/API";
 const personLogo = require('../../images/hi.png');
 
 
@@ -42,8 +42,10 @@ class CommentItem extends Component {
                     ],
                     {cancelable: false}
                 );
-            } else
+            } else{
                 this.setState({isClicked: true,item:response.payload});
+                this.props.changeComment(response.payload,this.props.index)
+            }
         } else if (this.state.isClicked && !this.state.isDislike) {
             const response = await this.voteRequest(this.props.item.id, this.state.userAgent, 0)
             if (!response.status) {
@@ -55,15 +57,17 @@ class CommentItem extends Component {
                     ],
                     {cancelable: false}
                 );
-            } else
+            } else{
                 this.setState({isClicked: false,item:response.payload});
+                this.props.changeComment(response.payload,this.props.index)
+            }
         }
     }
 
     async voteRequest(commentId, userId, vote) {
         console.log(commentId+" "+ userId)
         let status, payload;
-        await Request.POST(postVOTE + commentId + '/' + userId + '/' + vote, {}, {
+        await Request.POST(postVote + commentId + '/' + userId + '/' + vote, {}, {
             '200': (res) => {
                 status = res.status
                 if (res.status)
@@ -96,8 +100,10 @@ class CommentItem extends Component {
                     ],
                     {cancelable: false}
                 );
-            } else
+            } else{
                 this.setState({isDislike: true,item:response.payload});
+                this.props.changeComment(response.payload,this.props.index)
+            }
         } else if (this.state.isDislike && !this.state.isClicked) {
             const response = await this.voteRequest(this.props.item.id, this.state.userAgent, 0)
             if (!response.status) {
@@ -109,8 +115,10 @@ class CommentItem extends Component {
                     ],
                     {cancelable: false}
                 );
-            } else
+            } else{
                 this.setState({isDislike: false,item:response.payload});
+                this.props.changeComment(response.payload,this.props.index)
+            }
         }
     }
 
@@ -125,7 +133,7 @@ class CommentItem extends Component {
     }
 
     render() {
-        const info = this.state.item;
+        const info = this.props.item;
         const user = this.state.userAgent;
 
         return (

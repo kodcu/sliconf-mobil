@@ -122,14 +122,14 @@ const mapStateToProps = (state) => ({
 class TalkComment extends Component {
 
     state={
-        activeSlide:0
+        activeSlide:0,
+        commentData:[]
     }
 
     _keyExtractor = (item, index) => index;
 
-    renderRow(info) {
-        console.log(info)
-        return <CommentItem item={info} userAgent={this.props.user.id} key={info.id}/>
+    renderRow(info,index) {
+        return <CommentItem item={info} userAgent={this.props.user.id} index={index} changeComment={this.changeComment}/>
     }
 
     _renderItem({item, index}) {
@@ -172,6 +172,24 @@ class TalkComment extends Component {
 
     componentWillUnmount() {
         clearInterval(this.interval);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!nextProps.loading) {
+            if (!_.isEqual(this.state.commentData, nextProps.commentList)) {
+                this.setState({
+                    commentData: nextProps.commentList
+                })
+            }
+        }
+    }
+
+    changeComment=(comment, index)=>{
+        let data=this.state.commentData;
+        data[index]=comment;
+        this.setState({
+            commentData:data
+        })
     }
 
     mymetot({item, index}){
@@ -283,8 +301,8 @@ class TalkComment extends Component {
 
     render() {
         let comments = [];
-        if (this.props.commentList !== undefined && this.props.commentList !== null && !this.props.commentList.isEmpty)
-            comments = this.props.commentList;
+        if (this.state.commentData !== undefined && this.state.commentData !== null && !this.state.commentData.isEmpty)
+            comments = this.state.commentData;
         return (
             <View style={{flex:1}}>
                 <If con={!this.props.lite}>
@@ -333,7 +351,7 @@ class TalkComment extends Component {
                     <ScrollView>
                         {Object.values(comments).map((item, index) =>
                             <View key={index}>
-                                {this.renderRow(item)}
+                                {this.renderRow(item,index)}
                             </View>
                         )}
                     </ScrollView>
