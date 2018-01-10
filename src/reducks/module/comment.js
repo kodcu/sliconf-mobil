@@ -148,11 +148,11 @@ export const actionCreators = {
         })
 
     },
-    getCommentsSession: (eventId,sessionId) => async (dispatch, getState) => {
+    getCommentsSession: (eventId,sessionId,commentType,count) => async (dispatch, getState) => {
         dispatch({
             type: types.COMMENT_GET_SESSION_REQUEST
         })
-        await Request.GET(getComments+'approved'+'/'+eventId+"/"+sessionId,{
+        await Request.GET(getComments+'approved'+'/'+eventId+"/"+sessionId+"?type="+commentType+"&count="+count,{
             '200': (res)=>{
                 console.log(res)
                 if (res.status)
