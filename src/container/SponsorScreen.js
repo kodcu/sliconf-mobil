@@ -30,6 +30,17 @@ export class SponsorScreen extends Component {
         return sorted;
     }
 
+    renderSeparator = () => {
+        return (
+            <View
+                style={{
+                    margin:20,
+                    borderTopWidth: 1,
+                    borderTopColor: 'black'
+                }}
+            />
+        )
+    }
 
     render() {
 
@@ -58,8 +69,9 @@ export class SponsorScreen extends Component {
                             {Object.keys(sponsors).map((item, index) =>
                                 <View key={index} style={styles.sponsorTagPanel}>
                                     <Text style={styles.sponsorTag}>{sponsorTags[item]}</Text>
-                                    {sponsors[item].map((item, index) => <View key={index}>
-                                            {this.renderItem(item)}
+                                    {sponsors[item].map((item2, index2) => <View key={index2} >
+                                            {this.renderItem(item2)}
+                                        {(index2 !== sponsors[item].length - 1) && this.renderSeparator()}
                                         </View>
                                     )}
                                 </View>
@@ -73,9 +85,9 @@ export class SponsorScreen extends Component {
 
     renderItem(info) {
         if (info.logo.trim())
-            return <Image source={{uri: getImage(info.logo)}}
+            return( <Image source={{uri: getImage(info.logo)}}
                           resizeMode="contain"
-                          style={styles.sponsorLogo}/>
+                          style={styles.sponsorLogo}/>)
         else
             return <Text style={styles.sponsorName}>{info.name}</Text>
     }
