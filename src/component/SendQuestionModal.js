@@ -200,8 +200,7 @@ export class SendQuestionModal extends Component {
                                     width: Scale.width - 70,
                                     color:Color.darkGray3
                                 }}>
-                                    Eğer kimliğinizi belirtmek istemiyorsanız bunu
-                                    işaretlemenin gerekmektedir. Giriş yapmayan kişiler için mecburidir.(ingilizce olacak)
+                                    If you don't want to specify your identity, you have to mark this. It is mandatory for those who do not login.
                                 </Text>
 
                             </View> : null}

@@ -31,7 +31,7 @@ class CommentItem extends Component {
     }
 
     clickLike = async () => {
-        if (!this.state.isClicked && !this.state.isDislike) {
+        if (!this.state.isClicked ) {
             const response = await this.voteRequest(this.props.item.id, this.state.userAgent, 1)
             if (!response.status) {
                 Alert.alert(
@@ -43,7 +43,7 @@ class CommentItem extends Component {
                     {cancelable: false}
                 );
             } else {
-                this.setState({isClicked: true,item: response.payload});
+                this.setState({isClicked: true,isDislike:false,item: response.payload});
                 this.props.changeComment(response.payload, this.props.index)
             }
         } else if (this.state.isClicked && !this.state.isDislike) {
@@ -89,7 +89,7 @@ class CommentItem extends Component {
     }
 
     clickDislike = async () => {
-        if (!this.state.isClicked && !this.state.isDislike) {
+        if (!this.state.isDislike) {
             const response = await this.voteRequest(this.props.item.id, this.state.userAgent, -1)
             if (!response.status) {
                 Alert.alert(
@@ -101,7 +101,7 @@ class CommentItem extends Component {
                     {cancelable: false}
                 );
             } else {
-                this.setState({isDislike: true, item: response.payload});
+                this.setState({isDislike: true,isClicked:false, item: response.payload});
                 this.props.changeComment(response.payload, this.props.index)
             }
         } else if (this.state.isDislike && !this.state.isClicked) {

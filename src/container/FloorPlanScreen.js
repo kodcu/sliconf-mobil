@@ -8,6 +8,8 @@ import {height, moderateScale, width} from "../theme/Scale";
 import Font from "../theme/Font";
 import {actionCreators} from "../reducks/module/drawer";
 import imageHelper from "../helpers/getImageHelper"
+import PhotoView from 'react-native-photo-view';
+
 
 const mapStateToProps = (state) => ({
     floorplan: state.event.event.floorPlan,
@@ -49,9 +51,15 @@ class FloorPlan extends Component {
                     :
 
                     <View style={styles.container}>
-{/*
-                        {floorplan[selected].image.trim() ? <FloorImage style={styles.container} source={{uri:imageHelper(floorplan[selected].image)}}/> : null}
-*/}
+
+                        {floorplan[selected].image.trim() ?<PhotoView
+                                source={{uri:imageHelper(floorplan[selected].image)}}
+                                minimumZoomScale={1}
+                                maximumZoomScale={3}
+                                androidScaleType="center"
+                                onLoad={() => console.log("Image loaded!")}
+                                style={styles.container} /> : null}
+
 
                         <TouchableOpacity
                             style={[styles.change,{right: 5,}]}
