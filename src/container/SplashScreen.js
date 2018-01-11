@@ -33,7 +33,7 @@ class SplashScreen extends React.Component {
     };
 
     componentWillMount() {
-        NetInfo.isConnected.addEventListener('change', this._handleConnectionInfoChange);
+        NetInfo.isConnected.addEventListener('connectionChange', this._handleConnectionInfoChange);
     }
 
     // componentWillUnmount() {
