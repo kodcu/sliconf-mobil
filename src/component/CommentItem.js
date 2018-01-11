@@ -8,7 +8,7 @@ import Color from "../theme/Color";
 import {moderateScale, width,height} from "../theme/Scale";
 import {connect} from "react-redux";
 import Request from "../service/Request";
-import {postVote} from "../reducks/API";
+import {postVote} from "../reducks/Api";
 
 const personLogo = require('../../images/hi.png');
 

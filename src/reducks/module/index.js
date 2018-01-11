@@ -6,6 +6,7 @@ import CommentReducer from './comment'
 import DrawerReducer from './drawer'
 import ConnectionReducer from './connection'
 import AuthDeviceReducer from './authDevice'
+import TalkReducer from './talk'
 
 export default combineReducers({
     auth: AuthReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
     drawer: DrawerReducer,
     comment:CommentReducer,
     connection:ConnectionReducer,
-    authDevice:AuthDeviceReducer
+    authDevice:AuthDeviceReducer,
+    talk:TalkReducer
 });

@@ -19,7 +19,7 @@ const types = {
     COMMENT_VOTE_FAIL: 'COMMENT_VOTE_FAIL',
 }
 
-import {getComments, getEvent, postComment, postVote} from '../API'
+import {getComments, getEvent, postComment, postVote} from '../Api'
 
 const initialState = {
     loading: false,

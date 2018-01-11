@@ -15,7 +15,7 @@ const types = {
 
 }
 
-import {API_EVENTLIST, API_EVENT, getEvent} from '../API'
+import {API_EVENTLIST, API_EVENT, getEvent} from '../Api'
 
 const initialState = {
     loading: false,

@@ -15,3 +15,8 @@ export const postComment = baseApi + 'events/comment/add-new';
 export const getComments = baseApi + 'events/comment/list/';
 export const postVote = baseApi + 'events/comment/vote/';
 
+// vote
+export const voteTalk = baseApi + 'events/agenda/vote/';
+export const getVoteByUser=baseApi+'events/agenda/get-vote/';
+
+
