@@ -90,12 +90,12 @@ export const reducer = (state = initialState, action) => {
 
 export const actionCreators = {
 
-    fetchEvent: (code) => async (dispatch, getState) => {
+    fetchEvent: (code,userId) => async (dispatch, getState) => {
         dispatch({
             type: types.EVENT_POSTS_REQUEST
         })
 
-        await Request.GET(getEvent+code.toUpperCase(),{
+        await Request.GET(getEvent+code.toUpperCase()+"?statistic=true&userId="+userId,{
             '200': (res)=>{
                 if (res.status && res.returnObject.status)
                     dispatch({

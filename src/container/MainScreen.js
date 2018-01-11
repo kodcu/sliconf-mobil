@@ -26,7 +26,10 @@ const mapStateToProps = (state) => ({
     loading: state.event.loading,
     error: state.event.error,
     events: state.event.events,
-    errorMessage: state.event.errorMessage
+    errorMessage: state.event.errorMessage,
+    login: state.auth.login,
+    userDevice: state.authDevice.user,
+    user: state.auth.user,
 });
 
 
@@ -44,8 +47,9 @@ class MainScreen extends Component {
      */
     getEvent = async (code) => {
         this.setState({loadingModal:true});
+        const userId=!this.props.login? this.props.userDevice.id: this.props.user.id;
         const {dispatch, loading} = this.props;
-        await dispatch(actionCreators.fetchEvent(code));
+        await dispatch(actionCreators.fetchEvent(code,userId));
         const {error, errorMessage} = this.props;
         if (error) 
             Alert.alert(
