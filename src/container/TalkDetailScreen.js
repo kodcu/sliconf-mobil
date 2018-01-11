@@ -11,6 +11,8 @@ import moment from "moment";
 import {connect} from 'react-redux'
 import Color from "../theme/Color";
 import SendQuestionModal from "../component/SendQuestionModal";
+import {actionCreators} from "../reducks/module/drawer";
+import {actionCreators as actionCreatorsTalk} from "../reducks/module/talk";
 
 const {height, width} = Dimensions.get('window');
 
@@ -19,7 +21,9 @@ const mapStateToProps = (state) => ({
     user: state.auth.user,
     error: state.comment.error,
     event: state.event.event,
-    errorMessage: state.comment.errorMessage
+    errorMessage: state.comment.errorMessage,
+    voteMessage:state.talk.errorMessage,
+    voteError:state.talk.error
 });
 
 export class TalkDetail extends Component {
@@ -35,38 +39,24 @@ export class TalkDetail extends Component {
         this.setState({messageModal: !this.state.messageModal})
     };
 
-    // async sendComment(){
-    //     //TODO comment validasyonu yap
-    //     const comment={eventId:this.props.event.id,
-    //         sessionId:this.props.navigation.state.params[0].id,
-    //         userId:this.props.user.id,
-    //         commentValue:this.state.commentValue,
-    //         time:moment().unix()
-    //     };
-    //     const {dispatch, loading,error,errorMessage} = this.props;
-    //     await dispatch(actionCreators.postComment(comment.eventId,comment.sessionId,comment.userId,comment.commentValue,comment.time));
-    //     if (error)
-    //         Alert.alert(
-    //             'Warning!',
-    //             errorMessage,
-    //             [
-    //                 {text: 'OK'}
-    //             ],
-    //             { cancelable: false }
-    //         );
-    //
-    //     if (!error && !loading) {
-    //         this.askQuestion()
-    //         Alert.alert(
-    //             'Info!',
-    //             "Your comment has been sent.After a comment is approved,it will be shown",
-    //             [
-    //                 {text: 'OK'}
-    //             ],
-    //             {cancelable: true}
-    //         );
-    //     }
-    // }
+   async voteTalk(voteValue){
+        const eventId = this.props.event.id;
+        const sessionId = this.props.navigation.state.params[0].id;
+        const userId = this.props.user.id;
+        const {dispatch} = this.props;
+        await dispatch(actionCreatorsTalk.voteTalk(eventId,sessionId,userId,voteValue));
+       const {voteError,voteMessage} = this.props;
+       if(voteError)
+            Alert.alert(
+                'Warning!',
+                    voteMessage,
+                [
+                    {text: 'OK', onPress: () => {}},
+                ],
+                { cancelable: false }
+            );
+
+    }
 
     render() {
 
@@ -100,8 +90,9 @@ export class TalkDetail extends Component {
                                        visible={this.state.messageModal}/>
 
                     <TalkRate visible={rate} onPressDismiss={() => {
-                        this.setState({rate: false})
-                    }}/>
+                        this.setState({rate: false})}}
+                              onPressSubmit={(value)=>this.voteTalk(value)}
+                    />
 
                     <If con={tab === 'info'}>
                         <If.Then>

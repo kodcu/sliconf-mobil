@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, Modal, ActivityIndicator, Dimensions, Slider, Image} from 'react-native';
 import {Button, Segment} from "native-base";
 import Icon from 'react-native-vector-icons/Ionicons'
+import Color from "../theme/Color";
 
 export default class TalkRate extends Component {
 
@@ -80,7 +81,7 @@ export default class TalkRate extends Component {
                                     <Text style={{fontFamily: 'Montserrat-Bold',fontSize:18,color:'#333',marginTop:10}}>Did you like talk?</Text>
                                     <Text style={{textAlign:'center',fontSize:15,fontFamily: 'Montserrat-Regular',color:'#888',marginTop:0}}>Use the slide to tell it in the language of Emojis.</Text>
                                     <Slider maximumValue={5} minimumValue={1} step={1}
-                                            maximumTrackTintColor='#29B673' minimumTrackTintColor='#999'
+                                            maximumTrackTintColor={Color.darkGray} minimumTrackTintColor={Color.green}
                                             value={value} onValueChange={(val) => {this.getSmile(val)}}
                                             style={{width:width*0.75,paddingTop:10,}}/>
 
@@ -110,7 +111,7 @@ export default class TalkRate extends Component {
                                 }}>
 
                                     <Button vertical transparent
-                                            onPress={onPressSubmit !== undefined && onPressSubmit !== null ? onPressSubmit(value) : null}
+                                            onPress={()=>onPressSubmit(value)}
                                             style={{width:width/2,height:60,alignItems:'center',justifyContent:'center',}}>
                                         <Text style={{color:'#fff',fontSize:20}}>Submit</Text>
                                     </Button>

@@ -3,7 +3,7 @@
  */
 
 import Request from "../../service/Request";
-import {API_LOGIN, API_REGISTER, postForgot, postLogin, postRegister} from '../API'
+import {API_LOGIN, API_REGISTER, postForgot, postLogin, postRegister} from '../Api'
 
 const types = {
     LOGIN_REQUEST: 'LOGIN_REQUEST',

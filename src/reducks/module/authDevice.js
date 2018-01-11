@@ -1,4 +1,4 @@
-import {postLoginDevice, postRegisterDevice} from "../API";
+import {postLoginDevice, postRegisterDevice} from "../Api";
 import Request from "../../service/Request";
 
 /**
