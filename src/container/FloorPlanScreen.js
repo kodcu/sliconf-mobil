@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Image, StyleSheet, Text, View,TouchableOpacity} from 'react-native';
-import FloorImage from 'react-native-transformable-image';
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import Color from "../theme/Color";
@@ -50,7 +49,9 @@ class FloorPlan extends Component {
                     :
 
                     <View style={styles.container}>
+{/*
                         {floorplan[selected].image.trim() ? <FloorImage style={styles.container} source={{uri:imageHelper(floorplan[selected].image)}}/> : null}
+*/}
 
                         <TouchableOpacity
                             style={[styles.change,{right: 5,}]}
