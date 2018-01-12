@@ -60,12 +60,12 @@ export default class TalkRate extends Component {
                                 <If con={loading}>
                                     <If.Then>
                                         <ActivityIndicator animating={true} color={Color.darkGray3} size='large'/>
-                                        <Text style={{...Font.medium,marginTop: 25, color :Color.darkGray3}}>Loading...</Text>
+                                        <Text style={styles.indicatorText}>Loading...</Text>
                                     </If.Then>
 
                                     <If.Else>
 
-                                        <If con={!user ||  view }>
+                                        <If con={!user || view }>
                                             <If.Then>
                                                 <View style={styles.changeView}>
                                                     <Image source={smile} style={styles.image}/>
@@ -87,7 +87,7 @@ export default class TalkRate extends Component {
                                                 </View>
                                                 <View style={styles.buttonView}>
                                                     <Button vertical transparent
-                                                        onPress={() => {user ? this.change() : null;onPressSubmit(value)}}
+                                                        onPress={() => {user ? this.change() : null; onPressSubmit(value)}}
                                                             style={styles.modalButton}>
                                                         <Text style={styles.textButton}>Submit</Text>
                                                     </Button>
@@ -102,21 +102,13 @@ export default class TalkRate extends Component {
                                             <If.Else>
                                                 <View style={styles.showView}>
 
-                                                    <View style={{
-                                                        alignSelf: 'center',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center', width: widthModal / 2, height: 270
-                                                    }}>
+                                                    <View style={styles.resultView}>
                                                         <Text style={styles.textQuestion}>You</Text>
                                                         <Image source={Emoji[userValue - 1]} style={styles.image}/>
                                                         <Text style={styles.selectText}>Point: {userValue}</Text>
                                                         <Text style={styles.selectTextBold}>{message[userValue - 1]}</Text>
                                                     </View>
-                                                    <View style={{
-                                                        alignSelf: 'center',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center', width: widthModal / 2, height: 270
-                                                    }}>
+                                                    <View style={styles.resultView}>
                                                         <Text style={styles.textQuestion}>Total</Text>
                                                         <Image source={Emoji[talkValue.toFixed(0) - 1]} style={styles.image}/>
                                                         <Text style={styles.selectText}>Point: {talkValue.toFixed(1)}</Text>
@@ -169,7 +161,7 @@ const styles = StyleSheet.create({
         backgroundColor: Color.transparentGray
     },
     containerView: {
-        height: 330,
+        height: 350,
         width: widthModal,
         justifyContent: 'center',
         alignItems: 'center',
@@ -187,7 +179,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: widthModal,
-        height: 270,
+        height: 290,
         padding: 20,
     },
     showView: {
@@ -195,7 +187,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: widthModal,
-        height: 270,
+        height: 290,
         padding: 20,
     },
     image: {
@@ -258,6 +250,16 @@ const styles = StyleSheet.create({
     slider: {
         width: widthModal * 0.75,
         paddingTop: 10,
+    },
+    indicatorText:{
+        ...Font.medium,
+        marginTop: 25,
+        color: Color.darkGray3
+    },
+    resultView:{
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center', width: widthModal / 2, height: 270
     }
 
 });
