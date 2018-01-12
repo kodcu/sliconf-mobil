@@ -11,7 +11,6 @@ import moment from "moment";
 import {connect} from 'react-redux'
 import Color from "../theme/Color";
 import SendQuestionModal from "../component/SendQuestionModal";
-import {actionCreators} from "../reducks/module/drawer";
 import {actionCreators as actionCreatorsTalk} from "../reducks/module/talk";
 
 const {height, width} = Dimensions.get('window');
@@ -22,8 +21,11 @@ const mapStateToProps = (state) => ({
     error: state.comment.error,
     event: state.event.event,
     errorMessage: state.comment.errorMessage,
-    voteMessage:state.talk.errorMessage,
-    voteError:state.talk.error
+    voteMessage: state.talk.errorMessage,
+    voteError: state.talk.error,
+    voteLoading: state.talk.loading,
+    userVote: state.talk.userVote,
+    voteValue: state.talk.voteValue
 });
 
 export class TalkDetail extends Component {
@@ -39,27 +41,36 @@ export class TalkDetail extends Component {
         this.setState({messageModal: !this.state.messageModal})
     };
 
-   async voteTalk(voteValue){
+    async voteTalk(voteValue) {
         const eventId = this.props.event.id;
         const sessionId = this.props.navigation.state.params[0].id;
         const userId = this.props.user.id;
         const {dispatch} = this.props;
-        await dispatch(actionCreatorsTalk.voteTalk(eventId,sessionId,userId,voteValue));
-       const {voteError,voteMessage} = this.props;
-       if(voteError)
+        await dispatch(actionCreatorsTalk.voteTalk(eventId, sessionId, userId, voteValue));
+        const {voteError, voteMessage} = this.props;
+        if (voteError)
             Alert.alert(
                 'Warning!',
-                    voteMessage,
+                voteMessage,
                 [
-                    {text: 'OK', onPress: () => {}},
+                    {
+                        text: 'OK', onPress: () => {
+                        }
+                    },
                 ],
-                { cancelable: false }
+                {cancelable: false}
             );
+        await this.props.dispatch(actionCreatorsTalk.getVoteByUser(eventId, sessionId, userId))
+    }
 
+    componentWillMount() {
+        const eventId = this.props.event.id;
+        const sessionId = this.props.navigation.state.params[0].id;
+        const userId = this.props.user.id;
+        this.props.dispatch(actionCreatorsTalk.getVoteByUser(eventId, sessionId, userId))
     }
 
     render() {
-
         const {tab, rate} = this.state
         const {state} = this.props.navigation;
         let talk = state.params
@@ -67,7 +78,7 @@ export class TalkDetail extends Component {
 
             <Container style={styles.container}>
 
-                <Header leftImage='chevron-left' rightText='Rate'
+                <Header leftImage='chevron-left' rightText='Vote'
                         onPressLeft={() => this.props.navigation.goBack()}
                         onPressRight={() => {
                             moment().isAfter(moment.unix(talk[0].date)) ?
@@ -89,10 +100,12 @@ export class TalkDetail extends Component {
                                        closeModal={this.changeAskQuestionState}
                                        visible={this.state.messageModal}/>
 
-                    <TalkRate visible={rate} onPressDismiss={() => {
-                        this.setState({rate: false})}}
-                              onPressSubmit={(value)=>this.voteTalk(value)}
-                    />
+                    <TalkRate visible={rate}
+                              onPressDismiss={() => {this.setState({rate: false})}}
+                              onPressSubmit={(value) => this.voteTalk(value)}
+                              loading={this.props.voteLoading}
+                              user={this.props.userVote}
+                              voteValue={this.props.voteValue}/>
 
                     <If con={tab === 'info'}>
                         <If.Then>
@@ -106,8 +119,6 @@ export class TalkDetail extends Component {
                     </If>
 
                 </Content>
-
-
 
 
                 <Footer>
@@ -143,7 +154,6 @@ export class TalkDetail extends Component {
                         <Icon name="md-add" size={35} color={Color.white}/>
                     </TouchableOpacity>
                 </Footer>
-
 
 
             </Container>

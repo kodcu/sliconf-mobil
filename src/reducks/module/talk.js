@@ -3,21 +3,24 @@
  */
 
 import Request from "../../service/Request";
+import {getVoteByUser, voteTalk} from '../Api'
 
 const types = {
     VOTE_TALK_REQUEST: 'VOTE_TALK_REQUEST',
     VOTE_TALK_SUC: 'VOTE_TALK_SUC',
-    VOTE_TALK_FAIL: 'VOTE_TALK_FAIL'
+    VOTE_TALK_FAIL: 'VOTE_TALK_FAIL',
+    VOTE_TALK_USER_REQUEST: 'VOTE_TALK_USER_REQUEST',
+    VOTE_TALK_USER_SUC: 'VOTE_TALK_USER_SUC',
+    VOTE_TALK_USER_FAIL: 'VOTE_TALK_USER_FAIL'
 }
-
-import {voteTalk,getVoteByUser} from '../Api'
 
 const initialState = {
     loading: false,
     error: false,
     errorMessage: String,
-    message:String,
-
+    message: String,
+    userVote: false,
+    voteValue: null
 };
 
 export const reducer = (state = initialState, action) => {
@@ -48,6 +51,32 @@ export const reducer = (state = initialState, action) => {
                 errorMessage: payload
             }
         }
+        case types.VOTE_TALK_USER_REQUEST: {
+            return {
+                ...state,
+                loading: true,
+                error: false,
+                userVote: false
+            }
+        }
+        case types.VOTE_TALK_USER_SUC: {
+            return {
+                ...state,
+                loading: false,
+                error: false,
+                userVote: true,
+                voteValue: payload
+            }
+        }
+        case types.VOTE_TALK_USER_FAIL: {
+            return {
+                ...state,
+                loading: false,
+                error: true,
+                userVote: false,
+                errorMessage: payload
+            }
+        }
     }
     return state;
 
@@ -55,14 +84,14 @@ export const reducer = (state = initialState, action) => {
 
 export const actionCreators = {
 
-    voteTalk: (eventId,sessionId,userId,voteValue) => async (dispatch, getState) => {
+    voteTalk: (eventId, sessionId, userId, voteValue) => async (dispatch, getState) => {
         dispatch({
             type: types.VOTE_TALK_REQUEST
         })
 
-        await Request.POST(voteTalk+eventId+"/"+sessionId+"/"+userId+"/"+voteValue,{},{
-            '200': (res)=>{
-                if (res.status )
+        await Request.POST(voteTalk + eventId + "/" + sessionId + "/" + userId + "/" + voteValue, {}, {
+            '200': (res) => {
+                if (res.status)
                     dispatch({
                         type: types.VOTE_TALK_SUC,
                         payload: res.message
@@ -73,13 +102,13 @@ export const actionCreators = {
                         payload: res.message
                     })
             },
-            otherwise:(res)=>{
+            otherwise: (res) => {
                 dispatch({
                     type: types.VOTE_TALK_FAIL,
-                    payload:res.message
+                    payload: res.message
                 })
             },
-            fail:(err) =>{
+            fail: (err) => {
                 dispatch({
                     type: types.VOTE_TALK_FAIL,
                     payload: 'Can not be processed at this time!'
@@ -88,33 +117,33 @@ export const actionCreators = {
         })
 
     },
-    getVoteByUser: (eventId,sessionId,userId) => async (dispatch, getState) => {
+    getVoteByUser: (eventId, sessionId, userId) => async (dispatch, getState) => {
         dispatch({
-            type: types.VOTE_TALK_REQUEST
+            type: types.VOTE_TALK_USER_REQUEST
         })
 
-        await Request.GET(getVoteByUser+eventId+"/"+sessionId+"/"+userId,{
-            '200': (res)=>{
-                if (res.status )
+        await Request.GET(getVoteByUser + eventId + "/" + sessionId + "/" + userId, {
+            '200': (res) => {
+                if (res.status)
                     dispatch({
-                        type: types.VOTE_TALK_SUC,
-                        payload: res.message
+                        type: types.VOTE_TALK_USER_SUC,
+                        payload: res.returnObject
                     })
                 else
                     dispatch({
-                        type: types.VOTE_TALK_FAIL,
+                        type: types.VOTE_TALK_USER_FAIL,
                         payload: res.message
                     })
             },
-            otherwise:(res)=>{
+            otherwise: (res) => {
                 dispatch({
-                    type: types.VOTE_TALK_FAIL,
-                    payload:res.message
+                    type: types.VOTE_TALK_USER_FAIL,
+                    payload: res.message
                 })
             },
-            fail:(err) =>{
+            fail: (err) => {
                 dispatch({
-                    type: types.VOTE_TALK_FAIL,
+                    type: types.VOTE_TALK_USER_FAIL,
                     payload: 'Can not be processed at this time!'
                 })
             }
