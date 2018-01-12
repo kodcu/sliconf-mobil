@@ -14,20 +14,21 @@ const mapStateToProps = (state) => ({
     sponsorTags: state.event.event.sponsorTags,
 });
 
-export class SponsorScreen extends Component {
+class SponsorScreen extends Component {
 
     componentWillMount() {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
-
     }
 
     sortSponsorsByTag(sponsors) {
-        const sorted = {};
-        Object.keys(sponsors).sort().forEach(function (key) {
-            sorted[key] = sponsors[key];
-        });
-        return sorted;
+        if(sponsors){
+            const sorted = {};
+            Object.keys(sponsors).sort().forEach(function (key) {
+                sorted[key] = sponsors[key];
+            });
+            return sorted;
+        }
     }
 
     renderSeparator = () => {
@@ -40,6 +41,15 @@ export class SponsorScreen extends Component {
                 }}
             />
         )
+    }
+
+    renderItem(info) {
+        if (info.logo.trim())
+            return( <Image source={{uri: getImage(info.logo)}}
+                           resizeMode="contain"
+                           style={styles.sponsorLogo}/>)
+        else
+            return <Text style={styles.sponsorName}>{info.name}</Text>
     }
 
     render() {
@@ -63,6 +73,12 @@ export class SponsorScreen extends Component {
                     <Header.Title title="Sponsors"/>
                 </Header>
 
+                {sponsors.length === 0 ? <View style={styles.notFoundPanel}>
+                    <Text style={styles.notFoundText}>
+                        Sponsor Not Found
+                    </Text>
+                </View> : null}
+
                 <ScrollView style={styles.panel}>
                     <View style={styles.sponsorTagPanel}>
                         <View style={styles.sponsor}>
@@ -81,15 +97,6 @@ export class SponsorScreen extends Component {
                 </ScrollView>
             </View>
         )
-    }
-
-    renderItem(info) {
-        if (info.logo.trim())
-            return( <Image source={{uri: getImage(info.logo)}}
-                          resizeMode="contain"
-                          style={styles.sponsorLogo}/>)
-        else
-            return <Text style={styles.sponsorName}>{info.name}</Text>
     }
 }
 
@@ -134,7 +141,16 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         flex: 1
-    }
+    },
+    notFoundText:{
+        ...Font.thin,
+        color:Color.darkGray
+    },
+    notFoundPanel:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export default connect(mapStateToProps)(SponsorScreen)
