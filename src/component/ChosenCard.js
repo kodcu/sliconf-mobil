@@ -1,52 +1,55 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet,StatusBar,TouchableOpacity,Image,Dimensions,Platform } from 'react-native';
-import { Container, Header, Left, Body, Right, Button, Icon, Title ,Content,CardItem,Thumbnail,Card,List,Item,Footer,FooterTab,Picker, Form, Item as FormItem} from 'native-base';
-import PropTypes from 'prop-types';
+import React, {Component} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Icon} from 'native-base';
 import If from '../component/If'
 import moment from "moment";
 import {connect} from "react-redux";
 import Font from "../theme/Font";
 import {moderateScale} from "../theme/Scale";
+import Color from "../theme/Color";
 
 const mapStateToProps = (state) => ({
     rooms: state.event.event.rooms,
-    speakers:state.event.event.speakers
+    speakers: state.event.event.speakers
 });
+
 class ChosenCard extends Component {
 
-    getColorByLevel(level){
-        switch(level){
+    getColorByLevel(level) {
+        let color;
+        switch (level) {
             case 0:
-                return '#29B673';
+                color = Color.green;
                 break;
             case 1:
-                return '#FBB041';
+                color = Color.yellow;
                 break;
             case 2:
-                return '#EE5E5F';
+                color = Color.red2;
                 break;
             default :
-                return '#ffffff';
+                color = Color.white;
         }
+        return color;
     }
 
-    getRoomName(roomId){
+    getRoomName(roomId) {
         const roomsTags = this.props.rooms;
         const room = roomsTags.find(room => room.id === roomId)
         return room.label;
     }
 
-    getSpeakerName(speakerId){
+    getSpeakerName(speakerId) {
         return this.props.speakers.find(speaker => speaker.id === speakerId).name
     }
 
     render() {
-        const item =this.props.item;
-        const buttonVisible=this.props.visibleButton
-        return(
+        const item = this.props.item;
+        const buttonVisible = this.props.visibleButton
+        return (
 
-            <View  style={styles.container}>
-                <View  style={[styles.cardLine,{borderColor:this.getColorByLevel(item.level)}]}/>
+            <View style={styles.container}>
+                <View style={[styles.cardLine, {borderColor: this.getColorByLevel(item.level)}]}/>
                 <View style={styles.detailField}>
                     <Text style={styles.topic}>{item.topic}</Text>
                     <Text style={styles.speaker}>{this.getSpeakerName(item.speaker)}</Text>
@@ -59,9 +62,9 @@ class ChosenCard extends Component {
                 <View style={styles.actionField}>
                     <If con={buttonVisible}>
                         <If.Then>
-                            <TouchableOpacity onPress={(item) => this.props.onPressDeleteButton(item)} >
+                            <TouchableOpacity onPress={(item) => this.props.onPressDeleteButton(item)}>
                                 <View style={styles.buttonField}>
-                                    <Icon name='ios-close' style={{alignSelf:'center'}}/>
+                                    <Icon name='ios-close' style={{alignSelf: 'center'}}/>
                                 </View>
                             </TouchableOpacity>
                         </If.Then>
@@ -76,53 +79,53 @@ class ChosenCard extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor:'#fff',
-        borderRadius:8,
-        flexDirection:'row',
-        margin:10,
-        borderColor:'#F1F2F2',
-        borderWidth:1
+        backgroundColor: Color.white,
+        borderRadius: 8,
+        flexDirection: 'row',
+        margin: 10,
+        borderColor: Color.gray3,
+        borderWidth: 1
     },
-    detailField:{
-        flex:0.7,
-        justifyContent:'space-between'
+    detailField: {
+        flex: 0.7,
+        justifyContent: 'space-between'
     },
-    cardLine:{
-        borderWidth:1,
-        margin:10,
-        marginTop:0,
-        marginBottom:0
+    cardLine: {
+        borderWidth: 1,
+        margin: 10,
+        marginTop: 0,
+        marginBottom: 0
     },
     topic: {
         ...Font.regular,
-        fontSize:moderateScale(9),
-        textAlign:'left',
-        textAlignVertical:'center',
-        color:'#000000',
-        margin:5
+        fontSize: moderateScale(9),
+        textAlign: 'left',
+        textAlignVertical: 'center',
+        color: '#000000',
+        margin: 5
     },
-    speaker:{
+    speaker: {
         ...Font.regular,
-        fontSize:moderateScale(7),
-        textAlign:'left',
-        margin:5
+        fontSize: moderateScale(7),
+        textAlign: 'left',
+        margin: 5
     },
-    infoField:{
-        flexDirection:'row',
-        justifyContent:'space-between'
+    infoField: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
-    actionField:{
-        flex:0.3,
-        marginRight:10,
-        justifyContent:'flex-end',
-        margin:5
+    actionField: {
+        flex: 0.3,
+        marginRight: 10,
+        justifyContent: 'flex-end',
+        margin: 5
     },
-    buttonField:{
-        backgroundColor:'#F1F2F2',
-        width:30,
-        height:30,
-        borderRadius:100,
-        alignSelf:'flex-end'
+    buttonField: {
+        backgroundColor: Color.gray3,
+        width: 30,
+        height: 30,
+        borderRadius: 100,
+        alignSelf: 'flex-end'
     }
 
 })

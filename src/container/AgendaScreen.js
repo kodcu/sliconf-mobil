@@ -156,7 +156,7 @@ class AgendaScreen extends Component {
      */
     filterHide = (searchResults) => {
         this.setState({filter: false});
-        this.props.navigation.navigate(SEARCHRESULT, searchResults)
+        this.props.navigation.navigate(SEARCHRESULT, {items :searchResults, login : this.props.login})
     };
     /**
      * Filtre popupini kapatir.
@@ -454,11 +454,21 @@ class AgendaScreen extends Component {
                         </If.Then>
                         <If.Else>
                             <View>
-
                                 {choosen.map((choosed, i) =>
+                                    <TouchableOpacity key={i} onPress={() => this.props.login ?
+                                        this.props.navigation.navigate(TALK, [choosed]) : Alert.alert(
+                                            'Warning!',
+                                            'Please log in for more information.',
+                                            [
+                                                {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
+                                                {text: 'CANCEL', onPress: () => console.log('cancel')}
+                                            ],
+                                            {cancelable: false}
+                                        )}>
                                     <ChosenCard key={i} item={choosed}
                                                 onPressDeleteButton={this.deleteItemFromChosenEvents}
                                                 visibleButton={true}/>
+                                    </TouchableOpacity>
                                 )}
                             </View></If.Else>
                     </If>

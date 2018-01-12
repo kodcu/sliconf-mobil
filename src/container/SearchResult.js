@@ -1,33 +1,45 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet,ScrollView } from 'react-native';
-import {Container} from 'native-base'
+import React, {Component} from 'react';
+import {Alert, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Header from "../component/Header";
 import ChosenCard from '../component/ChosenCard'
-import {AGENDA} from '../router';
+import {LOGIN, TALK} from '../router';
+import Color from "../theme/Color";
+
 export default class SearchResult extends Component {
 
     render() {
         const {state} = this.props.navigation;
-        let results= state.params
-        console.log(results)
+        let results = state.params
         return (
-            <Container style={styles.container}>
+            <View style={styles.container}>
                 <Header leftImage='chevron-left'
                         onPressLeft={() => this.props.navigation.goBack()}>
-                    <Header.Title title="Search Result" />
+                    <Header.Title title="Search Result"/>
                 </Header>
                 <ScrollView>
-                    {results.map((item, i) =>
-                        <ChosenCard key={i} item={item}/>
+                    {results.items.map((item, i) =>
+                        <TouchableOpacity key={i} onPress={() => results.login ?
+                            this.props.navigation.navigate(TALK, [item]) : Alert.alert(
+                                'Warning!',
+                                'Please log in for more information.',
+                                [
+                                    {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
+                                    {text: 'CANCEL', onPress: () => console.log('cancel')}
+                                ],
+                                {cancelable: false}
+                            )}>
+                            <ChosenCard key={i} item={item}/>
+                        </TouchableOpacity>
                     )}
                 </ScrollView>
-            </Container>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor:'#fff'
+        flex: 1,
+        backgroundColor: Color.white
     },
 });
