@@ -219,13 +219,13 @@ class TalkComment extends Component {
 
     componentWillMount() {
         this.getComments();
-        this.props.lite ? this.getPopularComments() : null
+        !this.props.lite ? this.getPopularComments() : null
     }
 
     componentDidMount() {
         this.interval = setInterval(() => {
             this.getComments();
-            this.props.lite ? this.getPopularComments() : null
+            !this.props.lite ? this.getPopularComments() : null
         }, 10000);
     }
 

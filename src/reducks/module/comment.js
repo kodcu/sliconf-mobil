@@ -11,9 +11,9 @@ const types = {
     COMMENT_GET_SESSION_REQUEST: 'COMMENT_GET_SESSION_REQUEST',
     COMMENT_GET_SESSION_SUC: 'COMMENT_GET_SESSION_SUC',
     COMMENT_GET_SESSION_FAIL: 'COMMENT_GET_SESSION_FAIL',
-    POPULARCOMMENT_GET_SESSION_REQUEST: 'POPULARCOMMENT_GET_SESSION_REQUEST',
-    POPULARCOMMENT_GET_SESSION_SUC: 'POPULARCOMMENT_GET_SESSION_SUC',
-    POPULARCOMMENT_GET_SESSION_FAIL: 'POPULARCOMMENT_GET_SESSION_FAIL',
+    POPULAR_COMMENT_GET_SESSION_REQUEST: 'POPULAR_COMMENT_GET_SESSION_REQUEST',
+    POPULAR_COMMENT_GET_SESSION_SUC: 'POPULAR_COMMENT_GET_SESSION_SUC',
+    POPULAR_COMMENT_GET_SESSION_FAIL: 'POPULAR_COMMENT_GET_SESSION_FAIL',
     COMMENT_VOTE_REQUEST: 'COMMENT_VOTE_REQUEST',
     COMMENT_VOTE_SUC: 'COMMENT_VOTE_SUC',
     COMMENT_VOTE_FAIL: 'COMMENT_VOTE_FAIL',
@@ -86,7 +86,7 @@ export const reducer = (state = initialState, action) => {
                 errorMessage: payload
             }
         }
-        case types.POPULARCOMMENT_GET_SESSION_REQUEST: {
+        case types.POPULAR_COMMENT_GET_SESSION_REQUEST: {
             return {
                 ...state,
                 loading: true,
@@ -94,7 +94,7 @@ export const reducer = (state = initialState, action) => {
                 popularCommentList: [],
             }
         }
-        case types.POPULARCOMMENT_GET_SESSION_SUC: {
+        case types.POPULAR_COMMENT_GET_SESSION_SUC: {
             return {
                 ...state,
                 loading: false,
@@ -102,7 +102,7 @@ export const reducer = (state = initialState, action) => {
                 popularCommentList: payload,
             }
         }
-        case types.POPULARCOMMENT_GET_SESSION_FAIL: {
+        case types.POPULAR_COMMENT_GET_SESSION_FAIL: {
             return {
                 ...state,
                 loading: false,
@@ -246,32 +246,32 @@ export const actionCreators = {
     },
     getPopularCommentsSession: (eventId,sessionId) => async (dispatch, getState) => {
         dispatch({
-            type: types.POPULARCOMMENT_GET_SESSION_REQUEST
+            type: types.POPULAR_COMMENT_GET_SESSION_REQUEST
         })
         await Request.GET(getComments+'approved'+'/'+eventId+"/"+sessionId+"?count=5&type=top-rated",{
             '200': (res)=>{
                 if (res.status){
                     dispatch({
-                        type: types.POPULARCOMMENT_GET_SESSION_SUC,
+                        type: types.POPULAR_COMMENT_GET_SESSION_SUC,
                         payload: res.returnObject
                     })
                     console.log(res.returnObject)
                 }
                 else
                     dispatch({
-                        type: types.POPULARCOMMENT_GET_SESSION_FAIL,
+                        type: types.POPULAR_COMMENT_GET_SESSION_FAIL,
                         payload: res.message
                     })
             },
             otherwise:(res)=>{
                 dispatch({
-                    type: types.POPULARCOMMENT_GET_SESSION_FAIL,
+                    type: types.POPULAR_COMMENT_GET_SESSION_FAIL,
                     payload: res.message
                 })
             },
             fail:(err) =>{
                 dispatch({
-                    type: types.POPULARCOMMENT_GET_SESSION_FAIL,
+                    type: types.POPULAR_COMMENT_GET_SESSION_FAIL,
                     payload: 'Can not be processed at this time!'
                 })
             }
