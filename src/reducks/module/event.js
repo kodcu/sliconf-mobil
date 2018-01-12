@@ -105,13 +105,13 @@ export const actionCreators = {
                 else
                     dispatch({
                         type: types.EVENT_POSTS_RESPONSE_FAIL,
-                        payload: '" ' + code + ' " can not found!'
+                        payload: '" ' + code.toUpperCase() + ' " can not found!'
                     })
             },
             otherwise:(res)=>{
                 dispatch({
                     type: types.EVENT_POSTS_RESPONSE_FAIL,
-                    payload: '" ' + code + ' " can not found!'
+                    payload: '" ' + code.toUpperCase() + ' " can not found!'
                 })
             },
             fail:(err) =>{
