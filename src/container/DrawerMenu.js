@@ -72,9 +72,9 @@ class DrawerMenu extends Component {
                             <Button transparent style={{width: 40, justifyContent: 'center', marginRight: 10}}
                                     onPress={async () => {
                                         this.logout_close();
-                                        await this.props.dispatch(actionCreatorsDevice.loginDevice(DeviceInfo.getUniqueID()));
-                                        this.props.navigation.navigate(HOME);
+                                        //await this.props.dispatch(actionCreatorsDevice.loginDevice(DeviceInfo.getUniqueID()));
                                         this.props.dispatch(actionCreators.logout());
+                                        this.props.navigation.navigate(HOME);
                                         AsyncStorage.setItem('username', "");
                                         AsyncStorage.setItem('password', "");
                                     }}>

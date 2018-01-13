@@ -73,12 +73,10 @@ class SplashScreen extends React.Component {
      * @returns {Promise<*>}
      */
     async checkUser(){
-        if (await this.getLoggedUser()) return true;
+        await this.getLoggedUser();
         return await this.anonymousUser();
-
     }
 
-    //TODO ingilizce metin
     async componentDidMount() {
         if(await this.checkUser())
             setTimeout(() => this.props.navigation.dispatch({type: MAIN}), 500);

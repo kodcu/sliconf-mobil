@@ -3,7 +3,7 @@
  */
 
 import Request from "../../service/Request";
-import {API_LOGIN, API_REGISTER, postForgot, postLogin, postRegister} from '../Api'
+import {postForgot, postLogin, postRegister} from '../Api'
 
 const types = {
     LOGIN_REQUEST: 'LOGIN_REQUEST',
@@ -229,30 +229,6 @@ export const actionCreators = {
                 })
             }
         })
-
-    },
-
-    login2: (username, password) => async (dispatch, getState) => {
-        dispatch({type: types.LOGIN_REQUEST});
-
-
-        if (username === "abc" && password === "123") {
-            try {
-                const response = await fetch(API_LOGIN)
-                const posts = await response.json()
-
-                dispatch({type: types.LOGIN_RESPONSE_SUC, payload: posts.user})
-
-
-            } catch (e) {
-                dispatch({type: types.LOGIN_RESPONSE_FAIL, message: 'hata'})
-            }
-        } else
-            dispatch({
-                type: types.LOGIN_RESPONSE_FAIL,
-                message: 'Girdiğiniz bilgiler hatali veya eksik'
-            })
-
 
     },
     logout: () => async (dispatch, getState) => {
