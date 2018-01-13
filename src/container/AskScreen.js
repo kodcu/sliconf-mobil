@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import Header from "../component/Header";
 import Color from "../theme/Color";
 import TalkComment from "../component/TalkComment";
-import {Input,Picker } from "native-base";
+import {Input, Picker, Item} from "native-base";
 import * as Scale from "../theme/Scale";
 import {moderateScale} from "../theme/Scale";
 import Font from "../theme/Font";
@@ -30,6 +30,9 @@ class AskScreen extends Component {
         sessionId: "",
         messageModal: false,
     };
+    closeModal = () => {
+        this.setState({messageModal: false})
+    }
 
     changeSession(session) {
         this.setState({
@@ -38,24 +41,33 @@ class AskScreen extends Component {
         console.log(session)
     }
 
-    closeModal = () => {
-        this.setState({messageModal:false})
+    getPicker(agenda) {
+        if (Platform.OS === "android") {
+            return (<Picker style={{color: Color.black, width: Scale.width - 30, alignSelf: 'center', height: 60}}
+                            placeholder={"Select a Session"}
+                            selectedValue={this.state.sessionId}
+                            onValueChange={(itemValue, itemIndex) => this.changeSession(itemValue)}>
+                <Picker.Item key={-1} label={'Select a Session'} value={""}/>
+                {agenda.filter(talk => talk.level !== -1).map((item, i) =>
+                    <Picker.Item key={i + 1} label={item.topic} value={item.id}/>
+                )}
+            </Picker>);
+        } else {
+            return(<Picker
+                style={{width: Scale.width - 30, alignSelf: 'center', height: 60}}
+                textStyle={{color: Color.black}}
+                iosHeader="Select session"
+                placeholder="Select a Session"
+                mode="dropdown"
+                selectedValue={this.state.sessionId}
+                onValueChange={this.changeSession.bind(this)}>
+                {agenda.filter(talk => talk.level !== -1).map((item, i) =>
+                    <Item label={item.topic} value={item.id} key={item.id}/>
+                )}
+            </Picker>);
+        }
     }
 
-
-
-    // componentWillMount() {
-    //     if (!this.props.login)
-    //         Alert.alert(
-    //             'Warning!',
-    //             'Please log in for more information.',
-    //             [
-    //                 {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
-    //                 {text: 'CANCEL', onPress: () => this.props.navigation.navigate(HOME)}
-    //             ],
-    //             {cancelable: false}
-    //         )
-    // }
 
     render() {
         const agenda = this.props.event.agenda;
@@ -69,16 +81,7 @@ class AskScreen extends Component {
                     <Header.Title title="Ask Question"/>
                 </Header>
 
-                <Picker style={{color:Color.black,width: Scale.width - 30, alignSelf: 'center',height:60}}
-                        placeholder={"Select a Session"}
-                        selectedValue={this.state.sessionId}
-                        onValueChange={(itemValue, itemIndex) => this.changeSession(itemValue)}>
-                    {Platform.OS === 'android' ?
-                        <Picker.Item key={-1} label={'Select a Session'} value={""}/> : null}
-                    {agenda.filter(talk => talk.level !== -1).map((item, i) =>
-                        <Picker.Item key={i + 1} label={item.topic} value={item.id}/>
-                    )}
-                </Picker>
+                {this.getPicker(agenda)}
 
                 <TouchableOpacity style={styles.buttonContainer}
                                   onPress={() => !this.state.sessionId.trim() ? Alert.alert(
