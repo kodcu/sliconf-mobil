@@ -161,16 +161,28 @@ class TalkComment extends Component {
     }
     changeComment = (comment, index) => {
         let data = this.state.commentData;
+        let popularData=this.state.popularCommentData;
         data[index] = comment;
+        let obj = popularData.findIndex((popularComment) => comment.id === popularComment.id)
+        if (obj !== undefined)
+            popularData[obj]=comment
         this.setState({
-            commentData: data
+            commentData: data,
+            popularCommentData:popularData
         })
+
+
     }
     changePopularComment = (comment, index) => {
-        let data = this.state.popularCommentData;
-        data[index] = comment;
+        let data = this.state.commentData;
+        let popularData=this.state.popularCommentData;
+        popularData[index] = comment;
+        let obj = data.findIndex((recentData) => comment.id === recentData.id)
+        if (obj !== undefined)
+            data[obj]=comment
         this.setState({
-            popularCommentData: data
+            popularCommentData: popularData,
+            commentData:data
         })
     }
 
