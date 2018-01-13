@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert,Platform} from 'react-native';
+import {Modal, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, Platform} from 'react-native';
 import * as Scale from "../theme/Scale";
 import {moderateScale} from "../theme/Scale";
 import Color from "../theme/Color";
@@ -9,7 +9,7 @@ import {actionCreators} from "../reducks/module/comment";
 import {connect} from "react-redux";
 import moment from "moment/moment";
 import Icon from 'react-native-vector-icons/Ionicons'
-
+import ButtonComponent from "react-native-button-component"
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
@@ -27,12 +27,15 @@ export class SendQuestionModal extends Component {
         commentValue: "",
         anonymousWarning: false,
         anonymous: true,
-        anonymousFullName: ''
+        anonymousFullName: '',
+        buttonState: "request",
+        check: "",
+        error: ""
     };
 
     async sendComment() {
-        this.props.closeModal();
-
+        //this.props.closeModal();
+        this.setState({buttonState: "sending"})
         let userId;
         let fullname;
         if (!this.props.login) {
@@ -50,36 +53,33 @@ export class SendQuestionModal extends Component {
         const time = moment().unix();
         const anonymous = this.state.anonymous;
 
-        console.log(eventId, sessionId, userId, commentValue, time)
+        const {dispatch, loading, error, errorMessage} = this.props;
 
-        if (commentValue.trim()) {
-            const {dispatch, loading, error, errorMessage} = this.props;
+        if (this.props.login)
+            await dispatch(actionCreators.postComment(eventId, sessionId, userId, commentValue, time, anonymous));
+        else
+            await dispatch(actionCreators.postCommentAnonymous(eventId, sessionId, userId, commentValue, time, fullname));
 
-            if (this.props.login)
-                await dispatch(actionCreators.postComment(eventId, sessionId, userId, commentValue, time,anonymous));
-            else
-                await dispatch(actionCreators.postCommentAnonymous(eventId, sessionId, userId, commentValue, time, fullname));
+        if (error)
+            this.f1("sendError")
+        else
+            this.f1("sendSuccessful")
 
-            if (error)
-                Alert.alert(
-                    'Warning!',
-                    errorMessage,
-                    [
-                        {text: 'OK'}
-                    ],
-                    {cancelable: false}
-                );
-        } else
-            Alert.alert(
-                'Warning!',
-                "Please don't leave a comment blank",
-                [
-                    {text: 'OK'}
-                ],
-                {cancelable: false}
-            );
 
         this.setState({commentValue: "", anonymousFullName: ''})
+
+    }
+
+    f1(type) {
+        this.setState({buttonState: type});
+        setTimeout(() => this.setState({buttonState: "request"}), 2500)
+    }
+
+
+    async componentWillMount() {
+        await Icon.getImageSource('ios-checkmark-circle', 20, 'white').then((source) => this.setState({check: source.uri}));
+        await Icon.getImageSource('ios-close-circle', 20, 'white').then((source) => this.setState({error: source.uri}));
+
 
     }
 
@@ -92,7 +92,7 @@ export class SendQuestionModal extends Component {
                 visible={this.props.visible}
                 onRequestClose={() => {
                 }}>
-                <View style={{flex: 1, backgroundColor: Color.white,marginTop:Platform.OS=='ios'?20:0}}>
+                <View style={{flex: 1, backgroundColor: Color.white, marginTop: Platform.OS == 'ios' ? 20 : 0}}>
                     <TouchableOpacity style={{padding: 5, marginLeft: 10}} onPress={() => this.props.closeModal()}>
                         <Icon name={'ios-close-circle'} size={30} color={Color.gray}/>
                     </TouchableOpacity>
@@ -123,10 +123,15 @@ export class SendQuestionModal extends Component {
                                 borderWidth: 1,
                                 borderRadius: 10,
                                 borderColor: Color.green,
-                                height:150
+                                height: 150
                             }}
                         />
-                        <Text style={{alignSelf:'flex-end',justifyContent:'flex-end',marginRight:20,color:Color.darkGray2}}>{this.state.commentValue.length}/200</Text>
+                        <Text style={{
+                            alignSelf: 'flex-end',
+                            justifyContent: 'flex-end',
+                            marginRight: 20,
+                            color: Color.darkGray2
+                        }}>{this.state.commentValue.length}/200</Text>
 
                         <View style={{
                             flexDirection: 'row',
@@ -144,7 +149,7 @@ export class SendQuestionModal extends Component {
                                 fontSize: moderateScale(10),
                                 margin: 3,
                                 width: Scale.width - 80,
-                                color:Color.darkGray3
+                                color: Color.darkGray3
                             }}>
                                 After a comment is approved, it will be shown.
                             </Text>
@@ -200,9 +205,10 @@ export class SendQuestionModal extends Component {
                                     fontSize: moderateScale(9),
                                     margin: 3,
                                     width: Scale.width - 70,
-                                    color:Color.darkGray3
+                                    color: Color.darkGray3
                                 }}>
-                                    If you don't want to specify your identity, you have to mark this. It is mandatory for those who do not login.
+                                    If you don't want to specify your identity, you have to mark this. It is mandatory
+                                    for those who do not login.
                                 </Text>
 
                             </View> : null}
@@ -228,11 +234,48 @@ export class SendQuestionModal extends Component {
                                 borderWidth: 1,
                                 borderRadius: 10,
                                 borderColor: Color.green,
+                                height: 35
                             }}/> : null}
 
-                        <TouchableOpacity style={styles.buttonContainer} onPress={() => this.sendComment()}>
-                            <Text style={styles.buttonText}>Send Question</Text>
-                        </TouchableOpacity>
+
+                        <ButtonComponent
+                            buttonStyle={styles.buttonContainer}
+                            backgroundColors={[Color.green]}
+                            buttonState={this.state.buttonState} // "upload" or "uploading"
+                            textStyle={{...Font.semiBold,fontSize:moderateScale(15),letterSpacing:0}}
+                            states={{
+                                request: {
+                                    onPress: () => {
+                                        !this.state.commentValue.trim() ? this.f1("valueError") : this.sendComment()
+                                    },
+                                    text: 'Send Question',
+                                },
+                                sending: {
+                                    spinner: true,
+                                    text: 'Sending Message...',
+                                    backgroundColors: [Color.green]
+                                },
+                                sendSuccessful: {
+                                    text: 'Your message has been sent',
+                                    backgroundColors: [Color.green],
+                                    image: { uri: this.state.check },
+                                    imageStyle: styles.imageStyle,
+                                },
+                                sendError: {
+                                    text: 'Your message can not sent',
+                                    backgroundColors: [Color.red, Color.red],
+                                    image: { uri: this.state.error },
+                                    imageStyle: styles.imageStyle,
+                                },
+                                valueError: {
+                                    text: 'Please don\'t leave a comment blank',
+                                    backgroundColors: [Color.yellow, Color.yellow],
+                                    image: { uri: this.state.error },
+                                    imageStyle: styles.imageStyle,
+                                },
+                            }}
+                        >
+                        </ButtonComponent>
 
                     </KeyboardAwareScrollView>
 
@@ -251,10 +294,9 @@ const styles = StyleSheet.create({
     buttonContainer: {
         backgroundColor: Color.green,
         borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
         marginHorizontal: 20,
-        height: 50
+        height: 50,
+
     },
     buttonText: {
         ...Font.regular,
@@ -269,7 +311,11 @@ const styles = StyleSheet.create({
         fontSize: Scale.verticalScale(18),
         padding: 5,
         paddingTop: 0
-    }
+    },
+    imageStyle: {
+        width: 20,
+        height: 20,
+    },
 });
 
 export default connect(mapStateToProps)(SendQuestionModal);

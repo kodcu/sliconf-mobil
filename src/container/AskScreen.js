@@ -122,10 +122,10 @@ const styles = StyleSheet.create({
         height: 50
     },
     buttonText: {
-        ...Font.regular,
+        ...Font.medium,
         textAlign: 'center',
         color: Color.white,
-        fontSize: Scale.verticalScale(25),
+        fontSize:moderateScale(15)
     },
     topic: {
         ...Font.regular,
