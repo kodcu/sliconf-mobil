@@ -135,6 +135,7 @@ class CommentItem extends Component {
 
 
 
+
     render() {
         const info = this.props.item;
         const name = info.anonymous ? info.fullname : info.username;
@@ -211,35 +212,39 @@ class CommentItem extends Component {
                 </View>
             );
         } else{
-            console.log(this.state.isClicked+" "+this.state.isDislike)
             return (<View style={{
                 alignSelf: 'center',
-                margin: 0,
-                width: width - 40,
+                alignItems: 'center',
+                marginRight: 5,
+                marginLeft:5,
+                width: width - 30,
                 height: 150,
                 backgroundColor: Color.green,
                 borderRadius: 20,
-                elevation: 3
+                elevation: 3,
+
             }}>
                 <View style={{
                     alignItems: 'center',
                     justifyContent: 'center',
+                    width: moderateScale(9 * name.length),
                     height: 25,
                     marginTop: 0,
-                    borderRadius: 10
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    backgroundColor:Color.white,
                 }}>
                     <Text style={{
                         ...Font.medium,
                         padding: 5,
-                        backgroundColor: Color.white,
+                        backgroundColor: Color.transparent,
                         margin: 1,
                         fontSize: moderateScale(10),
-                        width: moderateScale(7 * 21),
                         color: Color.darkGray,
                         height: 25,
                         textAlign: 'center',
-                        borderBottomLeftRadius: 10,
-                        borderBottomRightRadius: 10,
+                        borderBottomLeftRadius: 70,
+                        borderBottomRightRadius: 70,
                     }}>
                         {name}
                     </Text>
