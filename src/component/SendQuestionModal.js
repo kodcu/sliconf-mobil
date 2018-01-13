@@ -61,16 +61,20 @@ export class SendQuestionModal extends Component {
             await dispatch(actionCreators.postCommentAnonymous(eventId, sessionId, userId, commentValue, time, fullname));
 
         if (error)
-            this.f1("sendError")
+            this.buttonTypeChange("sendError")
         else
-            this.f1("sendSuccessful")
+            this.buttonTypeChange("sendSuccessful")
 
 
         this.setState({commentValue: "", anonymousFullName: ''})
 
     }
 
-    f1(type) {
+    /**
+     * butonun hangi tipte olacagini ve belirlenen surede tekrar ilk tipe donmesini saglar
+     * @param type
+     */
+    buttonTypeChange(type) {
         this.setState({buttonState: type});
         setTimeout(() => this.setState({buttonState: "request"}), 2500)
     }
@@ -79,8 +83,6 @@ export class SendQuestionModal extends Component {
     async componentWillMount() {
         await Icon.getImageSource('ios-checkmark-circle', 20, 'white').then((source) => this.setState({check: source.uri}));
         await Icon.getImageSource('ios-close-circle', 20, 'white').then((source) => this.setState({error: source.uri}));
-
-
     }
 
     render() {
@@ -92,7 +94,7 @@ export class SendQuestionModal extends Component {
                 visible={this.props.visible}
                 onRequestClose={() => {
                 }}>
-                <View style={{flex: 1, backgroundColor: Color.white, marginTop: Platform.OS == 'ios' ? 20 : 0}}>
+                <View style={{flex: 1, backgroundColor: Color.white, marginTop: Platform.OS === 'ios' ? 20 : 0}}>
                     <TouchableOpacity style={{padding: 5, marginLeft: 10}} onPress={() => this.props.closeModal()}>
                         <Icon name={'ios-close-circle'} size={30} color={Color.gray}/>
                     </TouchableOpacity>
@@ -127,6 +129,7 @@ export class SendQuestionModal extends Component {
                             }}
                         />
                         <Text style={{
+                            ...Font.regular,
                             alignSelf: 'flex-end',
                             justifyContent: 'flex-end',
                             marginRight: 20,
@@ -240,24 +243,24 @@ export class SendQuestionModal extends Component {
 
                         <ButtonComponent
                             buttonStyle={styles.buttonContainer}
-                            backgroundColors={[Color.green]}
+                            backgroundColors={[Color.green,Color.green]}
                             buttonState={this.state.buttonState} // "upload" or "uploading"
                             textStyle={{...Font.semiBold,fontSize:moderateScale(15),letterSpacing:0}}
                             states={{
                                 request: {
                                     onPress: () => {
-                                        !this.state.commentValue.trim() ? this.f1("valueError") : this.sendComment()
+                                        !this.state.commentValue.trim() ? this.buttonTypeChange("valueError") : this.sendComment()
                                     },
                                     text: 'Send Question',
                                 },
                                 sending: {
                                     spinner: true,
                                     text: 'Sending Message...',
-                                    backgroundColors: [Color.green]
+                                    backgroundColors: [Color.green,Color.green]
                                 },
                                 sendSuccessful: {
                                     text: 'Your message has been sent',
-                                    backgroundColors: [Color.green],
+                                    backgroundColors: [Color.green,Color.green],
                                     image: { uri: this.state.check },
                                     imageStyle: styles.imageStyle,
                                 },
