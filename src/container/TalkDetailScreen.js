@@ -130,16 +130,7 @@ export class TalkDetail extends Component {
                         </Button>
 
                         <Button vertical style={{paddingLeft: 30}}
-                                onPress={() => moment().isAfter(moment.unix(talk[0].date)) ?
-                                    this.setState({tab: 'comment'}) :
-                                    Alert.alert(
-                                        'Warning!',
-                                        'Please wait until start talk.',
-                                        [
-                                            {text: 'OK', onPress: () => console.log('ok')}
-                                        ],
-                                        {cancelable: false}
-                                    )}>
+                                onPress={() => this.setState({tab: 'comment'})}>
                             <Icon size={25}
                                   name={tab === 'comment' ? 'ios-chatbubbles' : 'ios-chatbubbles-outline'}
                                   color={tab === 'comment' ? '#29B673' : '#333'}/>
