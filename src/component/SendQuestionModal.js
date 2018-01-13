@@ -126,6 +126,7 @@ export class SendQuestionModal extends Component {
                                 height:150
                             }}
                         />
+                        <Text style={{alignSelf:'flex-end',justifyContent:'flex-end',marginRight:20,color:Color.darkGray2}}>{this.state.commentValue.length}/200</Text>
 
                         <View style={{
                             flexDirection: 'row',
