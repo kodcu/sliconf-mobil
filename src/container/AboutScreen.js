@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Container, Tab, Tabs, Thumbnail} from 'native-base'
+import {Thumbnail} from 'native-base'
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/drawer'
@@ -9,7 +9,7 @@ import IconSocial from 'react-native-vector-icons/Entypo'
 import Communications from 'react-native-communications';
 import Font from "../theme/Font";
 import Color from "../theme/Color";
-import * as Scale from "../theme/Scale";
+import {moderateScale} from "../theme/Scale";
 import getImage from "../helpers/getImageHelper"
 
 const mapStateToProps = (state) => ({
@@ -23,6 +23,7 @@ export class About extends Component {
      * @param name iletisim bilgisi
      * @param icon kullanilacak ikon ismi
      * @param type mail - telefon (email-phone)
+     * @param index
      */
     rowItem = (name, icon, type, index) =>
         <TouchableOpacity key={index}
@@ -38,6 +39,7 @@ export class About extends Component {
      * Etkinligin sosyal medya hesaplarini ekrana basar
      * @param icon sosyal medya ikonunun ismi
      * @param url sosyal medya linki
+     * @param index
      */
     rowSocial = (icon, url, index) =>
         <TouchableOpacity key={index}
@@ -88,7 +90,7 @@ export class About extends Component {
                         <Thumbnail large source={{uri: getImage(event.logoPath)}}/>
 
                         <View style={styles.aboutPanel}>
-                            <Text style={styles.EventnameText}>{event.name}</Text>
+                            <Text style={styles.eventNameText}>{event.name}</Text>
                             <Text style={styles.descText}>{event.description}</Text>
                         </View>
 
@@ -98,7 +100,8 @@ export class About extends Component {
                         <Text style={styles.activeTabText}>Contact Us</Text>
                         <View style={styles.contact}>
                             {about.email ? this.rowItem(about.email, 'ios-at-outline', 'email') : null}
-                            {about.phone ? about.phone.map((item, index) => item.trim() ? this.rowItem(item, 'ios-call-outline', 'phone', index) : null) : null}
+                            {about.phone ? about.phone.map((item, index) => item.trim() ?
+                                this.rowItem(item, 'ios-call-outline', 'phone', index) : null) : null}
                             {about.social ?
                                 <View style={styles.socialMedia}>
                                     {Object.keys(about.social).map((item, index) => {
@@ -141,14 +144,14 @@ const styles = StyleSheet.create({
     },
     tabText: {
         ...Font.regular,
-        fontSize: 15,
+        fontSize: moderateScale(15),
         lineHeight: 23,
         letterSpacing: 0.47,
         color: Color.darkGray3
     },
     activeTabText: {
         ...Font.medium,
-        fontSize: 18,
+        fontSize: moderateScale(18),
         color: Color.green
     },
     aboutField: {
@@ -181,16 +184,16 @@ const styles = StyleSheet.create({
         color: Color.darkGray3,
         textAlign: 'center'
     },
-    EventnameText: {
+    eventNameText: {
         ...Font.medium,
-        fontSize: 25,
+        fontSize: moderateScale(25),
         color: Color.darkGray,
         margin: 10,
         textAlign: 'center'
     },
     aboutText: {
         ...Font.regular,
-        fontSize: 15,
+        fontSize: moderateScale(15),
         margin: 15,
         color: Color.darkGray
     }

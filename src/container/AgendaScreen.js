@@ -1,23 +1,6 @@
 import React, {Component} from 'react';
 import {Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {
-    Button,
-    Card,
-    CardItem,
-    Container,
-    Content,
-    Footer,
-    FooterTab,
-    Form,
-    Icon,
-    Item,
-    Left,
-    List,
-    Picker,
-    Right,
-    Thumbnail,
-    Title
-} from 'native-base';
+import {Button, Content, Footer, FooterTab, Icon, Picker, Thumbnail} from 'native-base';
 import AgendaCard from '../component/AgendaCard'
 import ChosenCard from '../component/ChosenCard'
 import Header from '../component/Header'
@@ -32,8 +15,6 @@ import Font from "../theme/Font";
 import {moderateScale} from "../theme/Scale";
 import moment from "moment";
 
-let eventsDates = [];
-
 const mapStateToProps = (state) => ({
     agenda: state.event.event.agenda,
     rooms: state.event.event.rooms,
@@ -42,112 +23,18 @@ const mapStateToProps = (state) => ({
     login: state.auth.login
 });
 
-const mock = {
-    "1525510807": [
-        {
-            "key": "a102",
-            "time": '9:30',
-            "topic": "CI/CD of blockchain smart1 contracts using Java and eDuke",
-            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
-            "level": 3,
-            "tags": [
-                "Java",
-                "JVM",
-                "Security",
-            ],
-            "room": "Big Saloon",
-            "speaker": "Frédéric Hubin",
-            "star": 4.5,
-            "date": '1525510807',
-        },
-        {
-            "key": "a102",
-            "time": '9:40',
-            "topic": "CI/CD of blockchain smart2 contracts using Java and eDuke",
-            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
-            "level": 0,
-            "room": "Big Saloon",
-            "speaker": "Frédéric Hubin",
 
-            "star": 4.5,
-            "date": '1525510807',
-        },
-        {
-            "key": "a102",
-            "time": '9:50',
-            "topic": "CI/CD of blockchain smart3 contracts using Java and eDuke",
-            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
-            "level": 3,
-            "tags": [
-                "Java",
-                "JVM"
-            ],
-            "room": "Bigboy Saloon",
-            "speaker": "Frédéric Hubin",
-            "star": 4.5,
-            "date": '1525510807',
-        },
-        {
-            "key": "a102",
-            "time": '10:50',
-            "topic": "CI/CD of blockchain smart4 contracts using Java and eDuke",
-            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
-            "level": 1,
-            "tags": [
-                "Java",
-                "JVM"
-            ],
-            "room": "Bigboy Saloon",
-            "speaker": "Frédéric Hubin",
-            "star": 4.5,
-            "date": '1525510807',
-        },
-        {
-            "key": "a102",
-            "time": '9:50',
-            "topic": "CI/CD of blockchain  contracts using Java and eDuke",
-            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
-            "level": 2,
-            "tags": [
-                "Java",
-                "JVM"
-            ],
-            "room": "Bigboy Saloon",
-            "speaker": "Frédéric Hubin22",
-            "star": 4.5,
-            "date": '1525510807',
-        },
-
-    ],
-    "1525597207": [
-        {
-            "key": "a102",
-            "time": '9:30',
-            "topic": "CI/CD of blockchain smart11 contracts using Java and eDuke",
-            "topicDetail": "Blockchain is a hot topic especially the smart contract feature. Smart contracts allow to customize the rules applicable to digital assets deployed on a blockchain. On the Ethereum blockchain, Solidity is the usual programming language used to develop smart contract. With the use of eDuke, a Java framework allowing easy interactions with the Ethereum blockchain, we will show how to continuously deploy and test smart contracts and 'oracle' code using JUnit, Jenkins and Maven.",
-            "level": 2,
-            "tags": [
-                "Java",
-                "JVM",
-                "Security",
-            ],
-            "room": "Big Saloon",
-            "speaker": "Frédéric Hubin",
-            "star": 4.5,
-            "date": '1525597207',
-        }
-    ]
-};
+let eventsData = [];
 
 class AgendaScreen extends Component {
 
     state = {
         switchedDay: 'Day 1',
-        isChoosenClicked: true,
+        isChosenClicked: true,
         data: [],
         rooms: [],
         filter: false,
-        choosen: [],
+        chosen: [],
         agendaData: []
     };
     /**
@@ -156,7 +43,7 @@ class AgendaScreen extends Component {
      */
     filterHide = (searchResults) => {
         this.setState({filter: false});
-        this.props.navigation.navigate(SEARCHRESULT, {items :searchResults, login : this.props.login})
+        this.props.navigation.navigate(SEARCHRESULT, {items: searchResults, login: this.props.login})
     };
     /**
      * Filtre popupini kapatir.
@@ -176,10 +63,10 @@ class AgendaScreen extends Component {
      * @param arg Konusmanın modeli
      */
     deleteItemFromChosenEvents = (arg) => {
-        let array = choosen;
+        let array = chosen;
         let index = array.indexOf(arg);
         array.splice(index, 1);
-        this.setState({choosen: choosen})
+        this.setState({chosen: chosen})
     };
 
     convertToDateArray(agenda) {
@@ -254,7 +141,7 @@ class AgendaScreen extends Component {
         const data = agenda;
 
         if (data !== undefined && data !== null && !data.isEmpty) {
-            Object.keys(data).forEach((date) => eventsDates.includes(date) ? null : eventsDates.push(date));
+            Object.keys(data).forEach((date) => eventsData.includes(date) ? null : eventsData.push(date));
             this.setState({
                 rooms: this.roomsList(data[Object.keys(data)[0]]),
                 data: this.eventsList(data[Object.keys(data)[0]]),
@@ -282,7 +169,7 @@ class AgendaScreen extends Component {
      * @param arg konusma detaylari
      */
     addItemToChosenEvents(arg) {
-        choosen.push(arg);
+        chosen.push(arg);
     }
 
     /**
@@ -296,13 +183,13 @@ class AgendaScreen extends Component {
         let i, j;
         for (i = 0; i < arg.length; i++) {
             if (myroom === arg[i].room) {
-                for (j = 0; j < choosen.length; j++) {
-                    if (arg[i] === choosen[j]) {
+                for (j = 0; j < chosen.length; j++) {
+                    if (arg[i] === chosen[j]) {
                         return (
-                            this.getAgendaCard(arg, i,true))
+                            this.getAgendaCard(arg, i, true))
                     }
                 }
-                return (this.getAgendaCard(arg, i,false))
+                return (this.getAgendaCard(arg, i, false))
             }
         }
         if (!isExist)
@@ -319,14 +206,21 @@ class AgendaScreen extends Component {
         );
     }
 
-    getAgendaCard(arg, i,isClicked) {
+    /**
+     * Ajanda karti olusturur ve cevirir
+     * @param arg -> konusma verisi
+     * @param i -> index
+     * @param isClicked -> secili olma durumu
+     * @returns {*}
+     */
+    getAgendaCard(arg, i, isClicked) {
         return <AgendaCard item={arg[i]}
                            speaker={this.getSpeaker(arg[i].speaker)}
                            isEmpty={false}
                            onPressAddButton={this.addItemToChosenEvents}
                            isClicked={isClicked}
                            key={arg[i].key}
-                           choosedEvents={choosen}
+                           choosedEvents={chosen}
                            onPress={() => this.props.login ? this.props.navigation.navigate(TALK, arg) : Alert.alert(
                                'Warning!',
                                'Please log in for more information.',
@@ -344,15 +238,24 @@ class AgendaScreen extends Component {
      * @private
      */
     _hide() {
-        this.setState({isChoosenClicked: true})
+        this.setState({isChosenClicked: true})
     }
 
+    /**
+     * gelen room id ile room bilgilerini cevirir
+     * @param roomId
+     */
     getRoomName(roomId) {
         const roomsTags = this.props.rooms;
         const room = roomsTags.find(room => room.id === roomId)
         return room.label;
     }
 
+    /**
+     * gelen speaker id ile speaker verilerini cevirir
+     * @param speakerId
+     * @returns {ShallowWrapper|ReactWrapper|*|ConfigT|number|T}
+     */
     getSpeaker(speakerId) {
         const speakerData = this.props.speakers;
         return speakerData.find(speaker => speaker.id === speakerId)
@@ -360,14 +263,14 @@ class AgendaScreen extends Component {
 
 
     render() {
-        const {isChoosenClicked, filter} = this.state;
+        const {isChosenClicked, filter} = this.state;
         talksList = this.state.data;
         rooms = this.state.rooms;
-        choosen = this.state.choosen;
+        chosen = this.state.chosen;
         const agendaData = this.state.agendaData;
         return (
-            <Container style={{backgroundColor: '#fff'}}>
-                <If con={isChoosenClicked}>
+            <View style={styles.container}>
+                <If con={isChosenClicked}>
                     <If.Then>
                         <FilterEvent visible={filter} onPress={(e) => this.filterHide(e)}
                                      onClose={() => this.closeFilter}
@@ -381,7 +284,7 @@ class AgendaScreen extends Component {
                                     placeholder={this.state.switchedDay}
                                     selectedValue={this.state.switchedDay}
                                     onValueChange={(itemValue, itemIndex) => this.changeDate(itemValue)}>
-                                {eventsDates.map((item, i) =>
+                                {eventsData.map((item, i) =>
                                     <Picker.Item key={i + 1} label={moment(item, "MM-DD-YYYY").format("dddd")}
                                                  value={item}/>
                                 )}
@@ -408,17 +311,16 @@ class AgendaScreen extends Component {
                     </If.Else>
                 </If>
                 <Content>
-                    <If con={isChoosenClicked}>
+                    <If con={isChosenClicked}>
 
                         <If.Then>
-
                             <Content>
                                 <View style={{flexDirection: 'row'}}>
                                     <View style={{margin: 0, marginTop: 5, padding: 5}}>
                                         {Object.keys(talksList).map((date, i) => (
                                             <View style={{borderRightWidth: 0,}} key={i}>
                                                 {talksList[date][0].level === -1 ?
-                                                    <Text style={styles.cardTimeLanch}>{date}</Text> :
+                                                    <Text style={styles.cardTimeLaunch}>{date}</Text> :
                                                     <Text style={styles.cardsTime}>{date}</Text>}
                                             </View>
                                         ))}
@@ -454,7 +356,7 @@ class AgendaScreen extends Component {
                         </If.Then>
                         <If.Else>
                             <View>
-                                {choosen.map((choosed, i) =>
+                                {chosen.map((choosed, i) =>
                                     <TouchableOpacity key={i} onPress={() => this.props.login ?
                                         this.props.navigation.navigate(TALK, [choosed]) : Alert.alert(
                                             'Warning!',
@@ -465,9 +367,9 @@ class AgendaScreen extends Component {
                                             ],
                                             {cancelable: false}
                                         )}>
-                                    <ChosenCard key={i} item={choosed}
-                                                onPressDeleteButton={this.deleteItemFromChosenEvents}
-                                                visibleButton={true}/>
+                                        <ChosenCard key={i} item={choosed}
+                                                    onPressDeleteButton={this.deleteItemFromChosenEvents}
+                                                    visibleButton={true}/>
                                     </TouchableOpacity>
                                 )}
                             </View></If.Else>
@@ -476,28 +378,28 @@ class AgendaScreen extends Component {
 
 
                 <Footer>
-                    <FooterTab style={{backgroundColor: '#fff'}}>
+                    <FooterTab style={{backgroundColor: Color.white}}>
                         <Button vertical onPress={() => {
-                            this.setState({isChoosenClicked: true})
+                            this.setState({isChosenClicked: true})
                         }}>
                             <Text style={{
                                 ...Font.semiBold,
                                 fontSize: moderateScale(12),
-                                color: this.state.isChoosenClicked ? Color.green : Color.darkGray
+                                color: this.state.isChosenClicked ? Color.green : Color.darkGray
                             }}>All</Text>
                         </Button>
                         <Button vertical onPress={() => {
-                            this.setState({isChoosenClicked: false})
+                            this.setState({isChosenClicked: false})
                         }}>
                             <Text style={{
                                 ...Font.semiBold,
                                 fontSize: moderateScale(12),
-                                color: this.state.isChoosenClicked ? Color.darkGray : Color.green
+                                color: this.state.isChosenClicked ? Color.darkGray : Color.green
                             }}>Chosen</Text>
                         </Button>
                     </FooterTab>
                 </Footer>
-            </Container>
+            </View>
         );
     }
 }
@@ -505,6 +407,7 @@ class AgendaScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: Color.white
     },
     roomsField: {
         padding: 5,
@@ -530,7 +433,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         height: 112
     },
-    cardTimeLanch: {
+    cardTimeLaunch: {
         ...Font.semiBold,
         fontSize: moderateScale(11),
         margin: 8,
