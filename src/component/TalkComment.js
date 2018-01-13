@@ -284,15 +284,15 @@ class TalkComment extends Component {
                         <Carousel
                             data={popularComments}
                             renderItem={(item) => this.renderPopularComments(item, this.props.user.id)}
-                            sliderWidth={(width) - 40}
-                            itemWidth={(width) - 40}
+                            sliderWidth={(width) - 20}
+                            itemWidth={(width) - 20}
                             inactiveSlideScale={1}
                             inactiveSlideOpacity={1}
                             enableMomentum={true}
                             activeSlideAlignment={'start'}
                             autoplay={true}
                             autoplayDelay={10000}
-                            autoplayInterval={2000}
+                            autoplayInterval={10000}
                             containerCustomStyle={styles.slider}
                             contentContainerCustomStyle={styles.sliderContentContainer}
                             removeClippedSubviews={false}
