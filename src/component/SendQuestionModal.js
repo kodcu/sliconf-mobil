@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert} from 'react-native';
+import {Modal, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert,Platform} from 'react-native';
 import * as Scale from "../theme/Scale";
 import {moderateScale} from "../theme/Scale";
 import Color from "../theme/Color";
@@ -92,7 +92,7 @@ export class SendQuestionModal extends Component {
                 visible={this.props.visible}
                 onRequestClose={() => {
                 }}>
-                <View style={{flex: 1, backgroundColor: Color.white}}>
+                <View style={{flex: 1, backgroundColor: Color.white,marginTop:Platform.OS=='ios'?20:0}}>
                     <TouchableOpacity style={{padding: 5, marginLeft: 10}} onPress={() => this.props.closeModal()}>
                         <Icon name={'ios-close-circle'} size={30} color={Color.gray}/>
                     </TouchableOpacity>
@@ -122,9 +122,11 @@ export class SendQuestionModal extends Component {
                                 marginRight: 20,
                                 borderWidth: 1,
                                 borderRadius: 10,
-                                borderColor: Color.green
+                                borderColor: Color.green,
+                                height:150
                             }}
                         />
+                        <Text style={{alignSelf:'flex-end',justifyContent:'flex-end',marginRight:20,color:Color.darkGray2}}>{this.state.commentValue.length}/200</Text>
 
                         <View style={{
                             flexDirection: 'row',
