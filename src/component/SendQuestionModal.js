@@ -53,14 +53,14 @@ export class SendQuestionModal extends Component {
         const time = moment().unix();
         const anonymous = this.state.anonymous;
 
-        const {dispatch, loading, error, errorMessage} = this.props;
+        const {dispatch} = this.props;
 
         if (this.props.login)
             await dispatch(actionCreators.postComment(eventId, sessionId, userId, commentValue, time, anonymous));
         else
             await dispatch(actionCreators.postCommentAnonymous(eventId, sessionId, userId, commentValue, time, fullname));
 
-        if (error)
+        if (this.props.error)
             this.buttonTypeChange("sendError")
         else
             this.buttonTypeChange("sendSuccessful")
