@@ -158,7 +158,7 @@ class CommentItem extends Component {
                                 color: Color.darkGray2,
                                 marginBottom: 5,
                                 marginRight: 5
-                            }}>~{moment.unix(info.time).startOf('second').fromNow()}</Text>
+                            }}>{moment.unix(info.time).startOf('second').fromNow()}</Text>
                         </View>
                         <Text style={{
                             ...Font.regular,
