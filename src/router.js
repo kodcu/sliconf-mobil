@@ -55,7 +55,9 @@ const EventStack = DrawerNavigator({
     [SPEAKERS]: {
         screen: StackNavigator({
             [SPEAKERS]: {screen: SpeakersScreen},
-            [SPEAKERINFO]: {screen: SpeakerInfoScreen}
+            [SPEAKERINFO]: {screen: SpeakerInfoScreen},
+            [TALK]: {screen: TalkDetailScreen} //->
+            //When user selects talk on speakers, this makes app return to speakersinfo screen when the back is pressed
         }, {
             headerMode: 'none',
             navigationOptions: {
