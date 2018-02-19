@@ -56,13 +56,13 @@ class TalkInfo extends Component {
                         width
                     }}>
                         <Text style={{
-                            fontSize: moderateScale(10),
+                            fontSize: moderateScale(13),
                             fontFamily: 'Montserrat-Bold',
                             color: '#333',
                             textAlign: 'center',
                         }}>Level: </Text>
                         <Text style={{
-                            fontSize: moderateScale(9),
+                            fontSize: moderateScale(13),
                             fontFamily: 'Montserrat-Regular',
                             color: '#333',
                             textAlign: 'center',
@@ -78,14 +78,14 @@ class TalkInfo extends Component {
                         width
                     }}>
                         <Text style={{
-                            fontSize: moderateScale(10),
+                            fontSize: moderateScale(13),
                             fontFamily: 'Montserrat-Bold',
                             color: '#333',
                             textAlign: 'center',
                         }}>Tags: </Text>
 
                         <Text style={{
-                            fontSize: moderateScale(9),
+                            fontSize: moderateScale(13),
                             fontFamily: 'Montserrat-Regular',
                             color: '#333',
                             textAlign: 'center',
@@ -101,14 +101,14 @@ class TalkInfo extends Component {
                         width
                     }}>
                         <Text style={{
-                            fontSize: moderateScale(10),
+                            fontSize: moderateScale(13),
                             fontFamily: 'Montserrat-Bold',
                             color: '#333',
                             textAlign: 'center',
                         }}>Room: </Text>
 
                         <Text style={{
-                            fontSize: moderateScale(9),
+                            fontSize: moderateScale(13),
                             fontFamily: 'Montserrat-Regular',
                             color: '#333',
                             textAlign: 'center',
@@ -119,8 +119,8 @@ class TalkInfo extends Component {
                         <Text style={{
                             color: '#666',
                             fontFamily: 'Montserrat-Regular',
-                            fontSize: moderateScale(11),
-                            textAlign: 'center',
+                            fontSize: moderateScale(16),
+                            textAlign: 'left',
                             paddingBottom:10
                         }}>{talk.detail}</Text>
                     </ScrollView>

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+    Alert,
     Animated,
     Dimensions,
     Image,
@@ -21,6 +22,7 @@ import Color from "../theme/Color";
 import Font from "../theme/Font";
 import getImage from "../helpers/getImageHelper"
 import {moderateScale} from "../theme/Scale";
+import {LOGIN, TALK} from "../router";
 
 
 const phoneW = Dimensions.get('window').width - 50;
@@ -149,9 +151,27 @@ class SpeakerInfoScreen extends Component {
                     </If.Then>
                     <If.Else>
                         <ScrollView>
-                            <View style={[styles.talksField,{height: (talkList.length * moderateScale(145))}]}>
-                                {talkList.map((item, i) => <ChosenCard key={i} item={item} visibleButton={false}/>)}
-                            </View>
+                            <TouchableOpacity
+                                /*onPress={() =>
+                                    this.props.navigation.navigate(TALK, Object.values(talkList))
+                                }*/
+                                onPress={() =>
+                                    this.props.login ?
+                                        this.props.navigation.navigate(TALK, Object.values(talkList)) :
+                                        Alert.alert(
+                                            'Warning!',
+                                            'Please log in for more information.',
+                                            [
+                                                {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
+                                                {text: 'CANCEL', onPress: () => console.log('cancel')}
+                                            ]
+                                        )
+                                }
+                            >
+                                <View style={[styles.talksField,{height: (talkList.length * moderateScale(145))}]}>
+                                    {talkList.map((item, i) => <ChosenCard key={i} item={item} visibleButton={false}/>)}
+                                </View>
+                            </TouchableOpacity>
                         </ScrollView>
                     </If.Else>
                 </If>
