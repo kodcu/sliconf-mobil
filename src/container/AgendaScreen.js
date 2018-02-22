@@ -12,7 +12,7 @@ import {LOGIN, SEARCHRESULT, TALK} from '../router';
 import FilterEvent from "../component/FilterEvent";
 import Color from "../theme/Color";
 import Font from "../theme/Font";
-import {moderateScale} from "../theme/Scale";
+import {height, moderateScale} from "../theme/Scale";
 import moment from "moment";
 
 const mapStateToProps = (state) => ({
@@ -314,7 +314,7 @@ class AgendaScreen extends Component {
                     <If con={isChosenClicked}>
 
                         <If.Then>
-                            <Content>
+                            <View>
                                 <View style={{flexDirection: 'row'}}>
                                     <View style={{margin: 0, marginTop: 5, padding: 5}}>
                                         {Object.keys(talksList).map((date, i) => (
@@ -326,9 +326,12 @@ class AgendaScreen extends Component {
                                         ))}
                                     </View>
 
-                                    <ScrollView horizontal onScroll={this.handleScroll}
-                                                showsHorizontalScrollIndicator={false}>
-                                        <ScrollView>
+                                    <ScrollView
+                                                onScroll={this.handleScroll}
+                                                showsHorizontalScrollIndicator={false}
+                                                directionalLockEnabled={false}
+                                                horizontal={true}>
+                                        <View style={{flexDirection:'column'}}>
                                             {Object.keys(talksList).map((time, i) => (
                                                 <View key={i}>
                                                     <If con={talksList[time][0].level !== -1}>
@@ -348,11 +351,12 @@ class AgendaScreen extends Component {
                                                 </View>
 
                                             ))}
+                                        </View>
 
-                                        </ScrollView>
+
                                     </ScrollView>
                                 </View>
-                            </Content>
+                            </View>
                         </If.Then>
                         <If.Else>
                             <View>
@@ -375,8 +379,6 @@ class AgendaScreen extends Component {
                             </View></If.Else>
                     </If>
                 </Content>
-
-
                 <Footer>
                     <FooterTab style={{backgroundColor: Color.white}}>
                         <Button vertical onPress={() => {

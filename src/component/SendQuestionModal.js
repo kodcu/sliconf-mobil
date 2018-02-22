@@ -92,8 +92,7 @@ export class SendQuestionModal extends Component {
                 animationType={'slide'}
                 transparent={true}
                 visible={this.props.visible}
-                onRequestClose={() => {
-                }}>
+                onRequestClose={() => this.props.closeModal()}>
                 <View style={{flex: 1, backgroundColor: Color.white, marginTop: Platform.OS === 'ios' ? 20 : 0}}>
                     <TouchableOpacity style={{padding: 5, marginLeft: 10}} onPress={() => this.props.closeModal()}>
                         <Icon name={'ios-close-circle'} size={30} color={Color.gray}/>
