@@ -63,11 +63,17 @@ class AgendaScreen extends Component {
      * @param arg Konusmanın modeli
      */
     deleteItemFromChosenEvents = (arg) => {
-        let array = chosen;
+        let array = this.state.chosen;
         let index = array.indexOf(arg);
         array.splice(index, 1);
-        this.setState({chosen: chosen})
+        this.setState({chosen: array})
     };
+
+    /**
+     * Sectiklerim listesine konusmayi ekler.
+     * @param arg konusma detaylari
+     */
+    addItemToChosenEvents = (arg) => this.setState({chosen:[...this.state.chosen,arg]});
 
     convertToDateArray(agenda) {
         let newAgendaData = [];
@@ -164,13 +170,7 @@ class AgendaScreen extends Component {
         })
     }
 
-    /**
-     * Sectiklerim listesine konusmayi ekler.
-     * @param arg konusma detaylari
-     */
-    addItemToChosenEvents(arg) {
-        chosen.push(arg);
-    }
+
 
     /**
      *Konusmacilari bulundugu odaya gore ekranda gosterir
@@ -179,31 +179,13 @@ class AgendaScreen extends Component {
      * @returns {XML} ajanda karti
      */
     isThereEventInRoom(myroom, arg) {
-        let isExist = false;
-        let i, j;
-        for (i = 0; i < arg.length; i++) {
-            if (myroom === arg[i].room) {
-                for (j = 0; j < chosen.length; j++) {
-                    if (arg[i] === chosen[j]) {
-                        return (
-                            this.getAgendaCard(arg, i, true))
-                    }
-                }
-                return (this.getAgendaCard(arg, i, false))
-            }
+        const chosen = this.state.chosen
+        for (let i = 0; i < arg.length; i++) {
+            if (myroom === arg[i].room)
+                return this.getAgendaCard(arg, i, chosen.indexOf(arg[i]) !== -1)
         }
-        if (!isExist)
-            return (<AgendaCard isEmpty={true}/>)
+        return (<AgendaCard isEmpty={true}/>)
 
-        Alert.alert(
-            'Warning!',
-            'Please log in for more information.',
-            [
-                {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
-                {text: 'CANCEL', onPress: () => console.log('cancel')}
-            ],
-            {cancelable: false}
-        );
     }
 
     /**
@@ -220,8 +202,7 @@ class AgendaScreen extends Component {
                            onPressAddButton={this.addItemToChosenEvents}
                            isClicked={isClicked}
                            key={arg[i].key}
-                           choosedEvents={chosen}
-                           onPress={() => this.props.login ? this.props.navigation.navigate(TALK, arg) : Alert.alert(
+                           onPress={() => this.props.login ? this.props.navigation.navigate(TALK, arg[i]) : Alert.alert(
                                'Warning!',
                                'Please log in for more information.',
                                [
@@ -362,7 +343,7 @@ class AgendaScreen extends Component {
                             <View>
                                 {chosen.map((choosed, i) =>
                                     <TouchableOpacity key={i} onPress={() => this.props.login ?
-                                        this.props.navigation.navigate(TALK, [choosed]) : Alert.alert(
+                                        this.props.navigation.navigate(TALK, choosed) : Alert.alert(
                                             'Warning!',
                                             'Please log in for more information.',
                                             [

@@ -162,7 +162,7 @@ class SpeakerInfoScreen extends Component {
                                     <TouchableOpacity key={i} style={{width:'100%'}}
                                                       onPress={() =>
                                                           this.props.login ?
-                                                              this.props.navigation.navigate(TALK, Object.values(talkList)) :
+                                                              this.props.navigation.navigate(TALK, item) :
                                                               Alert.alert(
                                                                   'Warning!',
                                                                   'Please log in for more information.',

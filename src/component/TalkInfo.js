@@ -27,7 +27,7 @@ class TalkInfo extends Component {
 
     render() {
 
-        const talk = this.props.talk[0];
+        const talk = this.props.talk;
         const speaker=this.getSpeaker(talk.speaker)
         return (
             <View style={styles.container}>
