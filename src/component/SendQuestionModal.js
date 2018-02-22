@@ -50,7 +50,7 @@ export class SendQuestionModal extends Component {
         const eventId = this.props.event.id;
         const sessionId = this.props.sessionId;
         const commentValue = this.state.commentValue;
-        const time = moment().unix();
+        const time = moment().valueOf();
         const anonymous = this.state.anonymous;
 
         const {dispatch, loading, error, errorMessage} = this.props;

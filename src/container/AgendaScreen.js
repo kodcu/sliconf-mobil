@@ -75,7 +75,7 @@ class AgendaScreen extends Component {
 
 
         agenda.forEach(function (element) {
-            let date = moment.unix(element.date).format("MM-DD-YYYY")
+            let date = moment(element.date).format("MM-DD-YYYY")
             let array;
             dateMap.get(date) ? array = dateMap.get(date) : array = [];
             array.push(element)
@@ -99,7 +99,7 @@ class AgendaScreen extends Component {
         let myMap = new Map();
 
         events.forEach(function (element) {
-            let time = moment.unix(element.date).format("HH:mm");
+            let time = moment(element.date).format("HH:mm");
             let array;
             myMap.get(time) ? array = myMap.get(time) : array = [];
             array.push(element);
