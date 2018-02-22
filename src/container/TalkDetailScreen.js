@@ -81,7 +81,7 @@ export class TalkDetail extends Component {
                 <Header leftImage='chevron-left' rightText='Vote'
                         onPressLeft={() => this.props.navigation.goBack()}
                         onPressRight={() => {
-                            moment().isAfter(moment.unix(talk[0].date)) ?
+                            moment().isAfter(moment(talk[0].date)) ?
                                 this.setState({rate: true}) :
                                 Alert.alert(
                                     'Warning!',
