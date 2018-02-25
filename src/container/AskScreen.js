@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Modal, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View,} from 'react-native';
+import {Alert, Modal, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView} from 'react-native';
 import {connect} from "react-redux";
 import Header from "../component/Header";
 import Color from "../theme/Color";
@@ -30,6 +30,7 @@ class AskScreen extends Component {
         sessionId: "",
         messageModal: false,
     };
+
     closeModal = () => {
         this.setState({messageModal: false})
     }
@@ -67,7 +68,47 @@ class AskScreen extends Component {
             </Picker>);
         }
     }
+    /*
+    * Function that creates an array which holds the buttons.
+    * Takes parameter agenda from render() function
+    * Returns buttons
+    */
+    getTalkButtons(agenda){
+        //Array to hold buttons
+        var buttons = []; 
+        //Mapping agenda with value talk
+        agenda.map((talk) => {
+            //Push elements to button array
+            buttons.push(
+                <TouchableOpacity 
+                    key={talk.id}
+                    onPress={() => this.setState({sessionId: talk.id, messageModal: true})}
+                >
+                    <View style={{ 
+                        flex: 1, 
+                        justifyContent: 'center', 
+                        borderWidth: 0.5, 
+                        borderColor: Color.green,
+                        height: Scale.verticalScale(80)
+                        }}
+                    >
+                        <Text style={{
+                            ...Font.regular,
+                            textAlign: 'center',
+                            color: Color.green,
+                            fontSize: Scale.verticalScale(18),
+                            padding: 2
+                            }}
+                        >
+                            {talk.topic}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            );    
+        });
 
+        return buttons;
+    }
 
     render() {
         const agenda = this.props.event.agenda;
@@ -81,9 +122,13 @@ class AskScreen extends Component {
                     <Header.Title title="Ask Question"/>
                 </Header>
 
-                {this.getPicker(agenda)}
-
-                <TouchableOpacity style={styles.buttonContainer}
+                {/*this.getPicker(agenda)*/}
+                
+                {<ScrollView>
+                    {this.getTalkButtons(agenda)}
+                </ScrollView>}
+                
+                {/*<TouchableOpacity style={styles.buttonContainer}
                                   onPress={() => !this.state.sessionId.trim() ? Alert.alert(
                                       'Warning!',
                                       "Please select a Session",
@@ -93,7 +138,7 @@ class AskScreen extends Component {
                                       {cancelable: false}
                                   ) : this.setState({messageModal: true})}>
                     <Text style={styles.buttonText}>Send Question</Text>
-                </TouchableOpacity>
+                </TouchableOpacity>*/}
 
                 <View style={{flex: 1, marginTop: 10}}>
                     {this.state.sessionId.trim() ? <TalkComment session={this.state.sessionId} lite={true}/> : null}
