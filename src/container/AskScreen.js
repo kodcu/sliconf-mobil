@@ -82,7 +82,7 @@ class AskScreen extends Component {
             buttons.push(
                 <TouchableOpacity 
                     key={talk.id}
-                    onPress={() => this.setState({sessionId: talk.id, messageModal: true})}
+                    onPress={() => this.setState({ sessionId: talk.id })}
                 >
                     <View style={{ 
                         flex: 1, 
@@ -123,27 +123,34 @@ class AskScreen extends Component {
                 </Header>
 
                 {/*this.getPicker(agenda)*/}
+                <View style={{ flex: 1 }}>
+                    <ScrollView style={{ height: Scale.height / 4 }}>
+                        {this.getTalkButtons(agenda)}
+                    </ScrollView>
                 
-                {<ScrollView>
-                    {this.getTalkButtons(agenda)}
-                </ScrollView>}
-                
-                {/*<TouchableOpacity style={styles.buttonContainer}
-                                  onPress={() => !this.state.sessionId.trim() ? Alert.alert(
-                                      'Warning!',
-                                      "Please select a Session",
-                                      [
-                                          {text: 'OK'}
-                                      ],
-                                      {cancelable: false}
-                                  ) : this.setState({messageModal: true})}>
-                    <Text style={styles.buttonText}>Send Question</Text>
-                </TouchableOpacity>*/}
+                    <TouchableOpacity 
+                        style={styles.buttonContainer}
+                        onPress={() => this.state.sessionId === null || this.state.sessionId === "" ? 
+                            Alert.alert(
+                                'Warning!',
+                                "Please select a Session",
+                                [
+                                    {text: 'OK'}
+                                ],
+                                {cancelable: false}
+                            ) : this.setState({ messageModal: true })
+                        }
+                    >
+                        <Text style={styles.buttonText}>Send Question</Text>
+                    </TouchableOpacity>
 
-                <View style={{flex: 1, marginTop: 10}}>
-                    {this.state.sessionId.trim() ? <TalkComment session={this.state.sessionId} lite={true}/> : null}
+                    <View style={{flex: 1, marginTop: 10}}>
+                        {this.state.sessionId.trim() ? 
+                            <TalkComment session={this.state.sessionId} lite={true}/> 
+                            : null
+                        }
+                    </View>
                 </View>
-
                 <SendQuestionModal sessionId={this.state.sessionId}
                                    closeModal={this.closeModal}
                                    visible={this.state.messageModal}/>
