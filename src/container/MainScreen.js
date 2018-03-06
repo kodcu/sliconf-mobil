@@ -3,13 +3,14 @@
  */
 
 import React, {Component} from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity, View,Alert} from 'react-native'
+import {Image, StyleSheet, Text, TouchableOpacity, View, Alert, AsyncStorage} from 'react-native'
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 import * as Scale from "../theme/Scale";
 import {EVENT_STACK} from "../router";
 import {actionCreators} from '../reducks/module/event'
 import {connect} from 'react-redux'
+import store from './store';
 
 import Loading from '../component/Loading'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
@@ -51,7 +52,7 @@ class MainScreen extends Component {
         const {dispatch, loading} = this.props;
         await dispatch(actionCreators.fetchEvent(code,userId));
         const {error, errorMessage} = this.props;
-        if (error) 
+        if (error)
             Alert.alert(
                 'Warning!',
                 errorMessage,
@@ -67,6 +68,8 @@ class MainScreen extends Component {
             this.props.navigation.navigate(EVENT_STACK)
         }
     };
+
+    
 
     /**
      * Etkinlik arama islemini tetikler
