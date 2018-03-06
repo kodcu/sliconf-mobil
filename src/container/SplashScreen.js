@@ -80,15 +80,15 @@ class SplashScreen extends React.Component {
     async componentDidMount() {
         //if(await this.checkUser())
             setTimeout(() => this.props.navigation.dispatch({type: MAIN}), 500);
-        /*else
-            Alert.alert(
-                'Warning!',
-                "Please check your connection.",
-                [
-                    {text: 'Exit', onPress: () => RNExitApp.exitApp()},
-                ],
-                {cancelable: false}
-            );*/
+        //else
+        //    Alert.alert(
+        //        'Warning!',
+        //        "Please check your connection.",
+        //        [
+        //            {text: 'Exit', onPress: () => RNExitApp.exitApp()},
+        //        ],
+        //        {cancelable: false}
+        //    );
     }
 
     render() {
