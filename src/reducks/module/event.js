@@ -3,6 +3,9 @@
  */
 
  import Request from '../../service/Request'
+ import { AsyncStorage } from 'react-native';
+ import store from '../../container/store';
+
 
 const types = {
     EVENTLIST_POSTS_REQUEST: 'EVENTLIST_POSTS_REQUEST',
