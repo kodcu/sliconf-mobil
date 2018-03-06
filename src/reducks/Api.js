@@ -1,4 +1,4 @@
-const baseApi = 'http://api.sliconf.com/service/';
+const baseApi = 'https://api.sliconf.com/service/';
 
 //event
 export const getEvent = baseApi + 'events/get/with-key/';

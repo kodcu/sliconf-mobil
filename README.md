@@ -76,8 +76,7 @@ Performance wise, Easy Grid is noteworthy and works as fine as Flexbox, not much
 
 * Globally installed [node](https://nodejs.org/en/)
 
-* Globally installed [react-native CLI](https://facebook.github.io/react-native/docs/getting-started.html)
-
+* Globally installed [react-native CLI and SDK](https://facebook.github.io/react-native/docs/getting-started.html) ("Building Projects with Native Code" panel)
 
 ### 2. Installation
 
@@ -124,4 +123,13 @@ $ react-native run-ios
 ```sh
 $ react-native run-android
 ```
+
+### BUG 
+* Remove file
+```sh
+ ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json
+```
+
+### IMPORTANT
+* All local libraries must be same version as package.json
 

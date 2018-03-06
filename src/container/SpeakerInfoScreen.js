@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+    Alert,
     Animated,
     Dimensions,
     Image,
@@ -21,6 +22,7 @@ import Color from "../theme/Color";
 import Font from "../theme/Font";
 import getImage from "../helpers/getImageHelper"
 import {moderateScale} from "../theme/Scale";
+import {LOGIN, TALK} from "../router";
 
 
 const phoneW = Dimensions.get('window').width - 50;
@@ -29,6 +31,7 @@ const AnimatedView = Animated.createAnimatedComponent(View);
 
 const mapStateToProps = (state) => ({
     agenda: state.event.event.agenda,
+    login: state.auth.login,
 });
 
 class SpeakerInfoScreen extends Component {
@@ -78,7 +81,7 @@ class SpeakerInfoScreen extends Component {
             })
         }*/
 
-        if (agenda !== undefined && agenda !== null && !agenda.isEmpty){
+        if (agenda !== undefined && agenda !== null && !agenda.isEmpty) {
             talk = agenda.filter(talk => talk.speaker === speaker.id)
         }
 
@@ -117,16 +120,20 @@ class SpeakerInfoScreen extends Component {
                     <Header.Title title="Speaker Info"/>
                 </Header>
                 <View style={{alignItems: 'center', height: 230}}>
-                    <Image source={!speaker.profilePicture.trim()?require('../../images/hi.png'):{uri: getImage(speaker.profilePicture)}} style={styles.profilePicture}/>
+                    <Image
+                        source={!speaker.profilePicture.trim() ? require('../../images/hi.png') : {uri: getImage(speaker.profilePicture)}}
+                        style={styles.profilePicture}/>
                     <Text style={styles.speakerName}>{speaker.name}</Text>
                     <Text style={styles.speakerWorking}>{speaker.workingAt}</Text>
                     <View style={{flexDirection: 'row'}}>
-                        {speaker.twitter === '' ? null : <TouchableOpacity onPress={() => this.redirect(speaker.twitter)}>
-                            <Icon name='twitter-with-circle' size={30} color="#379BD9"
-                                  style={{margin: 10}}/></TouchableOpacity>}
-                        {speaker.linkedin === '' ? null :<TouchableOpacity onPress={() => this.redirect(speaker.linkedin)}>
-                            <Icon name='linkedin-with-circle' size={30} color="#1574AE"
-                                  style={{margin: 10}}/></TouchableOpacity>}
+                        {speaker.twitter === '' ? null :
+                            <TouchableOpacity onPress={() => this.redirect(speaker.twitter)}>
+                                <Icon name='twitter-with-circle' size={30} color="#379BD9"
+                                      style={{margin: 10}}/></TouchableOpacity>}
+                        {speaker.linkedin === '' ? null :
+                            <TouchableOpacity onPress={() => this.redirect(speaker.linkedin)}>
+                                <Icon name='linkedin-with-circle' size={30} color="#1574AE"
+                                      style={{margin: 10}}/></TouchableOpacity>}
                         <TouchableOpacity style={{margin: 10}} onPress={this.startAnimation}>
                             <View style={styles.aboutButtonField}>
                                 <Text style={styles.aboutButtonText}>ABOUT</Text>
@@ -149,9 +156,31 @@ class SpeakerInfoScreen extends Component {
                     </If.Then>
                     <If.Else>
                         <ScrollView>
-                            <View style={[styles.talksField,{height: (talkList.length * moderateScale(145))}]}>
-                                {talkList.map((item, i) => <ChosenCard key={i} item={item} visibleButton={false}/>)}
+
+                            <View style={[styles.talksField, {height: (talkList.length * moderateScale(145))}]}>
+                                {talkList.map((item, i) =>
+                                    <TouchableOpacity key={i} style={{width:'100%'}}
+                                                      onPress={() =>
+                                                          this.props.login ?
+                                                              this.props.navigation.navigate(TALK, item) :
+                                                              Alert.alert(
+                                                                  'Warning!',
+                                                                  'Please log in for more information.',
+                                                                  [
+                                                                      {
+                                                                          text: 'LOGIN',
+                                                                          onPress: () => this.props.navigation.navigate(LOGIN)
+                                                                      },
+                                                                      {
+                                                                          text: 'CANCEL',
+                                                                          onPress: () => console.log('cancel')
+                                                                      }
+                                                                  ]
+                                                              )}>
+                                        <ChosenCard key={i} item={item} visibleButton={false}/>
+                                    </TouchableOpacity>)}
                             </View>
+
                         </ScrollView>
                     </If.Else>
                 </If>
@@ -205,7 +234,7 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(15),
         color: Color.darkGray
     },
-    speakerWorking:{
+    speakerWorking: {
         ...Font.light,
         fontSize: moderateScale(12),
         color: Color.darkGray3

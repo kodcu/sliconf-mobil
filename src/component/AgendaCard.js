@@ -12,11 +12,6 @@ import getImage from "../helpers/getImageHelper"
 
 export default class AgendaCard extends Component {
 
-    state = {
-        isExist: true,
-        isClicked: this.props.isClicked
-    }
-
     /**
      * Konusmanin leveline gore renk dondurur.
      * @param level
@@ -38,40 +33,18 @@ export default class AgendaCard extends Component {
         }
     }
 
-    setButtonIcon() {
-        this.setState(
-            {
-                isClicked: !this.state.isClicked
-            }
-        )
-    }
-
     /**
      * Cardların ustundeki butonların ne olacagini ayarlar.
      * @param obj
      */
     handleClick(obj) {
-        this.setButtonIcon();
         let tempObject = obj;
-        if (this.isSameData(obj)) {
+        if (this.props.isClicked) {
             this.props.onPressDeleteButton(tempObject);
         } else {
             this.props.onPressAddButton(tempObject);
         }
 
-    }
-
-    /**
-     * Card verisi sectiklerim listesinde varsa true yoksa false dondurur.
-     * @param data
-     * @returns {boolean}
-     */
-    isSameData(data) {
-        let choosedOne = this.props.choosedEvents;
-        let obj = choosedOne.find((data2) => data === data2)
-        if (obj !== undefined)
-            return true
-        return false
     }
 
     render() {
@@ -102,7 +75,7 @@ export default class AgendaCard extends Component {
                         <TouchableOpacity
                             onPress={() => this.handleClick(item)}>
                             <View style={styles.buttonField}>
-                                <Icon name={this.state.isClicked ? 'ios-checkmark' : 'ios-add'}
+                                <Icon name={this.props.isClicked ? 'ios-checkmark' : 'ios-add'}
                                       style={{alignSelf: 'center'}}/>
                             </View>
                         </TouchableOpacity>
