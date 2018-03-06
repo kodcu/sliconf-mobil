@@ -43,7 +43,7 @@ export class TalkDetail extends Component {
 
     async voteTalk(voteValue) {
         const eventId = this.props.event.id;
-        const sessionId = this.props.navigation.state.params[0].id;
+        const sessionId = this.props.navigation.state.params.id;
         const userId = this.props.user.id;
         const {dispatch} = this.props;
         await dispatch(actionCreatorsTalk.voteTalk(eventId, sessionId, userId, voteValue));
@@ -65,7 +65,7 @@ export class TalkDetail extends Component {
 
     componentWillMount() {
         const eventId = this.props.event.id;
-        const sessionId = this.props.navigation.state.params[0].id;
+        const sessionId = this.props.navigation.state.params.id;
         const userId = this.props.user.id;
         this.props.dispatch(actionCreatorsTalk.getVoteByUser(eventId, sessionId, userId))
     }
@@ -81,7 +81,7 @@ export class TalkDetail extends Component {
                 <Header leftImage='chevron-left' rightText='Vote'
                         onPressLeft={() => this.props.navigation.goBack()}
                         onPressRight={() => {
-                            moment().isAfter(moment.unix(talk[0].date)) ?
+                            moment().isAfter(moment(talk.date)) ?
                                 this.setState({rate: true}) :
                                 Alert.alert(
                                     'Warning!',
@@ -96,7 +96,7 @@ export class TalkDetail extends Component {
                 </Header>
                 <Content>
 
-                    <SendQuestionModal sessionId={talk[0].id}
+                    <SendQuestionModal sessionId={talk.id}
                                        closeModal={this.changeAskQuestionState}
                                        visible={this.state.messageModal}/>
 
@@ -113,7 +113,7 @@ export class TalkDetail extends Component {
                         </If.Then>
 
                         <If.Else>
-                            <TalkComment session={talk[0].id} lite={false}/>
+                            <TalkComment session={talk.id} lite={false}/>
                         </If.Else>
 
                     </If>

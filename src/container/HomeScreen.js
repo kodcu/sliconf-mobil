@@ -93,13 +93,13 @@ class HomeScreen extends Component {
                             <View style={styles.date}>
                                 <Icon color={Color.white} name='ios-clock-outline' size={22}/>
                                 <Text
-                                    style={styles.dateText}>{moment.unix(event.startDate / 1000).format('HH:mm')}</Text>
+                                    style={styles.dateText}>{moment(event.startDate).format('HH:mm')}</Text>
                             </View>
 
                             <View style={styles.date}>
                                 <Icon color={Color.white} name='ios-calendar-outline' size={22}/>
                                 <Text
-                                    style={styles.dateText}>{moment.unix(event.startDate / 1000).format("Do MMM YYYY")}</Text>
+                                    style={styles.dateText}>{moment(event.startDate).format("Do MMM YYYY")}</Text>
                             </View>
                         </View>
 

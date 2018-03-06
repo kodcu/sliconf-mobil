@@ -54,15 +54,15 @@ class ChosenCard extends Component {
                     <Text style={styles.topic}>{item.topic}</Text>
                     <Text style={styles.speaker}>{this.getSpeakerName(item.speaker)}</Text>
                     <View style={styles.infoField}>
-                        <Text style={styles.topic}>{moment.unix(item.date).format("HH:mm")}</Text>
-                        <Text style={styles.topic}>{moment.unix(item.date).format("DD MMM YYYY")}</Text>
+                        <Text style={styles.topic}>{moment(item.date).format("HH:mm")}</Text>
+                        <Text style={styles.topic}>{moment(item.date).format("DD MMM YYYY")}</Text>
                         <Text style={styles.topic}>{this.getRoomName(item.room)}</Text>
                     </View>
                 </View>
                 <View style={styles.actionField}>
                     <If con={buttonVisible}>
                         <If.Then>
-                            <TouchableOpacity onPress={(item) => this.props.onPressDeleteButton(item)}>
+                            <TouchableOpacity onPress={() => this.props.onPressDeleteButton(item)}>
                                 <View style={styles.buttonField}>
                                     <Icon name='ios-close' style={{alignSelf: 'center'}}/>
                                 </View>

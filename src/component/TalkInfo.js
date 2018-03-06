@@ -4,7 +4,7 @@ import {Button, Input, Thumbnail} from "native-base";
 import Icon from 'react-native-vector-icons/Ionicons'
 import {moderateScale} from "../theme/Scale";
 import {connect} from "react-redux";
-import * as moment from "moment";
+import moment from "moment";
 import getImageHelper from "../helpers/getImageHelper";
 
 const mapStateToProps = (state) => ({
@@ -27,7 +27,7 @@ class TalkInfo extends Component {
 
     render() {
 
-        const talk = this.props.talk[0];
+        const talk = this.props.talk;
         const speaker=this.getSpeaker(talk.speaker)
         return (
             <View style={styles.container}>
@@ -56,13 +56,13 @@ class TalkInfo extends Component {
                         width
                     }}>
                         <Text style={{
-                            fontSize: moderateScale(10),
+                            fontSize: moderateScale(13),
                             fontFamily: 'Montserrat-Bold',
                             color: '#333',
                             textAlign: 'center',
                         }}>Level: </Text>
                         <Text style={{
-                            fontSize: moderateScale(9),
+                            fontSize: moderateScale(13),
                             fontFamily: 'Montserrat-Regular',
                             color: '#333',
                             textAlign: 'center',
@@ -78,14 +78,14 @@ class TalkInfo extends Component {
                         width
                     }}>
                         <Text style={{
-                            fontSize: moderateScale(10),
+                            fontSize: moderateScale(13),
                             fontFamily: 'Montserrat-Bold',
                             color: '#333',
                             textAlign: 'center',
                         }}>Tags: </Text>
 
                         <Text style={{
-                            fontSize: moderateScale(9),
+                            fontSize: moderateScale(13),
                             fontFamily: 'Montserrat-Regular',
                             color: '#333',
                             textAlign: 'center',
@@ -101,14 +101,14 @@ class TalkInfo extends Component {
                         width
                     }}>
                         <Text style={{
-                            fontSize: moderateScale(10),
+                            fontSize: moderateScale(13),
                             fontFamily: 'Montserrat-Bold',
                             color: '#333',
                             textAlign: 'center',
                         }}>Room: </Text>
 
                         <Text style={{
-                            fontSize: moderateScale(9),
+                            fontSize: moderateScale(13),
                             fontFamily: 'Montserrat-Regular',
                             color: '#333',
                             textAlign: 'center',
@@ -119,8 +119,8 @@ class TalkInfo extends Component {
                         <Text style={{
                             color: '#666',
                             fontFamily: 'Montserrat-Regular',
-                            fontSize: moderateScale(11),
-                            textAlign: 'center',
+                            fontSize: moderateScale(16),
+                            textAlign: 'left',
                             paddingBottom:10
                         }}>{talk.detail}</Text>
                     </ScrollView>
@@ -150,7 +150,7 @@ class TalkInfo extends Component {
                     <View style={{alignItems: 'flex-end', width: width * 0.2}}>
                         <View style={{flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 2,}}>
                             <Text
-                                style={{color: '#333', fontFamily: 'Montserrat-Regular', fontSize: moderateScale(11)}}>{moment.unix(talk.date).format("HH:mm")}</Text>
+                                style={{color: '#333', fontFamily: 'Montserrat-Regular', fontSize: moderateScale(11)}}>{moment(talk.date).format("HH:mm")}</Text>
                             <Icon style={{paddingLeft: 10}} color='#333' name='ios-clock-outline' size={18}/>
                         </View>
 
@@ -160,7 +160,7 @@ class TalkInfo extends Component {
                                     color: '#333',
                                     fontFamily: 'Montserrat-Regular',
                                     fontSize: moderateScale(11)
-                                }}>{moment.unix(talk.date).format("DD MMM")}</Text>
+                                }}>{moment(talk.date).format("DD MMM")}</Text>
                                 <Icon style={{paddingLeft: 10}} color='#333' name='ios-calendar-outline' size={18}/>
                             </View>
                         </View>
