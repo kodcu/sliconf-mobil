@@ -4,7 +4,7 @@ import {Button, Input, Thumbnail} from "native-base";
 import Icon from 'react-native-vector-icons/Ionicons'
 import {moderateScale} from "../theme/Scale";
 import {connect} from "react-redux";
-import * as moment from "moment";
+import moment from "moment";
 import getImageHelper from "../helpers/getImageHelper";
 
 const mapStateToProps = (state) => ({
@@ -27,7 +27,7 @@ class TalkInfo extends Component {
 
     render() {
 
-        const talk = this.props.talk[0];
+        const talk = this.props.talk;
         const speaker=this.getSpeaker(talk.speaker)
         return (
             <View style={styles.container}>
@@ -150,7 +150,7 @@ class TalkInfo extends Component {
                     <View style={{alignItems: 'flex-end', width: width * 0.2}}>
                         <View style={{flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 2,}}>
                             <Text
-                                style={{color: '#333', fontFamily: 'Montserrat-Regular', fontSize: moderateScale(11)}}>{moment.unix(talk.date).format("HH:mm")}</Text>
+                                style={{color: '#333', fontFamily: 'Montserrat-Regular', fontSize: moderateScale(11)}}>{moment(talk.date).format("HH:mm")}</Text>
                             <Icon style={{paddingLeft: 10}} color='#333' name='ios-clock-outline' size={18}/>
                         </View>
 
@@ -160,7 +160,7 @@ class TalkInfo extends Component {
                                     color: '#333',
                                     fontFamily: 'Montserrat-Regular',
                                     fontSize: moderateScale(11)
-                                }}>{moment.unix(talk.date).format("DD MMM")}</Text>
+                                }}>{moment(talk.date).format("DD MMM")}</Text>
                                 <Icon style={{paddingLeft: 10}} color='#333' name='ios-calendar-outline' size={18}/>
                             </View>
                         </View>

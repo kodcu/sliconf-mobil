@@ -50,17 +50,17 @@ export class SendQuestionModal extends Component {
         const eventId = this.props.event.id;
         const sessionId = this.props.sessionId;
         const commentValue = this.state.commentValue;
-        const time = moment().unix();
+        const time = moment().valueOf();
         const anonymous = this.state.anonymous;
 
-        const {dispatch, loading, error, errorMessage} = this.props;
+        const {dispatch} = this.props;
 
         if (this.props.login)
             await dispatch(actionCreators.postComment(eventId, sessionId, userId, commentValue, time, anonymous));
         else
             await dispatch(actionCreators.postCommentAnonymous(eventId, sessionId, userId, commentValue, time, fullname));
 
-        if (error)
+        if (this.props.error)
             this.buttonTypeChange("sendError")
         else
             this.buttonTypeChange("sendSuccessful")
@@ -92,8 +92,7 @@ export class SendQuestionModal extends Component {
                 animationType={'slide'}
                 transparent={true}
                 visible={this.props.visible}
-                onRequestClose={() => {
-                }}>
+                onRequestClose={() => this.props.closeModal()}>
                 <View style={{flex: 1, backgroundColor: Color.white, marginTop: Platform.OS === 'ios' ? 20 : 0}}>
                     <TouchableOpacity style={{padding: 5, marginLeft: 10}} onPress={() => this.props.closeModal()}>
                         <Icon name={'ios-close-circle'} size={30} color={Color.gray}/>
