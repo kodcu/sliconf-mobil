@@ -104,9 +104,9 @@ export class About extends Component {
                                 this.rowItem(item, 'ios-call-outline', 'phone', index) : null) : null}
                             {about.social ?
                                 <View style={styles.socialMedia}>
-                                    {Object.keys(about.social).map((item, index) => {
-                                            !item.trim() ? this.rowSocial(item + '-with-circle', about.social[item], index) : null
-                                        }
+                                    {Object.keys(about.social).map((item, index) =>
+                                        item.trim() ? this.rowSocial(item + '-with-circle', about.social[item], index) : null
+
                                     )}
                                 </View> : null
                             }

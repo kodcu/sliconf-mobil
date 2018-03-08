@@ -242,7 +242,13 @@ class LoginScreen extends Component {
 
                 <Loading visible={loading}/>
                 <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
-                    <View style={{justifyContent: 'center', marginTop: 20}}>
+                    <View style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        alignSelf: 'center',
+                        margin: 30,
+                        marginBottom: 15
+                    }}>
 
                         <View style={styles.logoContainer}>
                             <Image style={styles.image} source={logo}/>
