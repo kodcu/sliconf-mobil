@@ -2,7 +2,7 @@
  * Created by Muslum on 30.07.2017.
  */
 
- import Request from '../../service/Request'
+import Request from '../../service/Request'
 
 const types = {
     EVENTLIST_POSTS_REQUEST: 'EVENTLIST_POSTS_REQUEST',
@@ -12,7 +12,6 @@ const types = {
     EVENT_POSTS_REQUEST: 'EVENT_POSTS_REQUEST',
     EVENT_POSTS_RESPONSE_SUC: 'EVENT_POSTS_RESPONSE_SUC',
     EVENT_POSTS_RESPONSE_FAIL: 'EVENT_POSTS_RESPONSE_FAIL',
-
 }
 
 import {API_EVENTLIST, API_EVENT, getEvent} from '../Api'
@@ -95,7 +94,10 @@ export const actionCreators = {
             type: types.EVENT_POSTS_REQUEST
         })
 
-        await Request.GET(getEvent+code.toUpperCase()+"?statistic=true&userId="+userId,{
+        await Request.GET(
+            getEvent + code.toUpperCase() + "?statistic=true&userId=" + userId,
+            {},
+            {
             '200': (res)=>{
                 if (res.status && res.returnObject.status)
                     dispatch({
@@ -121,11 +123,7 @@ export const actionCreators = {
                 })
             }
         })
-
-    },
-
-
-
+    }
 }
 
 export default reducer

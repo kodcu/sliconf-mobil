@@ -148,7 +148,7 @@ export const actionCreators = {
             type: types.COMMENT_ADD_REQUEST
         })
 
-        await Request.POST(postComment,{eventId,sessionId,userId,commentValue,time,anonymous},{
+        await Request.POST(postComment,{eventId,sessionId,userId,commentValue,time,anonymous}, getTokenAuth(getState()),{
             '200': (res)=>{
                 console.log(res)
                 if (res.status )
@@ -183,7 +183,11 @@ export const actionCreators = {
         })
 
         const anonymous = true;
-        await Request.POST(postComment,{eventId,sessionId,userId,commentValue,time,anonymous,fullname},{
+        await Request.POST(
+            postComment, 
+            { eventId, sessionId, userId, commentValue, time, anonymous, fullname }, 
+            getTokenAuth(getState()), 
+            {
             '200': (res)=>{
                 console.log(res)
                 if (res.status )
@@ -216,7 +220,10 @@ export const actionCreators = {
         dispatch({
             type: types.COMMENT_GET_SESSION_REQUEST
         })
-        await Request.GET(getComments+'approved'+'/'+eventId+"/"+sessionId+"?type=recent",{
+        await Request.GET(
+            getComments + 'approved' + '/' + eventId + "/" + sessionId + "?type=recent", 
+            getTokenAuth(getState()), 
+            {
             '200': (res)=>{
                 if (res.status)
                     dispatch({
@@ -248,7 +255,10 @@ export const actionCreators = {
         dispatch({
             type: types.POPULAR_COMMENT_GET_SESSION_REQUEST
         })
-        await Request.GET(getComments+'approved'+'/'+eventId+"/"+sessionId+"?count=5&type=top-rated",{
+        await Request.GET(
+            getComments + 'approved' + '/' + eventId + "/" + sessionId + "?count=5&type=top-rated", 
+            getTokenAuth(getState()), 
+            {
             '200': (res)=>{
                 if (res.status){
                     dispatch({
@@ -283,7 +293,8 @@ export const actionCreators = {
             type: types.COMMENT_VOTE_REQUEST
         })
         console.log("Istek Yapıldı")
-        await Request.POST(postVote+commentId+'/'+userId+'/'+vote,{},{
+        await Request.POST(
+            postVote + commentId + '/' + userId + '/' + vote, {}, getTokenAuth(getState()), {
             '200': (res)=>{
                 console.log(res)
                 if (res.status)
