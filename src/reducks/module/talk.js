@@ -89,7 +89,11 @@ export const actionCreators = {
             type: types.VOTE_TALK_REQUEST
         })
 
-        await Request.POST(voteTalk + eventId + "/" + sessionId + "/" + userId + "/" + voteValue, {}, {
+        await Request.POST(
+            voteTalk + eventId + "/" + sessionId + "/" + userId + "/" + voteValue, 
+            {}, 
+            getTokenAuth(getState()), 
+            {
             '200': (res) => {
                 if (res.status)
                     dispatch({
@@ -122,7 +126,10 @@ export const actionCreators = {
             type: types.VOTE_TALK_USER_REQUEST
         })
 
-        await Request.GET(getVoteByUser + eventId + "/" + sessionId + "/" + userId, {
+        await Request.GET(
+            getVoteByUser + eventId + "/" + sessionId + "/" + userId, 
+            getTokenAuth(getState()),
+            {
             '200': (res) => {
                 if (res.status)
                     dispatch({
