@@ -3,6 +3,7 @@
  */
 
 import Request from '../../service/Request'
+import getTokenAuth from "../../helpers/getTokenAuth";
 
 const types = {
     EVENTLIST_POSTS_REQUEST: 'EVENTLIST_POSTS_REQUEST',
@@ -96,7 +97,7 @@ export const actionCreators = {
 
         await Request.GET(
             getEvent + code.toUpperCase() + "?statistic=true&userId=" + userId,
-            {},
+            getTokenAuth(getState()),
             {
             '200': (res)=>{
                 if (res.status && res.returnObject.status)

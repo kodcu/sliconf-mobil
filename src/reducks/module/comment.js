@@ -3,6 +3,7 @@
  */
 
 import Request from "../../service/Request";
+import getTokenAuth from "../../helpers/getTokenAuth";
 
 const types = {
     COMMENT_ADD_REQUEST: 'COMMENT_ADD_REQUEST',
@@ -148,7 +149,11 @@ export const actionCreators = {
             type: types.COMMENT_ADD_REQUEST
         })
 
-        await Request.POST(postComment,{eventId,sessionId,userId,commentValue,time,anonymous}, getTokenAuth(getState()),{
+        await Request.POST(
+            postComment,
+            { eventId, sessionId, userId, commentValue, time, anonymous }, 
+            getTokenAuth(getState()),
+            {
             '200': (res)=>{
                 console.log(res)
                 if (res.status )
