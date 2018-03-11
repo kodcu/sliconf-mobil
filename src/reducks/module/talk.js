@@ -4,7 +4,7 @@
 
 import Request from "../../service/Request";
 import {getVoteByUser, voteTalk} from '../Api'
-import getTokenAuth from "../../helpers/getTokenAuth";
+import {getTokenAuth} from "../../helpers/getTokenAuth";
 
 const types = {
     VOTE_TALK_REQUEST: 'VOTE_TALK_REQUEST',

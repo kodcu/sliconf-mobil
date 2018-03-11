@@ -1,3 +1,12 @@
 export const getTokenAuth = (state) => {
-    return { "Authorization": state.auth.user.token }
+    if (state) {
+        if (state.auth && state.auth.user && state.auth.user.token ) {
+            return { "Authorization": state.auth.user.token }
+        } else if (state.authDevice && state.authDevice.user && state.authDevice.user.token){
+            return { "Authorization": state.authDevice.user.token }
+        }
+    }
+    return { "Authorization": "" };
 };
+
+export default getTokenAuth
