@@ -149,6 +149,7 @@ const mapStateToProps = (state) => ({
     errorMessage: state.comment.errorMessage,
     commentList: state.comment.commentList,
     popularCommentList: state.comment.popularCommentList,
+    talkHeader: {auth: state.auth, authDevice: state.authDevice}
 });
 
 class TalkComment extends Component {
@@ -188,7 +189,7 @@ class TalkComment extends Component {
 
     renderRow(info, index) {
         return <CommentItem item={info} userAgent={this.props.login ? this.props.user.id : this.props.userDevice.id}
-                            index={index} changeComment={this.changeComment}/>
+                            index={index} changeComment={this.changeComment} talkHeader={this.props.talkHeader}/>
     }
 
     async getComments() {
@@ -263,7 +264,7 @@ class TalkComment extends Component {
     renderPopularComments({item, index}, userId) {
         return (
             <CommentItem item={item} userAgent={userId} index={index} changeComment={this.changePopularComment}
-                         popular={true}/>
+                         popular={true}  talkHeader={this.props.talkHeader}/>
         )
     }
 
