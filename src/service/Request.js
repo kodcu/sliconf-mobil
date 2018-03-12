@@ -27,6 +27,10 @@ export default class Request{
       payload.body = JSON.stringify({
           ...data
       });
+    } else {
+        payload.headers = {
+            ...header
+        };
     }
 
     try {

@@ -3,7 +3,7 @@
  */
 
 import Request from '../../service/Request'
-import getTokenAuth from "../../helpers/getTokenAuth";
+import {getTokenAuth} from "../../helpers/getTokenAuth";
 
 const types = {
     EVENTLIST_POSTS_REQUEST: 'EVENTLIST_POSTS_REQUEST',

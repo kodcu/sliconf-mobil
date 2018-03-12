@@ -9,6 +9,7 @@ import {moderateScale, width,height} from "../theme/Scale";
 import {connect} from "react-redux";
 import Request from "../service/Request";
 import {postVote} from "../reducks/Api";
+import {getTokenAuth} from "../helpers/getTokenAuth";
 
 const personLogo = require('../../images/hi.png');
 
@@ -27,7 +28,8 @@ class CommentItem extends Component {
         isClicked: false,
         isDislike: false,
         item: this.props.item,
-        userAgent: this.props.userAgent
+        userAgent: this.props.userAgent,
+        talkHeader: this.props.talkHeader,
     }
 
     clickLike = async () => {
@@ -65,9 +67,10 @@ class CommentItem extends Component {
     }
 
     async voteRequest(commentId, userId, vote) {
-        console.log(commentId + " " + userId)
         let status, payload;
-        await Request.POST(postVote + commentId + '/' + userId + '/' + vote, {}, {
+        await Request.POST(postVote + commentId + '/' + userId + '/' + vote, {},
+            getTokenAuth(this.state.talkHeader),
+            {
             '200': (res) => {
                 status = res.status
                 if (res.status)
