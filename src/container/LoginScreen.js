@@ -348,8 +348,8 @@ class LoginScreen extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     alignSelf: 'center',
-                                    margin: 30,
-                                    marginBottom: 15
+                                    margin: 8,
+                                    marginBottom: 8
                                 }}>
 
 
