@@ -4,7 +4,7 @@
 
 import Request from "../../service/Request";
 import {postForgot, postLogin, postRegister} from '../Api';
-import getTokenAuth from "../../helpers/getTokenAuth";
+import {getTokenAuth} from "../../helpers/getTokenAuth";
 
 const types = {
     LOGIN_REQUEST: 'LOGIN_REQUEST',
@@ -164,11 +164,11 @@ export const actionCreators = {
         })
 
     },
-    loginToken: (token) => async (dispatch, getState) => {
+    loginToken: (responseToken) => async (dispatch, getState) => {
         dispatch({
             type: types.LOGIN_REQUEST
         })
-        await Request.POST(postLogin, {}, responseToken, {
+        await Request.POST(postLogin, {"username":"", "password":""}, {"Authorization": responseToken}, {
             '200': (res) => {
                 if (res.status)
                     dispatch({

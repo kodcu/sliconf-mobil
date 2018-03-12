@@ -4,7 +4,7 @@
 
 import Request from "../../service/Request";
 import {postLoginDevice, postRegisterDevice} from "../Api";
-import getTokenAuth from "../../helpers/getTokenAuth";
+import {getTokenAuth} from "../../helpers/getTokenAuth";
 
 const types = {
     DEVICE_REQUEST: 'DEVICE_REQUEST',
