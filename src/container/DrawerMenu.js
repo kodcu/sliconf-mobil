@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import {AsyncStorage, FlatList, StyleSheet, Text, View,} from "react-native"
+import { FlatList, StyleSheet, Text, View,} from "react-native"
 import {Button} from 'native-base'
 import {connect} from 'react-redux'
 import ProfileComponent from '../component/ProfileComponent'
@@ -75,8 +75,6 @@ class DrawerMenu extends Component {
                                         //await this.props.dispatch(actionCreatorsDevice.loginDevice(DeviceInfo.getUniqueID()));
                                         this.props.dispatch(actionCreators.logout());
                                         this.props.navigation.navigate(HOME);
-                                        AsyncStorage.setItem('username', "");
-                                        AsyncStorage.setItem('password', "");
                                     }}>
                                 <Text style={styles.questionText}>Yes</Text>
                             </Button>

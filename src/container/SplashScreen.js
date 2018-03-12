@@ -19,7 +19,8 @@ const mapStateToProps = (state) => ({
     errorMessageDevice: state.authDevice.errorMessage,
     login: state.auth.login,
     error: state.auth.error,
-    errorMessage: state.auth.errorMessage
+    errorMessage: state.auth.errorMessage,
+    user: state.auth.user
 });
 
 class SplashScreen extends React.Component {
@@ -46,10 +47,16 @@ class SplashScreen extends React.Component {
      */
     async anonymousUser() {
         const uniqueID = await DeviceInfo.getUniqueID();
-        await this.props.dispatch(actionCreatorsDevice.loginDevice(uniqueID));
+        const responseToken = await AsyncStorage.getItem('DeviceToken');
+
+        await this.props.dispatch(actionCreatorsDevice.loginDevice(uniqueID, responseToken));
+
         if (!this.props.loginDevice)
             await this.props.dispatch(actionCreatorsDevice.registerDevice(uniqueID));
 
+        const { user } = this.props;
+        AsyncStorage.setItem('DeviceToken', user.token);
+        
         return this.props.loginDevice;
     }
 
@@ -58,11 +65,10 @@ class SplashScreen extends React.Component {
      * @returns {Promise<void>}
      */
     async getLoggedUser() {
-        const responseUsername = await AsyncStorage.getItem('username');
-        const responsePass = await AsyncStorage.getItem('password');
-
-        if (responseUsername !== null && responsePass !== null)
-            await this.props.dispatch(actionCreatorsUser.login(responseUsername, responsePass));
+        const responseToken = await AsyncStorage.getItem('UserToken');
+        
+        if (responseToken !== null)
+            await this.props.dispatch(actionCreatorsUser.loginToken(responseToken));
 
         return this.props.login;
     }
