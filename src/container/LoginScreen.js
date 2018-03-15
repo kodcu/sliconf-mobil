@@ -348,11 +348,11 @@ class LoginScreen extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     alignSelf: 'center',
-                                    margin: 8,
-                                    marginBottom: 8
+                                    paddingLeft: 30,
+                                    paddingRight: 30,
+                                    width: Scale.width
                                 }}>
-
-
+                        
                                     <TextInputComponent
                                         placeholder="Full Name"
                                         placeholderTextColor={Color.darkGray3}
@@ -410,7 +410,6 @@ class LoginScreen extends Component {
                                                         ref={c => this._registerPasswordInput = c}
                                                         secure={true}
                                                         style={styles.input}/>
-
 
                                 </View>
 
