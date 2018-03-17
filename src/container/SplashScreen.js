@@ -20,7 +20,8 @@ const mapStateToProps = (state) => ({
     login: state.auth.login,
     error: state.auth.error,
     errorMessage: state.auth.errorMessage,
-    user: state.auth.user
+    user: state.auth.user,
+    userDevice: state.authDevice.user
 });
 
 class SplashScreen extends React.Component {
@@ -54,10 +55,12 @@ class SplashScreen extends React.Component {
         if (!this.props.loginDevice)
             await this.props.dispatch(actionCreatorsDevice.registerDevice(uniqueID));
 
-        const { user } = this.props;
-        AsyncStorage.setItem('DeviceToken', user.token);
+        const { userDevice, loginDevice } = this.props;
         
-        return this.props.loginDevice;
+        if (userDevice.token !== null && userDevice.token !== '')
+            AsyncStorage.setItem('DeviceToken', userDevice.token);
+        
+        return loginDevice;
     }
 
     /**
