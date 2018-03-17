@@ -19,4 +19,7 @@ export const postVote = baseApi + 'events/comment/vote/';
 export const voteTalk = baseApi + 'events/agenda/vote/';
 export const getVoteByUser=baseApi+'events/agenda/get-vote/';
 
-
+//Schedule
+export const postSchedule = baseApi + 'schedule/add';
+export const deleteSchedule = baseApi + 'schedule/remove';
+export const getSchedule = baseApi + 'schedule/list/';
