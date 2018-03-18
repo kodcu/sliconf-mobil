@@ -2,7 +2,7 @@
  * Created by anil on 04/07/2017.
  */
 import React, {Component} from 'react';
-import {Alert, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View,AsyncStorage} from 'react-native';
+import {Alert, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View, AsyncStorage} from 'react-native';
 
 import {Container, Content, Input, Item} from 'native-base';
 import Color from "../theme/Color";
@@ -50,7 +50,7 @@ class LoginScreen extends Component {
             this.setState({loadingModal: true});
             const {dispatch, loading} = this.props;
             await dispatch(actionCreators.login(username, password));
-            const {error, errorMessage} = this.props;
+            const {error, errorMessage, user} = this.props;
             if (error)
                 Alert.alert(
                     'Warning!',
@@ -66,10 +66,8 @@ class LoginScreen extends Component {
                 this.setState({loadingModal: loading});
                 this.props.navigation.navigate(HOME)
                 if (this.state.rememberMe){
-                    AsyncStorage.setItem('username', username);
-                    AsyncStorage.setItem('password', password);
+                    AsyncStorage.setItem('UserToken', user.token);
                 }
-
             }
         }
 
@@ -350,11 +348,11 @@ class LoginScreen extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     alignSelf: 'center',
-                                    margin: 30,
-                                    marginBottom: 15
+                                    paddingLeft: 30,
+                                    paddingRight: 30,
+                                    width: Scale.width
                                 }}>
-
-
+                        
                                     <TextInputComponent
                                         placeholder="Full Name"
                                         placeholderTextColor={Color.darkGray3}
@@ -412,7 +410,6 @@ class LoginScreen extends Component {
                                                         ref={c => this._registerPasswordInput = c}
                                                         secure={true}
                                                         style={styles.input}/>
-
 
                                 </View>
 

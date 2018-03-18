@@ -1,9 +1,10 @@
-import {postLoginDevice, postRegisterDevice} from "../Api";
-import Request from "../../service/Request";
-
 /**
  * Created by Muslum on 10.01.2018.
  */
+
+import Request from "../../service/Request";
+import {postLoginDevice, postRegisterDevice} from "../Api";
+import {getTokenAuth} from "../../helpers/getTokenAuth";
 
 const types = {
     DEVICE_REQUEST: 'DEVICE_REQUEST',
@@ -11,7 +12,6 @@ const types = {
     DEVICE_LOGIN_FAIL: 'DEVICE_LOGIN_FAIL',
     DEVICE_REGISTER_SUC: 'DEVICE_REGISTER_SUC',
     DEVICE_REGISTER_FAIL: 'DEVICE_REGISTER_FAIL',
-
 };
 
 const initialState = {
@@ -77,10 +77,10 @@ export const reducer = (state = initialState, action) => {
 };
 
 export const actionCreators = {
-    loginDevice: (deviceId) => async (dispatch, getState) => {
-        dispatch({type: types.DEVICE_REQUEST, payload: null})
+    loginDevice: (deviceId, responseToken) => async (dispatch, getState) => {
+        dispatch({ type: types.DEVICE_REQUEST, payload: null })
 
-        await Request.POST(postLoginDevice + deviceId, {}, {
+        await Request.POST(postLoginDevice + deviceId, {}, responseToken, {
             '200': (res) => {
                 if (res.status)
                     dispatch({
@@ -108,20 +108,17 @@ export const actionCreators = {
         })
     },
     registerDevice: (deviceId) => async (dispatch, getState) => {
-        console.log("girdi")
+        
         dispatch({type: types.DEVICE_REQUEST, payload: null})
-        console.log("istek")
-        await Request.POST(postRegisterDevice + deviceId, {}, {
+        
+        await Request.POST(postRegisterDevice + deviceId, {}, {},{
             '200': (res) => {
-                console.log("sonuc1")
-                console.log(res)
                 if (res.status)
                     dispatch({
                         type: types.DEVICE_REGISTER_SUC,
                         payload: res.returnObject
                     })
                 else{
-                    console.log("sonuc2")
                     dispatch({
                         type: types.DEVICE_REGISTER_FAIL,
                         payload: res.message
@@ -130,14 +127,12 @@ export const actionCreators = {
 
             },
             otherwise: (res) => {
-                console.log("sonuc3")
                 dispatch({
                     type: types.DEVICE_REGISTER_FAIL,
                     payload: res.message
                 })
             },
             fail: (err) => {
-                console.log("sonuc4")
                 dispatch({
                     type: types.DEVICE_REGISTER_FAIL,
                     payload: 'Can not be processed at this time!'

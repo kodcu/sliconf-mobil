@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Alert, Modal, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView} from 'react-native';
+import React, { Component } from 'react';
+import { Alert, Modal, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
 import {connect} from "react-redux";
 import Header from "../component/Header";
 import Color from "../theme/Color";
@@ -11,8 +11,9 @@ import Font from "../theme/Font";
 import moment from "moment/moment";
 import {actionCreators} from "../reducks/module/comment";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/Ionicons';
 import SendQuestionModal from "../component/SendQuestionModal";
+import If from '../component/If';
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
@@ -29,6 +30,7 @@ class AskScreen extends Component {
     state = {
         sessionId: "",
         messageModal: false,
+        pressedButtonId: ""
     };
 
     closeModal = () => {
@@ -42,7 +44,7 @@ class AskScreen extends Component {
         console.log(session)
     }
 
-    getPicker(agenda) {
+    /*getPicker(agenda) {
         if (Platform.OS === "android") {
             return (<Picker style={{color: Color.black, width: Scale.width - 30, alignSelf: 'center', height: 60}}
                             placeholder={"Select a Session"}
@@ -67,7 +69,7 @@ class AskScreen extends Component {
                 )}
             </Picker>);
         }
-    }
+    }*/
     /*
     * Function that creates an array which holds the buttons.
     * Takes parameter agenda from render() function
@@ -82,26 +84,44 @@ class AskScreen extends Component {
             buttons.push(
                 <TouchableOpacity 
                     key={talk.id}
-                    onPress={() => this.setState({ sessionId: talk.id })}
+                    onPress={() => this.setState({ sessionId: talk.id, pressedButtonId: talk.id })}
                 >
                     <View style={{ 
                         flex: 1, 
                         justifyContent: 'center', 
                         borderWidth: 0.5, 
-                        borderColor: Color.green,
-                        height: Scale.verticalScale(80)
+                        borderColor: Color.black,
+                        height: Scale.verticalScale(72)
                         }}
-                    >
-                        <Text style={{
-                            ...Font.regular,
-                            textAlign: 'center',
-                            color: Color.green,
-                            fontSize: Scale.verticalScale(18),
-                            padding: 2
-                            }}
-                        >
-                            {talk.topic}
-                        </Text>
+                    >   
+                        <If con={this.state.pressedButtonId === talk.id}>
+                            <If.Then>
+                                <Text 
+                                style={{
+                                    ...Font.regular,
+                                    textAlign: 'center',
+                                    color: Color.green,
+                                    fontSize: Scale.verticalScale(16),
+                                    padding: 2
+                                }}
+                                >
+                                {talk.topic}
+                                </Text>
+                            </If.Then>
+                            <If.Else>
+                                <Text 
+                                style={{
+                                    ...Font.regular,
+                                    textAlign: 'center',
+                                    color: Color.black,
+                                    fontSize: Scale.verticalScale(16),
+                                    padding: 2
+                                }}
+                                >
+                                {talk.topic}
+                                </Text>
+                            </If.Else>
+                        </If>     
                     </View>
                 </TouchableOpacity>
             );    
@@ -124,7 +144,7 @@ class AskScreen extends Component {
 
                 {/*this.getPicker(agenda)*/}
                 <View style={{ flex: 1 }}>
-                    <ScrollView style={{ height: Scale.height / 4 }}>
+                    <ScrollView style={{ height: Scale.height / 8 }}>
                         {this.getTalkButtons(agenda)}
                     </ScrollView>
                 

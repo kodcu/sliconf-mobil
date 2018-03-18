@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {
-    AsyncStorage, Dimensions, FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity,
-    View
+import { 
+    Dimensions, FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native'
 import Header from "../component/Header";
 import {connect} from 'react-redux'
