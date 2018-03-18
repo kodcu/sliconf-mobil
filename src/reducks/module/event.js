@@ -6,7 +6,6 @@
  import { AsyncStorage } from 'react-native';
  import store from '../../container/store';
 
-
 const types = {
     EVENTLIST_POSTS_REQUEST: 'EVENTLIST_POSTS_REQUEST',
     EVENTLIST_POSTS_RESPONSE_SUC: 'EVENTLIST_POSTS_RESPONSE_SUC',
@@ -15,7 +14,6 @@ const types = {
     EVENT_POSTS_REQUEST: 'EVENT_POSTS_REQUEST',
     EVENT_POSTS_RESPONSE_SUC: 'EVENT_POSTS_RESPONSE_SUC',
     EVENT_POSTS_RESPONSE_FAIL: 'EVENT_POSTS_RESPONSE_FAIL',
-
 }
 
 import {API_EVENTLIST, API_EVENT, getEvent} from '../Api'
@@ -98,7 +96,10 @@ export const actionCreators = {
             type: types.EVENT_POSTS_REQUEST
         })
 
-        await Request.GET(getEvent+code.toUpperCase()+"?statistic=true&userId="+userId,{
+        await Request.GET(
+            getEvent + code.toUpperCase() + "?statistic=true&userId=" + userId,
+            getTokenAuth(getState()),
+            {
             '200': (res)=>{
                 if (res.status && res.returnObject.status)
                     dispatch({
@@ -124,11 +125,7 @@ export const actionCreators = {
                 })
             }
         })
-
-    },
-
-
-
+    }
 }
 
 export default reducer

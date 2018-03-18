@@ -3,7 +3,8 @@
  */
 
 import Request from "../../service/Request";
-import {postForgot, postLogin, postRegister} from '../Api'
+import {postForgot, postLogin, postRegister} from '../Api';
+import {getTokenAuth} from "../../helpers/getTokenAuth";
 
 const types = {
     LOGIN_REQUEST: 'LOGIN_REQUEST',
@@ -25,7 +26,6 @@ const initialState = {
     login: false,
     user: Object,
     loginError: String,
-
 };
 
 export const reducer = (state = initialState, action) => {
@@ -136,7 +136,7 @@ export const actionCreators = {
             type: types.LOGIN_REQUEST
         })
 
-        await Request.POST(postLogin, {username, password}, {
+        await Request.POST(postLogin, {username, password}, {}, {
             '200': (res) => {
                 if (res.status)
                     dispatch({
@@ -164,12 +164,43 @@ export const actionCreators = {
         })
 
     },
+    loginToken: (responseToken) => async (dispatch, getState) => {
+        dispatch({
+            type: types.LOGIN_REQUEST
+        })
+        await Request.POST(postLogin, {"username":"", "password":""}, {"Authorization": responseToken}, {
+            '200': (res) => {
+                if (res.status)
+                    dispatch({
+                        type: types.LOGIN_RESPONSE_SUC,
+                        payload: res.returnObject
+                    })
+                else
+                    dispatch({
+                        type: types.LOGIN_RESPONSE_FAIL,
+                        payload: res.message
+                    })
+            },
+            otherwise: (res) => {
+                dispatch({
+                    type: types.LOGIN_RESPONSE_FAIL,
+                    payload: res.message
+                })
+            },
+            fail: (err) => {
+                dispatch({
+                    type: types.LOGIN_RESPONSE_FAIL,
+                    payload: 'Can not be processed at this time!'
+                })
+            }
+        })
+    },
     register: (fullname, username, email, password) => async (dispatch, getState) => {
         dispatch({
             type: types.REGISTER_REQUEST
         })
 
-        await Request.POST(postRegister, {username, password, email, fullname}, {
+        await Request.POST(postRegister, {username, password, email, fullname}, {}, {
             '200': (res) => {
                 if (res.status)
                     dispatch({
@@ -197,13 +228,12 @@ export const actionCreators = {
         })
 
     },
-
     forgotPassword: (email) => async (dispatch, getState) => {
         dispatch({
             type: types.FORGOT_PASS_REQUEST
         })
 
-        await Request.POST(postForgot + email, {email}, {
+        await Request.POST(postForgot + email, {email}, {}, {
             '200': (res) => {
                 if (res.status)
                     dispatch({
@@ -235,8 +265,7 @@ export const actionCreators = {
         dispatch({
             type: types.LOGOUT_REQUEST
         })
-    },
-
+    }
 }
 
 export default reducer

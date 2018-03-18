@@ -19,7 +19,9 @@ const mapStateToProps = (state) => ({
     errorMessageDevice: state.authDevice.errorMessage,
     login: state.auth.login,
     error: state.auth.error,
-    errorMessage: state.auth.errorMessage
+    errorMessage: state.auth.errorMessage,
+    user: state.auth.user,
+    userDevice: state.authDevice.user
 });
 
 class SplashScreen extends React.Component {
@@ -46,11 +48,19 @@ class SplashScreen extends React.Component {
      */
     async anonymousUser() {
         const uniqueID = await DeviceInfo.getUniqueID();
-        await this.props.dispatch(actionCreatorsDevice.loginDevice(uniqueID));
+        const responseToken = await AsyncStorage.getItem('DeviceToken');
+
+        await this.props.dispatch(actionCreatorsDevice.loginDevice(uniqueID, responseToken));
+
         if (!this.props.loginDevice)
             await this.props.dispatch(actionCreatorsDevice.registerDevice(uniqueID));
 
-        return this.props.loginDevice;
+        const { userDevice, loginDevice } = this.props;
+        
+        if (userDevice.token !== null && userDevice.token !== '')
+            AsyncStorage.setItem('DeviceToken', userDevice.token);
+        
+        return loginDevice;
     }
 
     /**
@@ -58,11 +68,10 @@ class SplashScreen extends React.Component {
      * @returns {Promise<void>}
      */
     async getLoggedUser() {
-        const responseUsername = await AsyncStorage.getItem('username');
-        const responsePass = await AsyncStorage.getItem('password');
-
-        if (responseUsername !== null && responsePass !== null)
-            await this.props.dispatch(actionCreatorsUser.login(responseUsername, responsePass));
+        const responseToken = await AsyncStorage.getItem('UserToken');
+        
+        if (responseToken !== null)
+            await this.props.dispatch(actionCreatorsUser.loginToken(responseToken));
 
         return this.props.login;
     }
@@ -78,17 +87,17 @@ class SplashScreen extends React.Component {
     }
 
     async componentDidMount() {
-        //if(await this.checkUser())
+        if(await this.checkUser())
             setTimeout(() => this.props.navigation.dispatch({type: MAIN}), 500);
-        //else
-        //    Alert.alert(
-        //        'Warning!',
-        //        "Please check your connection.",
-        //        [
-        //            {text: 'Exit', onPress: () => RNExitApp.exitApp()},
-        //        ],
-        //        {cancelable: false}
-        //    );
+        else
+            Alert.alert(
+                'Warning!',
+                "Please check your connection.",
+                [
+                    {text: 'Exit', onPress: () => RNExitApp.exitApp()},
+                ],
+                {cancelable: false}
+            );
     }
 
     render() {
