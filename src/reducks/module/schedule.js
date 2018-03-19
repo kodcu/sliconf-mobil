@@ -21,7 +21,7 @@ const types = {
 const initialState = {
     loading: false,
     error: false,
-    errorMessage: String,
+    scheduleError: String,
     schedule: Object,
     scheduleList: Array
 };
@@ -51,7 +51,7 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: true,
-                errorMessage: paylaod,
+                scheduleError: paylaod,
                 schedule: {}
             }
         }
@@ -76,7 +76,7 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: true,
-                errorMessage: paylaod,
+                scheduleError: paylaod,
                 scheduleList: []
             }
         }
@@ -99,7 +99,7 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: true,
-                errorMessage: paylaod
+                scheduleError: paylaod
             }
         }
     }

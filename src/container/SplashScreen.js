@@ -49,9 +49,9 @@ class SplashScreen extends React.Component {
     async anonymousUser() {
         const uniqueID = await DeviceInfo.getUniqueID();
         const responseToken = await AsyncStorage.getItem('DeviceToken');
-
+       
         await this.props.dispatch(actionCreatorsDevice.loginDevice(uniqueID, responseToken));
-
+        
         if (!this.props.loginDevice)
             await this.props.dispatch(actionCreatorsDevice.registerDevice(uniqueID));
 
@@ -59,7 +59,7 @@ class SplashScreen extends React.Component {
         
         if (userDevice.token !== null && userDevice.token !== '')
             AsyncStorage.setItem('DeviceToken', userDevice.token);
-        
+       
         return loginDevice;
     }
 
