@@ -9,7 +9,7 @@ import {moderateScale, width,height} from "../theme/Scale";
 import {connect} from "react-redux";
 import Request from "../service/Request";
 import {postVote} from "../reducks/Api";
-import {getTokenAuth} from "../helpers/getTokenAuth";
+import getTokenAuth from "../helpers/getTokenAuth";
 
 const personLogo = require('../../images/hi.png');
 
