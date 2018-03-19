@@ -1,4 +1,4 @@
-export const getTokenAuth = (state) => {
+const getTokenAuth = (state) => {
     if (state) {
         if (state.auth && state.auth.user && state.auth.user.token ) {
             return { "Authorization": state.auth.user.token }
@@ -8,3 +8,5 @@ export const getTokenAuth = (state) => {
     }
     return { "Authorization": "" };
 };
+
+export default getTokenAuth;

@@ -4,7 +4,7 @@
 
 import Request from "../../service/Request";
 import {postForgot, postLogin, postRegister} from '../Api';
-import {getTokenAuth} from "../../helpers/getTokenAuth";
+import getTokenAuth from "../../helpers/getTokenAuth";
 
 const types = {
     LOGIN_REQUEST: 'LOGIN_REQUEST',
