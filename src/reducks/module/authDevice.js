@@ -3,8 +3,8 @@
  */
 
 import Request from "../../service/Request";
-import {postLoginDevice, postRegisterDevice} from "../Api";
-import {getTokenAuth} from "../../helpers/getTokenAuth";
+import { postLoginDevice, postRegisterDevice } from "../Api";
+import { getTokenAuth } from "../../helpers/getTokenAuth";
 
 const types = {
     DEVICE_REQUEST: 'DEVICE_REQUEST',
@@ -79,8 +79,8 @@ export const reducer = (state = initialState, action) => {
 export const actionCreators = {
     loginDevice: (deviceId, responseToken) => async (dispatch, getState) => {
         dispatch({ type: types.DEVICE_REQUEST, payload: null })
-
-        await Request.POST(postLoginDevice + deviceId, {}, responseToken, {
+        
+        await Request.POST(postLoginDevice + deviceId, {}, {"Authorization": responseToken}, {
             '200': (res) => {
                 if (res.status)
                     dispatch({
@@ -111,7 +111,7 @@ export const actionCreators = {
         
         dispatch({type: types.DEVICE_REQUEST, payload: null})
         
-        await Request.POST(postRegisterDevice + deviceId, {}, {},{
+        await Request.POST(postRegisterDevice + deviceId, {}, getTokenAuth(getState()),{
             '200': (res) => {
                 if (res.status)
                     dispatch({

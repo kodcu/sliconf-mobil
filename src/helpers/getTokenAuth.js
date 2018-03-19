@@ -8,5 +8,3 @@ export const getTokenAuth = (state) => {
     }
     return { "Authorization": "" };
 };
-
-export default getTokenAuth
