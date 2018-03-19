@@ -5,6 +5,7 @@
  import Request from '../../service/Request'
  import { AsyncStorage } from 'react-native';
  import store from '../../container/store';
+ import getTokenAuth from "../../helpers/getTokenAuth";
 
 const types = {
     EVENTLIST_POSTS_REQUEST: 'EVENTLIST_POSTS_REQUEST',
