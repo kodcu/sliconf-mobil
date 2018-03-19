@@ -14,15 +14,17 @@ import Color from "../theme/Color";
 import Font from "../theme/Font";
 import {height, moderateScale} from "../theme/Scale";
 import moment from "moment";
+import { actionCreators as scheduleActionCreator } from '../reducks/module/schedule';
 
 const mapStateToProps = (state) => ({
     agenda: state.event.event.agenda,
     rooms: state.event.event.rooms,
     speakers: state.event.event.speakers,
     user: state.auth.user,
-    login: state.auth.login
+    login: state.auth.login,
+    event: state.event.event,
+    schedule: state.schedule.schedule
 });
-
 
 let eventsData = [];
 
@@ -63,17 +65,36 @@ class AgendaScreen extends Component {
      * @param arg Konusmanın modeli
      */
     deleteItemFromChosenEvents = (arg) => {
+        this.props.dispatch(
+            scheduleActionCreator.deleteSchedule(
+                arg.requestId,
+                this.props.user.id, 
+                this.props.event.id, 
+                arg.id
+            )
+        );
         let array = this.state.chosen;
         let index = array.indexOf(arg);
         array.splice(index, 1);
-        this.setState({chosen: array})
+        this.setState({chosen: array});
     };
 
     /**
      * Sectiklerim listesine konusmayi ekler.
      * @param arg konusma detaylari
      */
-    addItemToChosenEvents = (arg) => this.setState({chosen:[...this.state.chosen,arg]});
+    addItemToChosenEvents = (arg) => {
+        this.setState({
+            chosen:[...this.state.chosen, arg]
+        });
+        this.props.dispatch(
+            scheduleActionCreator.postSchedule(
+                this.props.user.id, 
+                this.props.event.id, 
+                arg.id
+            )
+        );
+    }
 
     convertToDateArray(agenda) {
         let newAgendaData = [];
@@ -154,7 +175,7 @@ class AgendaScreen extends Component {
                 switchedDay: moment(Object.keys(data)[0], "MM-DD-YYYY").format("dddd")
             })
         }
-
+        this.getScheduleList();
     }
 
     /**
@@ -185,7 +206,6 @@ class AgendaScreen extends Component {
                 return this.getAgendaCard(arg, i, chosen.indexOf(arg[i]) !== -1)
         }
         return (<AgendaCard isEmpty={true}/>)
-
     }
 
     /**
@@ -242,13 +262,43 @@ class AgendaScreen extends Component {
         return speakerData.find(speaker => speaker.id === speakerId)
     }
 
+    async getScheduleList() {
+        await this.props.dispatch(
+            scheduleActionCreator.getSchedule(
+                this.props.user.id, 
+                this.props.event.id
+            )
+        ); 
+    }
 
     render() {
-        const {isChosenClicked, filter} = this.state;
-        talksList = this.state.data;
+        const { isChosenClicked, filter } = this.state;
+        const { schedule } = this.props;
+
+        talksList = this.state.data; //talkList[time][0] properties ->id,topic,detail,level,tags,room,speaker,star,voteCount,date,duration
         rooms = this.state.rooms;
-        chosen = this.state.chosen;
+
         const agendaData = this.state.agendaData;
+        var sessionArray = [];
+
+       if (typeof schedule !== 'undefined' && schedule.length > 0) {
+            Object.keys(talksList).map((time, index) => {
+                var session = talksList[time][0];
+                for (var i = 0; i < schedule.length; i++) {
+                    for (var key in schedule[i]) {
+                        if (key === 'sessionId') {
+                            if (session.id === schedule[i][key]) {
+                                session.requestId = schedule[i]['id']
+                                sessionArray.push(session);
+                            }
+                        }
+                    }
+                }
+            });
+            chosen = sessionArray;
+        } else
+            chosen = this.state.chosen;
+        
         return (
             <View style={styles.container}>
                 <If con={isChosenClicked}>
@@ -293,7 +343,6 @@ class AgendaScreen extends Component {
                 </If>
                 <Content>
                     <If con={isChosenClicked}>
-
                         <If.Then>
                             <View>
                                 <View style={{flexDirection: 'row'}}>
@@ -341,7 +390,8 @@ class AgendaScreen extends Component {
                         </If.Then>
                         <If.Else>
                             <View>
-                                {chosen.map((choosed, i) =>
+                                {   
+                                    chosen.map((choosed, i) =>
                                     <TouchableOpacity key={i} onPress={() => this.props.login ?
                                         this.props.navigation.navigate(TALK, choosed) : Alert.alert(
                                             'Warning!',
@@ -357,7 +407,8 @@ class AgendaScreen extends Component {
                                                     visibleButton={true}/>
                                     </TouchableOpacity>
                                 )}
-                            </View></If.Else>
+                            </View>
+                        </If.Else>
                     </If>
                 </Content>
                 <Footer>

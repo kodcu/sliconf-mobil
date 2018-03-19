@@ -22,8 +22,7 @@ const initialState = {
     loading: false,
     error: false,
     scheduleError: String,
-    schedule: Object,
-    scheduleList: Array
+    schedule: Array
 };
 
 export const reducer = (state = initialState, action) => {
@@ -35,7 +34,7 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: true,
                 error: false,
-                schedule: {}
+                schedule: []
             }
         }
         case types.SCHEDULE_POST_SUCCESS: {
@@ -51,8 +50,8 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: true,
-                scheduleError: paylaod,
-                schedule: {}
+                scheduleError: payload,
+                schedule: []
             }
         }
         case types.SCHEDULE_GET_REQUEST: {
@@ -60,7 +59,7 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: true,
                 error: false,
-                scheduleList: []
+                schedule: []
             }
         }
         case types.SCHEDULE_GET_SUCCESS: {
@@ -68,7 +67,7 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: false,
-                scheduleList: payload
+                schedule: payload
             }
         }
         case types.SCHEDULE_GET_FAIL: {
@@ -76,8 +75,8 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: true,
-                scheduleError: paylaod,
-                scheduleList: []
+                scheduleError: payload,
+                schedule: []
             }
         }
         case types.SCHEDULE_DELETE_REQUEST: {
@@ -99,7 +98,7 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: true,
-                scheduleError: paylaod
+                scheduleError: payload
             }
         }
     }
