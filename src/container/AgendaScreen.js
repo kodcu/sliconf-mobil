@@ -84,39 +84,32 @@ class AgendaScreen extends Component {
      * @param arg konusma detaylari
      */
     addItemToChosenEvents = (arg) => {
-        this.props.dispatch(
-            scheduleActionCreator.postSchedule(
-                this.props.user.id, 
-                this.props.event.id, 
-                arg.id
-            )
+        this.props.dispatch(	         
+            scheduleActionCreator.postSchedule(	            
+                this.props.user.id, 	                
+                this.props.event.id, 	                 
+                arg.id	                 
+            )	             
         );
         this.setState({
             chosen:[...this.state.chosen, arg]
         });
     }
 
-    async getScheduleList() {
-        await this.props.dispatch(
-            scheduleActionCreator.getSchedule(
-                this.props.user.id, 
-                this.props.event.id
-            )
-        ); 
-        const { schedule } = this.props;
-        var sessions = [];
-        var requestId = {requestId: ''};
-        if (typeof schedule !== 'undefined' && schedule.length > 0) {
-            schedule.map((session, i) => {
-                requestId.requestId = session.id;
-                sessions[i] = Object.assign(session.agendaElement, requestId);
-            });
-            this.setState({
-                chosen: sessions
-            });
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.schedule !== this.props.schedule) {
+            var sessions = [];
+            if (Boolean(nextProps.schedule)  && nextProps.schedule.length > 0) {
+                nextProps.schedule.map((session, i) => {
+                    sessions[i] = {...session.agendaElement, requestId: session.id}
+                });
+                this.setState({
+                    chosen: sessions
+                });
+            }
         }
     }
-
+    
     convertToDateArray(agenda) {
         let newAgendaData = [];
         let dateMap = new Map();
@@ -182,14 +175,16 @@ class AgendaScreen extends Component {
     componentWillMount() {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
+        dispatch(scheduleActionCreator.getSchedule(this.props.user.id, this.props.event.id)); 
 
         let agenda = this.convertToDateArray(this.props.agenda);
-        this.setState({agendaData: agenda});
+
         const data = agenda;
 
         if (data !== undefined && data !== null && !data.isEmpty) {
             Object.keys(data).forEach((date) => eventsData.includes(date) ? null : eventsData.push(date));
             this.setState({
+                agendaData: agenda,
                 rooms: this.roomsList(data[Object.keys(data)[0]]),
                 data: this.eventsList(data[Object.keys(data)[0]]),
                 switchedDay: moment(Object.keys(data)[0], "MM-DD-YYYY").format("dddd")
@@ -414,7 +409,6 @@ class AgendaScreen extends Component {
                             }}>All</Text>
                         </Button>
                         <Button vertical onPress={() => {
-                            this.getScheduleList();
                             this.setState({isChosenClicked: false})
                         }}>
                             <Text style={{
