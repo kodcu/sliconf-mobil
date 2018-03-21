@@ -84,9 +84,6 @@ class AgendaScreen extends Component {
      * @param arg konusma detaylari
      */
     addItemToChosenEvents = (arg) => {
-        this.setState({
-            chosen:[...this.state.chosen, arg]
-        });
         this.props.dispatch(
             scheduleActionCreator.postSchedule(
                 this.props.user.id, 
@@ -94,12 +91,35 @@ class AgendaScreen extends Component {
                 arg.id
             )
         );
+        this.setState({
+            chosen:[...this.state.chosen, arg]
+        });
+    }
+
+    async getScheduleList() {
+        await this.props.dispatch(
+            scheduleActionCreator.getSchedule(
+                this.props.user.id, 
+                this.props.event.id
+            )
+        ); 
+        const { schedule } = this.props;
+        var sessions = [];
+        var requestId = {requestId: ''};
+        if (typeof schedule !== 'undefined' && schedule.length > 0) {
+            schedule.map((session, i) => {
+                requestId.requestId = session.id;
+                sessions[i] = Object.assign(session.agendaElement, requestId);
+            });
+            this.setState({
+                chosen: sessions
+            });
+        }
     }
 
     convertToDateArray(agenda) {
         let newAgendaData = [];
         let dateMap = new Map();
-
 
         agenda.forEach(function (element) {
             let date = moment(element.date).format("MM-DD-YYYY")
@@ -175,7 +195,6 @@ class AgendaScreen extends Component {
                 switchedDay: moment(Object.keys(data)[0], "MM-DD-YYYY").format("dddd")
             })
         }
-        this.getScheduleList();
     }
 
     /**
@@ -262,42 +281,14 @@ class AgendaScreen extends Component {
         return speakerData.find(speaker => speaker.id === speakerId)
     }
 
-    async getScheduleList() {
-        await this.props.dispatch(
-            scheduleActionCreator.getSchedule(
-                this.props.user.id, 
-                this.props.event.id
-            )
-        ); 
-    }
-
     render() {
         const { isChosenClicked, filter } = this.state;
         const { schedule } = this.props;
-
-        talksList = this.state.data; //talkList[time][0] properties ->id,topic,detail,level,tags,room,speaker,star,voteCount,date,duration
-        rooms = this.state.rooms;
-
         const agendaData = this.state.agendaData;
-        var sessionArray = [];
 
-       if (typeof schedule !== 'undefined' && schedule.length > 0) {
-            Object.keys(talksList).map((time, index) => {
-                var session = talksList[time][0];
-                for (var i = 0; i < schedule.length; i++) {
-                    for (var key in schedule[i]) {
-                        if (key === 'sessionId') {
-                            if (session.id === schedule[i][key]) {
-                                session.requestId = schedule[i]['id']
-                                sessionArray.push(session);
-                            }
-                        }
-                    }
-                }
-            });
-            chosen = sessionArray;
-        } else
-            chosen = this.state.chosen;
+        talksList = this.state.data;
+        rooms = this.state.rooms;
+        chosen = this.state.chosen;
         
         return (
             <View style={styles.container}>
@@ -423,6 +414,7 @@ class AgendaScreen extends Component {
                             }}>All</Text>
                         </Button>
                         <Button vertical onPress={() => {
+                            this.getScheduleList();
                             this.setState({isChosenClicked: false})
                         }}>
                             <Text style={{
