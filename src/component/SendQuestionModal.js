@@ -14,9 +14,9 @@ import ButtonComponent from "react-native-button-component"
 const mapStateToProps = (state) => ({
     event: state.event.event,
     loading: state.comment.loading,
-    user: state.auth.user,
+    user: state.auth.login ? state.auth.user : state.authDevice.user,
     userDevice: state.authDevice.user,
-    login: state.auth.login,
+    login: state.auth.login ? state.auth.login : state.authDevice.login,
     error: state.comment.error,
     errorMessage: state.comment.errorMessage
 });

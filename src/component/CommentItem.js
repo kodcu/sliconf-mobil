@@ -16,7 +16,7 @@ const personLogo = require('../../images/hi.png');
 
 const mapStateToProps = (state) => ({
     loading: state.comment.loading,
-    user: state.auth.user,
+    user: state.auth.login ? state.auth.user : state.authDevice.user,
     error: state.comment.error,
     errorMessage: state.comment.errorMessage,
     commentVoted: state.comment.commentVoted

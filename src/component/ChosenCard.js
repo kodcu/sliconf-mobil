@@ -34,13 +34,16 @@ class ChosenCard extends Component {
     }
 
     getRoomName(roomId) {
-        const roomsTags = this.props.rooms;
-        const room = roomsTags.find(room => room.id === roomId)
-        return room.label;
+        // const roomsTags = this.props.rooms;
+        // const room = roomsTags.find(room => room.id === roomId)
+        // return room.label;
+        //asd
+        return roomId.label;
     }
 
     getSpeakerName(speakerId) {
-        return this.props.speakers.find(speaker => speaker.id === speakerId).name
+        // return this.props.speakers.find(speaker => speaker.id === speakerId).name
+        return speakerId.name;
     }
 
     render() {
@@ -49,13 +52,13 @@ class ChosenCard extends Component {
         return (
 
             <View style={styles.container}>
-                <View style={[styles.cardLine, {borderColor: this.getColorByLevel(item.level)}]}/>
+                <View style={[styles.cardLine, {borderColor: this.getColorByLevel(item.agendaElement.level)}]}/>
                 <View style={styles.detailField}>
-                    <Text style={styles.topic}>{item.topic}</Text>
+                    <Text style={styles.topic}>{item.agendaElement.topic}</Text>
                     <Text style={styles.speaker}>{this.getSpeakerName(item.speaker)}</Text>
                     <View style={styles.infoField}>
-                        <Text style={styles.topic}>{moment(item.date).format("HH:mm")}</Text>
-                        <Text style={styles.topic}>{moment(item.date).format("DD MMM YYYY")}</Text>
+                        <Text style={styles.topic}>{moment(item.agendaElement.date).format("HH:mm")}</Text>
+                        <Text style={styles.topic}>{moment(item.agendaElement.date).format("DD MMM YYYY")}</Text>
                         <Text style={styles.topic}>{this.getRoomName(item.room)}</Text>
                     </View>
                 </View>

@@ -160,23 +160,7 @@ class SpeakerInfoScreen extends Component {
                             <View style={[styles.talksField, {height: (talkList.length * moderateScale(145))}]}>
                                 {talkList.map((item, i) =>
                                     <TouchableOpacity key={i} style={{width:'100%'}}
-                                                      onPress={() =>
-                                                          this.props.login ?
-                                                              this.props.navigation.navigate(TALK, item) :
-                                                              Alert.alert(
-                                                                  'Warning!',
-                                                                  'Please log in for more information.',
-                                                                  [
-                                                                      {
-                                                                          text: 'LOGIN',
-                                                                          onPress: () => this.props.navigation.navigate(LOGIN)
-                                                                      },
-                                                                      {
-                                                                          text: 'CANCEL',
-                                                                          onPress: () => console.log('cancel')
-                                                                      }
-                                                                  ]
-                                                              )}>
+                                                      onPress={() => this.props.navigation.navigate(TALK, item)}>
                                         <ChosenCard key={i} item={item} visibleButton={false}/>
                                     </TouchableOpacity>)}
                             </View>

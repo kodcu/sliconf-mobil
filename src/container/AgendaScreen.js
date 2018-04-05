@@ -20,8 +20,10 @@ const mapStateToProps = (state) => ({
     agenda: state.event.event.agenda,
     rooms: state.event.event.rooms,
     speakers: state.event.event.speakers,
-    user: state.auth.user,
-    login: state.auth.login,
+    // user: state.auth.user,
+    user: state.auth.login ? state.auth.user : state.authDevice.user,
+    // login: state.auth.login,
+    login: state.auth.login ? state.auth.login : state.authDevice.login,
     event: state.event.event,
     schedule: state.schedule.schedule
 });
@@ -67,10 +69,10 @@ class AgendaScreen extends Component {
     deleteItemFromChosenEvents = (arg) => {
         this.props.dispatch(
             scheduleActionCreator.deleteSchedule(
-                arg.requestId,
+                arg.id,
                 this.props.user.id, 
                 this.props.event.id, 
-                arg.id
+                arg.agendaElement.id
             )
         );
         let array = this.state.chosen;
@@ -84,27 +86,28 @@ class AgendaScreen extends Component {
      * @param arg konusma detaylari
      */
     addItemToChosenEvents = (arg) => {
-        this.props.dispatch(	         
-            scheduleActionCreator.postSchedule(	            
-                this.props.user.id, 	                
-                this.props.event.id, 	                 
-                arg.id	                 
-            )	             
+        this.props.dispatch(
+            scheduleActionCreator.postSchedule(
+                this.props.user.id,
+                this.props.event.id,
+                arg.id
+            )
         );
-        this.setState({
-            chosen:[...this.state.chosen, arg]
-        });
-    }
+        // this.setState({
+        //     chosen:[...this.state.chosen, arg]
+        // });
+    };
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.schedule !== this.props.schedule) {
             var sessions = [];
             if (Boolean(nextProps.schedule)  && nextProps.schedule.length > 0) {
-                nextProps.schedule.map((session, i) => {
-                    sessions[i] = {...session.agendaElement, requestId: session.id}
-                });
+                // nextProps.schedule.map((session, i) => {
+                //     sessions[i] = {...session.agendaElement, requestId: session.id}
+                // });
                 this.setState({
-                    chosen: sessions
+                    //chosen: sessions
+                    chosen: nextProps.schedule
                 });
             }
         }
@@ -175,7 +178,7 @@ class AgendaScreen extends Component {
     componentWillMount() {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
-        dispatch(scheduleActionCreator.getSchedule(this.props.user.id, this.props.event.id)); 
+        dispatch(scheduleActionCreator.getSchedule(this.props.user.id, this.props.event.id));
 
         let agenda = this.convertToDateArray(this.props.agenda);
 
@@ -210,41 +213,33 @@ class AgendaScreen extends Component {
     /**
      *Konusmacilari bulundugu odaya gore ekranda gosterir
      * @param myroom oda verisi
-     * @param arg konusma listesi
+     * @param talkListByTime konusma listesi
      * @returns {XML} ajanda karti
      */
-    isThereEventInRoom(myroom, arg) {
+    isThereEventInRoom(myroom, talkListByTime) {
         const chosen = this.state.chosen
-        for (let i = 0; i < arg.length; i++) {
-            if (myroom === arg[i].room)
-                return this.getAgendaCard(arg, i, chosen.indexOf(arg[i]) !== -1)
+        for (let i = 0; i < talkListByTime.length; i++) {
+            if (myroom === talkListByTime[i].room)
+                return this.getAgendaCard(talkListByTime, i, chosen.indexOf(talkListByTime[i]) !== -1)
         }
         return (<AgendaCard isEmpty={true}/>)
     }
 
     /**
      * Ajanda karti olusturur ve cevirir
-     * @param arg -> konusma verisi
-     * @param i -> index
+     * @param talkListByTime -> konusma verisi
+     * @param index -> index
      * @param isClicked -> secili olma durumu
      * @returns {*}
      */
-    getAgendaCard(arg, i, isClicked) {
-        return <AgendaCard item={arg[i]}
-                           speaker={this.getSpeaker(arg[i].speaker)}
+    getAgendaCard(talkListByTime, index, isClicked) {
+        return <AgendaCard item={talkListByTime[index]}
+                           speaker={this.getSpeaker(talkListByTime[index].speaker)}
                            isEmpty={false}
                            onPressAddButton={this.addItemToChosenEvents}
                            isClicked={isClicked}
-                           key={arg[i].key}
-                           onPress={() => this.props.login ? this.props.navigation.navigate(TALK, arg[i]) : Alert.alert(
-                               'Warning!',
-                               'Please log in for more information.',
-                               [
-                                   {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
-                                   {text: 'CANCEL', onPress: () => console.log('cancel')}
-                               ],
-                               {cancelable: false}
-                           )}
+                           key={talkListByTime[index].key}
+                           onPress={() => this.props.navigation.navigate(TALK, talkListByTime[index])}
                            onPressDeleteButton={this.deleteItemFromChosenEvents}/>;
     }
 
@@ -378,16 +373,7 @@ class AgendaScreen extends Component {
                             <View>
                                 {   
                                     chosen.map((choosed, i) =>
-                                    <TouchableOpacity key={i} onPress={() => this.props.login ?
-                                        this.props.navigation.navigate(TALK, choosed) : Alert.alert(
-                                            'Warning!',
-                                            'Please log in for more information.',
-                                            [
-                                                {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
-                                                {text: 'CANCEL', onPress: () => console.log('cancel')}
-                                            ],
-                                            {cancelable: false}
-                                        )}>
+                                    <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate(TALK, choosed)}>
                                         <ChosenCard key={i} item={choosed}
                                                     onPressDeleteButton={this.deleteItemFromChosenEvents}
                                                     visibleButton={true}/>
