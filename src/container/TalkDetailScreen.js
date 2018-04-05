@@ -17,7 +17,7 @@ const {height, width} = Dimensions.get('window');
 
 const mapStateToProps = (state) => ({
     loading: state.comment.loading,
-    user: state.auth.user,
+    user: state.auth.login ? state.auth.user : state.authDevice.user,
     error: state.comment.error,
     event: state.event.event,
     errorMessage: state.comment.errorMessage,
@@ -85,7 +85,7 @@ export class TalkDetail extends Component {
                                 this.setState({rate: true}) :
                                 Alert.alert(
                                     'Warning!',
-                                    'Please wait until start talk.',
+                                    'Please wait until talk starts.',
                                     [
                                         {text: 'OK', onPress: () => console.log('ok')}
                                     ],
