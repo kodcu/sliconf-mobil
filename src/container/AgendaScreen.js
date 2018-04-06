@@ -100,7 +100,7 @@ class AgendaScreen extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.schedule !== this.props.schedule) {
-            var sessions = [];
+            //var sessions = [];
             if (Boolean(nextProps.schedule)  && nextProps.schedule.length > 0) {
                 // nextProps.schedule.map((session, i) => {
                 //     sessions[i] = {...session.agendaElement, requestId: session.id}
@@ -380,8 +380,6 @@ class AgendaScreen extends Component {
 
                                             ))}
                                         </View>
-
-
                                     </ScrollView>
                                 </View>
                             </View>
@@ -468,7 +466,6 @@ const styles = StyleSheet.create({
         marginRight: 15,
         margin: 8
     }
-
 });
 
 export default connect(mapStateToProps)(AgendaScreen)
