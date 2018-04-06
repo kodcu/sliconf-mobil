@@ -65,15 +65,38 @@ export class TalkDetail extends Component {
 
     componentWillMount() {
         const eventId = this.props.event.id;
-        const sessionId = this.props.navigation.state.params.id;
+        const sessionId = this.props.navigation.state.params.id ? this.props.navigation.state.params.id : this.props.navigation.state.params.agendaElement.id;
         const userId = this.props.user.id;
         this.props.dispatch(actionCreatorsTalk.getVoteByUser(eventId, sessionId, userId))
     }
 
+    /**
+     * Change talk if comes from chosen
+     * @param talk
+     */
+    changeTalkData(talk) {
+        if (talk && talk.agendaElement) {
+            talk["id"] = talk.agendaElement.id;
+            talk["tags"] = talk.agendaElement.tags;
+            talk["room"] = talk.agendaElement.room;
+            talk["speaker"] = talk.agendaElement.speaker;
+            talk["level"] = talk.agendaElement.level;
+            talk["detail"] = talk.agendaElement.detail;
+            talk["star"] = talk.agendaElement.star;
+            talk["voteCount"] = talk.agendaElement.voteCount;
+            talk["duration"] = talk.agendaElement.duration;
+            talk["date"] = talk.agendaElement.date;
+            talk["topic"] = talk.agendaElement.topic;
+        }
+
+        return talk;
+    }
+
+
     render() {
         const {tab, rate} = this.state
         const {state} = this.props.navigation;
-        let talk = state.params
+        let talk = this.changeTalkData(state.params);
         return (
 
             <Container style={styles.container}>
