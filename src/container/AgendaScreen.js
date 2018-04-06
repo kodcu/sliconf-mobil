@@ -69,7 +69,7 @@ class AgendaScreen extends Component {
     deleteItemFromChosenEvents = (arg) => {
         this.props.dispatch(
             scheduleActionCreator.deleteSchedule(
-                arg.id,
+                arg.choosenId,
                 this.props.user.id, 
                 this.props.event.id, 
                 arg.agendaElement.id
@@ -220,9 +220,26 @@ class AgendaScreen extends Component {
         const chosen = this.state.chosen
         for (let i = 0; i < talkListByTime.length; i++) {
             if (myroom === talkListByTime[i].room)
-                return this.getAgendaCard(talkListByTime, i, chosen.indexOf(talkListByTime[i]) !== -1)
+
+                return this.getAgendaCard(talkListByTime, i, this.isChoosen(chosen, talkListByTime[i]))
         }
         return (<AgendaCard isEmpty={true}/>)
+    }
+
+    /**
+     *
+     * @param chosen kullanicinin schedule listesi
+     * @param talkListByTime karsilastirilacak konusma
+     * @returns {boolean} eger id ler eslesiyorsa true doner
+     */
+    isChoosen(chosen, talkListByTime) {
+        let chosed = false;
+        chosen.forEach((element) =>{
+            if (element.agendaElement.id == talkListByTime.id) {
+                chosed = true;
+            }
+        });
+        return chosed;
     }
 
     /**
@@ -279,7 +296,7 @@ class AgendaScreen extends Component {
         talksList = this.state.data;
         rooms = this.state.rooms;
         chosen = this.state.chosen;
-        
+
         return (
             <View style={styles.container}>
                 <If con={isChosenClicked}>
