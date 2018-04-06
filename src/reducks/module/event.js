@@ -4,7 +4,6 @@
 
  import Request from '../../service/Request'
  import { AsyncStorage } from 'react-native';
- import store from '../../container/store';
  import getTokenAuth from "../../helpers/getTokenAuth";
 
 const types = {

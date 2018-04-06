@@ -3,14 +3,13 @@
  */
 
 import React, {Component} from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity, View, Alert, AsyncStorage} from 'react-native'
+import {Image, StyleSheet, Text, TouchableOpacity, View, Alert, AsyncStorage, ScrollView} from 'react-native'
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 import * as Scale from "../theme/Scale";
 import {EVENT_STACK} from "../router";
 import {actionCreators} from '../reducks/module/event'
 import {connect} from 'react-redux'
-import store from './store';
 
 import Loading from '../component/Loading'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
@@ -27,6 +26,7 @@ const mapStateToProps = (state) => ({
     loading: state.event.loading,
     error: state.event.error,
     events: state.event.events,
+    event: state.event.event,
     errorMessage: state.event.errorMessage,
     login: state.auth.login,
     userDevice: state.authDevice.user,
@@ -38,20 +38,31 @@ class MainScreen extends Component {
 
     state = {
         search: true,
-        loadingModal:false
+        loadingModal:false,
+        code: '',
     };
+
+    componentWillMount() {
+        AsyncStorage.getItem('Code').then((value) => 
+            this.setState({
+                code: value,
+            })
+        );
+    }
 
     /**
      * Girilen etkinkik koduna gore servisten etkinligi getirir
      * @param code aranan etkinlik kodu
      * @returns {Promise.<void>}
      */
+
     getEvent = async (code) => {
         this.setState({loadingModal:true});
         const userId=!this.props.login? this.props.userDevice.id: this.props.user.id;
         const {dispatch, loading} = this.props;
         await dispatch(actionCreators.fetchEvent(code,userId));
         const {error, errorMessage} = this.props;
+                
         if (error)
             Alert.alert(
                 'Warning!',
@@ -66,11 +77,13 @@ class MainScreen extends Component {
             //this.props.navigation.dispatch({type: 'drawerStack'});
             this.setState({loadingModal:loading});
             this.props.navigation.navigate(EVENT_STACK)
+            if (Boolean(code))
+                AsyncStorage.setItem('Code', code).then((code) => {
+                    console.log('Success' + code);
+                });
         }
     };
-
-    
-
+            
     /**
      * Etkinlik arama islemini tetikler
      * @param value aranan etkinlik kodu
@@ -90,9 +103,15 @@ class MainScreen extends Component {
     }
 
     render() {
+        
         const loading = this.state.loadingModal;
-        const {search} = this.state;
+        const { search, code, eventName } = this.state;
+        //const { event } = this.props;
 
+        var storeCode = '';
+        AsyncStorage.getItem('Code').then((value) => {
+            storeCode = value;
+        });
         return (
             <View style={styles.container}>
 
@@ -119,7 +138,12 @@ class MainScreen extends Component {
                                             inputStyle={{color: Color.green}}
                                             onSubmitEditing={(value) => this._handlePressSearch(value)}
                                         />
-
+                                        {<TouchableOpacity
+                                            style={styles.search} 
+                                            onPress={() => this._handlePressSearch(code)}>
+                                            <Text style={styles.title}>-{Boolean(storeCode) && storeCode !== '' ? storeCode : code}-</Text>
+                                        </TouchableOpacity>}
+                                                                                
                                         <TouchableOpacity
                                             style={styles.qrcode}
                                             onPress={() => this.setState({search: false})}>
@@ -145,13 +169,11 @@ class MainScreen extends Component {
                                     this.getEvent(e.data)
                                 }}
                             />
-
+                            
                             <View/>
-
                         </View>
                     </If.Else>
                 </If>
-
             </View>
         )
     }
