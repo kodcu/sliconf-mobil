@@ -34,31 +34,52 @@ class ChosenCard extends Component {
     }
 
     getRoomName(roomId) {
-        // const roomsTags = this.props.rooms;
-        // const room = roomsTags.find(room => room.id === roomId)
-        // return room.label;
-        //asd
-        return roomId.label;
+        const roomsTags = this.props.rooms;
+        const room = roomsTags.find(room => room.id === roomId)
+        return room.label;
+        // return roomId.label;
     }
 
     getSpeakerName(speakerId) {
-        // return this.props.speakers.find(speaker => speaker.id === speakerId).name
-        return speakerId.name;
+        return this.props.speakers.find(speaker => speaker.id === speakerId).name
+        // return speakerId.name;
+    }
+
+    /**
+     * Change talk if comes from chosen
+     * @param talk
+     */
+    changeTalkData(talk) {
+        if (talk && talk.agendaElement) {
+            talk["id"] = talk.agendaElement.id;
+            talk["tags"] = talk.agendaElement.tags;
+            talk["room"] = talk.agendaElement.room;
+            talk["speaker"] = talk.agendaElement.speaker;
+            talk["level"] = talk.agendaElement.level;
+            talk["detail"] = talk.agendaElement.detail;
+            talk["star"] = talk.agendaElement.star;
+            talk["voteCount"] = talk.agendaElement.voteCount;
+            talk["duration"] = talk.agendaElement.duration;
+            talk["date"] = talk.agendaElement.date;
+            talk["topic"] = talk.agendaElement.topic;
+        }
+
+        return talk;
     }
 
     render() {
-        const item = this.props.item;
+        const item = this.changeTalkData(this.props.item);
         const buttonVisible = this.props.visibleButton
         return (
 
             <View style={styles.container}>
-                <View style={[styles.cardLine, {borderColor: this.getColorByLevel(item.agendaElement.level)}]}/>
+                <View style={[styles.cardLine, {borderColor: this.getColorByLevel(item.level)}]}/>
                 <View style={styles.detailField}>
-                    <Text style={styles.topic}>{item.agendaElement.topic}</Text>
+                    <Text style={styles.topic}>{item.topic}</Text>
                     <Text style={styles.speaker}>{this.getSpeakerName(item.speaker)}</Text>
                     <View style={styles.infoField}>
-                        <Text style={styles.topic}>{moment(item.agendaElement.date).format("HH:mm")}</Text>
-                        <Text style={styles.topic}>{moment(item.agendaElement.date).format("DD MMM YYYY")}</Text>
+                        <Text style={styles.topic}>{moment(item.date).format("HH:mm")}</Text>
+                        <Text style={styles.topic}>{moment(item.date).format("DD MMM YYYY")}</Text>
                         <Text style={styles.topic}>{this.getRoomName(item.room)}</Text>
                     </View>
                 </View>
