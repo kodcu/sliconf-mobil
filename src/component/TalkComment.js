@@ -141,8 +141,8 @@ const POPULARENTRIES = [
 
 const mapStateToProps = (state) => ({
     loading: state.comment.loading,
-    user: state.auth.user,
-    login: state.auth.login,
+    user: state.auth.login ? state.auth.user : state.authDevice.user,
+    login: state.auth.login ? state.auth.login : state.authDevice.login,
     userDevice: state.authDevice.user,
     error: state.comment.error,
     event: state.event.event,
