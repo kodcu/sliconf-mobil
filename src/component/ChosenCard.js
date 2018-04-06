@@ -51,6 +51,7 @@ class ChosenCard extends Component {
      */
     changeTalkData(talk) {
         if (talk && talk.agendaElement) {
+            talk["choosenId"] = talk.id;
             talk["id"] = talk.agendaElement.id;
             talk["tags"] = talk.agendaElement.tags;
             talk["room"] = talk.agendaElement.room;
