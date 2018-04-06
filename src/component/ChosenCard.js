@@ -37,14 +37,39 @@ class ChosenCard extends Component {
         const roomsTags = this.props.rooms;
         const room = roomsTags.find(room => room.id === roomId)
         return room.label;
+        // return roomId.label;
     }
 
     getSpeakerName(speakerId) {
         return this.props.speakers.find(speaker => speaker.id === speakerId).name
+        // return speakerId.name;
+    }
+
+    /**
+     * Change talk if comes from chosen
+     * @param talk
+     */
+    changeTalkData(talk) {
+        if (talk && talk.agendaElement) {
+            talk["choosenId"] = talk.id;
+            talk["id"] = talk.agendaElement.id;
+            talk["tags"] = talk.agendaElement.tags;
+            talk["room"] = talk.agendaElement.room;
+            talk["speaker"] = talk.agendaElement.speaker;
+            talk["level"] = talk.agendaElement.level;
+            talk["detail"] = talk.agendaElement.detail;
+            talk["star"] = talk.agendaElement.star;
+            talk["voteCount"] = talk.agendaElement.voteCount;
+            talk["duration"] = talk.agendaElement.duration;
+            talk["date"] = talk.agendaElement.date;
+            talk["topic"] = talk.agendaElement.topic;
+        }
+
+        return talk;
     }
 
     render() {
-        const item = this.props.item;
+        const item = this.changeTalkData(this.props.item);
         const buttonVisible = this.props.visibleButton
         return (
 

@@ -18,16 +18,7 @@ export default class SearchResult extends Component {
                 </Header>
                 <ScrollView>
                     {results.items.map((item, i) =>
-                        <TouchableOpacity key={i} onPress={() => results.login ?
-                            this.props.navigation.navigate(TALK, [item]) : Alert.alert(
-                                'Warning!',
-                                'Please log in for more information.',
-                                [
-                                    {text: 'LOGIN', onPress: () => this.props.navigation.navigate(LOGIN)},
-                                    {text: 'CANCEL', onPress: () => console.log('cancel')}
-                                ],
-                                {cancelable: false}
-                            )}>
+                        <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate(TALK, [item])}>
                             <ChosenCard key={i} item={item}/>
                         </TouchableOpacity>
                     )}

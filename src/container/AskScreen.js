@@ -18,7 +18,7 @@ import If from '../component/If';
 const mapStateToProps = (state) => ({
     event: state.event.event,
     loading: state.comment.loading,
-    user: state.auth.user,
+    user: state.auth.login ? state.auth.user : state.authDevice.user,
     userDevice: state.authDevice.user,
     login: state.auth.login,
     error: state.comment.error,
