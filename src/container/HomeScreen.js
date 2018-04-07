@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import { 
+import {
+    AsyncStorage,
     Dimensions, FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native'
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/drawer'
-import {AGENDA, ASK, FLOOR, INFO, LOCATION, SPEAKERS, SPONSOR} from '../router';
+import {AGENDA, ASK, FLOOR, INFO, LOCATION, SPEAKERS, SPONSOR, MAIN} from '../router';
 import Icon from 'react-native-vector-icons/Ionicons'
 import {moderateScale, scale, verticalScale} from '../theme/Scale';
 import Color from "../theme/Color";
@@ -39,6 +40,10 @@ class HomeScreen extends Component {
     componentWillMount() {
         const {dispatch, navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
+
+        AsyncStorage.setItem('eventName', this.props.event.name).then((name) => {
+            console.log('Success' , name);
+        });
     }
 
 
@@ -83,7 +88,7 @@ class HomeScreen extends Component {
 
                     <Header active headerStyle={{backgroundColor: Color.green}}
                             leftImage='chevron-left' rightImage='bars'
-                            onPressLeft={() => this.props.navigation.goBack(null)}
+                            onPressLeft={() => this.props.navigation.navigate(MAIN)}
                             onPressRight={() => this.props.navigation.navigate('DrawerOpen')}
                     />
 
