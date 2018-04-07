@@ -105,9 +105,25 @@ class AgendaScreen extends Component {
                 // nextProps.schedule.map((session, i) => {
                 //     sessions[i] = {...session.agendaElement, requestId: session.id}
                 // });
+
+                let schedule = nextProps.schedule;
+
+                if (schedule) {
+                    schedule = schedule.sort((a,b)=>{
+                        if(a.agendaElement.date < b.agendaElement.date ) {
+                            return -1;
+                        } else if(a.agendaElement.date > b.agendaElement.date ) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                } else {
+                    schedule = [];
+                }
+
                 this.setState({
                     //chosen: sessions
-                    chosen: nextProps.schedule
+                    chosen: schedule
                 });
             }
         }
@@ -167,8 +183,20 @@ class AgendaScreen extends Component {
             return t.room === thing.room && thing.room.trim()
         }) === index);
         tempRoom.forEach((element) => roomsList.push(element.room));
-        roomsList.sort();
-        return roomsList
+
+        const rooms = this.props.event.rooms;
+        let sortedRoomList = [];
+
+        // Odalari label a gore siraliyor
+        rooms.forEach((room) => {
+            roomsList.forEach((roomId) => {
+                if (roomId === room.id) {
+                    sortedRoomList.push(roomId);
+                }
+            });
+        });
+
+        return sortedRoomList;
     }
 
     /**
