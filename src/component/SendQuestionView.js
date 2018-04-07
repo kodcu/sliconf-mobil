@@ -79,13 +79,7 @@ export class SendQuestionView extends Component {
     render() {
         const agenda = this.props.event.agenda;
         return (
-                <View style={{flex: 1, backgroundColor: Color.white, marginTop: Platform.OS === 'ios' ? 20 : 0}}>
-                    <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
-
-                        {agenda.filter(talk => talk.id === this.props.sessionId).map(item =>
-                            <Text key={item.id} style={styles.topic}>{item.topic}</Text>)
-                        }
-
+                <View style={{flex: 1, backgroundColor: Color.white, marginTop: 8}}>
                         <TextInput
                             numberOfLines={7}
                             multiline={true}
@@ -260,9 +254,6 @@ export class SendQuestionView extends Component {
                             }}
                         >
                         </ButtonComponent>
-
-                    </KeyboardAwareScrollView>
-
                 </View>
         )
     }

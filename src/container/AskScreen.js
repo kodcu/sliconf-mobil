@@ -13,6 +13,7 @@ import {
 import { connect } from "react-redux";
 import { Input, Picker, Item } from "native-base";
 import Icon from 'react-native-vector-icons/Ionicons';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Header from "../component/Header";
 import Color from "../theme/Color";
 import TalkComment from "../component/TalkComment";
@@ -114,22 +115,24 @@ class AskScreen extends Component {
                         }}>
                     <Header.Title title="Ask Question"/>
                 </Header>
-                <View style={{ flex: 1 }}>
+                <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
                     <View style={{ flex: 1 }}>
-                        {this.getTalkButton(agenda)}
-                    </View>
-                    {
-                        this.state.isSessionSelected === true ? 
-                        <SendQuestionView sessionId={this.state.sessionId} /> 
-                        : null
-                    }
-                    <View style={{ flex: 1, marginTop: 10 }}>
-                        {this.state.sessionId ? 
-                            <TalkComment session={this.state.sessionId} lite={true}/> 
+                        <View style={{ flex: 1 }}>
+                            {this.getTalkButton(agenda)}
+                        </View>
+                        {
+                            this.state.isSessionSelected === true ? 
+                            <SendQuestionView sessionId={this.state.sessionId} /> 
                             : null
                         }
+                        <View style={{ flex: 1, marginTop: 10 }}>
+                            {this.state.sessionId ? 
+                                <TalkComment session={this.state.sessionId} lite={true}/> 
+                                : null
+                            }
+                        </View>
                     </View>
-                </View>
+                </KeyboardAwareScrollView>
                 {this.getSessionModal(agenda)}
             </View>
         );
