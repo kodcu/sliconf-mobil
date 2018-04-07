@@ -40,13 +40,23 @@ class MainScreen extends Component {
         search: true,
         loadingModal:false,
         code: '',
+        eventName: ''
     };
 
     componentWillMount() {
-        AsyncStorage.getItem('Code').then((value) => 
-            this.setState({
-                code: value,
-            })
+        AsyncStorage.getItem('Code').then((value) => {
+                console.log('event key', value);
+                this.setState({
+                    code: value,
+                });
+            }
+        );
+        AsyncStorage.getItem('eventName').then((value) => {
+                console.log('event name', value);
+                this.setState({
+                    eventName: value,
+                });
+            }
         );
     }
 
@@ -62,7 +72,7 @@ class MainScreen extends Component {
         const {dispatch, loading} = this.props;
         await dispatch(actionCreators.fetchEvent(code,userId));
         const {error, errorMessage} = this.props;
-                
+
         if (error)
             Alert.alert(
                 'Warning!',
@@ -76,11 +86,12 @@ class MainScreen extends Component {
         if (!error && !loading) {
             //this.props.navigation.dispatch({type: 'drawerStack'});
             this.setState({loadingModal:loading});
-            this.props.navigation.navigate(EVENT_STACK)
-            if (Boolean(code))
-                AsyncStorage.setItem('Code', code).then((code) => {
-                    console.log('Success' + code);
+            if (Boolean(code)) {
+                AsyncStorage.setItem('Code', code).then((code1) => {
+                    console.log('Success' , code1);
                 });
+            }
+            this.props.navigation.navigate(EVENT_STACK);
         }
     };
             
@@ -108,10 +119,16 @@ class MainScreen extends Component {
         const { search, code, eventName } = this.state;
         //const { event } = this.props;
 
-        var storeCode = '';
+        let storeCode = '';
         AsyncStorage.getItem('Code').then((value) => {
             storeCode = value;
         });
+
+        let storeEventName = '';
+        AsyncStorage.getItem('eventName').then((value) => {
+            storeEventName = value;
+        });
+
         return (
             <View style={styles.container}>
 
@@ -140,8 +157,11 @@ class MainScreen extends Component {
                                         />
                                         {<TouchableOpacity
                                             style={styles.search} 
-                                            onPress={() => this._handlePressSearch(code)}>
-                                            <Text style={styles.title}>-{Boolean(storeCode) && storeCode !== '' ? storeCode : code}-</Text>
+                                            onPress={() => this._handlePressSearch(Boolean(storeCode) && storeCode !== '' ? storeCode : code)}>
+                                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                                <Text style={styles.title1}>{Boolean(storeCode) && storeCode !== '' ? storeCode : code}</Text>
+                                                <Text style={styles.title2}> {Boolean(storeEventName) && storeEventName !== '' ? storeEventName : eventName}</Text>
+                                            </View>
                                         </TouchableOpacity>}
                                                                                 
                                         <TouchableOpacity
@@ -214,6 +234,23 @@ const styles = StyleSheet.create({
         marginTop: 10,
         textAlign: 'center',
         fontSize: Scale.verticalScale(18),
+    },
+    title1: {
+        ...Font.semiBold,
+        color: Color.green,
+        marginTop: 10,
+        textAlign: 'center',
+        fontSize: Scale.verticalScale(18),
+        marginRight: 5,
+
+    },
+    title2: {
+        ...Font.semiBold,
+        color: Color.green,
+        marginTop: 10,
+        fontSize: Scale.verticalScale(18),
+        marginRight: 0,
+        flexWrap: 'wrap',
     },
     subtitle: {
         ...Font.light,
