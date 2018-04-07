@@ -92,7 +92,7 @@ class AskScreen extends Component {
                     <TouchableOpacity 
                         key={value.id} 
                         style={styles.selectSessionButton}
-                        onPress={() => this.setState({ sessionModal: true })}
+                        onPress={() => this.setState({ sessionModal: true, sessionId: '' })}
                     >
                         <View style={styles.selectSessionButton} >   
                             <Text style={styles.selectSessionButtonText} >{value.topic}</Text>
