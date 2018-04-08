@@ -76,7 +76,7 @@ class AgendaScreen extends Component {
             sessionId = arg.id;
 
             const choosen = this.state.chosen;
-            for(var i=0;i < choosen.length; i++) {
+            for(let i=0;i < choosen.length; i++) {
                 if (choosen[i].agendaElement.id === sessionId) {
                     choosenId = choosen[i].id;
                     break;
@@ -93,8 +93,8 @@ class AgendaScreen extends Component {
         this.props.dispatch(
             scheduleActionCreator.deleteSchedule(
                 choosenId,
-                this.props.user.id, 
-                this.props.event.id, 
+                this.props.user.id,
+                this.props.event.id,
                 sessionId
             )
         );
@@ -124,7 +124,7 @@ class AgendaScreen extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.schedule !== this.props.schedule) {
             //var sessions = [];
-            if (Boolean(nextProps.schedule)  && nextProps.schedule.length > 0) {
+            if (Boolean(nextProps.schedule)  && nextProps.schedule.length >= 0) {
                 // nextProps.schedule.map((session, i) => {
                 //     sessions[i] = {...session.agendaElement, requestId: session.id}
                 // });
