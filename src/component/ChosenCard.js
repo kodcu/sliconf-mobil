@@ -87,7 +87,7 @@ class ChosenCard extends Component {
                 <View style={styles.actionField}>
                     <If con={buttonVisible}>
                         <If.Then>
-                            <TouchableOpacity onPress={() => this.props.onPressDeleteButton(item)}>
+                            <TouchableOpacity onPress={() => this.props.onPressDeleteButton(item, false)}>
                                 <View style={styles.buttonField}>
                                     <Icon name='ios-close' style={{alignSelf: 'center'}}/>
                                 </View>
