@@ -67,7 +67,7 @@ class AgendaScreen extends Component {
      * @param arg Konusmanın modeli
      * @param isAgendaCard agendaCard ile chosen card farkli olmali
      */
-    deleteItemFromChosenEvents = (arg, isAgendaCard = false) => {
+    deleteItemFromChosenEvents = (arg, isAgendaCard) => {
 
         let sessionId = '';
         let choosenId = '';
