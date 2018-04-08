@@ -87,9 +87,6 @@ class AgendaScreen extends Component {
             sessionId = arg.agendaElement.id;
         }
 
-        console.log('sessionId', sessionId);
-        console.log('choosenId', choosenId);
-
         this.props.dispatch(
             scheduleActionCreator.deleteSchedule(
                 choosenId,
