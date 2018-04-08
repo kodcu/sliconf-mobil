@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     },
     selectSessionButton: {
         justifyContent: 'center', 
-        borderWidth: 0.2, 
+        borderWidth: 0.8, 
         borderColor: Color.green,
         height: Scale.verticalScale(72)
     },
