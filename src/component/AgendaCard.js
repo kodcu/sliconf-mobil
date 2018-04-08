@@ -40,7 +40,7 @@ export default class AgendaCard extends Component {
     handleClick(obj) {
         let tempObject = obj;
         if (this.props.isClicked) {
-            this.props.onPressDeleteButton(tempObject);
+            this.props.onPressDeleteButton(tempObject, true);
         } else {
             this.props.onPressAddButton(tempObject);
         }

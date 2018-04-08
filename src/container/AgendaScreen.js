@@ -65,20 +65,43 @@ class AgendaScreen extends Component {
     /**
      * Katilmak istedigin eventleri sectiklerim listesinden siler.
      * @param arg Konusmanın modeli
+     * @param isAgendaCard agendaCard ile chosen card farkli olmali
      */
-    deleteItemFromChosenEvents = (arg) => {
+    deleteItemFromChosenEvents = (arg, isAgendaCard = false) => {
+
+        let sessionId = '';
+        let choosenId = '';
+
+        if (isAgendaCard) {
+            sessionId = arg.id;
+
+            const choosen = this.state.chosen;
+            for(var i=0;i < choosen.length; i++) {
+                if (choosen[i].agendaElement.id === sessionId) {
+                    choosenId = choosen[i].id;
+                    break;
+                }
+            }
+        } else {
+            choosenId = arg.choosenId;
+            sessionId = arg.agendaElement.id;
+        }
+
+        console.log('sessionId', sessionId);
+        console.log('choosenId', choosenId);
+
         this.props.dispatch(
             scheduleActionCreator.deleteSchedule(
-                arg.choosenId,
+                choosenId,
                 this.props.user.id, 
                 this.props.event.id, 
-                arg.agendaElement.id
+                sessionId
             )
         );
-        let array = this.state.chosen;
-        let index = array.indexOf(arg);
-        array.splice(index, 1);
-        this.setState({chosen: array});
+        // let array = this.state.chosen;
+        // let index = array.indexOf(arg);
+        // array.splice(index, 1);
+        // this.setState({chosen: array});
     };
 
     /**

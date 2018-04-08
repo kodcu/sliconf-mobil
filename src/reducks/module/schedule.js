@@ -90,7 +90,8 @@ export const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                error: false
+                error: false,
+                schedule: payload
             }
         }
         case types.SCHEDULE_DELETE_FAIL: {
