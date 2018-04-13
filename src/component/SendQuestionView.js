@@ -18,7 +18,8 @@ const mapStateToProps = (state) => ({
     userDevice: state.authDevice.user,
     login: state.auth.login ? state.auth.login : state.authDevice.login,
     error: state.comment.error,
-    errorMessage: state.comment.errorMessage
+    errorMessage: state.comment.errorMessage,
+    nameCheck: state.auth.login
 });
 
 export class SendQuestionView extends Component {
@@ -31,7 +32,6 @@ export class SendQuestionView extends Component {
     };
 
     async sendComment() {
-        //this.props.closeModal();
         this.setState({buttonState: "sending"})
         let userId;
         let fullname;
@@ -79,7 +79,7 @@ export class SendQuestionView extends Component {
     render() {
         const agenda = this.props.event.agenda;
         return (
-                <View style={{flex: 1, backgroundColor: Color.white, marginTop: 8}}>
+                <View style={{flex: 0.8, backgroundColor: Color.white, marginTop: 8}}>
                         <TextInput
                             numberOfLines={7}
                             multiline={true}
@@ -100,7 +100,7 @@ export class SendQuestionView extends Component {
                                 borderWidth: 1,
                                 borderRadius: 10,
                                 borderColor: Color.green,
-                                height: 150
+                                height: 140
                             }}
                         />
                         <Text style={{
@@ -191,7 +191,7 @@ export class SendQuestionView extends Component {
 
                             </View> : null}
 
-                        {!this.props.login ? <TextInput
+                        {!this.props.nameCheck ? <TextInput
                             multiline={false}
                             placeholder='Name (Optional)'
                             underlineColorAndroid={'transparent'}
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
         backgroundColor: Color.green,
         borderRadius: 10,
         marginHorizontal: 20,
-        height: 50,
+        height: 40,
 
     },
     buttonText: {

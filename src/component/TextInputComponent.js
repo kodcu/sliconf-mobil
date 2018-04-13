@@ -21,7 +21,6 @@ export default class TextInputComponent extends Component {
 
 
     isThereError(bool,message){
-        console.log("hello")
         this.setState({isThereError:bool,message:message})
     }
 

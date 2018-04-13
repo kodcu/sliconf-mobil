@@ -18,7 +18,8 @@ const mapStateToProps = (state) => ({
     userDevice: state.authDevice.user,
     login: state.auth.login ? state.auth.login : state.authDevice.login,
     error: state.comment.error,
-    errorMessage: state.comment.errorMessage
+    errorMessage: state.comment.errorMessage,
+    nameCheck: state.auth.login
 });
 
 export class SendQuestionModal extends Component {
@@ -215,7 +216,7 @@ export class SendQuestionModal extends Component {
 
                             </View> : null}
 
-                        {!this.props.login ? <TextInput
+                        {!this.props.nameCheck  ? <TextInput
                             multiline={false}
                             placeholder='Name (Optional)'
                             underlineColorAndroid={'transparent'}

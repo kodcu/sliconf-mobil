@@ -45,8 +45,6 @@ export default class Loading extends Component {
                         </View>
                     </View>
                 </Modal>
-
-
             </View>
         );
     }

@@ -25,7 +25,7 @@ class LocationScreen extends Component {
         if (os !== 'ios') {
             Linking.canOpenURL('https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng).then(supported => {
                 if (supported) {
-                    Linking.openURL('https://www.google.com/maps/dir/?api=1&destination' + lat + ',' + lng);
+                    Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng);
                 }
             }).catch(err => console.error('An error occurred', err));
         } else {
@@ -49,7 +49,6 @@ class LocationScreen extends Component {
     render() {
         const event = this.props.event
         const location = event.about.location;
-
         if (location === undefined || location === null || location.isEmpty) {
             return <View style={styles.container}>
                 <Header leftImage='chevron-left' rightImage='bars'

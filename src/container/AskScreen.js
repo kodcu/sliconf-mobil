@@ -39,7 +39,7 @@ class AskScreen extends Component {
     };
 
     closeSessionModal = () => {
-        this.setState({ sessionModal: false })
+        this.setState({ sessionId: '', sessionModal: false, isSessionSelected: false })
     }
 
     getTopicButtons(agenda){
@@ -69,7 +69,7 @@ class AskScreen extends Component {
                 onRequestClose={() => this.closeSessionModal()}>
                 <View style={{flex: 1, backgroundColor: Color.white, marginTop: Platform.OS === 'ios' ? 16 : 0}}>
                     <TouchableOpacity style={{padding: 4, margin: 8}} onPress={() => this.closeSessionModal()}>
-                        <Icon name={'ios-close-circle'} size={16} color={Color.gray}/>
+                        <Icon name={'ios-close-circle'} size={32} color={Color.gray}/>
                     </TouchableOpacity>
                     <ScrollView>
                         {this.getTopicButtons(agenda)}
@@ -92,7 +92,7 @@ class AskScreen extends Component {
                     <TouchableOpacity 
                         key={value.id} 
                         style={styles.selectSessionButton}
-                        onPress={() => this.setState({ sessionModal: true, sessionId: '' })}
+                        onPress={() => this.setState({ sessionId: '', sessionModal: true, isSessionSelected: false })}
                     >
                         <View style={styles.selectSessionButton} >   
                             <Text style={styles.selectSessionButtonText} >{value.topic}</Text>
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
         borderWidth: 0.8, 
         borderColor: Color.green,
-        height: Scale.verticalScale(72)
+        height: Scale.verticalScale(68)
     },
     selectSessionButtonText: {
         ...Font.regular,
