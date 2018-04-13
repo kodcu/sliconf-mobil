@@ -56,7 +56,6 @@ export const reducer = (state = initialState, action) => {
             }
         }
         case types.EVENT_POSTS_REQUEST: {
-            console.log("EVENT POST REQUESTTEYİZ")
             return {
                 ...state,
                 loading: true,
@@ -65,7 +64,6 @@ export const reducer = (state = initialState, action) => {
             }
         }
         case types.EVENT_POSTS_RESPONSE_SUC: {
-            console.log("BASARILI")
             return {
                 ...state,
                 loading: false,
@@ -74,7 +72,6 @@ export const reducer = (state = initialState, action) => {
             }
         }
         case types.EVENT_POSTS_RESPONSE_FAIL: {
-            console.log("FAIL")
             return {
                 ...state,
                 loading: false,

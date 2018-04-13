@@ -28,7 +28,6 @@ class FloorPlan extends Component {
     render() {
         let floorplan = this.props.floorplan;
         const selected = this.state.selected;
-        console.log(floorplan)
         return (
             <View style={styles.container}>
                 <Header leftImage='chevron-left' rightImage='bars'

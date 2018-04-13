@@ -45,14 +45,12 @@ class MainScreen extends Component {
 
     componentWillMount() {
         AsyncStorage.getItem('Code').then((value) => {
-                console.log('event key', value);
                 this.setState({
                     code: value,
                 });
             }
         );
         AsyncStorage.getItem('eventName').then((value) => {
-                console.log('event name', value);
                 this.setState({
                     eventName: value,
                 });

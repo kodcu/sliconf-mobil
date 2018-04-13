@@ -155,7 +155,6 @@ export const actionCreators = {
             getTokenAuth(getState()),
             {
             '200': (res)=>{
-                console.log(res)
                 if (res.status )
                     dispatch({
                         type: types.COMMENT_ADD_SUC,
@@ -194,7 +193,6 @@ export const actionCreators = {
             getTokenAuth(getState()), 
             {
             '200': (res)=>{
-                console.log(res)
                 if (res.status )
                     dispatch({
                         type: types.COMMENT_ADD_SUC,
@@ -270,7 +268,6 @@ export const actionCreators = {
                         type: types.POPULAR_COMMENT_GET_SESSION_SUC,
                         payload: res.returnObject
                     })
-                    console.log(res.returnObject)
                 }
                 else
                     dispatch({
@@ -297,11 +294,9 @@ export const actionCreators = {
         dispatch({
             type: types.COMMENT_VOTE_REQUEST
         })
-        console.log("Istek Yapıldı")
         await Request.POST(
             postVote + commentId + '/' + userId + '/' + vote, {}, getTokenAuth(getState()), {
             '200': (res)=>{
-                console.log(res)
                 if (res.status)
                     dispatch({
                         type: types.COMMENT_VOTE_SUC,
