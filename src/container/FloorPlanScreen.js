@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Image, StyleSheet, Text, View,TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import { Image, StyleSheet, Text, View, TouchableOpacity, ImageBackground, ActivityIndicator } from 'react-native';
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import Color from "../theme/Color";
@@ -15,7 +15,6 @@ const mapStateToProps = (state) => ({
 });
 
 class FloorPlan extends Component {
-
     state = {
         selected:0
     };
@@ -49,20 +48,30 @@ class FloorPlan extends Component {
                     :
 
                     <View style={styles.container}>
-
-
-                        {floorplan[selected].image.trim() ? <FloorImage style={styles.container} source={{uri:imageHelper(floorplan[selected].image)}}/> : null}
-
+                        {floorplan[selected].image.trim() ? 
+                            <FloorImage style={[styles.container, { margin: 8, right: 4 }]} source={{uri:imageHelper(floorplan[selected].image)}} /> 
+                            : 
+                            <View style={styles.placeHolder}>
+                                <View style={styles.placeHolderSub}>
+                                    <ImageBackground 
+                                        source={require('../../images/emptyCard.png')} 
+                                        style={{ flex: 1, margin: 2, justifyContent: 'center', alignItems: 'center' }}
+                                    > 
+                                        <Text style={styles.placeHolderText}>There is no image for this floor</Text>
+                                    </ImageBackground>
+                                </View>
+                            </View>
+                        }
 
                         <TouchableOpacity
-                            style={[styles.change,{right: 5,}]}
+                            style={[styles.change, { right: 1, marginLeft: 1 }]}
                             onPress={() => floorplan.length - 1 === selected ? null : this.setState({selected: selected + 1})}
                         >
                             <Icon name='ios-arrow-dropright' size={50} color={Color.darkGray}/>
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            style={[styles.change,{left: 5,}]}
+                            style={[styles.change, { left: 5 }]}
                             onPress={() => 0 === selected ? null : this.setState({selected: selected - 1})}
                         >
                             <Icon name='ios-arrow-dropleft' size={50} color={Color.darkGray}/>
@@ -84,7 +93,7 @@ class FloorPlan extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Color.white,
+        backgroundColor: Color.white
     },
     change:{
         width: 50,
@@ -118,6 +127,31 @@ const styles = StyleSheet.create({
         left: 3,
         bottom: 3,
 
+    },
+    placeHolder: {
+        flex: 1,
+        justifyContent: 'center',
+        margin: 50,
+        backgroundColor: Color.white,
+        borderColor: Color.darkGray4,
+        borderWidth: 0.5,
+        borderRadius: 15,
+    },
+    placeHolderSub: {
+        flex: 1,
+        justifyContent: 'center',
+        margin: 10,
+        backgroundColor: Color.white,
+        borderColor: Color.darkGray5,
+        borderWidth: 0.5,
+        borderRadius: 15,
+    },
+    placeHolderText: {
+        ...Font.semiBold, 
+        color:Color.black,
+        textAlign: 'center',
+        position: 'absolute',
+        transform: [{ rotate: '45deg'}]
     }
 });
 
