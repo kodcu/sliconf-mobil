@@ -165,7 +165,7 @@ class MainScreen extends Component {
                                         <TouchableOpacity
                                             style={styles.qrcode}
                                             onPress={() => this.setState({search: false})}>
-                                            <Icon name='qrcode-scan' size={50} color={Color.darkGray}/>
+                                            <Icon name='qrcode-scan' size={64} color={Color.darkGray}/>
                                         </TouchableOpacity>
 
                                     </View>
