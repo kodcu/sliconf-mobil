@@ -53,7 +53,6 @@ export default class AgendaCard extends Component {
         if (this.props.isEmpty) {
             return (
                 <View style={styles.container}>
-
                     <Image source={require('../../images/emptyCard.png')} style={{width: 220, height: 120}}/>
                 </View>
             )

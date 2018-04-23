@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
         color: Color.darkGray5
     },
     qrcode: {
-        marginTop: 20,
+        marginTop: 30,
         alignItems: 'center'
     }
 });
