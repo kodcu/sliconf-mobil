@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, View, TouchableOpacity, ImageBackground, ActivityIndicator } from 'react-native';
+import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Header from "../component/Header";
 import {connect} from 'react-redux'
 import Color from "../theme/Color";
@@ -51,15 +51,8 @@ class FloorPlan extends Component {
                         {floorplan[selected].image.trim() ? 
                             <FloorImage style={[styles.container, { margin: 8, right: 4 }]} source={{uri:imageHelper(floorplan[selected].image)}} /> 
                             : 
-                            <View style={styles.placeHolder}>
-                                <View style={styles.placeHolderSub}>
-                                    <ImageBackground 
-                                        source={require('../../images/emptyCard.png')} 
-                                        style={{ flex: 1, margin: 2, justifyContent: 'center', alignItems: 'center' }}
-                                    > 
-                                        <Text style={styles.placeHolderText}>There is no image for this floor</Text>
-                                    </ImageBackground>
-                                </View>
+                            <View style={styles.notFoundPanel}>
+                                <Text style={styles.placeHolderText}>Floor Plan doesn't exist</Text>
                             </View>
                         }
 
@@ -128,30 +121,11 @@ const styles = StyleSheet.create({
         bottom: 3,
 
     },
-    placeHolder: {
-        flex: 1,
-        justifyContent: 'center',
-        margin: 50,
-        backgroundColor: Color.white,
-        borderColor: Color.darkGray4,
-        borderWidth: 0.5,
-        borderRadius: 15,
-    },
-    placeHolderSub: {
-        flex: 1,
-        justifyContent: 'center',
-        margin: 10,
-        backgroundColor: Color.white,
-        borderColor: Color.darkGray5,
-        borderWidth: 0.5,
-        borderRadius: 15,
-    },
     placeHolderText: {
         ...Font.semiBold, 
         color:Color.black,
         textAlign: 'center',
-        position: 'absolute',
-        transform: [{ rotate: '45deg'}]
+        position: 'absolute'
     }
 });
 

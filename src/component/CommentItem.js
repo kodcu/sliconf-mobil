@@ -45,7 +45,7 @@ class CommentItem extends Component {
                     {cancelable: false}
                 );
             } else {
-                this.setState({isClicked: true,isDislike:false,item: response.payload});
+                this.setState({isClicked: true, isDislike: false, item: response.payload});
                 this.props.changeComment(response.payload, this.props.index)
             }
         } else if (this.state.isClicked && !this.state.isDislike) {
@@ -161,7 +161,7 @@ class CommentItem extends Component {
                                 color: Color.darkGray2,
                                 marginBottom: 5,
                                 marginRight: 5
-                            }}>~{moment(info.time).startOf('second').fromNow()}</Text>
+                            }}> {moment(info.time).startOf('second').fromNow()}</Text>
                         </View>
                         <Text style={{
                             ...Font.regular,
