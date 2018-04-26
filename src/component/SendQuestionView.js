@@ -19,7 +19,7 @@ const mapStateToProps = (state) => ({
     login: state.auth.login ? state.auth.login : state.authDevice.login,
     error: state.comment.error,
     errorMessage: state.comment.errorMessage,
-    nameCheck: state.auth.login
+    userLoginWithAccount: state.auth.login
 });
 
 export class SendQuestionView extends Component {
@@ -35,10 +35,10 @@ export class SendQuestionView extends Component {
         this.setState({buttonState: "sending"})
         let userId;
         let fullname;
-        if (!this.props.login) {
+        if (!this.props.userLoginWithAccount) {
             userId = this.props.userDevice.id;
             const anonymousFullName = this.state.anonymousFullName;
-            fullname = anonymousFullName.trim() ? anonymousFullName : null;
+            fullname = anonymousFullName.trim() && Boolean(anonymousFullName) ? anonymousFullName : null;
         } else {
             userId = this.props.user.id;
             fullname = null;
@@ -52,7 +52,7 @@ export class SendQuestionView extends Component {
 
         const {dispatch} = this.props;
 
-        if (this.props.login)
+        if (this.props.userLoginWithAccount)
             await dispatch(actionCreators.postComment(eventId, sessionId, userId, commentValue, time, anonymous));
         else
             await dispatch(actionCreators.postCommentAnonymous(eventId, sessionId, userId, commentValue, time, fullname));
@@ -191,7 +191,7 @@ export class SendQuestionView extends Component {
 
                             </View> : null}
 
-                        {!this.props.nameCheck ? <TextInput
+                        {!this.props.userLoginWithAccount ? <TextInput
                             multiline={false}
                             placeholder='Name (Optional)'
                             underlineColorAndroid={'transparent'}
