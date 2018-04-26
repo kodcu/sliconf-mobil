@@ -3,7 +3,7 @@
  */
 
 import React, {Component} from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity, View, Alert, AsyncStorage, ScrollView} from 'react-native'
+import {Image, StyleSheet, Text, TouchableOpacity, View, Alert, AsyncStorage, ScrollView, Keyboard} from 'react-native'
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 import * as Scale from "../theme/Scale";
@@ -89,6 +89,7 @@ class MainScreen extends Component {
                     console.log('Success' , code1);
                 });
             }
+            Keyboard.dismiss();
             this.props.navigation.navigate(EVENT_STACK);
         }
     };
