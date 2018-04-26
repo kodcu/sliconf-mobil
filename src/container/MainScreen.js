@@ -152,7 +152,10 @@ class MainScreen extends Component {
                                             iconName={'search'}
                                             iconColor={Color.white}
                                             inputStyle={{color: Color.green}}
-                                            onSubmitEditing={(value) => this._handlePressSearch(value)}
+                                            onSubmitEditing={(value) => {
+                                                Keyboard.dismiss
+                                                this._handlePressSearch(value)
+                                            }}
                                         />
                                         {<TouchableOpacity
                                             style={styles.search} 
