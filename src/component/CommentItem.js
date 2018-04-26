@@ -23,7 +23,6 @@ const mapStateToProps = (state) => ({
 });
 
 class CommentItem extends Component {
-
     state = {
         isClicked: false,
         isDislike: false,
@@ -45,7 +44,7 @@ class CommentItem extends Component {
                     {cancelable: false}
                 );
             } else {
-                this.setState({isClicked: true, isDislike: false, item: response.payload});
+                this.setState({ isClicked: true, isDislike: false, item: response.payload});
                 this.props.changeComment(response.payload, this.props.index)
             }
         } else if (this.state.isClicked && !this.state.isDislike) {
@@ -104,7 +103,7 @@ class CommentItem extends Component {
                     {cancelable: false}
                 );
             } else {
-                this.setState({isDislike: true,isClicked:false, item: response.payload});
+                this.setState({isDislike: true, isClicked:false, item: response.payload});
                 this.props.changeComment(response.payload, this.props.index)
             }
         } else if (this.state.isDislike && !this.state.isClicked) {
@@ -129,10 +128,10 @@ class CommentItem extends Component {
         const comment = this.props.item;
         if (comment.likes !== undefined && comment.likes !== null) {
             if (comment.likes.find(likes => likes.userId === this.props.userAgent) !== undefined)
-                this.setState({isClicked: true})
+                this.setState({ isClicked: true })
 
             if (comment.dislikes.find(dislikes => dislikes.userId === this.props.userAgent) !== undefined)
-                this.setState({isDislike: true})
+                this.setState({ isDislike: true })
         }
     }
 
@@ -163,11 +162,11 @@ class CommentItem extends Component {
                                 marginRight: 5
                             }}> {moment(info.time).startOf('second').fromNow()}</Text>
                         </View>
-                        <Text style={{
-                            ...Font.regular,
-                            fontSize: moderateScale(10.5),
-                            color: Color.darkGray
-                        }}>{info.commentValue}</Text>
+                            <Text style={{
+                                ...Font.regular,
+                                fontSize: moderateScale(10.5),
+                                color: Color.darkGray
+                            }}>{info.commentValue}</Text>
                         <View style={{flexDirection: 'row', marginTop: 5, justifyContent: 'space-between'}}>
                             {this.state.isClicked ?
                                 <Text style={{
@@ -184,7 +183,6 @@ class CommentItem extends Component {
                                         style={{...Font.regular, fontSize: moderateScale(11), color: Color.darkGray3}}>Like
                                         ?</Text>}
                             <View style={{flexDirection: 'row'}}>
-
                                 {user === info.userId ? null :
                                     <TouchableOpacity style={{marginTop: 5}} onPress={this.clickDislike}>
                                         <View style={{flexDirection: 'row', marginRight: 10}}>
@@ -214,8 +212,9 @@ class CommentItem extends Component {
                     </View>
                 </View>
             );
-        } else{
-            return (<View style={{
+        } else {
+            return (
+            <View style={{
                 alignSelf: 'center',
                 alignItems: 'center',
                 marginRight: 5,
@@ -333,10 +332,9 @@ class CommentItem extends Component {
                         </TouchableOpacity>
                     }
                 </View>
-
-            </View>);
+            </View>
+            );
         }
-
     }
 }
 

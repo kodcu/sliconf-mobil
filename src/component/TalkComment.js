@@ -149,7 +149,8 @@ const mapStateToProps = (state) => ({
     errorMessage: state.comment.errorMessage,
     commentList: state.comment.commentList,
     popularCommentList: state.comment.popularCommentList,
-    talkHeader: {auth: state.auth, authDevice: state.authDevice}
+    talkHeader: {auth: state.auth, authDevice: state.authDevice},
+    userLoginWithAccount: state.auth.login
 });
 
 class TalkComment extends Component {
@@ -188,7 +189,7 @@ class TalkComment extends Component {
     }
 
     renderRow(info, index) {
-        return <CommentItem item={info} userAgent={this.props.login ? this.props.user.id : this.props.userDevice.id}
+        return <CommentItem item={info} userAgent={this.props.userLoginWithAccount ? this.props.user.id : this.props.userDevice.id}
                             index={index} changeComment={this.changeComment} talkHeader={this.props.talkHeader}/>
     }
 
@@ -217,8 +218,9 @@ class TalkComment extends Component {
             sessionId: this.props.session,
             userId: this.props.user.id,
         };
-        const {dispatch, error, errorMessage} = this.props;
+        const { dispatch } = this.props;
         await dispatch(actionCreators.getPopularCommentsSession(comment.eventId, comment.sessionId));
+        const { error, errorMessage } = this.props;
         if (error)
             Alert.alert(
                 'Warning!',
