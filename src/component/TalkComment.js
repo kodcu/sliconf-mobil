@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Dimensions, ScrollView, StyleSheet, View} from 'react-native';
+import {Alert, Dimensions, ScrollView, StyleSheet, View, FlatList} from 'react-native';
 import {Button, Container, Content, Fab, Footer, FooterTab, Input, Thumbnail} from "native-base";
 import CommentItem from "./CommentItem";
 import {actionCreators} from '../reducks/module/comment'
@@ -189,7 +189,7 @@ class TalkComment extends Component {
     }
 
     renderRow(info, index) {
-        return <CommentItem item={info} userAgent={this.props.userLoginWithAccount ? this.props.user.id : this.props.userDevice.id}
+        return <CommentItem key={index} item={info} userAgent={this.props.userLoginWithAccount ? this.props.user.id : this.props.userDevice.id}
                             index={index} changeComment={this.changeComment} talkHeader={this.props.talkHeader}/>
     }
 
@@ -265,10 +265,15 @@ class TalkComment extends Component {
 
     renderPopularComments({item, index}, userId) {
         return (
-            <CommentItem item={item} userAgent={userId} index={index} changeComment={this.changePopularComment}
+            <CommentItem key={index} item={item} userAgent={userId} index={index} changeComment={this.changePopularComment}
                          popular={true}  talkHeader={this.props.talkHeader}/>
         )
     }
+
+    renderItem = ({ item, index }) => (
+        <CommentItem item={item} userAgent={this.props.userLoginWithAccount ? this.props.user.id : this.props.userDevice.id}
+                            index={index} changeComment={this.changeComment} talkHeader={this.props.talkHeader}/>
+    )
 
     render() {
         let comments = [];
@@ -328,14 +333,14 @@ class TalkComment extends Component {
 
 
                 <View style={{paddingTop: 5, height: this.props.lite ? null : height - 290}}>
-                    <ScrollView>
+                   {/*<ScrollView>
                         {Object.values(comments).map((item, index) =>
                             <View key={index}>
                                 {this.renderRow(item, index)}
                             </View>
                         )}
-                    </ScrollView>
-
+                    </ScrollView>*/}
+                    <FlatList data={comments} renderItem={this.renderItem} keyExtractor={item => item.id} extraData={this.state}/>
                 </View>
             </View>
 
