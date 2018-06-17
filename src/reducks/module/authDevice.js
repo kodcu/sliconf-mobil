@@ -111,7 +111,7 @@ export const actionCreators = {
         
         dispatch({type: types.DEVICE_REQUEST, payload: null})
         
-        await Request.POST(postRegisterDevice + deviceId, {}, getTokenAuth(getState()),{
+        await Request.POST(postRegisterDevice + deviceId, {}, getTokenAuth(getState()), {
             '200': (res) => {
                 if (res.status)
                     dispatch({

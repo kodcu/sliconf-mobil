@@ -60,14 +60,18 @@ class FloorPlan extends Component {
                             style={[styles.change, { right: 1, marginLeft: 1 }]}
                             onPress={() => floorplan.length - 1 === selected ? null : this.setState({selected: selected + 1})}
                         >
-                            <Icon name='ios-arrow-dropright' size={50} color={Color.darkGray}/>
+                            {   floorplan.length - 1 === selected ? null :
+                                <Icon name='ios-arrow-dropright' size={50} color={Color.darkGray}/>
+                            }
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={[styles.change, { left: 5 }]}
                             onPress={() => 0 === selected ? null : this.setState({selected: selected - 1})}
                         >
-                            <Icon name='ios-arrow-dropleft' size={50} color={Color.darkGray}/>
+                            {   0 === selected ? null :
+                                <Icon name='ios-arrow-dropleft' size={50} color={Color.darkGray}/>
+                            }
                         </TouchableOpacity>
                     </View>
 
