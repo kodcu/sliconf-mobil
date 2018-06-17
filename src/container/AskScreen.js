@@ -20,6 +20,7 @@ import TalkComment from "../component/TalkComment";
 import * as Scale from "../theme/Scale";
 import Font from "../theme/Font";
 import SendQuestionView from '../component/SendQuestionView';
+import moment from "moment";
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
@@ -44,7 +45,9 @@ class AskScreen extends Component {
 
     getTopicButtons(agenda){
         var buttons = []; 
+
         agenda.map((talk) => {
+            moment().isBefore(moment(talk.date)) ?  
             buttons.push(
                 <TouchableOpacity 
                     key={talk.id}
@@ -54,7 +57,7 @@ class AskScreen extends Component {
                         <Text style={styles.selectASessionText}>{talk.topic}</Text>
                     </View>
                 </TouchableOpacity>
-            );    
+            ) : null;
         });
 
         return buttons;
