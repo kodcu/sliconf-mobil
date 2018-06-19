@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Button, Content, Footer, FooterTab, Icon, Picker, Thumbnail} from 'native-base';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { Button, Content, Footer, FooterTab, Icon, Picker } from 'native-base';
 import AgendaCard from '../component/AgendaCard'
 import ChosenCard from '../component/ChosenCard'
 import Header from '../component/Header'
@@ -8,11 +8,11 @@ import BreakTimeCard from '../component/BreakTimeCard'
 import If from '../component/If'
 import {connect} from 'react-redux'
 import {actionCreators} from '../reducks/module/drawer'
-import {LOGIN, SEARCHRESULT, TALK} from '../router';
+import { SEARCHRESULT, TALK} from '../router';
 import FilterEvent from "../component/FilterEvent";
 import Color from "../theme/Color";
 import Font from "../theme/Font";
-import {height, moderateScale} from "../theme/Scale";
+import { moderateScale } from "../theme/Scale";
 import moment from "moment";
 import { actionCreators as scheduleActionCreator } from '../reducks/module/schedule';
 

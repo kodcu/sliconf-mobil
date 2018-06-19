@@ -94,7 +94,7 @@ export default class TalkRate extends Component {
                                                     <Button vertical transparent
                                                             onPress={onPressDismiss}
                                                             style={styles.modalButton}>
-                                                        <Text style={styles.textButton}>Cancel</Text>
+                                                        <Text style={styles.textButton}>Done</Text>
                                                     </Button>
                                                 </View>
                                             </If.Then>
@@ -126,7 +126,7 @@ export default class TalkRate extends Component {
                                                     <Button vertical transparent
                                                             onPress={onPressDismiss}
                                                             style={styles.modalButton}>
-                                                        <Text style={styles.textButton}>Cancel</Text>
+                                                        <Text style={styles.textButton}>Done</Text>
                                                     </Button>
                                                 </View>
                                             </If.Else>

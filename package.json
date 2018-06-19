@@ -25,7 +25,7 @@
     "react-native-qrcode-scanner": "0.0.19",
     "react-native-responsive-dimensions": "^1.0.1",
     "react-native-snap-carousel": "^3.5.0",
-    "react-native-transformable-image": "github:shoutem/react-native-transformable-image",
+    "react-native-transformable-image": "github:BerkayGungor/react-native-transformable-image",
     "react-native-vector-icons": "^4.3.0",
     "react-navigation": "v1.0.0-beta.26",
     "react-redux": "^5.0.5",

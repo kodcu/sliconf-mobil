@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import Header from "../component/Header";
-import {connect} from 'react-redux'
-import Color from "../theme/Color";
-import Icon from 'react-native-vector-icons/Ionicons'
-import {height, moderateScale, width} from "../theme/Scale";
-import Font from "../theme/Font";
-import {actionCreators} from "../reducks/module/drawer";
-import imageHelper from "../helpers/getImageHelper"
+import { 
+    Image, 
+    StyleSheet, 
+    Text,
+    View, 
+    TouchableOpacity
+} from 'react-native';
+import {connect} from 'react-redux';
+import Icon from 'react-native-vector-icons/Ionicons';
 import FloorImage from 'react-native-transformable-image';
+import { actionCreators } from "../reducks/module/drawer";
+import imageHelper from "../helpers/getImageHelper"
+import Header from "../component/Header";
+import Color from "../theme/Color";
+import {height, moderateScale } from "../theme/Scale";
+import Font from "../theme/Font";
 
 const mapStateToProps = (state) => ({
     floorplan: state.event.event.floorPlan,
@@ -16,9 +22,9 @@ const mapStateToProps = (state) => ({
 
 class FloorPlan extends Component {
     state = {
-        selected:0
+        selected: 0
     };
-
+    
     componentWillMount(){
         const {dispatch,navigation} = this.props;
         dispatch(actionCreators.changedDrawer(navigation.state.routeName));
@@ -49,7 +55,10 @@ class FloorPlan extends Component {
 
                     <View style={styles.container}>
                         {floorplan[selected].image.trim() ? 
-                            <FloorImage style={[styles.container, { margin: 8, right: 4 }]} source={{uri:imageHelper(floorplan[selected].image)}} /> 
+                            <FloorImage 
+                            style={[styles.container, { margin: 8, right: 4 }]} 
+                            source={{uri:imageHelper(floorplan[selected].image)}} 
+                            />
                             : 
                             <View style={styles.notFoundPanel}>
                                 <Text style={styles.placeHolderText}>Floor Plan doesn't exist</Text>
