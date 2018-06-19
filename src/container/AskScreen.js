@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import { 
-    Alert, 
     Modal, 
     Platform, 
     StyleSheet, 
-    Text, 
-    TextInput, 
+    Text,
     TouchableOpacity, 
     View, 
     ScrollView 
 } from 'react-native';
 import { connect } from "react-redux";
-import { Input, Picker, Item } from "native-base";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Header from "../component/Header";
@@ -47,19 +44,26 @@ class AskScreen extends Component {
         var buttons = []; 
 
         agenda.map((talk) => {
-            moment().isBefore(moment(talk.date)) ?  
+            moment().isBefore(moment(talk.date).add(talk.duration, 'minutes')) ?  
             buttons.push(
-                <TouchableOpacity 
+                (<TouchableOpacity 
                     key={talk.id}
                     onPress={() => this.setState({ sessionId: talk.id, isSessionSelected: true, sessionModal: false })}
                 >
                     <View style={styles.selectSessionButton}>   
                         <Text style={styles.selectASessionText}>{talk.topic}</Text>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity>)
             ) : null;
         });
-
+        
+        if (buttons.length <= 0)
+            buttons.push(
+                (<View key={'expired'} style={styles.notFoundPanel}>
+                    <Text style={styles.notFoundText}>Sessions expired or does not exist</Text>
+                </View>)
+            );
+        
         return buttons;
     }
 
@@ -70,11 +74,11 @@ class AskScreen extends Component {
                 transparent={true}
                 visible={this.state.sessionModal}
                 onRequestClose={() => this.closeSessionModal()}>
-                <View style={{flex: 1, backgroundColor: Color.white, marginTop: Platform.OS === 'ios' ? 16 : 0}}>
+                <View style={{ flex: 1, backgroundColor: Color.white, marginTop: Platform.OS === 'ios' ? 16 : 0 }}>
                     <TouchableOpacity style={{padding: 4, margin: 8}} onPress={() => this.closeSessionModal()}>
                         <Icon name={'ios-close-circle'} size={32} color={Color.gray}/>
                     </TouchableOpacity>
-                    <ScrollView>
+                    <ScrollView style={{ flex: 1 }}>
                         {this.getTopicButtons(agenda)}
                     </ScrollView>
                 </View>
@@ -180,6 +184,17 @@ const styles = StyleSheet.create({
         color: Color.black,
         fontSize: Scale.verticalScale(16),
         padding: 2
+    },
+    notFoundText:{
+        ...Font.thin,
+        alignSelf: 'center',
+        color:Color.darkGray
+    },
+    notFoundPanel:{
+        flex: 1,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        alignItems: 'center'
     }
 });
 
