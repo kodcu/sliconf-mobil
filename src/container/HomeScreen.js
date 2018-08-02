@@ -33,7 +33,6 @@ class HomeScreen extends Component {
             {name: 'Location', icon: 'ios-map-outline', nav: LOCATION},
             {name: 'Sponsors', icon: 'ios-ribbon-outline', nav: SPONSOR},
             {name: 'Info', icon: 'ios-information-outline', nav: INFO},
-
         ]
     };
 
