@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Alert, Dimensions, ScrollView, StyleSheet, View, FlatList} from 'react-native';
-import {Button, Container, Content, Fab, Footer, FooterTab, Input, Thumbnail} from "native-base";
+//import {Button, Container, Content, Fab, Footer, FooterTab, Input, Thumbnail} from "native-base";
 import CommentItem from "./CommentItem";
 import {actionCreators} from '../reducks/module/comment'
 import {connect} from 'react-redux'
 import If from "./If";
 import Carousel, {Pagination} from "react-native-snap-carousel";
-import Loading from "./Loading";
+//import Loading from "./Loading";
 
 const ENTRIES = [
     {

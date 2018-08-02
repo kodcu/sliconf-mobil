@@ -2,23 +2,31 @@
  * Created by Muslum on 2.08.2017.
  */
 
-import React, {Component} from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity, View, Alert, AsyncStorage, ScrollView, Keyboard} from 'react-native'
-import Color from "../theme/Color";
-import Font from "../theme/Font";
-import * as Scale from "../theme/Scale";
-import {EVENT_STACK} from "../router";
-import {actionCreators} from '../reducks/module/event'
-import {connect} from 'react-redux'
-
-import Loading from '../component/Loading'
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
-import If from '../component/If'
+import React, { Component } from 'react';
+import { 
+    Image, 
+    StyleSheet, 
+    Text, 
+    TouchableOpacity, 
+    View, 
+    Alert, 
+    AsyncStorage, 
+    Keyboard 
+} from 'react-native';
+import { connect } from 'react-redux';
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Color from '../theme/Color';
+import Font from '../theme/Font';
+import * as Scale from '../theme/Scale';
+import { EVENT_STACK } from '../router';
+import { actionCreators } from '../reducks/module/event';
+import Loading from '../component/Loading';
+import If from '../component/If';
 import Header from "../component/Header";
 import AnimatedInput from "../component/AnimatedInput";
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const logo = require("../../images/logo.png");
 
@@ -35,10 +43,9 @@ const mapStateToProps = (state) => ({
 
 
 class MainScreen extends Component {
-
     state = {
         search: true,
-        loadingModal:false,
+        loadingModal: false,
         code: '',
         eventName: ''
     };
