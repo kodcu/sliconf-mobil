@@ -1,34 +1,34 @@
-/**
+/*
  * Created by Muslum on 2.08.2017.
  */
-
 import React, { Component } from 'react';
-import { 
-    Image, 
-    StyleSheet, 
-    Text, 
-    TouchableOpacity, 
-    View, 
-    Alert, 
-    AsyncStorage, 
-    Keyboard 
+import {
+    Image,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Alert,
+    AsyncStorage,
+    Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+import { actionCreators } from '../reducks/module/event';
+import { EVENT_STACK } from '../router';
+import Loading from '../component/Loading';
+import If from '../component/If';
+import Header from '../component/Header';
+import AnimatedInput from '../component/AnimatedInput';
 import Color from '../theme/Color';
 import Font from '../theme/Font';
 import * as Scale from '../theme/Scale';
-import { EVENT_STACK } from '../router';
-import { actionCreators } from '../reducks/module/event';
-import Loading from '../component/Loading';
-import If from '../component/If';
-import Header from "../component/Header";
-import AnimatedInput from "../component/AnimatedInput";
 
-const logo = require("../../images/logo.png");
+const logo = require('../../images/logo.png');
 
 const mapStateToProps = (state) => ({
     loading: state.event.loading,
@@ -41,7 +41,6 @@ const mapStateToProps = (state) => ({
     user: state.auth.user,
 });
 
-
 class MainScreen extends Component {
     state = {
         search: true,
@@ -52,16 +51,16 @@ class MainScreen extends Component {
 
     componentWillMount() {
         AsyncStorage.getItem('Code').then((value) => {
-                this.setState({
-                    code: value,
-                });
-            }
+            this.setState({
+                code: value,
+            });
+        }
         );
         AsyncStorage.getItem('eventName').then((value) => {
-                this.setState({
-                    eventName: value,
-                });
-            }
+            this.setState({
+                eventName: value,
+            });
+        }
         );
     }
 
@@ -70,44 +69,43 @@ class MainScreen extends Component {
      * @param code aranan etkinlik kodu
      * @returns {Promise.<void>}
      */
-
     getEvent = async (code) => {
-        this.setState({loadingModal:true});
-        const userId=!this.props.login? this.props.userDevice.id: this.props.user.id;
-        const {dispatch, loading} = this.props;
-        await dispatch(actionCreators.fetchEvent(code,userId));
-        const {error, errorMessage} = this.props;
+        this.setState({ loadingModal: true });
+        const userId = !this.props.login ? this.props.userDevice.id : this.props.user.id;
+        const { dispatch, loading } = this.props;
+        await dispatch(actionCreators.fetchEvent(code, userId));
+        const { error, errorMessage } = this.props;
 
         if (error)
             Alert.alert(
                 'Warning!',
                 errorMessage,
                 [
-                    {text: 'OK', onPress: () => this.setState({loadingModal:loading})},
+                    { text: 'OK', onPress: () => this.setState({ loadingModal: loading }) },
                 ],
                 { cancelable: false }
             );
 
         if (!error && !loading) {
             //this.props.navigation.dispatch({type: 'drawerStack'});
-            this.setState({loadingModal:loading});
-            if (Boolean(code)) {
+            this.setState({ loadingModal: loading });
+            if (code) {
                 AsyncStorage.setItem('Code', code).then((code1) => {
-                    console.log('Success' , code1);
+                    console.log('Success', code1);
                 });
             }
             Keyboard.dismiss();
             this.props.navigation.navigate(EVENT_STACK);
         }
     };
-            
+
     /**
      * Etkinlik arama islemini tetikler
      * @param value aranan etkinlik kodu
      * @private
      */
     _handlePressSearch(value) {
-        if(!!value)
+        if (!!value)
             this.getEvent(value);
     }
 
@@ -116,14 +114,12 @@ class MainScreen extends Component {
      * @private
      */
     _hide() {
-        this.setState({search: true})
+        this.setState({ search: true });
     }
 
     render() {
-        
         const loading = this.state.loadingModal;
         const { search, code, eventName } = this.state;
-        //const { event } = this.props;
 
         let storeCode = '';
         AsyncStorage.getItem('Code').then((value) => {
@@ -137,20 +133,17 @@ class MainScreen extends Component {
 
         return (
             <View style={styles.container}>
-
-                <Loading visible={loading}/>
-
+                <Loading visible={loading} />
                 <If con={search}>
                     <If.Then>
                         <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
                             <View style={styles.container}>
-                                <Header/>
+                                <Header />
                                 <View style={styles.logoContainer}>
-                                    <Image style={styles.image} source={logo}/>
+                                    <Image style={styles.image} source={logo} />
                                     <Text style={styles.title}>Welcome to SliConf</Text>
                                     <Text style={styles.subtitle}>Conferences at your fingertips</Text>
                                 </View>
-
                                 <View style={styles.containerBottom}>
                                     <View style={styles.search}>
                                         <AnimatedInput
@@ -158,64 +151,57 @@ class MainScreen extends Component {
                                             iconClass={FontAwesomeIcon}
                                             iconName={'search'}
                                             iconColor={Color.white}
-                                            inputStyle={{color: Color.green}}
+                                            inputStyle={{ color: Color.green }}
                                             onSubmitEditing={(value) => {
-                                                Keyboard.dismiss
-                                                this._handlePressSearch(value)
+                                                Keyboard.dismiss;
+                                                this._handlePressSearch(value);
                                             }}
                                         />
                                         {<TouchableOpacity
-                                            style={styles.search} 
+                                            style={styles.search}
                                             onPress={() => this._handlePressSearch(Boolean(storeCode) && storeCode !== '' ? storeCode : code)}>
-                                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                            <View style={{ flex: 1, flexDirection: 'row' }}>
                                                 <Text style={styles.title1}>{Boolean(storeCode) && storeCode !== '' ? storeCode : code}</Text>
                                                 <Text style={styles.title2}>{Boolean(storeEventName) && storeEventName !== '' ? storeEventName : eventName}</Text>
                                             </View>
                                         </TouchableOpacity>}
-                                                                                
                                         <TouchableOpacity
                                             style={styles.qrcode}
-                                            onPress={() => this.setState({search: false})}>
-                                            <Icon name='qrcode-scan' size={64} color={Color.darkGray}/>
+                                            onPress={() => this.setState({ search: false })}>
+                                            <Icon name='qrcode-scan' size={64} color={Color.darkGray} />
                                         </TouchableOpacity>
-
                                     </View>
                                 </View>
                             </View>
                         </KeyboardAwareScrollView>
                     </If.Then>
-
                     <If.Else>
                         <View style={styles.container}>
                             <Header rightImage='close'
-                                    onPressRight={() => this._hide()}>
-                                <Header.Title title="QR Code"/>
+                                onPressRight={() => this._hide()}>
+                                <Header.Title title="QR Code" />
                             </Header>
-
                             <QRCodeScanner
                                 onRead={(e) => {
                                     this._hide();
-                                    this.getEvent(e.data)
+                                    this.getEvent(e.data);
                                 }}
                             />
-                            
-                            <View/>
+                            <View />
                         </View>
                     </If.Else>
                 </If>
             </View>
-        )
+        );
     }
 }
-
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: Color.white,
-
+        backgroundColor: Color.white
     },
     containerBottom: {
         flex: 1,
@@ -242,7 +228,7 @@ const styles = StyleSheet.create({
         color: Color.green,
         marginTop: 10,
         textAlign: 'center',
-        fontSize: Scale.verticalScale(18),
+        fontSize: Scale.verticalScale(18)
     },
     title1: {
         ...Font.semiBold,
@@ -250,8 +236,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         textAlign: 'center',
         fontSize: Scale.verticalScale(18),
-        marginRight: 5,
-
+        marginRight: 5
     },
     title2: {
         ...Font.semiBold,
@@ -259,7 +244,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: Scale.verticalScale(18),
         marginRight: 0,
-        flexWrap: 'wrap',
+        flexWrap: 'wrap'
     },
     subtitle: {
         ...Font.light,
@@ -273,4 +258,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps)(MainScreen)
+export default connect(mapStateToProps)(MainScreen);

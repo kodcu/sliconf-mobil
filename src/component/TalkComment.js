@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import {Alert, Dimensions, ScrollView, StyleSheet, View, FlatList} from 'react-native';
-//import {Button, Container, Content, Fab, Footer, FooterTab, Input, Thumbnail} from "native-base";
-import CommentItem from "./CommentItem";
-import {actionCreators} from '../reducks/module/comment'
-import {connect} from 'react-redux'
-import If from "./If";
-import Carousel, {Pagination} from "react-native-snap-carousel";
-//import Loading from "./Loading";
+import React, { Component } from 'react';
+import { Alert, Dimensions, StyleSheet, View, FlatList } from 'react-native';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+
+import CommentItem from './CommentItem';
+import { actionCreators } from '../reducks/module/comment';
+import If from './If';
 
 const ENTRIES = [
     {
@@ -149,48 +149,79 @@ const mapStateToProps = (state) => ({
     errorMessage: state.comment.errorMessage,
     commentList: state.comment.commentList,
     popularCommentList: state.comment.popularCommentList,
-    talkHeader: {auth: state.auth, authDevice: state.authDevice},
+    talkHeader: { auth: state.auth, authDevice: state.authDevice },
     userLoginWithAccount: state.auth.login
 });
 
 class TalkComment extends Component {
-
     state = {
         activeSlide: 0,
         commentData: [],
         popularCommentData: [],
-        loading:true
+        loading: true
     }
+
+    componentWillMount() {
+        this.getComments();
+        !this.props.lite ? this.getPopularComments() : null
+    }
+
+    componentDidMount() {
+        this.interval = setInterval(() => {
+            this.getComments();
+            !this.props.lite ? this.getPopularComments() : null
+        }, 10000);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!nextProps.loading) {
+            if (!_.isEqual(this.state.commentData, nextProps.commentList)) {
+                this.setState({
+                    commentData: nextProps.commentList
+                });
+            }
+            if (!_.isEqual(this.state.popularCommentData, nextProps.popularCommentList)) {
+                this.setState({
+                    popularCommentData: nextProps.popularCommentList
+                });
+            }
+        }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
     changeComment = (comment, index) => {
         let data = this.state.commentData;
-        let popularData=this.state.popularCommentData;
+        let popularData = this.state.popularCommentData;
         data[index] = comment;
-        let obj = popularData.findIndex((popularComment) => comment.id === popularComment.id)
+        let obj = popularData.findIndex((popularComment) => comment.id === popularComment.id);
         if (obj !== undefined)
-            popularData[obj]=comment
+            popularData[obj] = comment;
+
         this.setState({
             commentData: data,
-            popularCommentData:popularData
-        })
-
-
+            popularCommentData: popularData
+        });
     }
+
     changePopularComment = (comment, index) => {
         let data = this.state.commentData;
-        let popularData=this.state.popularCommentData;
+        let popularData = this.state.popularCommentData;
         popularData[index] = comment;
         let obj = data.findIndex((recentData) => comment.id === recentData.id)
         if (obj !== undefined)
-            data[obj]=comment
+            data[obj] = comment;
         this.setState({
             popularCommentData: popularData,
-            commentData:data
-        })
+            commentData: data
+        });
     }
 
     renderRow(info, index) {
         return <CommentItem key={index} item={info} userAgent={this.props.userLoginWithAccount ? this.props.user.id : this.props.userDevice.id}
-                            index={index} changeComment={this.changeComment} talkHeader={this.props.talkHeader}/>
+            index={index} changeComment={this.changeComment} talkHeader={this.props.talkHeader} />
     }
 
     async getComments() {
@@ -199,16 +230,16 @@ class TalkComment extends Component {
             sessionId: this.props.session,
             userId: this.props.user.id,
         };
-        const {dispatch, error, errorMessage} = this.props;
+        const { dispatch, error, errorMessage } = this.props;
         await dispatch(actionCreators.getCommentsSession(comment.eventId, comment.sessionId));
         if (error)
             Alert.alert(
                 'Warning!',
                 errorMessage,
                 [
-                    {text: 'OK'}
+                    { text: 'OK' }
                 ],
-                {cancelable: false}
+                { cancelable: false }
             );
     }
 
@@ -226,69 +257,43 @@ class TalkComment extends Component {
                 'Warning!',
                 errorMessage,
                 [
-                    {text: 'OK'}
+                    { text: 'OK' }
                 ],
-                {cancelable: false}
+                { cancelable: false }
             );
     }
 
-    componentWillMount() {
-        this.getComments();
-        !this.props.lite ? this.getPopularComments() : null
-    }
-
-    componentDidMount() {
-        this.interval = setInterval(() => {
-            this.getComments();
-            !this.props.lite ? this.getPopularComments() : null
-        }, 10000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (!nextProps.loading) {
-            if (!_.isEqual(this.state.commentData, nextProps.commentList)) {
-                this.setState({
-                    commentData: nextProps.commentList
-                })
-            }
-            if (!_.isEqual(this.state.popularCommentData, nextProps.popularCommentList)) {
-                this.setState({
-                    popularCommentData: nextProps.popularCommentList
-                })
-            }
-        }
-    }
-
-    renderPopularComments({item, index}, userId) {
+    renderPopularComments({ item, index }, userId) {
         return (
             <CommentItem key={index} item={item} userAgent={userId} index={index} changeComment={this.changePopularComment}
-                         popular={true}  talkHeader={this.props.talkHeader}/>
+                popular={true} talkHeader={this.props.talkHeader} />
         )
     }
 
     renderItem = ({ item, index }) => (
         <CommentItem item={item} userAgent={this.props.userLoginWithAccount ? this.props.user.id : this.props.userDevice.id}
-                            index={index} changeComment={this.changeComment} talkHeader={this.props.talkHeader}/>
+            index={index} changeComment={this.changeComment} talkHeader={this.props.talkHeader} />
     )
 
     render() {
         let comments = [];
         let popularComments = [];
-        if (this.state.commentData !== undefined && this.state.commentData !== null && !this.state.commentData.isEmpty)
+        if (this.state.commentData !== undefined &&
+            this.state.commentData !== null &&
+            !this.state.commentData.isEmpty) {
             comments = this.state.commentData;
-        if (this.state.popularCommentData !== undefined && this.state.popularCommentData !== null && !this.state.popularCommentData.isEmpty)
+        }
+
+        if (this.state.popularCommentData !== undefined &&
+            this.state.popularCommentData !== null &&
+            !this.state.popularCommentData.isEmpty) {
             popularComments = this.state.popularCommentData;
+        }
+
         return (
-            <View style={{flex: 1}}>
-
+            <View style={{ flex: 1 }}>
                 <If con={!this.props.lite}>
-
-                    <View style={{alignSelf: 'center', height: 150}}>
-
+                    <View style={{ alignSelf: 'center', height: 150 }}>
                         <Carousel
                             data={popularComments}
                             renderItem={(item) => this.renderPopularComments(item, this.props.user.id)}
@@ -296,16 +301,16 @@ class TalkComment extends Component {
                             itemWidth={(width) - 20}
                             inactiveSlideScale={1}
                             inactiveSlideOpacity={1}
-                            enableMomentum={true}
+                            enableMomentum
                             activeSlideAlignment={'start'}
-                            autoplay={true}
+                            autoplay
                             autoplayDelay={10000}
                             autoplayInterval={10000}
                             containerCustomStyle={styles.slider}
                             contentContainerCustomStyle={styles.sliderContentContainer}
                             removeClippedSubviews={false}
-                            onSnapToItem={(index) => this.setState({activeSlide: index})}/>
-
+                            onSnapToItem={(index) => this.setState({ activeSlide: index })}
+                        />
                         <Pagination
                             dotsLength={popularComments.length}
                             activeDotIndex={this.state.activeSlide}
@@ -327,24 +332,18 @@ class TalkComment extends Component {
                             inactiveDotOpacity={0.4}
                             inactiveDotScale={0.6}
                         />
-
                     </View>
                 </If>
-
-
-                <View style={{paddingTop: 5, height: this.props.lite ? null : height - 290}}>
-                   {/*<ScrollView>
-                        {Object.values(comments).map((item, index) =>
-                            <View key={index}>
-                                {this.renderRow(item, index)}
-                            </View>
-                        )}
-                    </ScrollView>*/}
-                    <FlatList data={comments} renderItem={this.renderItem} keyExtractor={item => item.id} extraData={this.state}/>
+                <View style={{ paddingTop: 5, height: this.props.lite ? null : height - 290 }}>
+                    <FlatList
+                        data={comments}
+                        renderItem={this.renderItem}
+                        keyExtractor={item => item.id}
+                        extraData={this.state}
+                    />
                 </View>
             </View>
-
-        )
+        );
     }
 }
 
@@ -356,59 +355,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#000'
     },
-    gradient: {
-        ...StyleSheet.absoluteFillObject
-    },
-    scrollview: {
-        flex: 1,
-        paddingTop: 50
-    },
-    scrollviewContentContainer: {
-        paddingBottom: 50
-    },
-    exampleContainer: {
-        marginBottom: 30
-    },
-    title: {
-        paddingHorizontal: 30,
-        backgroundColor: 'transparent',
-        color: 'rgba(255, 255, 255, 0.9)',
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center'
-    },
-    subtitle: {
-        marginTop: 5,
-        paddingHorizontal: 30,
-        backgroundColor: 'transparent',
-        color: 'rgba(255, 255, 255, 0.75)',
-        fontSize: 13,
-        fontStyle: 'italic',
-        textAlign: 'center'
-    },
     slider: {
         marginTop: 0,
     },
     sliderContentContainer: {},
     paginationContainer: {
         paddingVertical: 8
-    },
-    paginationDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        marginHorizontal: 8
-    },
-    card: {
-        width: (width / 2) - 20,
-        height: 190,
-        marginLeft: 10,
-        backgroundColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 15,
-        borderColor: '#F1F2F2',
-        justifyContent: 'center',
-        alignItems: 'center'
     }
 });
 
