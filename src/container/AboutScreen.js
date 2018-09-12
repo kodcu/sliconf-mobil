@@ -65,20 +65,6 @@ export class About extends Component {
                 </TouchableOpacity>
             );
         }
-        return (
-            <TouchableOpacity
-                key={index}
-                disabled
-                style={{ flexDirection: 'row', alignItems: 'center' }}
-            >
-                <IconSocial
-                    name={icon}
-                    size={40}
-                    color={Color.darkGray}
-                    style={{ margin: 10 }}
-                />
-            </TouchableOpacity>
-        );
     }
 
     /**
