@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Easing, Animated } from "react-native";
-import {DrawerNavigator, StackNavigator} from 'react-navigation';
+import { DrawerNavigator, StackNavigator } from 'react-navigation';
 
 import SplashScreen from './container/SplashScreen';
 import MainScreen from './container/MainScreen';
@@ -36,45 +36,44 @@ export const EVENT_STACK = 'stack/Event';
 export const MAIN_STACK = 'stack/Main';
 export const ASK = 'screen/Ask';
 
-
 const EventStack = DrawerNavigator(
     {
-        [HOME]: {screen: HomeScreen},
+        [HOME]: { screen: HomeScreen },
         [AGENDA]: {
             screen: StackNavigator({
-                [AGENDA]: {screen: AgendaScreen},
-                [SEARCHRESULT]: {screen: SearchResult},
-                [TALK]: {screen: TalkDetailScreen},
+                [AGENDA]: { screen: AgendaScreen },
+                [SEARCHRESULT]: { screen: SearchResult },
+                [TALK]: { screen: TalkDetailScreen },
             }, {
-                headerMode: 'none',
-                navigationOptions: {
-                    gesturesEnabled: false
-                },
-                transitionConfig: animation
-            })
+                    headerMode: 'none',
+                    navigationOptions: {
+                        gesturesEnabled: false
+                    },
+                    transitionConfig: animation
+                })
         },
         [SPEAKERS]: {
             screen: StackNavigator({
-                [SPEAKERS]: {screen: SpeakersScreen},
-                [SPEAKERINFO]: {screen: SpeakerInfoScreen},
-                [TALK]: {screen: TalkDetailScreen} //->
+                [SPEAKERS]: { screen: SpeakersScreen },
+                [SPEAKERINFO]: { screen: SpeakerInfoScreen },
+                [TALK]: { screen: TalkDetailScreen } //->
                 //When user selects talk on speakers, this makes app return to speakersinfo screen when the back is pressed
             }, {
-                headerMode: 'none',
-                navigationOptions: {
-                    gesturesEnabled: false
-                },
-                transitionConfig:  animation
-            })
+                    headerMode: 'none',
+                    navigationOptions: {
+                        gesturesEnabled: false
+                    },
+                    transitionConfig: animation
+                })
         },
-        [INFO]: {screen: InfoScreen},
-        [LOGIN]: {screen: LoginScreen},
-        [LOCATION]: {screen: LocationScreen},
-        [FLOOR]: {screen: FloorPlanScreen},
-        [LOGIN]: {screen: LoginScreen},
-        [SPONSOR]: {screen: SponsorScreen},
-        [ASK] :{screen:AskScreen}
-    }, 
+        [INFO]: { screen: InfoScreen },
+        [LOGIN]: { screen: LoginScreen },
+        [LOCATION]: { screen: LocationScreen },
+        [FLOOR]: { screen: FloorPlanScreen },
+        [LOGIN]: { screen: LoginScreen },
+        [SPONSOR]: { screen: SponsorScreen },
+        [ASK]: { screen: AskScreen }
+    },
     {
         drawerOpenRoute: 'DrawerOpen',
         drawerCloseRoute: 'DrawerClose',
@@ -83,7 +82,7 @@ const EventStack = DrawerNavigator(
         navigationOptions: {
             gesturesEnabled: false
         },
-        transitionConfig:  animation,
+        transitionConfig: animation,
         drawerWidth: 250,
         drawerPosition: 'right',
         contentOptions: {
@@ -95,31 +94,31 @@ const EventStack = DrawerNavigator(
 );
 
 const MainStack = StackNavigator({
-    [SPLASH]: {screen: SplashScreen},
-    [MAIN]: {screen: MainScreen},
-    [LOGIN]: {screen: LoginScreen},
+    [SPLASH]: { screen: SplashScreen },
+    [MAIN]: { screen: MainScreen },
+    [LOGIN]: { screen: LoginScreen },
 
 }, {
-    headerMode: 'none',
-    navigationOptions: {
-        gesturesEnabled: false
-    },
-    transitionConfig:  animation
+        headerMode: 'none',
+        navigationOptions: {
+            gesturesEnabled: false
+        },
+        transitionConfig: animation
 
-});
+    });
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator(
     {
-        [MAIN_STACK]: {screen: MainStack},
-        [EVENT_STACK]: {screen: EventStack}
+        [MAIN_STACK]: { screen: MainStack },
+        [EVENT_STACK]: { screen: EventStack }
     },
     {
         headerMode: 'none',
         navigationOptions: {
             gesturesEnabled: false
         },
-        transitionConfig:  animation
+        transitionConfig: animation
     }
 );
 
