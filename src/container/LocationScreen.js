@@ -21,7 +21,6 @@ class LocationScreen extends Component {
      * @param os uygulamanin hangi platformda calistigi (ios - android)
      */
     redirectToMap(lat, lng, os) {
-
         if (os !== 'ios') {
             Linking.canOpenURL('https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng).then(supported => {
                 if (supported) {
@@ -29,9 +28,9 @@ class LocationScreen extends Component {
                 }
             }).catch(err => console.error('An error occurred', err));
         } else {
-            Linking.canOpenURL('http://maps.apple.com/?ll=' + lat + ',' + lng).then(supported => {
+            Linking.canOpenURL(`http://maps.apple.com/?saddr=&daddr=(${lat},${lng})`).then(supported => {
                 if (supported) {
-                    Linking.openURL('http://maps.apple.com/?ll=' + lat + ',' + lng);
+                    Linking.openURL(`http://maps.apple.com/?saddr=&daddr=(${lat},${lng})`);
                 }
             }).catch(err => console.error('An error occurred', err));
         }
@@ -44,7 +43,6 @@ class LocationScreen extends Component {
         if(!(location === undefined || location === null || location.isEmpty))
             Object.values(location).every((key) => (key === '')?  delete this.props.event.about.location:false );
     }
-
 
     render() {
         const event = this.props.event
@@ -75,7 +73,6 @@ class LocationScreen extends Component {
                         }}>
                     <Header.Title title="Location"/>
                 </Header>
-
                 <View style={styles.mapContainer}>
                     <MapView
                         //provider={PROVIDER_GOOGLE}
