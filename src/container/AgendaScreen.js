@@ -448,23 +448,31 @@ class AgendaScreen extends Component {
                 </Content>
                 <Footer>
                     <FooterTab style={{backgroundColor: Color.white}}>
-                        <Button vertical onPress={() => {
-                            this.setState({isChosenClicked: true})
-                        }}>
+                        <Button 
+                            vertical 
+                            style={{ flex: 1 }}
+                            onPress={() => {
+                                this.setState({isChosenClicked: true})
+                            }}
+                        >
                             <Text style={{
                                 ...Font.semiBold,
                                 fontSize: moderateScale(12),
                                 color: this.state.isChosenClicked ? Color.green : Color.darkGray
                             }}>All</Text>
                         </Button>
-                        <Button vertical onPress={() => {
-                            this.setState({isChosenClicked: false})
-                        }}>
+                        <Button 
+                            vertical 
+                            style={{ flex: 1 }}
+                            onPress={() => {
+                                this.setState({isChosenClicked: false})
+                            }}
+                        >
                             <Text style={{
                                 ...Font.semiBold,
                                 fontSize: moderateScale(12),
                                 color: this.state.isChosenClicked ? Color.darkGray : Color.green
-                            }}>Chosen</Text>
+                            }}>Selected</Text>
                         </Button>
                     </FooterTab>
                 </Footer>

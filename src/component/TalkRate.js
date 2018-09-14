@@ -86,15 +86,15 @@ export default class TalkRate extends Component {
                                                     </View>
                                                 </View>
                                                 <View style={styles.buttonView}>
+                                                        <Button vertical transparent
+                                                            onPress={onPressDismiss}
+                                                            style={styles.modalButton}>
+                                                        <Text style={styles.textButton}>Close</Text>
+                                                    </Button>
                                                     <Button vertical transparent
                                                         onPress={() => {user ? this.change() : null; onPressSubmit(value)}}
                                                             style={styles.modalButton}>
                                                         <Text style={styles.textButton}>Submit</Text>
-                                                    </Button>
-                                                    <Button vertical transparent
-                                                            onPress={onPressDismiss}
-                                                            style={styles.modalButton}>
-                                                        <Text style={styles.textButton}>Done</Text>
                                                     </Button>
                                                 </View>
                                             </If.Then>
@@ -119,14 +119,14 @@ export default class TalkRate extends Component {
 
                                                 <View style={styles.buttonView}>
                                                     <Button vertical transparent
+                                                            onPress={onPressDismiss}
+                                                            style={styles.modalButton}>
+                                                        <Text style={styles.textButton}>Close</Text>
+                                                    </Button>
+                                                    <Button vertical transparent
                                                             onPress={() => this.change()}
                                                             style={styles.modalButton}>
                                                         <Text style={styles.textButton}>Change</Text>
-                                                    </Button>
-                                                    <Button vertical transparent
-                                                            onPress={onPressDismiss}
-                                                            style={styles.modalButton}>
-                                                        <Text style={styles.textButton}>Done</Text>
                                                     </Button>
                                                 </View>
                                             </If.Else>
