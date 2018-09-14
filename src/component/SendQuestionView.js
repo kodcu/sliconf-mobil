@@ -46,7 +46,9 @@ export class SendQuestionView extends Component {
 
         const eventId = this.props.event.id;
         const sessionId = this.props.sessionId;
-        const commentValue = this.state.commentValue;
+        let commentValue = this.state.commentValue.trim();
+        commentValue = commentValue.replace(/(\r\n\t|\n|\r\t)/gm, '');
+        commentValue = commentValue.replace(/ +(?= )/g, '');
         const time = moment().valueOf();
         const anonymous = this.state.anonymous;
 

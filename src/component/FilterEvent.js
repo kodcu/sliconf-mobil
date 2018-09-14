@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {Alert, Modal, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
-import {Button} from "native-base";
+import React, { Component } from 'react';
+import { Alert, Modal, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button } from "native-base";
 import CheckBox from "react-native-check-box";
 import Color from "../theme/Color";
 import Font from "../theme/Font";
-import {height, moderateScale, width} from "../theme/Scale";
+import { height, moderateScale, width } from "../theme/Scale";
 
 export default class FilterEvent extends Component {
 
@@ -19,7 +19,7 @@ export default class FilterEvent extends Component {
 
     onClick(data) {
         data.checked = !data.checked;
-        this.setState({data: this.state.data})
+        this.setState({ data: this.state.data })
         if (data.checked)
             this.state.searchFilter.push(data.name)
         else {
@@ -34,7 +34,7 @@ export default class FilterEvent extends Component {
         return (
             <CheckBox
                 key={i}
-                style={{flex: 1, padding: 10}}
+                style={{ flex: 1, padding: 10 }}
                 onClick={() => this.onClick(data)}
                 isChecked={data.checked}
                 leftText={leftText}
@@ -109,8 +109,8 @@ export default class FilterEvent extends Component {
             Alert.alert(
                 'Warning!',
                 'No results were found in the criteria you searched for.',
-                [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-                {cancelable: false}
+                [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+                { cancelable: false }
             );
 
     }
@@ -126,24 +126,24 @@ export default class FilterEvent extends Component {
 
             Object.values(events).map((data) =>
                 data.map(ev => {
-                        if (ev.tags !== undefined && ev.tags !== null)
-                            ev.tags.forEach(tag => {
-                                if (!stateData.find(t => t.name === tag)) {
-                                    stateData.push({name: tag, checked: true});
-                                    stateSelected.push(tag)
-                                }
-                            })
-                    }
+                    if (ev.tags !== undefined && ev.tags !== null)
+                        ev.tags.forEach(tag => {
+                            if (!stateData.find(t => t.name === tag)) {
+                                stateData.push({ name: tag, checked: true });
+                                stateSelected.push(tag)
+                            }
+                        })
+                }
                 )
             );
 
-            this.setState({data: stateData})
-            this.setState({searchFilter: stateSelected})
+            this.setState({ data: stateData })
+            this.setState({ searchFilter: stateSelected })
         }
     }
 
     render() {
-        const {visible} = this.props;
+        const { visible } = this.props;
         let tagList = this.state.data;
         return (
             <View style={styles.container}>
@@ -164,12 +164,9 @@ export default class FilterEvent extends Component {
                                         keyboardType="default"
                                         autoCapitalize="none"
                                         autoCorrect={false}
-                                        onChangeText={(text) => this.setState({eventName: text})}/>
-
+                                        onChangeText={(text) => this.setState({ eventName: text })} />
                                     <ScrollView>{tagList.map((item, i) => this.renderCheckBox(item, i))}</ScrollView>
-
                                 </View>
-
                                 <View style={styles.levelView}>
                                     <CheckBox
                                         key={this.state.beginnerLevel.toString() + 1}
@@ -178,8 +175,8 @@ export default class FilterEvent extends Component {
                                             fontSize: moderateScale(12),
                                             color: Color.darkGray
                                         }}
-                                        style={{padding: 10, width: widthModal * 0.3}}
-                                        onClick={() => this.setState({beginnerLevel: !this.state.beginnerLevel})}
+                                        style={{ padding: 10, width: widthModal * 0.3 }}
+                                        onClick={() => this.setState({ beginnerLevel: !this.state.beginnerLevel })}
                                         isChecked={this.state.beginnerLevel}
                                         rightText='Beg'
                                         checkBoxColor={Color.green}
@@ -191,8 +188,8 @@ export default class FilterEvent extends Component {
                                             fontSize: moderateScale(12),
                                             color: Color.darkGray
                                         }}
-                                        style={{padding: 10, width: widthModal * 0.3}}
-                                        onClick={() => this.setState({mediumLevel: !this.state.mediumLevel})}
+                                        style={{ padding: 10, width: widthModal * 0.3 }}
+                                        onClick={() => this.setState({ mediumLevel: !this.state.mediumLevel })}
                                         isChecked={this.state.mediumLevel}
                                         rightText='Int'
                                         checkBoxColor={Color.yellow}
@@ -204,39 +201,36 @@ export default class FilterEvent extends Component {
                                             fontSize: moderateScale(12),
                                             color: Color.darkGray
                                         }}
-                                        style={{padding: 10, width: widthModal * 0.3}}
-                                        onClick={() => this.setState({expertLevel: !this.state.expertLevel})}
+                                        style={{ padding: 10, width: widthModal * 0.3 }}
+                                        onClick={() => this.setState({ expertLevel: !this.state.expertLevel })}
                                         isChecked={this.state.expertLevel}
                                         rightText='Adv'
                                         checkBoxColor={Color.red}
                                     />
                                 </View>
-
                                 <View style={styles.buttonView}>
                                     <Button vertical transparent
-                                            onPress={() => this.searchEvent()}
-                                            style={styles.modalButton}>
-                                        <Text style={styles.textButton}>Search</Text>
-                                    </Button>
-
-                                    <Button vertical transparent
-                                            onPress={this.props.onClose()}
-                                            style={styles.modalButton}>
+                                        onPress={this.props.onClose()}
+                                        style={styles.modalButton}>
                                         <Text style={styles.textButton}>Cancel</Text>
                                     </Button>
-
-
+                                    <Button vertical transparent
+                                        onPress={() => this.searchEvent()}
+                                        style={styles.modalButton}>
+                                        <Text style={styles.textButton}>Search</Text>
+                                    </Button>
                                 </View>
-
                             </View>
                         </View>
                     </View>
                 </Modal>
             </View>
-        )
+        );
     }
 }
+
 const widthModal = width - 80;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
