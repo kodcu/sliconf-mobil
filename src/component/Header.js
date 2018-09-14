@@ -30,6 +30,10 @@ export class Header extends Component {
             textColor = Color.white;
             statusBar = 'light-content'
         }
+        
+        const isVote = rightText ? 
+            Boolean('vote'.toUpperCase() === rightText.toUpperCase()) :
+            false;
 
         return (
             <NBHeader backgroundColor={Color.white}
@@ -48,7 +52,8 @@ export class Header extends Component {
                     </View>
 
                     <Button style={{backgroundColor: Color.transparent, shadowColor: Color.white, elevation: 0}} onPress={onPressRight}>
-                        {rightText ? <Text style={{fontFamily: 'Montserrat-Medium', fontSize: 14, color: textColor}}>{rightText}</Text> : null}
+                        {rightText && !isVote ? <Text style={{fontFamily: 'Montserrat-Medium', fontSize: 14, color: textColor}}>{rightText}</Text> : null}
+                        {rightText && isVote ? <Text style={{ fontFamily: 'Montserrat-Medium', fontSize: 20, color: Color.green, paddingRight: 2 }}>{rightText}</Text> : null}
                         {rightImage ? <Icon color={textColor} name={rightImage} size={18}/> : null}
                     </Button>
                 </View>
