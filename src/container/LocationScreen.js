@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
-import {Linking, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, { Component } from 'react';
+import { Linking, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import Icon from 'react-native-vector-icons/Entypo';
+import { connect } from 'react-redux';
+
 import Header from "../component/Header";
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
-import Icon from 'react-native-vector-icons/Entypo'
-import {connect} from 'react-redux'
-import {actionCreators} from '../reducks/module/drawer'
+import { actionCreators } from '../reducks/module/drawer';
 import Color from "../theme/Color";
 import Font from "../theme/Font";
 
@@ -13,6 +14,13 @@ const mapStateToProps = (state) => ({
 });
 
 class LocationScreen extends Component {
+    componentWillMount() {
+        const { dispatch, navigation } = this.props;
+        dispatch(actionCreators.changedDrawer(navigation.state.routeName));
+        const location = this.props.event.about.location;
+        if (!(location === undefined || location === null || location.isEmpty))
+            Object.values(location).every((key) => (key === '') ? delete this.props.event.about.location : false);
+    }
 
     /**
      * Platforma gore harita sitesine yonlendirir
@@ -21,7 +29,6 @@ class LocationScreen extends Component {
      * @param os uygulamanin hangi platformda calistigi (ios - android)
      */
     redirectToMap(lat, lng, os) {
-
         if (os !== 'ios') {
             Linking.canOpenURL('https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng).then(supported => {
                 if (supported) {
@@ -29,34 +36,25 @@ class LocationScreen extends Component {
                 }
             }).catch(err => console.error('An error occurred', err));
         } else {
-            Linking.canOpenURL('http://maps.apple.com/?ll=' + lat + ',' + lng).then(supported => {
+            Linking.canOpenURL(`http://maps.apple.com/?saddr=&daddr=(${lat},${lng})`).then(supported => {
                 if (supported) {
-                    Linking.openURL('http://maps.apple.com/?ll=' + lat + ',' + lng);
+                    Linking.openURL(`http://maps.apple.com/?saddr=&daddr=(${lat},${lng})`);
                 }
             }).catch(err => console.error('An error occurred', err));
         }
     }
 
-    componentWillMount() {
-        const {dispatch, navigation} = this.props;
-        dispatch(actionCreators.changedDrawer(navigation.state.routeName));
-        const location = this.props.event.about.location
-        if(!(location === undefined || location === null || location.isEmpty))
-            Object.values(location).every((key) => (key === '')?  delete this.props.event.about.location:false );
-    }
-
-
     render() {
-        const event = this.props.event
+        const event = this.props.event;
         const location = event.about.location;
         if (location === undefined || location === null || location.isEmpty) {
             return <View style={styles.container}>
                 <Header leftImage='chevron-left' rightImage='bars'
-                        onPressLeft={() => this.props.navigation.goBack()}
-                        onPressRight={() => {
-                            this.props.navigation.navigate('DrawerOpen')
-                        }}>
-                    <Header.Title title="Location"/>
+                    onPressLeft={() => this.props.navigation.goBack()}
+                    onPressRight={() => {
+                        this.props.navigation.navigate('DrawerOpen')
+                    }}>
+                    <Header.Title title="Location" />
                 </Header>
                 <View style={styles.notFoundPanel}>
                     <Text style={styles.notFoundText}>
@@ -69,13 +67,12 @@ class LocationScreen extends Component {
         return (
             <View style={styles.container}>
                 <Header leftImage='chevron-left' rightImage='bars'
-                        onPressLeft={() => this.props.navigation.goBack()}
-                        onPressRight={() => {
-                            this.props.navigation.navigate('DrawerOpen')
-                        }}>
-                    <Header.Title title="Location"/>
+                    onPressLeft={() => this.props.navigation.goBack()}
+                    onPressRight={() => {
+                        this.props.navigation.navigate('DrawerOpen')
+                    }}>
+                    <Header.Title title="Location" />
                 </Header>
-
                 <View style={styles.mapContainer}>
                     <MapView
                         //provider={PROVIDER_GOOGLE}
@@ -87,10 +84,10 @@ class LocationScreen extends Component {
                             longitudeDelta: 0.0421,
                         }}>
                         <MapView.Marker.Animated
-                            coordinate={{latitude: parseFloat(location.lat), longitude: parseFloat(location.lng)}}
+                            coordinate={{ latitude: parseFloat(location.lat), longitude: parseFloat(location.lng) }}
                             title={event.name}
                             description={location.description}
-                            onCalloutPress={() => this.redirectToMap(parseFloat(location.lat), parseFloat(location.lng), Platform.OS)}/>
+                            onCalloutPress={() => this.redirectToMap(parseFloat(location.lat), parseFloat(location.lng), Platform.OS)} />
                     </MapView>
                 </View>
                 <TouchableOpacity
@@ -101,7 +98,7 @@ class LocationScreen extends Component {
                             <Text style={styles.venueAddress}>{location.description}</Text>
                         </View>
                         <View style={styles.directionsIcon}>
-                            <Icon name='address' size={35} style={{color: '#29B673'}}/>
+                            <Icon name='address' size={35} style={{ color: '#29B673' }} />
                             <Text style={styles.directionsLabel}>Directions</Text>
                         </View>
                     </View>
@@ -164,16 +161,15 @@ const styles = StyleSheet.create({
         flex: 4,
         marginLeft: 5
     },
-    notFoundText:{
+    notFoundText: {
         ...Font.thin,
-        color:Color.darkGray
+        color: Color.darkGray
     },
-    notFoundPanel:{
+    notFoundPanel: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
-    },
-
+    }
 });
 
-export default connect(mapStateToProps)(LocationScreen)
+export default connect(mapStateToProps)(LocationScreen);
