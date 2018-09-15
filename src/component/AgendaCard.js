@@ -1,11 +1,10 @@
-import React, {Component} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {
-    Button, Card, CardItem, Container, Content, Footer, FooterTab, Form, Header, Icon, Item, Left, List, Picker,
-    Right, Thumbnail, Title
-} from 'native-base';
+import React, { Component } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Icon, Thumbnail } from 'native-base';
+
+import { EmptyCardIcon } from './Selectables';
 import Color from "../theme/Color";
-import {moderateScale} from "../theme/Scale";
+import { moderateScale } from "../theme/Scale";
 import Font from "../theme/Font";
 import getImage from "../helpers/getImageHelper"
 
@@ -28,7 +27,7 @@ export default class AgendaCard extends Component {
             case 2:
                 return '#EE5E5F';
                 break;
-            default :
+            default:
                 return '#ffffff';
         }
     }
@@ -48,21 +47,33 @@ export default class AgendaCard extends Component {
     }
 
     render() {
-        const item = this.props.item;
-        const speaker = this.props.speaker;
-        if (this.props.isEmpty) {
+        const { item, speaker, isEmpty } = this.props;
+        if (isEmpty) {
             return (
                 <View style={styles.container}>
-                    <Image source={require('../../images/emptyCard.png')} style={{width: 220, height: 120}}/>
+                    <View style={[styles.cardLine, { borderColor: Color.darkGray }]} />
+                    <View
+                        style={{
+                            flex: 1,
+                            alignSelf: 'center',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <EmptyCardIcon
+                            viewStyle={styles.viewStyle}
+                            color={Color.darkGray}
+                            size={32}
+                        />
+                    </View>
                 </View>
             )
         } else {
             return (
                 <TouchableOpacity style={styles.container} onPress={this.props.onPress}>
-                    <View style={[styles.cardLine, {borderColor: this.getColorByLevel(item.level)}]}/>
+                    <View style={[styles.cardLine, { borderColor: this.getColorByLevel(item.level) }]} />
                     <View style={styles.detailField}>
                         <Text style={styles.topic}>{item.topic} </Text>
-                        <View style={{marginBottom: 5}}>
+                        <View style={{ marginBottom: 5 }}>
                             <Text style={styles.speaker}>{speaker.name}</Text>
                             {item.tags !== undefined && item.tags !== null ?
                                 <Text style={styles.tags}>Tags: {item.tags.toString()}</Text> : null}
@@ -70,12 +81,12 @@ export default class AgendaCard extends Component {
                     </View>
                     <View style={styles.actionField}>
                         <Thumbnail
-                            source={!speaker.profilePicture.trim() ? require('../../images/hi.png') : {uri: getImage(speaker.profilePicture)}}/>
+                            source={!speaker.profilePicture.trim() ? require('../../images/hi.png') : { uri: getImage(speaker.profilePicture) }} />
                         <TouchableOpacity
                             onPress={() => this.handleClick(item)}>
                             <View style={styles.buttonField}>
                                 <Icon name={this.props.isClicked ? 'ios-checkmark' : 'ios-add'}
-                                      style={{alignSelf: 'center'}}/>
+                                    style={{ alignSelf: 'center' }} />
                             </View>
                         </TouchableOpacity>
                     </View>
