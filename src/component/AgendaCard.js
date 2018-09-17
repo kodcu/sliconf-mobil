@@ -20,13 +20,10 @@ export default class AgendaCard extends Component {
         switch (level) {
             case 0:
                 return '#29B673';
-                break;
             case 1:
                 return '#FBB041';
-                break;
             case 2:
                 return '#EE5E5F';
-                break;
             default:
                 return '#ffffff';
         }
