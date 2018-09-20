@@ -154,7 +154,7 @@ export class TalkDetail extends Component {
                     <TouchableOpacity
                         style={styles.askQuestionCircle}
                         onPress={() => moment().isBefore(
-                            moment(talk.date).add(talk.duration, 'minutes')
+                            moment(talk.date).add(talk.duration, 'minutes').add(15, 'minutes')
                         ) ?
                             this.changeAskQuestionState() :
                             Alert.alert(
