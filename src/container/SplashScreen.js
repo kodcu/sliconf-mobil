@@ -1,13 +1,13 @@
 import React from 'react';
-import {Alert, AsyncStorage, NetInfo, StyleSheet, Text, View} from 'react-native'
-import {Image} from 'react-native-animatable'
-import {MAIN} from '../router';
+import { Alert, AsyncStorage, NetInfo, StyleSheet, Text, View } from 'react-native'
+import { Image } from 'react-native-animatable'
+import { MAIN } from '../router';
 import Color from "../theme/Color";
 import Font from "../theme/Font";
-import {connect} from 'react-redux'
-import {actionCreators as actionCreatorsConnection} from '../reducks/module/connection'
-import {actionCreators as actionCreatorsDevice} from '../reducks/module/authDevice'
-import {actionCreators as actionCreatorsUser} from '../reducks/module/auth'
+import { connect } from 'react-redux'
+import { actionCreators as actionCreatorsConnection } from '../reducks/module/connection'
+import { actionCreators as actionCreatorsDevice } from '../reducks/module/authDevice'
+import { actionCreators as actionCreatorsUser } from '../reducks/module/auth'
 import DeviceInfo from 'react-native-device-info';
 import RNExitApp from "react-native-exit-app";
 
@@ -49,9 +49,9 @@ class SplashScreen extends React.Component {
     async anonymousUser() {
         const uniqueID = await DeviceInfo.getUniqueID();
         const responseToken = await AsyncStorage.getItem('DeviceToken');
-       
+
         await this.props.dispatch(actionCreatorsDevice.loginDevice(uniqueID, responseToken));
-        
+
         if (!this.props.loginDevice)
             await this.props.dispatch(actionCreatorsDevice.registerDevice(uniqueID));
 
@@ -59,7 +59,7 @@ class SplashScreen extends React.Component {
         
         if (userDevice && userDevice.token !== null && userDevice.token !== '')
             AsyncStorage.setItem('DeviceToken', userDevice.token);
-       
+
         if (loginDevice)
             return loginDevice;
     }
@@ -70,7 +70,7 @@ class SplashScreen extends React.Component {
      */
     async getLoggedUser() {
         const responseToken = await AsyncStorage.getItem('UserToken');
-        
+
         if (responseToken !== null)
             await this.props.dispatch(actionCreatorsUser.loginToken(responseToken));
 
@@ -82,34 +82,34 @@ class SplashScreen extends React.Component {
      *
      * @returns {Promise<*>}
      */
-    async checkUser(){
+    async checkUser() {
         await this.getLoggedUser();
         return await this.anonymousUser();
     }
 
     async componentDidMount() {
-        if(await this.checkUser())
-            setTimeout(() => this.props.navigation.dispatch({type: MAIN}), 500);
+        if (await this.checkUser())
+            setTimeout(() => this.props.navigation.dispatch({ type: MAIN }), 500);
         else
             Alert.alert(
                 'Warning!',
                 "Please check your connection.",
                 [
-                    {text: 'Exit', onPress: () => RNExitApp.exitApp()},
+                    { text: 'Exit', onPress: () => RNExitApp.exitApp() },
                 ],
-                {cancelable: false}
+                { cancelable: false }
             );
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <View/>
+                <View />
                 <Image
                     source={logo}
                     animation="swing"
                     iterationCount='infinite'
-                    style={styles.image}/>
+                    style={styles.image} />
                 <Text style={styles.text}>kodcu.com</Text>
             </View>
         )
