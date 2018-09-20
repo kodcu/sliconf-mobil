@@ -49,7 +49,7 @@ class AskScreen extends Component {
                     talk.topic.trim() && talk.topic.trim().length > 1 &&
                     talk.detail.trim() && talk.detail.trim().length > 1
                 ) {
-                    moment().isBefore(moment(talk.date).add(talk.duration, 'minutes')) ?
+                    moment().isBefore(moment(talk.date).add(talk.duration, 'minutes').add(15, 'minutes')) ?
                         buttons.push(
                             (<TouchableOpacity
                                 key={talk.id}
