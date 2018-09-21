@@ -54,7 +54,7 @@ class HomeScreen extends Component {
                 style={styles.button}
                 onPress={() => this.props.navigation.navigate(btn.item.nav)}
             >
-                <If con={btn.item.name === "Ask Question"}>
+                <If con={btn.item.name === 'Ask Question'}>
                     <If.Then>
                         <View style={[styles.buttonIcon, { backgroundColor: Color.green, borderColor: Color.green }]}>
                             <Icon name={btn.item.icon} size={40} color={Color.white} />
@@ -67,7 +67,7 @@ class HomeScreen extends Component {
                     </If.Else>
                 </If>
                 <Text
-                    style={btn.item.name === "Ask Question" ?
+                    style={btn.item.name === 'Ask Question' ?
                         { ...Font.semiBold, color: Color.green } :
                         styles.buttonText
                     }
@@ -83,34 +83,39 @@ class HomeScreen extends Component {
                 <View style={styles.headerPanel}>
                     <Header
                         active
-                        headerStyle={{ backgroundColor: Color.green }}
+                        headerStyle={{ backgroundColor: Color.green, overflow: 'hidden' }}
                         leftImage='chevron-left' rightImage='bars'
                         onPressLeft={() => this.props.navigation.navigate(MAIN)}
                         onPressRight={() => this.props.navigation.navigate('DrawerOpen')}
                     />
                     <View style={styles.topInfo}>
-                        <View>
+                        <View style={{ flex: 0.72, flexDirection: 'column' }}>
                             <View style={styles.date}>
-                                <Icon color={Color.white} name='ios-clock-outline' size={22} />
-                                <Text
-                                    style={styles.dateText}
-                                >{moment(event.startDate).format('HH:mm')}</Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Icon color={Color.white} name='ios-calendar-outline' size={22} />
+                                    <Text
+                                        style={styles.dateText}
+                                    >{moment(event.startDate).format('Do MMM YYYY')}</Text>
+                                </View>
+                                <View style={{ paddingLeft: 8, flexDirection: 'row' }}>
+                                    <Icon color={Color.white} name='ios-clock-outline' size={22} />
+                                    <Text
+                                        style={styles.dateText}
+                                    >{moment(event.startDate).format('HH:mm')}</Text>
+                                </View>
                             </View>
-                            <View style={styles.date}>
-                                <Icon color={Color.white} name='ios-calendar-outline' size={22} />
-                                <Text
-                                    style={styles.dateText}
-                                >{moment(event.startDate).format("Do MMM YYYY")}</Text>
+                            <View style={styles.eventName}>
+                                <Text numberOfLines={3} style={styles.eventNameText}>
+                                    {`${event.name}`}
+                                </Text>
                             </View>
                         </View>
-                        <Image source={{ uri: getImage(event.logoPath) }}
-                            style={styles.eventLogo}
-                        />
-                    </View>
-                    <View style={styles.eventName}>
-                        <Text style={styles.eventNameText}>
-                            {event.name}
-                        </Text>
+                        <View style={{ flex: 0.28 }}>
+                            <Image
+                                source={{ uri: getImage(event.logoPath) }}
+                                style={styles.eventLogo}
+                            />
+                        </View>
                     </View>
                 </View>
                 <View style={styles.buttonPanel}>
@@ -120,6 +125,9 @@ class HomeScreen extends Component {
                         keyExtractor={(item, index) => index}
                         numColumns={3}
                     />
+                    <View style={{ flex: 0.1, width: '100%', height: '100%' }}>
+                        <Text style={{ flex: 1 }}>This view is left for ads, Bu view reklam için bırakıldı.</Text>
+                    </View>
                 </View>
             </View>
         );
@@ -134,19 +142,21 @@ const styles = StyleSheet.create({
         backgroundColor: Color.white
     },
     headerPanel: {
-        flex: 0.45,
-        backgroundColor: Color.green,
-        borderRadius: 30
+        flex: 0.28,
+        backgroundColor: Color.transparent,
+        margin: '2%',
+        borderBottomLeftRadius: 24,
+        borderBottomRightRadius: 24,
+        overflow: 'hidden'
     },
     topInfo: {
-        flex: 0.6,
+        flex: 1,
         flexDirection: 'row',
-        backgroundColor: Color.transparent,
+        backgroundColor: Color.green,
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingTop: 5
+        paddingLeft: 12,
+        paddingRight: 12
     },
     eventLogo: {
         width: height * 0.15,
@@ -156,41 +166,45 @@ const styles = StyleSheet.create({
     date: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingBottom: 10
+        paddingBottom: 8
     },
     dateText: {
         ...Font.regular,
         color: Color.white,
         fontSize: moderateScale(13),
-        paddingLeft: 10
+        paddingLeft: 8
     },
     eventName: {
-        flex: 0.4,
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-        padding: verticalScale(20)
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginTop: 1,
+        paddingTop: verticalScale(4),
+        height: moderateScale(27) * 2
     },
     eventNameText: {
         ...Font.regular,
         color: Color.white,
-        fontSize: moderateScale(25),
-        textAlign: 'right'
+        fontSize: moderateScale(24),
+        textAlign: 'left',
+        lineHeight: moderateScale(24)
     },
     buttonPanel: {
-        flex: 0.55,
+        flex: 0.63,
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center',
-        backgroundColor: Color.white
+        backgroundColor: Color.white,
     },
     buttonIcon: {
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: Platform.OS === 'ios' ? 50 : 90,
         borderWidth: 1,
-        width: scale(60),
-        height: scale(60),
-        marginBottom: 10,
+        width: scale(50),
+        height: scale(50),
+        marginBottom: 4,
         borderColor: Color.darkGray
     },
     buttonText: {
@@ -200,8 +214,8 @@ const styles = StyleSheet.create({
     button: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: width / 3,
-        height: height * 0.26
+        width: width / 2.96,
+        height: height * 0.18
     }
 });
 
