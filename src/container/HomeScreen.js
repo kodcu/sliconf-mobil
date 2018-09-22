@@ -15,6 +15,7 @@ import { moderateScale, scale, verticalScale } from '../theme/Scale';
 import Color from '../theme/Color';
 import Font from '../theme/Font';
 import getImage from '../helpers/getImageHelper';
+import { AdMobBanner } from 'react-native-admob';
 
 const mapStateToProps = (state) => ({
     event: state.event.event,
@@ -125,9 +126,16 @@ class HomeScreen extends Component {
                         keyExtractor={(item, index) => index}
                         numColumns={3}
                     />
-                    <View style={{ flex: 0.1, width: '100%', height: '100%' }}>
-                        <Text style={{ flex: 1 }}>This view is left for ads, Bu view reklam için bırakıldı.</Text>
-                    </View>
+                </View>
+
+                <View style={{ flex: 0.1, width: '100%', height: '100%', marginLeft: '5%' }}>
+                    <AdMobBanner
+                        bannerSize="fullBanner"
+                        adSize="banner"
+                        adUnitID="ca-app-pub-3940256099942544/6300978111" //ca-app-pub-7965136723709096~8032674864
+                        testDevices={[AdMobBanner.simulatorId]}
+                        onAdFailedToLoad={error => console.error(error)}
+                    />
                 </View>
             </View>
         );
