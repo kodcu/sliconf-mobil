@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Dimensions, Platform, StyleSheet, Text, View } from 'react-native';
-import { Button, Header as NBHeader, } from 'native-base'
+import { Button, Header as NBHeader, } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 import Color from "../theme/Color";
-import { connect } from 'react-redux'
 import { moderateScale } from "../theme/Scale";
 
 const mapStateToProps = (state) => ({

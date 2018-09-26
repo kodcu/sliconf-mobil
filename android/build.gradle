@@ -1,17 +1,20 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext {
+        buildToolsVersion = "27.0.3"
+        minSdkVersion = 16
+        compileSdkVersion = 27
+        targetSdkVersion = 26
+        supportLibVersion = "27.1.1"
+    }
     repositories {
-        google() // If you're using a version of Gradle lower than 4.1, you must instead use:
-        //maven {
-        //    url 'https://maven.google.com'
-        //    name 'Google'
-        //}
-        // An alternative URL is 'https://dl.google.com/dl/android/maven2/'
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.1.4'
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -21,18 +24,13 @@ allprojects {
     repositories {
         // Add jitpack repository (added by react-native-spinkit)
         maven { url "https://jitpack.io" }
-        google() // If you're using a version of Gradle lower than 4.1, you must instead use:
-        //maven {
-        //    url 'https://maven.google.com'
-        //    name 'Google'
-        //}
-        // An alternative URL is 'https://dl.google.com/dl/android/maven2/'
         mavenLocal()
         jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
+        google()
     }
     subprojects {
         project.configurations.all {
@@ -51,4 +49,7 @@ allprojects {
             }
         }
     }
+}task wrapper(type: Wrapper) {
+    gradleVersion = '4.4'
+    distributionUrl = distributionUrl.replace("bin", "all")
 }
