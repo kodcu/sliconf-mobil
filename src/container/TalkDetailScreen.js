@@ -151,11 +151,22 @@ export class TalkDetail extends Component {
                                 color={tab === 'comment' ? '#29B673' : '#333'} />
                         </Button>
                     </FooterTab>
-                    <TouchableOpacity style={{
-                        width: 80, height: 80, bottom: -15, right: (width / 2) - 40,
-                        backgroundColor: Color.green, borderRadius: 50, position: 'absolute', justifyContent: 'center',
-                        alignItems: 'center'
-                    }} onPress={() => this.changeAskQuestionState()}>
+                    <TouchableOpacity
+                        style={styles.askQuestionCircle}
+                        onPress={() => moment().isBefore(
+                            moment(talk.date).add(talk.duration, 'minutes').add(15, 'minutes')
+                        ) ?
+                            this.changeAskQuestionState() :
+                            Alert.alert(
+                                'Warning!',
+                                'This session has ended.',
+                                [
+                                    { text: 'OK' },
+                                ],
+                                { cancelable: false }
+                            )
+                        }
+                    >
                         <Icon name="md-add" size={35} color={Color.white} />
                     </TouchableOpacity>
                 </Footer>
@@ -167,6 +178,17 @@ export class TalkDetail extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff'
+    },
+    askQuestionCircle: {
+        width: 80,
+        height: 80,
+        bottom: -15,
+        right: (width / 2) - 40,
+        backgroundColor: Color.green,
+        borderRadius: 50,
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 

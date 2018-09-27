@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { 
-    Modal, 
-    Platform, 
-    StyleSheet, 
+import {
+    Modal,
+    Platform,
+    StyleSheet,
     Text,
-    TouchableOpacity, 
-    View, 
-    ScrollView 
+    TouchableOpacity,
+    View,
+    ScrollView
 } from 'react-native';
 import { connect } from "react-redux";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -31,7 +31,7 @@ const mapStateToProps = (state) => ({
 
 class AskScreen extends Component {
     state = {
-        sessionId: "",
+        sessionId: '',
         sessionModal: false,
         isSessionSelected: false
     };
@@ -40,30 +40,37 @@ class AskScreen extends Component {
         this.setState({ sessionId: '', sessionModal: false, isSessionSelected: false })
     }
 
-    getTopicButtons(agenda){
-        var buttons = []; 
+    getTopicButtons(agenda) {
+        var buttons = [];
 
-        agenda.map((talk) => {
-            moment().isBefore(moment(talk.date).add(talk.duration, 'minutes')) ?  
-            buttons.push(
-                (<TouchableOpacity 
-                    key={talk.id}
-                    onPress={() => this.setState({ sessionId: talk.id, isSessionSelected: true, sessionModal: false })}
-                >
-                    <View style={styles.selectSessionButton}>   
-                        <Text style={styles.selectASessionText}>{talk.topic}</Text>
-                    </View>
-                </TouchableOpacity>)
-            ) : null;
+        agenda.forEach((talk) => {
+            if (talk && talk.speaker && talk.topic && talk.detail && talk.room) {
+                if (talk.speaker.trim() && talk.speaker.trim().length > 1 &&
+                    talk.topic.trim() && talk.topic.trim().length > 1 &&
+                    talk.detail.trim() && talk.detail.trim().length > 1
+                ) {
+                    moment().isBefore(moment(talk.date).add(talk.duration, 'minutes').add(15, 'minutes')) ?
+                        buttons.push(
+                            (<TouchableOpacity
+                                key={talk.id}
+                                onPress={() => this.setState({ sessionId: talk.id, isSessionSelected: true, sessionModal: false })}
+                            >
+                                <View style={styles.selectSessionButton}>
+                                    <Text style={styles.selectASessionText}>{talk.topic}</Text>
+                                </View>
+                            </TouchableOpacity>)
+                        ) : null;
+                }
+            }
         });
-        
+
         if (buttons.length <= 0)
             buttons.push(
                 (<View key={'expired'} style={styles.notFoundPanel}>
                     <Text style={styles.notFoundText}>Sessions expired or does not exist</Text>
                 </View>)
             );
-        
+
         return buttons;
     }
 
@@ -75,8 +82,8 @@ class AskScreen extends Component {
                 visible={this.state.sessionModal}
                 onRequestClose={() => this.closeSessionModal()}>
                 <View style={{ flex: 1, backgroundColor: Color.white, marginTop: Platform.OS === 'ios' ? 16 : 0 }}>
-                    <TouchableOpacity style={{padding: 4, margin: 8}} onPress={() => this.closeSessionModal()}>
-                        <Icon name={'ios-close-circle'} size={32} color={Color.gray}/>
+                    <TouchableOpacity style={{ padding: 4, margin: 8 }} onPress={() => this.closeSessionModal()}>
+                        <Icon name={'ios-close-circle'} size={32} color={Color.gray} />
                     </TouchableOpacity>
                     <ScrollView style={{ flex: 1 }}>
                         {this.getTopicButtons(agenda)}
@@ -86,26 +93,26 @@ class AskScreen extends Component {
         );
     }
 
-    getTalkButton(agenda){
-        var button  = (
+    getTalkButton(agenda) {
+        var button = (
             <TouchableOpacity style={styles.selectSessionButton} onPress={() => this.setState({ sessionModal: true })}>
-                <View style={styles.selectSessionButton}>   
+                <View style={styles.selectSessionButton}>
                     <Text style={styles.selectASessionText}>Select a session</Text>
                 </View>
             </TouchableOpacity>
         );
         if (this.state.isSessionSelected === true) {
-            button = agenda.filter(talk => talk.id === this.state.sessionId).map((value) => 
-                    <TouchableOpacity 
-                        key={value.id} 
-                        style={styles.selectSessionButton}
-                        onPress={() => this.setState({ sessionId: '', sessionModal: true, isSessionSelected: false })}
-                    >
-                        <View style={styles.selectSessionButton} >   
-                            <Text style={styles.selectSessionButtonText} >{value.topic}</Text>
-                        </View>
-                    </TouchableOpacity>
-            ); 
+            button = agenda.filter(talk => talk.id === this.state.sessionId).map((value) =>
+                <TouchableOpacity
+                    key={value.id}
+                    style={styles.selectSessionButton}
+                    onPress={() => this.setState({ sessionId: '', sessionModal: true, isSessionSelected: false })}
+                >
+                    <View style={styles.selectSessionButton} >
+                        <Text style={styles.selectSessionButtonText} >{value.topic}</Text>
+                    </View>
+                </TouchableOpacity>
+            );
         }
 
         return button;
@@ -116,11 +123,11 @@ class AskScreen extends Component {
         return (
             <View style={styles.container}>
                 <Header leftImage='chevron-left' rightImage='bars'
-                        onPressLeft={() => this.props.navigation.goBack()}
-                        onPressRight={() => {
-                            this.props.navigation.navigate('DrawerOpen');
-                        }}>
-                    <Header.Title title="Ask Question"/>
+                    onPressLeft={() => this.props.navigation.goBack()}
+                    onPressRight={() => {
+                        this.props.navigation.navigate('DrawerOpen');
+                    }}>
+                    <Header.Title title="Ask Question" />
                 </Header>
                 <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
                     <View style={{ flex: 1 }}>
@@ -128,13 +135,13 @@ class AskScreen extends Component {
                             {this.getTalkButton(agenda)}
                         </View>
                         {
-                            this.state.isSessionSelected === true ? 
-                            <SendQuestionView sessionId={this.state.sessionId} /> 
-                            : null
+                            this.state.isSessionSelected === true ?
+                                <SendQuestionView sessionId={this.state.sessionId} />
+                                : null
                         }
                         <View style={{ flex: 1, marginTop: 10 }}>
-                            {this.state.sessionId ? 
-                                <TalkComment session={this.state.sessionId} lite={true}/> 
+                            {this.state.sessionId ?
+                                <TalkComment session={this.state.sessionId} lite={true} />
                                 : null
                             }
                         </View>
@@ -163,11 +170,11 @@ const styles = StyleSheet.create({
         ...Font.medium,
         textAlign: 'center',
         color: Color.white,
-        fontSize:Scale.moderateScale(15)
+        fontSize: Scale.moderateScale(15)
     },
     selectSessionButton: {
-        justifyContent: 'center', 
-        borderWidth: 0.8, 
+        justifyContent: 'center',
+        borderWidth: 0.8,
         borderColor: Color.green,
         height: Scale.verticalScale(68)
     },
@@ -185,12 +192,12 @@ const styles = StyleSheet.create({
         fontSize: Scale.verticalScale(16),
         padding: 2
     },
-    notFoundText:{
+    notFoundText: {
         ...Font.thin,
         alignSelf: 'center',
-        color:Color.darkGray
+        color: Color.darkGray
     },
-    notFoundPanel:{
+    notFoundPanel: {
         flex: 1,
         justifyContent: 'center',
         alignSelf: 'center',

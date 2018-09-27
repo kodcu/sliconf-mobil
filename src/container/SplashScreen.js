@@ -56,7 +56,7 @@ class SplashScreen extends React.Component {
             await this.props.dispatch(actionCreatorsDevice.registerDevice(uniqueID));
 
         const { userDevice, loginDevice } = this.props;
-
+        
         if (userDevice && userDevice.token !== null && userDevice.token !== '')
             AsyncStorage.setItem('DeviceToken', userDevice.token);
 
