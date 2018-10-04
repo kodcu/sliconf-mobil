@@ -124,12 +124,36 @@ $ react-native run-ios
 $ react-native run-android
 ```
 
-### BUG 
+### BUGS
 * Remove file
 ```sh
  ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json
 ```
+* Open files and change import lines
+* First clean import lines of files!
+* First File:
+```sh
+ ./node_modules/react-native-circular-progress/src/AnimatedCircularProgress.js
+```
+Change imports to this:
+```sh
+import React from 'react';
+import { View, Animated, ViewPropTypes } from 'react-native';
+import PropTypes from 'prop-types';
 
+import CircularProgress from './CircularProgress';
+```
+* Second File
+```sh
+ ./node_modules/react-native-circular-progress/src/AnimatedCircularProgress.js
+```
+Change imports to this:
+```sh
+import React from 'react';
+import { View, Platform, StyleSheet, ViewPropTypes } from 'react-native';
+import PropTypes from 'prop-types';
+import { Surface, Shape, Path, Group } from '../../react-native/Libraries/ART/ReactNativeART';
+```
 ### IMPORTANT
 * All local libraries must be same version as package.json
-
+* Do not push .keystore files and do not push gradle.properties file with global passwords!

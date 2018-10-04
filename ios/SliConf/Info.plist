@@ -42,7 +42,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>This app wants to access your camera to scan event QR code</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app wants to access your photo library</string>
 	<key>UIAppFonts</key>

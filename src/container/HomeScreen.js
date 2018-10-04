@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import {
 	AsyncStorage,
-	Dimensions, FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, View
+	Dimensions,
+	FlatList,
+	Image,
+	Platform,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,7 +22,6 @@ import { moderateScale, scale, verticalScale } from '../theme/Scale';
 import Color from '../theme/Color';
 import Font from '../theme/Font';
 import getImage from '../helpers/getImageHelper';
-//import { AdMobBanner } from 'react-native-admob';
 
 const mapStateToProps = (state) => ({
 	event: state.event.event,
@@ -126,16 +132,6 @@ class HomeScreen extends Component {
 						keyExtractor={(item, index) => index}
 						numColumns={3}
 					/>
-				</View>
-				<View style={{ flex: 0.1, width: '100%', height: '100%', marginLeft: '5%' }}>
-					{/*<AdMobBanner
-						bannerSize='fullBanner'
-						adSize='banner'
-						//denemeId: ca-app-pub-7965136723709096~8032674864
-						adUnitID='ca-app-pub-7965136723709096~8032674864'
-						//testDevices={[AdMobBanner.simulatorId]}
-						//onAdFailedToLoad={error => console.error(error)}
-					/>*/}
 				</View>
 			</View>
 		);
