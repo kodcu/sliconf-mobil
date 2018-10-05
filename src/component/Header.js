@@ -59,6 +59,8 @@ export class Header extends Component {
                     style={[
                         styles.header,
                         this.props.headerStyle,
+                        isHomeScreen ? 
+                        { backgroundColor }:
                         {
                             paddingTop: Platform.OS === 'ios' ? 20 : 0,
                             backgroundColor

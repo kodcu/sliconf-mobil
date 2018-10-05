@@ -96,32 +96,34 @@ class HomeScreen extends Component {
 						onPressRight={() => this.props.navigation.navigate('DrawerOpen')}
 					/>
 					<View style={styles.topInfo}>
-						<View style={{ flex: 0.72, flexDirection: 'column' }}>
-							<View style={styles.date}>
-								<View style={{ flexDirection: 'row' }}>
-									<Icon color={Color.white} name='ios-calendar-outline' size={22} />
-									<Text
-										style={styles.dateText}
-									>{moment(event.startDate).format('Do MMM YYYY')}</Text>
-								</View>
-								<View style={{ paddingLeft: 8, flexDirection: 'row' }}>
-									<Icon color={Color.white} name='ios-clock-outline' size={22} />
-									<Text
-										style={styles.dateText}
-									>{moment(event.startDate).format('HH:mm')}</Text>
+						<View style={{ flex: 0.6, flexDirection: 'row' }}>
+							<View style={{ flex: 0.6, flexDirection: 'column' }}>
+								<View style={styles.date}>
+									<View style={{ flexDirection: 'row', marginVertical: '8%', marginHorizontal: '4%' }}>
+										<Icon color={Color.white} name='ios-calendar-outline' size={24} />
+										<Text
+											style={styles.dateText}
+										>{moment(event.startDate).format('Do MMM YYYY')}</Text>
+									</View>
+									<View style={{ flexDirection: 'row', marginVertical: '8%', marginHorizontal: '4%' }}>
+										<Icon color={Color.white} name='ios-clock-outline' size={24} />
+										<Text
+											style={styles.dateText}
+										>{moment(event.startDate).format('HH:mm')}</Text>
+									</View>
 								</View>
 							</View>
-							<View style={styles.eventName}>
-								<Text numberOfLines={3} style={styles.eventNameText}>
-									{`${event.name}`}
-								</Text>
+							<View style={{ flex: 0.4 }}>
+								<Image
+									source={{ uri: getImage(event.logoPath) }}
+									style={styles.eventLogo}
+								/>
 							</View>
 						</View>
-						<View style={{ flex: 0.28 }}>
-							<Image
-								source={{ uri: getImage(event.logoPath) }}
-								style={styles.eventLogo}
-							/>
+						<View style={styles.eventName}>
+							<Text numberOfLines={3} style={styles.eventNameText}>
+								{`${event.name}`}
+							</Text>
 						</View>
 					</View>
 				</View>
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
 		marginTop: Platform.OS === 'ios' ? 20 : 0
 	},
 	headerPanel: {
-		flex: 0.28,
+		flex: 0.4,
 		backgroundColor: Color.transparent,
 		margin: '2%',
 		borderBottomLeftRadius: 24,
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
 	},
 	topInfo: {
 		flex: 1,
-		flexDirection: 'row',
+		flexDirection: 'column',
 		backgroundColor: Color.green,
 		justifyContent: 'space-between',
 		alignItems: 'flex-start',
@@ -169,18 +171,18 @@ const styles = StyleSheet.create({
 		borderRadius: Platform.OS === 'ios' ? scale(45) : 90
 	},
 	date: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		paddingBottom: 8
+		flex: 1,
+		flexDirection: 'column',
+		alignItems: 'flex-start'
 	},
 	dateText: {
 		...Font.regular,
 		color: Color.white,
-		fontSize: moderateScale(13),
+		fontSize: moderateScale(14),
 		paddingLeft: 8
 	},
 	eventName: {
-		flex: 1,
+		flex: 0.4,
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
@@ -196,20 +198,20 @@ const styles = StyleSheet.create({
 		lineHeight: moderateScale(24)
 	},
 	buttonPanel: {
-		flex: 0.63,
+		flex: 0.6,
 		alignItems: 'center',
 		justifyContent: 'center',
 		alignSelf: 'center',
+		marginTop: '4%',
 		backgroundColor: Color.white,
 	},
 	buttonIcon: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderRadius: Platform.OS === 'ios' ? 50 : 90,
+		borderRadius: Platform.OS === 'ios' ? 45 : 90,
 		borderWidth: 1,
-		width: scale(50),
-		height: scale(50),
-		marginBottom: 4,
+		width: scale(54),
+		height: scale(54),
 		borderColor: Color.darkGray
 	},
 	buttonText: {
@@ -219,8 +221,9 @@ const styles = StyleSheet.create({
 	button: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		width: width / 2.96,
-		height: height * 0.18
+		width: width / 3.00,
+		height: height * 0.2,
+		marginVertical: '3.2%'
 	}
 });
 
