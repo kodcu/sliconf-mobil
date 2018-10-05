@@ -143,7 +143,8 @@ const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Color.white
+		backgroundColor: Color.white,
+		marginTop: Platform.OS === 'ios' ? 20 : 0
 	},
 	headerPanel: {
 		flex: 0.28,

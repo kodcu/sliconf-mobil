@@ -161,8 +161,22 @@ class MainScreen extends Component {
                                             style={styles.search}
                                             onPress={() => this._handlePressSearch(Boolean(storeCode) && storeCode !== '' ? storeCode : code)}>
                                             <View style={{ flex: 1, flexDirection: 'row' }}>
-                                                <Text style={styles.title1}>{Boolean(storeCode) && storeCode !== '' ? storeCode : code}</Text>
-                                                <Text style={styles.title2}>{Boolean(storeEventName) && storeEventName !== '' ? storeEventName : eventName}</Text>
+                                                <View
+                                                    style={{ 
+                                                        flex: 1, 
+                                                        flexDirection: 'row',
+                                                        width: '100%',
+                                                        marginHorizontal: '2%',
+                                                        paddingHorizontal: '2%' 
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={styles.title1}
+                                                    >{Boolean(storeCode) && storeCode !== '' ? storeCode : code}</Text>
+                                                    <Text
+                                                        style={styles.title2}
+                                                    >{Boolean(storeEventName) && storeEventName !== '' ? storeEventName : eventName}</Text>
+                                                </View>
                                             </View>
                                         </TouchableOpacity>}
                                         <TouchableOpacity
