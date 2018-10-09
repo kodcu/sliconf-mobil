@@ -23,3 +23,11 @@ export const getVoteByUser=baseApi+'events/agenda/get-vote/';
 export const postSchedule = baseApi + 'schedule/add';
 export const deleteSchedule = baseApi + 'schedule/remove';
 export const getSchedule = baseApi + 'schedule/list/';
+
+//Survey
+//Gets all surveys of a specific event
+export const getSurveys = `${baseApi}events`;
+//Post answers to specific survey
+export const postAnswers = `${baseApi}events`;
+//Increase user view count
+export const increaseView = `${baseApi}events`;

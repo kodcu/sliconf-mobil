@@ -164,7 +164,7 @@ class SpeakerInfoCard extends Component {
 						</View>
 						<View style={styles.actionField}>
 							<Heart
-								color={Color.green} size={50}
+								color={Color.green} size={36}
 								smiley={smiley}
 								style={styles.heartField}
 								onHeartPress={this.onHeartPress}
@@ -272,7 +272,7 @@ class SpeakerInfoCard extends Component {
 					</View>
 					<View style={styles.actionField}>
 						<Heart
-							color={Color.green} size={50}
+							color={Color.green} size={36}
 							smiley={smiley}
 							style={styles.heartField}
 							onHeartPress={this.onHeartPress}
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row'
 	},
 	detailField: {
-		flex: 0.7,
+		flex: 0.8,
 		justifyContent: 'space-between'
 	},
 	cardLine: {
@@ -344,28 +344,28 @@ const styles = StyleSheet.create({
 	},
 	topic: {
 		...Font.regular,
-		fontSize: moderateScale(9),
+		fontSize: moderateScale(11),
 		textAlign: 'left',
 		textAlignVertical: 'center',
 		color: '#000000',
-		margin: 5
+		margin: 4
 	},
 	speaker: {
 		...Font.regular,
-		fontSize: moderateScale(7),
+		fontSize: moderateScale(9),
 		textAlign: 'left',
-		margin: 5
+		margin: 4
 	},
 	infoField: {
 		flexDirection: 'row',
 		justifyContent: 'space-between'
 	},
 	actionField: {
-		flex: 0.3,
+		flex: 0.2,
 		margin: 4,
 		padding: 2,
 		justifyContent: 'center',
-		alignItems: 'flex-end'
+		alignItems: 'center'
 	},
 	heartField: {
 		width: 52,

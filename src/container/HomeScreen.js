@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 
 import { actionCreators } from '../reducks/module/drawer';
-import { AGENDA, ASK, INFO, LOCATION, SPEAKERS, SPONSOR, MAIN } from '../router';
+import { AGENDA, ASK, INFO, LOCATION, SPEAKERS, SPONSOR, MAIN, POLL } from '../router';
 import Header from '../component/Header';
 import If from '../component/If';
 import { moderateScale, scale, verticalScale } from '../theme/Scale';
@@ -38,6 +38,7 @@ class HomeScreen extends Component {
 			{ name: 'Location', icon: 'ios-map-outline', nav: LOCATION },
 			{ name: 'Sponsors', icon: 'ios-ribbon-outline', nav: SPONSOR },
 			{ name: 'Info', icon: 'ios-information-outline', nav: INFO },
+			{ name: 'Survey', icon: 'ios-list', nav: POLL }
 		]
 	};
 
@@ -96,32 +97,55 @@ class HomeScreen extends Component {
 						onPressRight={() => this.props.navigation.navigate('DrawerOpen')}
 					/>
 					<View style={styles.topInfo}>
-						<View style={{ flex: 0.72, flexDirection: 'column' }}>
-							<View style={styles.date}>
-								<View style={{ flexDirection: 'row' }}>
-									<Icon color={Color.white} name='ios-calendar-outline' size={22} />
-									<Text
-										style={styles.dateText}
-									>{moment(event.startDate).format('Do MMM YYYY')}</Text>
-								</View>
-								<View style={{ paddingLeft: 8, flexDirection: 'row' }}>
-									<Icon color={Color.white} name='ios-clock-outline' size={22} />
-									<Text
-										style={styles.dateText}
-									>{moment(event.startDate).format('HH:mm')}</Text>
+						<View style={{ flex: 0.68, flexDirection: 'row' }}>
+							<View style={{ flex: 0.6, flexDirection: 'column' }}>
+								<View style={styles.date}>
+									<View style={{ flexDirection: 'row', marginVertical: '8%', marginHorizontal: '4%' }}>
+										<Icon color={Color.white} name='ios-calendar-outline' size={24} />
+										<Text
+											style={styles.dateText}
+										>{moment(event.startDate).format('Do MMM YYYY')}</Text>
+									</View>
+									<View style={{ flexDirection: 'row', marginVertical: '8%', marginHorizontal: '4%' }}>
+										<Icon color={Color.white} name='ios-clock-outline' size={24} />
+										<Text
+											style={styles.dateText}
+										>{moment(event.startDate).format('HH:mm')}</Text>
+									</View>
 								</View>
 							</View>
-							<View style={styles.eventName}>
-								<Text numberOfLines={3} style={styles.eventNameText}>
-									{`${event.name}`}
-								</Text>
+							<View style={{ flex: 0.4, alignItems: 'flex-end' }}>
+								<Image
+									source={{ uri: getImage(event.logoPath) }}
+									style={styles.eventLogo}
+								/>
 							</View>
 						</View>
-						<View style={{ flex: 0.28 }}>
-							<Image
-								source={{ uri: getImage(event.logoPath) }}
-								style={styles.eventLogo}
-							/>
+						<View style={styles.eventName}>
+							<View
+								style={{
+									flex: 1,
+									width: '100%',
+									height: '100%',
+									flexDirection: 'column',
+									alignItems: 'flex-end'
+								}}
+							>
+								<View
+									style={{
+										flex: 1,
+										width: '100%',
+										height: '100%',
+										flexDirection: 'row',
+										alignItems: 'flex-end',
+										paddingBottom: '2%'
+									}}
+								>
+									<Text numberOfLines={1} style={styles.eventNameText}>
+										{`${event.name}`}
+									</Text>
+								</View>
+							</View>
 						</View>
 					</View>
 				</View>
@@ -143,10 +167,11 @@ const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Color.white
+		backgroundColor: Color.white,
+		marginTop: Platform.OS === 'ios' ? 20 : 0
 	},
 	headerPanel: {
-		flex: 0.28,
+		flex: 0.38,
 		backgroundColor: Color.transparent,
 		margin: '2%',
 		borderBottomLeftRadius: 24,
@@ -155,12 +180,13 @@ const styles = StyleSheet.create({
 	},
 	topInfo: {
 		flex: 1,
-		flexDirection: 'row',
+		flexDirection: 'column',
 		backgroundColor: Color.green,
 		justifyContent: 'space-between',
 		alignItems: 'flex-start',
 		paddingLeft: 12,
-		paddingRight: 12
+		paddingRight: 12,
+		overflow: 'hidden'
 	},
 	eventLogo: {
 		width: height * 0.15,
@@ -168,24 +194,24 @@ const styles = StyleSheet.create({
 		borderRadius: Platform.OS === 'ios' ? scale(45) : 90
 	},
 	date: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		paddingBottom: 8
+		flex: 1,
+		flexDirection: 'column',
+		alignItems: 'flex-start'
 	},
 	dateText: {
 		...Font.regular,
 		color: Color.white,
-		fontSize: moderateScale(13),
-		paddingLeft: 8
+		fontSize: moderateScale(15),
+		paddingLeft: 6
 	},
 	eventName: {
-		flex: 1,
+		flex: 0.32,
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
+		alignSelf: 'flex-end',
 		alignItems: 'flex-start',
-		marginTop: 1,
 		paddingTop: verticalScale(4),
-		height: moderateScale(27) * 2
+		height: moderateScale(24)
 	},
 	eventNameText: {
 		...Font.regular,
@@ -195,20 +221,20 @@ const styles = StyleSheet.create({
 		lineHeight: moderateScale(24)
 	},
 	buttonPanel: {
-		flex: 0.63,
+		flex: 0.62,
 		alignItems: 'center',
 		justifyContent: 'center',
 		alignSelf: 'center',
+		marginTop: '4%',
 		backgroundColor: Color.white,
 	},
 	buttonIcon: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderRadius: Platform.OS === 'ios' ? 50 : 90,
+		borderRadius: Platform.OS === 'ios' ? 45 : 90,
 		borderWidth: 1,
-		width: scale(50),
-		height: scale(50),
-		marginBottom: 4,
+		width: scale(54),
+		height: scale(54),
 		borderColor: Color.darkGray
 	},
 	buttonText: {
@@ -218,7 +244,7 @@ const styles = StyleSheet.create({
 	button: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		width: width / 2.96,
+		width: width / 3.00,
 		height: height * 0.18
 	}
 });
