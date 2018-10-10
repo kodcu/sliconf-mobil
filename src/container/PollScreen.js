@@ -223,9 +223,9 @@ class PollScreen extends Component {
 		const { surveys } = this.props;
 
 		if (surveys) {
-			for (var key in surveys) {
-				console.log('key: ' + key + ' prop: ' + surveys[key])
-			}
+			this.setState({
+				surveys
+			});
 		} else {
 			this.setState({
 				surveys: mockSurveys
@@ -261,43 +261,54 @@ class PollScreen extends Component {
 		const { surveyId, selectedAnswers } = this.state;
 		const { dispatch, event, user } = this.props;
 
-		const answeredQuestions = selectedAnswers.map(index => {
-			return {
-				[index.question]: index.text
-			};
-		});
-		console.log('DISPATCH ONCESI')
-		const postObject = {
-			surveyId,
-			userId: user.id,
-			eventId: event.id,
-			answeredQuestions
-		};
-		//Sends user answers to remote
-		await dispatch(
-			surveyAction.postAnswers(
-				event.id,
+		if (selectedAnswers && selectedAnswers.length > 0) {
+			const answeredQuestions = selectedAnswers.map(index => {
+				return {
+					[index.question]: index.text
+				};
+			});
+
+			const postObject = {
 				surveyId,
-				postObject
-			)
-		);
-		console.log('DISPATCH SONRASI')
-		this.setState(
-			{
-				surveyId: '',
-				currentIndex: 0,
-				selectedAnswers: [],
-				surveyModal: false,
-				surveySelected: false
-			}, () => Alert.alert(
-				'You answers has been saved.',
-				'Thank you for participating in this survey.',
+				userId: user.id,
+				eventId: event.id,
+				answeredQuestions
+			};
+			//Sends user answers to remote
+			await dispatch(
+				surveyAction.postAnswers(
+					event.id,
+					surveyId,
+					postObject
+				)
+			);
+
+			this.setState(
+				{
+					surveyId: '',
+					currentIndex: 0,
+					selectedAnswers: [],
+					surveyModal: false,
+					surveySelected: false
+				}, () => Alert.alert(
+					'You answers has been saved.',
+					'Thank you for participating in this survey.',
+					[
+						{ text: 'OK' },
+					],
+					{ cancelable: false }
+				)
+			);
+		} else {
+			Alert.alert(
+				'You must answer a question.',
+				'Please select an answer for at least one question.',
 				[
 					{ text: 'OK' },
 				],
 				{ cancelable: false }
-			)
-		);
+			);
+		}
 	}
 
 	onNext = () => {
@@ -393,7 +404,8 @@ class PollScreen extends Component {
 								surveyId: survey.id,
 								currentIndex: 0,
 								surveyModal: false,
-								surveySelected: true
+								surveySelected: true,
+								selectedAnswers: []
 							});
 						}
 						}

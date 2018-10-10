@@ -1,7 +1,7 @@
 const baseApi = 'https://api.sliconf.com/service/';
-
+const betaApi = 'https://beta.api.sliconf.com/service/';
 //event
-export const getEvent = baseApi + 'events/get/with-key/';
+export const getEvent = `${baseApi}events/get/with-key/`;
 
 //auth
 export const postLogin = baseApi + 'users/login';
@@ -17,17 +17,17 @@ export const postVote = baseApi + 'events/comment/vote/';
 
 // vote
 export const voteTalk = baseApi + 'events/agenda/vote/';
-export const getVoteByUser=baseApi+'events/agenda/get-vote/';
+export const getVoteByUser = baseApi + 'events/agenda/get-vote/';
 
 //Schedule
-export const postSchedule = baseApi + 'schedule/add';
-export const deleteSchedule = baseApi + 'schedule/remove';
-export const getSchedule = baseApi + 'schedule/list/';
+export const postSchedule = `${baseApi}schedule/add`;
+export const deleteSchedule = `${baseApi}schedule/remove`;
+export const getSchedule = `${baseApi}schedule/list/`;
 
 //Survey
 //Gets all surveys of a specific event
-export const getSurveys = `${baseApi}events`;
+export const getSurveys = `${betaApi}events`;//export const getSurveys = `${baseApi}events`;
 //Post answers to specific survey
-export const postAnswers = `${baseApi}events`;
+export const postAnswers = `${betaApi}events`;//export const postAnswers = `${baseApi}events`;
 //Increase user view count
-export const increaseView = `${baseApi}events`;
+export const increaseView = `${betaApi}events`;//export const increaseView = `${baseApi}events`;
