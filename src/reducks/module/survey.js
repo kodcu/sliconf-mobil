@@ -23,20 +23,20 @@ const types = {
 };
 
 const initialState = {
-    surveys: Array,
+    surveys: Object,
     errorMessage: String,
     error: false,
     loading: false
 };
 
-export const reducer = (action, state = initialState) => {    
+export const reducer = (action, state = initialState) => {
     const { type, payload } = action;
 
     switch (type) {
         case types.SURVEYS_GET_REQUEST: {
             return {
                 ...state,
-                surveys: [],
+                surveys: {},
                 loading: true,
                 error: false
             };
@@ -52,7 +52,7 @@ export const reducer = (action, state = initialState) => {
         case types.SURVEYS_GET_FAIL: {
             return {
                 ...state,
-                surveys: [],
+                surveys: {},
                 loading: false,
                 error: true,
                 errorMessage: payload
@@ -108,7 +108,7 @@ export const actionCreators = {
             getTokenAuth(getState()),
             {
                 200: (res) => {
-                    if (res.status) {
+                    if (res.status) {                        
                         dispatch({
                             type: types.SURVEYS_GET_SUCCESS,
                             payload: res.returnObject

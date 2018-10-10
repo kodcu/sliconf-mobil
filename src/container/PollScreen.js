@@ -221,7 +221,7 @@ class PollScreen extends Component {
 		await dispatch(surveyAction.getSurveys(event.id));
 
 		const { surveys } = this.props;
-
+		
 		if (surveys) {
 			this.setState({
 				surveys

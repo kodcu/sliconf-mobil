@@ -1,5 +1,5 @@
 const baseApi = 'https://api.sliconf.com/service/';
-const betaApi = 'https://beta.api.sliconf.com/service/';
+const betaApi = 'http://beta.api.sliconf.com/service/';
 //event
 export const getEvent = `${baseApi}events/get/with-key/`;
 
