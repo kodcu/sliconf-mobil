@@ -48,7 +48,6 @@ export default class Request{
       }
     } catch(err) {
       if(callbacks.fail){
-		  console.log('err: ' + err)
         callbacks.fail(err)
       }
       return;
