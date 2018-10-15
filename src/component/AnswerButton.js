@@ -105,7 +105,7 @@ class AnswerButton extends React.Component {
 							height={Scale.verticalScale(34)}
 							width={width}
 							borderRadius={8}
-							progress={progress}
+							progress={biggest ? 1 : progress}
 							indeterminate={false}
 						>
 							{this.renderBarText(answer, percentage, biggest)}

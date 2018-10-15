@@ -8,6 +8,7 @@ import ConnectionReducer from './connection'
 import AuthDeviceReducer from './authDevice'
 import TalkReducer from './talk'
 import ScheduleReducer from './schedule';
+import SurveyReducer from './survey';
 
 export default combineReducers({
     auth: AuthReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
     connection:ConnectionReducer,
     authDevice:AuthDeviceReducer,
     talk:TalkReducer,
-    schedule: ScheduleReducer
+	schedule: ScheduleReducer,
+	survey: SurveyReducer
 });

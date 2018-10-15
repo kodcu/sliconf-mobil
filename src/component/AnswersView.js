@@ -84,7 +84,7 @@ class AnswersView extends React.Component {
 		let currentBiggest = 0;
 
 		answers.forEach((answer) => {
-			if (currentBiggest < answer.voters) {
+			if (answer.voters && currentBiggest < answer.voters) {
 				currentBiggest = answer.voters;
 			}
 		});
@@ -97,14 +97,17 @@ class AnswersView extends React.Component {
 				selectedAnswerText.trim() === answer.text.trim()
 			);
 
-			const progress = (100 * answer.voters) / currentBiggest;
+			const progress = answer.voters ?
+				(100 * answer.voters) / currentBiggest :
+				0
+				;
 
 			buttons.push(
 				(<AnswerButton
 					key={`${answer.id}${answer.text}`}
 					answerId={answer.id.trim()}
 					answer={answer.text.trim()}
-					percentage={answer.voters}
+					percentage={answer.voters || 0}
 					progress={progress / 100}
 					isBiggest={currentBiggest === answer.voters}
 					isPressed={isPressed}

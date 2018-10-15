@@ -24,186 +24,12 @@ import * as Scale from '../theme/Scale';
 import Font from '../theme/Font';
 
 const mapStateToProps = (state) => ({
-	surveys: state.surveys,
+	surveys: state.survey.surveys,
+	answered: state.survey.answered,
+	error: state.survey.error,
 	user: state.auth.login ? state.auth.user : state.authDevice.user,
 	event: state.event.event
 });
-
-const mockSurveys = [
-	{
-		id: 'survey11Id',
-		name: 'Best programming languge',
-		userId: '5b6c42070662c173865e020e',
-		eventId: '9z7v',
-		time: 1534252380320,
-		description: 'This is survey 1',
-		questions: [
-			{
-				id: 'question11Id',
-				text: 'Which programming language you use?',
-				totalVoters: 0,
-				options: [
-					{
-						id: 'option11id',
-						text: 'Very long answer probably wont fit',
-						voters: 32
-					},
-					{
-						id: 'option22id',
-						text: 'This is answer language C',
-						voters: 18
-					},
-					{
-						id: 'option33id',
-						text: 'C++',
-						voters: 20
-					},
-					{
-						id: 'option44id',
-						text: 'This answer also must not fit in green',
-						voters: 30
-					},
-					{
-						id: 'option55id',
-						text: 'This answer is 5th answer',
-						voters: 0
-					}
-				]
-			},
-			{
-				id: 'question22Id',
-				text: 'How many programming language you use?',
-				totalVoters: 0,
-				options: [
-					{
-						id: 'option11id',
-						text: 'This answer is created to test longness',
-						voters: 60
-					},
-					{
-						id: 'option22id',
-						text: '99999999999999999999999999999999999999999',
-						voters: 15
-					},
-					{
-						id: 'option33id',
-						text: 'Checking if this answer will fit',
-						voters: 10
-					},
-					{
-						id: 'option44id',
-						text: '1234512345123451234512345123451234512345',
-						voters: 15
-					}
-				]
-			},
-			{
-				id: 'question33Id',
-				text: 'How many languages you know?',
-				totalVoters: 0,
-				options: [
-					{
-						id: 'option11id',
-						text: 'This answer is created to test if aaaaa 5 a be side by side',
-						voters: 33
-					},
-					{
-						id: 'option22id',
-						text: 'This answer is created to test if aaaaaa 6 a be side by side',
-						voters: 55
-					},
-					{
-						id: 'option33id',
-						text: 'This answer is created to test if aaaaaaa 7 a be side by side',
-						voters: 11
-					},
-					{
-						id: 'option44id',
-						text: 'aaaaaaaaaaaaaaaaaaaaaaaa',
-						voters: 1
-					}
-				]
-			}
-		]
-	},
-	{
-		id: 'survey22Id',
-		name: 'What is an object?',
-		userId: '5b6c42070662c173865e020e',
-		eventId: '9z7v',
-		time: 1534252380320,
-		description: 'This is survey 2',
-		questions: [
-			{
-				id: 'question11Id',
-				text: 'Which languages object type you use the most?',
-				totalVoters: 0,
-				options: [
-					{
-						id: 'option11id',
-						text: 'Is this real',
-						voters: 4
-					},
-					{
-						id: 'option22id',
-						text: 'Or it is just fantasy',
-						voters: 8
-					},
-					{
-						id: 'Stuck in the land side',
-						text: 'C++',
-						voters: 16
-					},
-					{
-						id: 'No escape from reality',
-						text: 'C#',
-						voters: 72
-					}
-				]
-			},
-			{
-				id: 'question22Id',
-				text: 'This is test question to check !*z/asd',
-				totalVoters: 0,
-				options: [
-					{
-						id: 'option11id',
-						text: 'This answer is created to test longness',
-						voters: 40
-					},
-					{
-						id: 'option22id',
-						text: 'This is answer C',
-						voters: 20
-					},
-					{
-						id: 'option33id',
-						text: '999999',
-						voters: 20
-					},
-					{
-						id: 'option44id',
-						text: '323131231122',
-						voters: 20
-					},
-					{
-						id: 'option11id',
-						text: 'This answer is created to test longness',
-						voters: 44
-					}, {
-						id: 'option11id',
-						text: 'This answer is created to test longness',
-						voters: 44
-					}, {
-						id: 'option11id',
-						text: 'This answer is created to test longness',
-						voters: 12
-					},
-				]
-			},
-		]
-	}
-];
 
 class PollScreen extends Component {
 	state = {
@@ -216,19 +42,26 @@ class PollScreen extends Component {
 	};
 
 	async componentWillMount() {
-		const { dispatch, event } = this.props; //const eventId = event.id;
+		const { dispatch, event, user } = this.props; //const eventId = event.id;
 
+		//Get answered surveys
+		await dispatch(surveyAction.getAnsweredSurveys(event.id, user.id));
+		//Get surveys
 		await dispatch(surveyAction.getSurveys(event.id));
 
-		const { surveys } = this.props;
-		
+		const { surveys, answered } = this.props;
+
 		if (surveys) {
+			if (answered) {
+				const notAnswered = surveys.filter(
+					(element) => answered.indexOf(element) === -1
+				);
+				this.setState({
+					surveys: notAnswered
+				});
+			}
 			this.setState({
 				surveys
-			});
-		} else {
-			this.setState({
-				surveys: mockSurveys
 			});
 		}
 	}
@@ -283,22 +116,35 @@ class PollScreen extends Component {
 				)
 			);
 
-			this.setState(
-				{
-					surveyId: '',
-					currentIndex: 0,
-					selectedAnswers: [],
-					surveyModal: false,
-					surveySelected: false
-				}, () => Alert.alert(
-					'You answers has been saved.',
-					'Thank you for participating in this survey.',
+			const { error } = this.props;
+
+			if (!error) {
+				this.setState(
+					{
+						surveyId: '',
+						currentIndex: 0,
+						selectedAnswers: [],
+						surveyModal: false,
+						surveySelected: false
+					}, () => Alert.alert(
+						'You answers has been saved.',
+						'Thank you for participating in this survey.',
+						[
+							{ text: 'OK' },
+						],
+						{ cancelable: false }
+					)
+				);
+			} else {
+				Alert.alert(
+					'Warning!',
+					'Answer submitting failed!',
 					[
 						{ text: 'OK' },
 					],
 					{ cancelable: false }
-				)
-			);
+				);
+			}
 		} else {
 			Alert.alert(
 				'You must answer a question.',

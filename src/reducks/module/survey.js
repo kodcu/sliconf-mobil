@@ -6,6 +6,7 @@ import Request from '../../service/Request';
 import getTokenAuth from '../../helpers/getTokenAuth';
 import { 
     getSurveys,
+	getAnsweredSurveys,
 	postAnswers,
 	increaseView
 } from '../Api';
@@ -13,7 +14,10 @@ import {
 const types = {
     SURVEYS_GET_REQUEST: 'SURVEYS_GET_REQUEST',
     SURVEYS_GET_SUCCESS: 'SURVEYS_GET_SUCCESS',
-    SURVEYS_GET_FAIL: 'SURVEYS_GET_FAIL',
+	SURVEYS_GET_FAIL: 'SURVEYS_GET_FAIL',
+	SURVEYS_GET_ANSWERED: 'SURVEYS_GET_ANSWERED',
+	SURVEYS_ANSWERED_SUCCESS: 'SURVEYS_ANSWERED_SUCCESS',
+	SURVEYS_ANSWERED_FAIL: 'SURVEYS_ANSWERED_FAIL',
     ANSWERS_POST_REQUEST: 'ANSWERS_POST_REQUEST',
     ANSWERS_POST_SUCCESS: 'ANSWERS_POST_SUCCESS',
 	ANSWERS_POST_FAIL: 'ANSWERS_POST_FAIL',
@@ -23,13 +27,14 @@ const types = {
 };
 
 const initialState = {
-    surveys: Object,
+	surveys: Array,
+	answered: Array,
     errorMessage: String,
     error: false,
     loading: false
 };
 
-export const reducer = (action, state = initialState) => {
+export const reducer = (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
@@ -57,7 +62,31 @@ export const reducer = (action, state = initialState) => {
                 error: true,
                 errorMessage: payload
             };
-        }
+		}
+		case types.SURVEYS_GET_ANSWERED: {
+			return {
+				...state,
+                loading: true,
+                error: false,
+				answered: {}
+			};
+		}
+		case types.SURVEYS_ANSWERED_SUCCESS: {
+			return {
+				...state,
+                loading: false,
+                error: false,
+				answered: payload
+			};
+		}
+		case types.SURVEYS_ANSWERED_FAIL: {
+			return {
+				...state,
+                loading: false,
+                error: true,
+				answered: {}
+			};
+		}
         case types.ANSWERS_POST_REQUEST: {
             return {
                 ...state,
@@ -108,7 +137,7 @@ export const actionCreators = {
             getTokenAuth(getState()),
             {
                 200: (res) => {
-                    if (res.status) {                        
+                    if (res.status) {                    
                         dispatch({
                             type: types.SURVEYS_GET_SUCCESS,
                             payload: res.returnObject
@@ -135,12 +164,48 @@ export const actionCreators = {
             }
         );
     },
+	getAnsweredSurveys: (eventId, userId) => async (dispatch, getState) => {
+		dispatch({
+			type: types.SURVEYS_GET_ANSWERED
+		});
+		await Request.GET(
+            `${getAnsweredSurveys}/${eventId}/users/${userId}/answers`,
+            getTokenAuth(getState()),
+            {
+                200: (res) => {
+                    if (res.status) {                    
+                        dispatch({
+                            type: types.SURVEYS_ANSWERED_SUCCESS,
+                            payload: res.returnObject
+                        });
+                    } else {
+                        dispatch({
+                            type: types.SURVEYS_ANSWERED_FAIL,
+                            payload: res.message
+                        });
+                    }
+                },
+                otherwise: (res) => {
+                    dispatch({
+                        type: types.SURVEYS_ANSWERED_FAIL,
+                        payload: res.message
+                    });
+                },
+                fail: () => {
+                    dispatch({
+                        type: types.SURVEYS_ANSWERED_FAIL,
+                        payload: 'Can not be processed at this time!'
+                    });
+                }
+            }
+        );
+	},
     postAnswers: (eventId, surveyId, answers) => async (dispatch, getState) => {
         dispatch({
             type: types.ANSWERS_POST_REQUEST
         });
         await Request.POST(
-            `${postAnswers}/${eventId}/surveys/${surveyId}/answer`,
+            `${postAnswers}/${eventId}/surveys/${surveyId}/answers`,
             answers,
             getTokenAuth(getState()),
             {
