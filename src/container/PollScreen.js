@@ -275,11 +275,12 @@ class PollScreen extends Component {
 	}
 
 	increaseViewCount(surveyId) {
-		const { dispatch, event } = this.props;
+		const { dispatch, event, user } = this.props;
 		dispatch(
 			surveyAction.increaseViewCount(
 				event.id,
-				surveyId
+				surveyId,
+				user.id
 			)
 		);
 	}

@@ -237,13 +237,13 @@ export const actionCreators = {
             }
         );
 	},
-	increaseViewCount: (eventId, surveyId) => async (dispatch, getState) => {
+	increaseViewCount: (eventId, surveyId, userId) => async (dispatch, getState) => {
 		dispatch({
 			type: types.SURVEY_ADD_VIEW_COUNT
 		});
 		await Request.POST(
 			`${increaseView}/${eventId}/surveys/${surveyId}/view`,
-			{},
+			{ userId },
 			getTokenAuth(getState()),
 			{
                 200: (res) => {
