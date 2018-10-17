@@ -95,24 +95,21 @@ class PollScreen extends Component {
 		const { dispatch, event, user } = this.props;
 
 		if (selectedAnswers && selectedAnswers.length > 0) {
-			const answeredQuestions = selectedAnswers.map(index => {
-				return {
-					[index.question]: index.text
-				};
-			});
-
-			const postObject = {
-				surveyId,
-				userId: user.id,
-				eventId: event.id,
-				answeredQuestions
-			};
+			const answeredQuestions = selectedAnswers.reduce(
+				(obj, element) => (obj[element.question] = element.text, obj),
+				{}
+			);
 			//Sends user answers to remote
 			await dispatch(
 				surveyAction.postAnswers(
 					event.id,
 					surveyId,
-					postObject
+					{
+						"surveyId": surveyId,
+						"userId": userId,
+						eventId: event.id,
+						"answeredQuestions": answeredQuestions
+					}
 				)
 			);
 

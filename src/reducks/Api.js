@@ -28,10 +28,10 @@ export const getSchedule = `${betaApi}schedule/list/`;
 
 //Survey
 //Gets all surveys of a specific event
-export const getSurveys = `${betaApi}events`;//export const getSurveys = `${baseApi}events`;
+export const getSurveys = `${betaApi}events`;
 //Get answered surveys
-export const getAnsweredSurveys = `${betaApi}events`; // /service/events/:eventIdentifier/users/userId/answers 
+export const getAnsweredSurveys = `${betaApi}events`;
 //Post answers to specific survey
-export const postAnswers = `${betaApi}events`;//export const postAnswers = `${baseApi}events`;
+export const postAnswers = `${betaApi}events`;
 //Increase user view count
-export const increaseView = `${betaApi}events`;//export const increaseView = `${baseApi}events`;
+export const increaseView = `${betaApi}events`;

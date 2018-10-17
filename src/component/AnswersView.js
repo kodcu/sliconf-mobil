@@ -21,19 +21,32 @@ class AnswersView extends React.Component {
 	 * @param {Object} nextProps next state as props
 	 */
 	componentWillReceiveProps(nextProps) {
-		const { questionName, answers, selectedAnswers, currentIndex } = this.state;
+		const { questionId, questionName, answers, selectedAnswers, currentIndex } = this.state;
 		if (nextProps.currentIndex !== currentIndex) {
-			if (nextProps.questionName !== questionName) {
-				if (!_.isEqual(nextProps.answers, answers)) {
-					if (!_.isEqual(nextProps.selectedAnswers, selectedAnswers)) {
-						this.setState(nextProps);
+			if (nextProps.questionId.trim() !== questionId.trim()) {
+				if (nextProps.questionName.trim() !== questionName.trim()) {
+					if (!_.isEqual(nextProps.answers, answers)) {
+						if (!_.isEqual(nextProps.selectedAnswers, selectedAnswers)) {
+							this.setState(nextProps);
+						}
+						this.setState({
+							currentIndex: nextProps.currentIndex,
+							questionId: nextProps.questionId,
+							questionName: nextProps.questionName,
+							answers: nextProps.answers
+						});
 					}
-					this.setState({
-						currentIndex: nextProps.currentIndex,
-						questionName: nextProps.questionName,
-						answers: nextProps.answers
-					});
 				}
+			} else {
+				if (!_.isEqual(nextProps.selectedAnswers, selectedAnswers)) {
+					this.setState(nextProps);
+				}
+				this.setState({
+					currentIndex: nextProps.currentIndex,
+					questionId: nextProps.questionId,
+					questionName: nextProps.questionName,
+					answers: nextProps.answers
+				});
 			}
 		}
 	}
