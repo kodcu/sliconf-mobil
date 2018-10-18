@@ -84,50 +84,58 @@ export class About extends Component {
     render() {
         const event = this.props.event;
         const about = event.about;
-
         return (
             <View style={styles.container}>
-
-                <Header leftImage='chevron-left' rightImage='bars'
+				<Header
+					leftImage='chevron-left'
+					rightImage='bars'
                     onPressLeft={() => this.props.navigation.goBack()}
-                    onPressRight={() => {
+					onPressRight={() =>
                         this.props.navigation.navigate('DrawerOpen')
-                    }}>
+					}
+				>
                     <Header.Title title="General Info" />
                 </Header>
-
                 <ScrollView>
-
                     <View style={styles.aboutField}>
                         <Thumbnail large source={{ uri: getImage(event.logoPath) }} />
-
                         <View style={styles.aboutPanel}>
                             <Text style={styles.eventNameText}>{event.name}</Text>
                             <Text style={styles.descText}>{event.description}</Text>
                         </View>
-
                     </View>
-
                     <View style={styles.panel}>
                         <Text style={styles.activeTabText}>Contact Us</Text>
                         <View style={styles.contact}>
                             {about.email ? this.rowItem(about.email, 'ios-at-outline', 'email') : null}
-                            {about.phone ? about.phone.map((item, index) => item.trim() ?
-                                this.rowItem(item, 'ios-call-outline', 'phone', index) : null) : null}
+							{about.phone ?
+								about.phone.map((item, index) => item.trim() ?
+									this.rowItem(
+										item,
+										'ios-call-outline',
+										'phone',
+										index) : null
+								) : null
+							}
                             {about.social ?
                                 <View style={styles.socialMedia}>
-                                    {Object.keys(about.social).map((item, index) =>
-                                        item.trim() ? this.rowSocial(item + '-with-circle', about.social[item], index) : null
-
+									{Object.keys(about.social)
+										.map((item, index) =>
+											item.trim() ?
+												this.rowSocial(
+													item + '-with-circle',
+													about.social[item],
+													index
+												) :
+												null
                                     )}
                                 </View> : null
                             }
-
                         </View>
                     </View>
                 </ScrollView>
             </View>
-        )
+		);
     }
 }
 
@@ -211,4 +219,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps)(About)
+export default connect(mapStateToProps)(About);
