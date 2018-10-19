@@ -1,56 +1,56 @@
-export default class Request{
+export default class Request {
 
-  static async GET(url, header, callbacks) {
-    await this.request(url, 'get', null, header, callbacks)
-  }
+	static async GET(url, header, callbacks) {
+		await this.request(url, 'get', null, header, callbacks)
+	}
 
-  static async POST(url, data, header, callbacks) {
-    await this.request(url, 'post', data, header, callbacks)
-  }
+	static async POST(url, data, header, callbacks) {
+		await this.request(url, 'post', data, header, callbacks)
+	}
 
-  static async PUT(url, data, header, callbacks) {
-    await this.request(url, 'put', data, header, callbacks)
-  }
+	static async PUT(url, data, header, callbacks) {
+		await this.request(url, 'put', data, header, callbacks)
+	}
 
-  static async DELETE(url, data, header, callbacks) {
-    await this.request(url, 'delete', data, header, callbacks)
-  }
+	static async DELETE(url, data, header, callbacks) {
+		await this.request(url, 'delete', data, header, callbacks)
+	}
 
-  static async request(url, method, data, header, callbacks){
-    let payload = {method};
-            
-    if(method !== 'get'){
-      payload.headers = {
-        'Content-Type': 'application/json',
-        ...header
-      };
-      payload.body = JSON.stringify({
-          ...data
-      });
-    } else {
-        payload.headers = {
-            ...header
-        };
-    }
+	static async request(url, method, data, header, callbacks) {
+		let payload = { method };
 
-    try {
-      const response = await fetch(url, payload)
-      const json = await response.json()
+		if (method !== 'get') {
+			payload.headers = {
+				'Content-Type': 'application/json',
+				...header
+			};
+			payload.body = JSON.stringify({
+				...data
+			});
+		} else {
+			payload.headers = {
+				...header
+			};
+		}
 
-      if(callbacks[response.status]){
-        callbacks[response.status](json)
-        return;
-      }else{
-        if(callbacks.otherwise){
-          callbacks.otherwise(json)
-          return;
-        }
-      }
-    } catch(err) {
-      if(callbacks.fail){
-        callbacks.fail(err)
-      }
-      return;
-    }
-  }
+		try {
+			const response = await fetch(url, payload)
+			const json = await response.json()
+
+			if (callbacks[response.status]) {
+				callbacks[response.status](json)
+				return;
+			} else {
+				if (callbacks.otherwise) {
+					callbacks.otherwise(json)
+					return;
+				}
+			}
+		} catch (err) {
+			if (callbacks.fail) {
+				callbacks.fail(err)
+			}
+			return;
+		}
+	}
 }

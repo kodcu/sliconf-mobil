@@ -1,7 +1,6 @@
-import * as React from "react";
-import { Easing, Animated } from "react-native";
 import { DrawerNavigator, StackNavigator } from 'react-navigation';
 
+import animation from './helpers/navigateAnimation';
 import SplashScreen from './container/SplashScreen';
 import MainScreen from './container/MainScreen';
 import HomeScreen from './container/HomeScreen';
@@ -17,7 +16,7 @@ import FloorPlanScreen from "./container/FloorPlanScreen"
 import TalkDetailScreen from "./container/TalkDetailScreen"
 import SponsorScreen from "./container/SponsorScreen"
 import AskScreen from "./container/AskScreen"
-import animation from './helpers/navigateAnimation'
+import PollScreen from './container/PollScreen';
 
 export const SPLASH = 'screen/Splash';
 export const MAIN = 'screen/Main';
@@ -35,6 +34,7 @@ export const TALK = 'screen/Talk';
 export const EVENT_STACK = 'stack/Event';
 export const MAIN_STACK = 'stack/Main';
 export const ASK = 'screen/Ask';
+export const POLL = 'screen/Poll';
 
 const EventStack = DrawerNavigator(
     {
@@ -56,8 +56,7 @@ const EventStack = DrawerNavigator(
             screen: StackNavigator({
                 [SPEAKERS]: { screen: SpeakersScreen },
                 [SPEAKERINFO]: { screen: SpeakerInfoScreen },
-                [TALK]: { screen: TalkDetailScreen } //->
-                //When user selects talk on speakers, this makes app return to speakersinfo screen when the back is pressed
+                [TALK]: { screen: TalkDetailScreen }
             }, {
                     headerMode: 'none',
                     navigationOptions: {
@@ -72,7 +71,8 @@ const EventStack = DrawerNavigator(
         [FLOOR]: { screen: FloorPlanScreen },
         [LOGIN]: { screen: LoginScreen },
         [SPONSOR]: { screen: SponsorScreen },
-        [ASK]: { screen: AskScreen }
+		[ASK]: { screen: AskScreen },
+		[POLL]: { screen: PollScreen }
     },
     {
         drawerOpenRoute: 'DrawerOpen',
@@ -122,4 +122,4 @@ const PrimaryNav = StackNavigator(
     }
 );
 
-export default PrimaryNav
+export default PrimaryNav;

@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	profilePicture: {
-		borderRadius: Platform.OS === 'ios' ? 50 : 90,
+		borderRadius: Platform.OS === 'ios' ? 60 : 90,
 		width: 120,
 		height: 120,
 		margin: 10

@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 
 import { actionCreators } from '../reducks/module/drawer';
-import { AGENDA, ASK, INFO, LOCATION, SPEAKERS, SPONSOR, MAIN } from '../router';
+import { AGENDA, ASK, INFO, LOCATION, SPEAKERS, SPONSOR, MAIN, POLL } from '../router';
 import Header from '../component/Header';
 import If from '../component/If';
 import { moderateScale, scale, verticalScale } from '../theme/Scale';
@@ -38,6 +38,7 @@ class HomeScreen extends Component {
 			{ name: 'Location', icon: 'ios-map-outline', nav: LOCATION },
 			{ name: 'Sponsors', icon: 'ios-ribbon-outline', nav: SPONSOR },
 			{ name: 'Info', icon: 'ios-information-outline', nav: INFO },
+			{ name: 'Survey', icon: 'ios-list', nav: POLL }
 		]
 	};
 
@@ -96,7 +97,7 @@ class HomeScreen extends Component {
 						onPressRight={() => this.props.navigation.navigate('DrawerOpen')}
 					/>
 					<View style={styles.topInfo}>
-						<View style={{ flex: 0.6, flexDirection: 'row' }}>
+						<View style={{ flex: 0.68, flexDirection: 'row' }}>
 							<View style={{ flex: 0.6, flexDirection: 'column' }}>
 								<View style={styles.date}>
 									<View style={{ flexDirection: 'row', marginVertical: '8%', marginHorizontal: '4%' }}>
@@ -113,7 +114,7 @@ class HomeScreen extends Component {
 									</View>
 								</View>
 							</View>
-							<View style={{ flex: 0.4 }}>
+							<View style={{ flex: 0.4, alignItems: 'flex-end' }}>
 								<Image
 									source={{ uri: getImage(event.logoPath) }}
 									style={styles.eventLogo}
@@ -121,9 +122,30 @@ class HomeScreen extends Component {
 							</View>
 						</View>
 						<View style={styles.eventName}>
-							<Text numberOfLines={3} style={styles.eventNameText}>
-								{`${event.name}`}
-							</Text>
+							<View
+								style={{
+									flex: 1,
+									width: '100%',
+									height: '100%',
+									flexDirection: 'column',
+									alignItems: 'flex-end'
+								}}
+							>
+								<View
+									style={{
+										flex: 1,
+										width: '100%',
+										height: '100%',
+										flexDirection: 'row',
+										alignItems: 'flex-end',
+										paddingBottom: '2%'
+									}}
+								>
+									<Text numberOfLines={1} style={styles.eventNameText}>
+										{`${event.name}`}
+									</Text>
+								</View>
+							</View>
 						</View>
 					</View>
 				</View>
@@ -149,7 +171,7 @@ const styles = StyleSheet.create({
 		marginTop: Platform.OS === 'ios' ? 20 : 0
 	},
 	headerPanel: {
-		flex: 0.4,
+		flex: 0.38,
 		backgroundColor: Color.transparent,
 		margin: '2%',
 		borderBottomLeftRadius: 24,
@@ -163,7 +185,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'flex-start',
 		paddingLeft: 12,
-		paddingRight: 12
+		paddingRight: 12,
+		overflow: 'hidden'
 	},
 	eventLogo: {
 		width: height * 0.15,
@@ -178,17 +201,17 @@ const styles = StyleSheet.create({
 	dateText: {
 		...Font.regular,
 		color: Color.white,
-		fontSize: moderateScale(14),
-		paddingLeft: 8
+		fontSize: moderateScale(15),
+		paddingLeft: 6
 	},
 	eventName: {
-		flex: 0.4,
+		flex: 0.32,
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
+		alignSelf: 'flex-end',
 		alignItems: 'flex-start',
-		marginTop: 1,
 		paddingTop: verticalScale(4),
-		height: moderateScale(27) * 2
+		height: moderateScale(24)
 	},
 	eventNameText: {
 		...Font.regular,
@@ -198,7 +221,7 @@ const styles = StyleSheet.create({
 		lineHeight: moderateScale(24)
 	},
 	buttonPanel: {
-		flex: 0.6,
+		flex: 0.62,
 		alignItems: 'center',
 		justifyContent: 'center',
 		alignSelf: 'center',
@@ -222,8 +245,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		width: width / 3.00,
-		height: height * 0.2,
-		marginVertical: '3.2%'
+		height: height * 0.18
 	}
 });
 

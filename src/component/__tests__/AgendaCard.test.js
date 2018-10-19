@@ -44,12 +44,8 @@ describe('<AgendaCard /> with mockData', () => {
         const tree = renderer.create(
             <AgendaCard item={mockData} speaker={speaker} isClicked={false} />
         ).toJSON();
-        expect(tree).
-    });
-    it('AgendaCard isClicked false', () => {
-        const wrapper = shallow(<AgendaCard item={mockData} speaker={speaker} isClicked={false} />);
-        expect(wrapper.state().isClicked).to.not.equal(undefined);
-    });
+        expect(tree).to.be.ok;
+	});
     it('AgendaCard should render 5 View components', () => {
         const wrapper = shallow(<AgendaCard item={mockData} speaker={speaker} />);
         expect(wrapper.find(View)).to.have.length(5);
@@ -80,13 +76,13 @@ describe('<AgendaCard /> with mockData', () => {
 });
 
 describe('if <AgendaCard /> is empty', () => {
-    it('AgendaCard should render 1 View component', () => {
+    it('AgendaCard should render 3 View component', () => {
         const wrapper = shallow(<AgendaCard isEmpty={true} />);
-        expect(wrapper.find(View)).to.have.length(1);
+        expect(wrapper.find(View)).to.have.length(3);
     });
-    it('AgendaCard should render 1 Image component', () => {
+    it('AgendaCard should render 0 Image component', () => {
         const wrapper = shallow(<AgendaCard isEmpty={true} />);
-        expect(wrapper.find(Image)).to.have.length(1);
+        expect(wrapper.find(Image)).to.have.length(0);
     });
 });
 
