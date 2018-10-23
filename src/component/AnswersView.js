@@ -95,18 +95,10 @@ class AnswersView extends React.Component {
 		);
 		
 		const hundred = 100;
-		let currentBiggest = 0;
-		//Find biggest vote percentage for display as 100% percentage
-		//Reducer can be used
-		answers.forEach((answer) => {
-			if (answer.voters && (currentBiggest < answer.voters)) {
-				currentBiggest = answer.voters;
-			}
-		});
-		//Reducer version
-		//var maxVoters = answers.reduce(
-		//	(max, answer) => (max > answer.voters ? max : answer.voters, max)
-		//).voters;
+		//Find biggest vote percentage for display as 100% percentage	
+		var maxVoters = answers.reduce(
+			(max, answer) => (max > answer.voters ? max : answer.voters, max)
+		).voters;
 
 		answers.forEach((answer) => {
 			const isPressed = Boolean(
@@ -117,7 +109,7 @@ class AnswersView extends React.Component {
 			);
 			//Find ratio of individual answers
 			const progress = answer.voters ?
-				(hundred * answer.voters) / currentBiggest :
+				(hundred * answer.voters) / maxVoters :
 				0
 				;
 
@@ -127,8 +119,8 @@ class AnswersView extends React.Component {
 					answerId={answer.id.trim()}
 					answer={answer.text.trim()}
 					percentage={answer.voters || 0}
-					progress={progress / hundred} //100 must be declared and used in all files
-					isBiggest={currentBiggest === answer.voters}
+					progress={progress / hundred}
+					isBiggest={maxVoters === answer.voters}
 					isPressed={isPressed}
 					anyAnswerSelected={answerSelected}
 					onAnswerPress={this.onAnswerPress}
