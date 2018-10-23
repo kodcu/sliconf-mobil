@@ -76,7 +76,7 @@ class AnswerButton extends React.Component {
 	 * @returns {Component} button
 	 */
 	renderAnswerBar = (answer, percentage, progress, pressed, biggest, anyPressed) => {
-		//96% of the screen handless bar width
+		//96% of the screen handless bar width this comes from design choices
 		const width = ((Scale.width * 9.6) / 10);
 		if (anyPressed) {
 			if (pressed) {

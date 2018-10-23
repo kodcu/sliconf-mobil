@@ -83,7 +83,7 @@ class AnswersView extends React.Component {
 	 * @param {number} answers.answer.voters - current percentage of the answer
 	 * @param {string} selectedAnswerId - current selected answers id
 	 * @param {string} selectedAnswerText - current selected answers text
-	 * @returns {Component} answer buttons as component array
+	 * @returns {Array} answer buttons as array of components
 	 */
 	renderAnswers = (answers, selectedAnswerId, selectedAnswerText) => {
 		let buttons = [];
@@ -93,14 +93,20 @@ class AnswersView extends React.Component {
 			selectedAnswerText &&
 			selectedAnswerText.trim() !== ''
 		);
-
+		
+		const hundred = 100;
 		let currentBiggest = 0;
-
+		//Find biggest vote percentage for display as 100% percentage
+		//Reducer can be used
 		answers.forEach((answer) => {
-			if (answer.voters && currentBiggest < answer.voters) {
+			if (answer.voters && (currentBiggest < answer.voters)) {
 				currentBiggest = answer.voters;
 			}
 		});
+		//Reducer version
+		//var maxVoters = answers.reduce(
+		//	(max, answer) => (max > answer.voters ? max : answer.voters, max)
+		//).voters;
 
 		answers.forEach((answer) => {
 			const isPressed = Boolean(
@@ -109,9 +115,9 @@ class AnswersView extends React.Component {
 				selectedAnswerId.trim() === answer.id.trim() &&
 				selectedAnswerText.trim() === answer.text.trim()
 			);
-
+			//Find ratio of individual answers
 			const progress = answer.voters ?
-				(100 * answer.voters) / currentBiggest :
+				(hundred * answer.voters) / currentBiggest :
 				0
 				;
 
@@ -121,7 +127,7 @@ class AnswersView extends React.Component {
 					answerId={answer.id.trim()}
 					answer={answer.text.trim()}
 					percentage={answer.voters || 0}
-					progress={progress / 100}
+					progress={progress / hundred} //100 must be declared and used in all files
 					isBiggest={currentBiggest === answer.voters}
 					isPressed={isPressed}
 					anyAnswerSelected={answerSelected}
@@ -150,7 +156,7 @@ class AnswersView extends React.Component {
 
 		let selectedAnswerId,
 			selectedAnswerText;
-
+		//Will be deleted check in test first
 		if (currentIndex > -1) {
 			if (selectedAnswers) {
 				if (selectedAnswers[currentIndex] && selectedAnswers[currentIndex].text.trim() !== '') {

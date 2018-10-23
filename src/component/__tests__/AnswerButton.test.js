@@ -64,7 +64,7 @@ describe('<AnswerButton /> testing with mock answer data', () => {
 			expect(wrapper.find(Text)).to.have.length(2);
 			expect(wrapper.find(TouchableOpacity)).to.have.length(1);
 		});
-		it('Not pressed answerButton should render 6 View & 2 Text & 1 TouchableOpacity components', () => {
+		it('Not pressed answerButton should render 3 View & 1 Text & 1 TouchableOpacity components', () => {
 			const wrapper = shallow(
 				<AnswerButton
 					key={`${answer.id}${answer.text}`}
