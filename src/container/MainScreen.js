@@ -169,7 +169,8 @@ class MainScreen extends Component {
 										</TouchableOpacity>}
 										<TouchableOpacity
 											style={styles.qrcode}
-											onPress={() => this.setState({ search: false })}>
+											onPress={() => this.setState({ search: false })}
+										>
 											<Icon name='qrcode-scan' size={64} color={Color.darkGray} />
 										</TouchableOpacity>
 									</View>
@@ -179,8 +180,10 @@ class MainScreen extends Component {
 					</If.Then>
 					<If.Else>
 						<View style={styles.container}>
-							<Header rightImage='close'
-								onPressRight={() => this._hide()}>
+							<Header 
+								rightImage='close'
+								onPressRight={() => this._hide()}
+							>
 								<Header.Title title="QR Code" />
 							</Header>
 							<QRCodeScanner

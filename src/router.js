@@ -1,6 +1,6 @@
 import { DrawerNavigator, StackNavigator } from 'react-navigation';
 
-import animation from './helpers/navigateAnimation';
+import animation from './helpers/animation';
 import SplashScreen from './container/SplashScreen';
 import MainScreen from './container/MainScreen';
 import HomeScreen from './container/HomeScreen';

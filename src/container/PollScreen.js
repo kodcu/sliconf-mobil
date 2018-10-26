@@ -43,7 +43,6 @@ class PollScreen extends Component {
 
 	async componentWillMount() {
 		const { dispatch, event, user } = this.props; //const eventId = event.id;
-
 		//Get answered surveys
 		await dispatch(surveyAction.getAnsweredSurveys(event.id, user.id));
 		//Get surveys
@@ -51,8 +50,8 @@ class PollScreen extends Component {
 
 		const { surveys, answered } = this.props;
 
-		if (surveys) {
-			if (answered) {
+		if (surveys && surveys.length > 0) {
+			if (answered && answered.length > 0) {
 				const notAnswered = surveys.filter(
 					(element) => answered.indexOf(element) === -1
 				);
@@ -96,19 +95,19 @@ class PollScreen extends Component {
 
 		if (selectedAnswers && selectedAnswers.length > 0) {
 			const answeredQuestions = selectedAnswers.reduce(
-				(obj, element) => (obj[element.question] = element.text, obj),
-				{}
+				(obj, element) => (obj[element.question] = element.text, obj), {}
 			);
+			
 			//Sends user answers to remote
 			await dispatch(
 				surveyAction.postAnswers(
 					event.id,
 					surveyId,
 					{
-						"surveyId": surveyId,
-						"userId": userId,
+						surveyId,
+						userId: user.id,
 						eventId: event.id,
-						"answeredQuestions": answeredQuestions
+						answeredQuestions
 					}
 				)
 			);

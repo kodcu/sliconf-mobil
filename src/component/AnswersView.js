@@ -96,8 +96,8 @@ class AnswersView extends React.Component {
 		
 		const hundred = 100;
 		//Find biggest vote percentage for display as 100% percentage	
-		var maxVoters = answers.reduce(
-			(max, answer) => (max > answer.voters ? max : answer.voters, max)
+		const maxVoters = answers.reduce(
+			(max, answer) => (answer.voters > max.voters ? answer : max)			
 		).voters;
 
 		answers.forEach((answer) => {
