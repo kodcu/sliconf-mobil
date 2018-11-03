@@ -21,60 +21,28 @@ class AnswersView extends React.Component {
 	 * @param {Object} nextProps next state as props
 	 */
 	componentWillReceiveProps(nextProps) {
-		const { questionId, questionName, answers, selectedAnswers, currentIndex } = this.state;
+		const { selectedAnswers, currentIndex } = this.state;
 		if (nextProps.currentIndex !== currentIndex) {
-			if (nextProps.questionId.trim() !== questionId.trim()) {
-				if (nextProps.questionName.trim() !== questionName.trim()) {
-					if (!_.isEqual(nextProps.answers, answers)) {
-						if (!_.isEqual(nextProps.selectedAnswers, selectedAnswers)) {
-							this.setState(nextProps);
-						}
-						this.setState({
-							currentIndex: nextProps.currentIndex,
-							questionId: nextProps.questionId,
-							questionName: nextProps.questionName,
-							answers: nextProps.answers
-						});
-					}
-				}
-			} else {
-				if (!_.isEqual(nextProps.selectedAnswers, selectedAnswers)) {
-					this.setState(nextProps);
-				}
-				this.setState({
-					currentIndex: nextProps.currentIndex,
-					questionId: nextProps.questionId,
-					questionName: nextProps.questionName,
-					answers: nextProps.answers
-				});
+			if (!_.isEqual(nextProps.selectedAnswers, selectedAnswers)) {
+				this.setState(nextProps);
 			}
+			this.setState({
+				currentIndex: nextProps.currentIndex,
+				questionId: nextProps.questionId,
+				questionName: nextProps.questionName,
+				answers: nextProps.answers
+			});
 		}
 	}
 	/**
-	 * Handless answer press
+	 * Passes answer press to parent class PollScreen
 	 * @param {string} answerId - id of pressed answer
 	 * @param {string} answerText - text of pressed answer
 	 */
 	onAnswerPress = (answerId, answerText) => {
-		const { currentIndex, questionId, selectedAnswers } = this.state;
+		const { currentIndex, questionId } = this.state;
 
 		this.props.onAnswerSelect(currentIndex, questionId, answerId, answerText);
-
-		if (answerId && answerText && answerText.trim() !== '') {
-			selectedAnswers[currentIndex] = {};
-			selectedAnswers[currentIndex]['question'] = questionId;
-			selectedAnswers[currentIndex]['id'] = answerId;
-			selectedAnswers[currentIndex]['text'] = answerText;
-		} else {
-			selectedAnswers[currentIndex] = {};
-			selectedAnswers[currentIndex]['question'] = '';
-			selectedAnswers[currentIndex]['id'] = '';
-			selectedAnswers[currentIndex]['text'] = '';
-		}
-
-		this.setState({
-			selectedAnswers
-		});
 	}
 	/**
 	 * Renders answer inside answer view.
@@ -86,43 +54,44 @@ class AnswersView extends React.Component {
 	 * @returns {Array} answer buttons as array of components
 	 */
 	renderAnswers = (answers, selectedAnswerId, selectedAnswerText) => {
-		let buttons = [];
+		const buttons = [];
 
-		const answerSelected = Boolean(
-			selectedAnswerId &&
-			selectedAnswerText &&
-			selectedAnswerText.trim() !== ''
-		);
-		
+		const anyAnswerPressed = Boolean(selectedAnswerId && selectedAnswerText);
+
 		const hundred = 100;
-		//Find biggest vote percentage for display as 100% percentage	
-		const maxVoters = answers.reduce(
-			(max, answer) => (answer.voters > max.voters ? answer : max)			
-		).voters;
-
-		answers.forEach((answer) => {
+		//Find the biggest vote from answers.	
+		const maxVote = answers.reduce((max, answer) => {
 			const isPressed = Boolean(
-				selectedAnswerId &&
-				selectedAnswerText &&
+				anyAnswerPressed &&
 				selectedAnswerId.trim() === answer.id.trim() &&
 				selectedAnswerText.trim() === answer.text.trim()
 			);
-			//Find ratio of individual answers
-			const progress = answer.voters ?
-				(hundred * answer.voters) / maxVoters :
-				0
-				;
+			const vote = isPressed ? (answer.voters + 1) : answer.voters;
+			return vote > max ? vote : max;
+		});
+		console.log('MaxVote: ')
+		console.log(maxVote)
+		const isMaxVoteNotZero = maxVote !== 0;
+
+		answers.forEach((answer) => {
+			const isPressed = Boolean(
+				anyAnswerPressed &&
+				selectedAnswerId.trim() === answer.id.trim() &&
+				selectedAnswerText.trim() === answer.text.trim()
+			);
+			//Checks if maxVote is 0 (Nobody voted yet) then creates a progress
+			const progress = isMaxVoteNotZero ?
+				(hundred * answer.voters) / maxVote :
+				0;
 
 			buttons.push(
 				(<AnswerButton
 					key={`${answer.id}${answer.text}`}
 					answerId={answer.id.trim()}
-					answer={answer.text.trim()}
-					percentage={answer.voters || 0}
-					progress={progress / hundred}
-					isBiggest={maxVoters === answer.voters}
+					answerText={answer.text.trim()}
+					progress={progress}
 					isPressed={isPressed}
-					anyAnswerSelected={answerSelected}
+					anyAnswerSelected={anyAnswerPressed}
 					onAnswerPress={this.onAnswerPress}
 				/>)
 			);
@@ -148,20 +117,21 @@ class AnswersView extends React.Component {
 
 		let selectedAnswerId,
 			selectedAnswerText;
-		//Will be deleted check in test first
-		if (currentIndex > -1) {
-			if (selectedAnswers) {
-				if (selectedAnswers[currentIndex] && selectedAnswers[currentIndex].text.trim() !== '') {
-					selectedAnswerId = selectedAnswers[currentIndex].id;
-					selectedAnswerText = selectedAnswers[currentIndex].text;
-				}
+
+		if (selectedAnswers) {
+			if (selectedAnswers[currentIndex] && selectedAnswers[currentIndex].text.trim() !== '') {
+				selectedAnswerId = selectedAnswers[currentIndex].id;
+				selectedAnswerText = selectedAnswers[currentIndex].text;
 			}
 		}
 
 		return (
 			<View style={answersContainer}>
 				<View style={questionNameContainer}>
-					<Text style={questionNameText}>{questionName}</Text>
+					<Text
+						style={questionNameText}
+						numberOfLines={1}
+					>{questionName}</Text>
 				</View>
 				<ScrollView style={scrollView}>
 					{this.renderAnswers(answers, selectedAnswerId, selectedAnswerText)}

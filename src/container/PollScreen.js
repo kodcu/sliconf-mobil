@@ -42,7 +42,7 @@ class PollScreen extends Component {
 	};
 
 	async componentWillMount() {
-		const { dispatch, event, user } = this.props; //const eventId = event.id;
+		const { dispatch, event, user } = this.props;
 		//Get answered surveys
 		await dispatch(surveyAction.getAnsweredSurveys(event.id, user.id));
 		//Get surveys
@@ -53,15 +53,18 @@ class PollScreen extends Component {
 		if (surveys && surveys.length > 0) {
 			if (answered && answered.length > 0) {
 				const notAnswered = surveys.filter(
-					(element) => answered.indexOf(element) === -1
+					survey => !answered.find(
+						answeredSurvey => survey.id === answeredSurvey.surveyId
+					)
 				);
 				this.setState({
 					surveys: notAnswered
 				});
+			} else {
+				this.setState({
+					surveys
+				});
 			}
-			this.setState({
-				surveys
-			});
 		}
 	}
 
@@ -97,7 +100,6 @@ class PollScreen extends Component {
 			const answeredQuestions = selectedAnswers.reduce(
 				(obj, element) => (obj[element.question] = element.text, obj), {}
 			);
-			
 			//Sends user answers to remote
 			await dispatch(
 				surveyAction.postAnswers(
@@ -115,8 +117,18 @@ class PollScreen extends Component {
 			const { error } = this.props;
 
 			if (!error) {
+				await dispatch(surveyAction.getAnsweredSurveys(event.id, user.id));
+				const { surveys, answered } = this.props;
+
+				const notAnswered = surveys.filter(
+					survey => !answered.find(
+						answeredSurvey => survey.id === answeredSurvey.surveyId
+					)
+				);
+
 				this.setState(
 					{
+						surveys: notAnswered,
 						surveyId: '',
 						currentIndex: 0,
 						selectedAnswers: [],
@@ -201,7 +213,10 @@ class PollScreen extends Component {
 					}
 				>
 					<View style={styles.selectPollButton}>
-						<Text style={styles.selectPollButtonText}>{data.name}</Text>
+						<Text
+							style={styles.selectPollButtonText}
+							numberOfLines={1}
+						>{data.name}</Text>
 					</View>
 				</TouchableOpacity>
 			);
@@ -233,7 +248,7 @@ class PollScreen extends Component {
 	}
 
 	getPollButtons(surveys) {
-		let buttons = [];
+		const buttons = [];
 
 		surveys.forEach((survey) => {
 			buttons.push(
@@ -253,7 +268,10 @@ class PollScreen extends Component {
 						}
 					>
 						<View style={styles.selectPollButton}>
-							<Text style={styles.selectAPollText}>{survey.name}</Text>
+							<Text
+								style={styles.selectAPollText}
+								numberOfLines={1}
+							>{survey.name}</Text>
 						</View>
 					</TouchableOpacity>
 				)
