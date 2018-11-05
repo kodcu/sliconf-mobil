@@ -13,16 +13,17 @@ const answer = {
 	text: 'Apple',
 	voters: 25
 };
+
 const selectedAnswerId = '20';
 const selectedAnswerText = 'Orange';
-const answerSelected = Boolean(
+
+const anyAnswerSelected = Boolean(
 	selectedAnswerId &&
-	selectedAnswerText &&
-	selectedAnswerText.trim() !== ''
+	selectedAnswerText
 );
+
 const isPressed = Boolean(
-	selectedAnswerId &&
-	selectedAnswerText &&
+	anyAnswerSelected &&
 	selectedAnswerId.trim() === answer.id.trim() &&
 	selectedAnswerText.trim() === answer.text.trim()
 );
@@ -36,12 +37,10 @@ describe('<AnswerButton /> testing with mock answer data', () => {
 			<AnswerButton
 				key={`${answer.id}${answer.text}`}
 				answerId={answer.id.trim()}
-				answer={answer.text.trim()}
-				percentage={answer.voters || 0}
-				progress={progress / 100}
-				isBiggest={currentBiggest === answer.voters}
+				answerText={answer.text.trim()}
+				progress={progress}
 				isPressed={isPressed}
-				anyAnswerSelected={answerSelected}
+				anyAnswerSelected={anyAnswerPressed}
 				onAnswerPress={this.onAnswerPress}
 			/>
 		).toJSON();
@@ -69,12 +68,10 @@ describe('<AnswerButton /> testing with mock answer data', () => {
 				<AnswerButton
 					key={`${answer.id}${answer.text}`}
 					answerId={answer.id.trim()}
-					answer={answer.text.trim()}
-					percentage={answer.voters || 0}
-					progress={progress / 100}
-					isBiggest={currentBiggest === answer.voters}
+					answerText={answer.text.trim()}
+					progress={progress}
 					//isPressed={isPressed}
-					//anyAnswerSelected={answerSelected}
+					//anyAnswerSelected={anyAnswerPressed}
 					onAnswerPress={this.onAnswerPress}
 				/>
 			);
@@ -88,12 +85,10 @@ describe('<AnswerButton /> testing with mock answer data', () => {
 				<AnswerButton
 					key={`${answer.id}${answer.text}`}
 					answerId={answer.id.trim()}
-					answer={answer.text.trim()}
-					percentage={answer.voters || 0}
-					progress={progress / 100}
-					isBiggest={currentBiggest === answer.voters}
+					answerText={answer.text.trim()}
+					progress={progress}
 					isPressed={isPressed}
-					anyAnswerSelected={answerSelected}
+					anyAnswerSelected={anyAnswerPressed}
 					onAnswerPress={this.onAnswerPress}
 				/>
 			);

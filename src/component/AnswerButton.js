@@ -11,17 +11,16 @@ class AnswerButton extends React.Component {
 	state = {
 		answerId: this.props.answerId,
 		answerText: this.props.answerText,
-		progress: this.props.progress
+		onlyView: this.props.onlyView
 	}
 
 	/**
 	 * Renders text on top of the bar
 	 * @param {string} answerText displayed answerText
-	 * @param {number} progress displayed progress
 	 * @param {boolean} filled handles color of text
 	 * @returns {Component} bar text
 	 */
-	renderBarText = (answerText, progress, filled) => {
+	renderBarText = (answerText, filled) => {
 		const color = filled ? Color.white : Color.darkGray;
 		return (
 			<View style={styles.textViewContainer}>
@@ -59,7 +58,7 @@ class AnswerButton extends React.Component {
 								color
 							}
 						]}
-					>{`${progress}%`}</Text>
+					>{`${this.props.percentage * 100}%`}</Text>
 				</View>
 			</View>
 		);
@@ -90,14 +89,14 @@ class AnswerButton extends React.Component {
 							progress={progress / hundred}
 							indeterminate={false}
 						>
-							{this.renderBarText(answerText, progress, (progress === 100))}
+							{this.renderBarText(answerText, (progress === 100))}
 						</Progress.Bar>
 					</View>
 				</View>
 			);
 		}
 		return (
-			<View style={styles.answerView}>				
+			<View style={styles.answerView}>
 				<Text
 					style={[styles.answerText, { width, paddingHorizontal: 8 }]}
 					numberOfLines={1}
@@ -113,10 +112,20 @@ class AnswerButton extends React.Component {
 	 * @param {number} progress progress of the bar proportioned to highest answerText
 	 * @param {boolean} pressed handless color of selected answers
 	 * @param {boolean} anyAnswerSelected handless color of not selected answers
+	 * @param {boolean} onlyView - handless touchable opacity
 	 */
-	renderButton = (answerText, answerId, progress, pressed, anyAnswerSelected) => {
+	renderButton = (answerText, answerId, progress, pressed, anyAnswerSelected, onlyView) => {
 		const displayAnswer = answerText.trim();
-
+		if (onlyView) {
+			return (
+				this.renderAnswerBar(
+					displayAnswer,
+					progress,
+					pressed,
+					anyAnswerSelected
+				)
+			);
+		}
 		return (
 			<TouchableOpacity onPress={() => this.props.onAnswerPress(answerId, answerText)}>
 				{this.renderAnswerBar(
@@ -131,8 +140,8 @@ class AnswerButton extends React.Component {
 
 	render() {
 		const { container } = styles;
-		const { answerText, answerId, progress } = this.state;
-		const { isPressed, anyAnswerSelected } = this.props;
+		const { answerText, answerId, onlyView } = this.state;
+		const { progress, isPressed, anyAnswerSelected } = this.props;
 
 		return (
 			<View key={answerText} style={container}>
@@ -141,7 +150,8 @@ class AnswerButton extends React.Component {
 					answerId,
 					progress,
 					isPressed,
-					anyAnswerSelected
+					anyAnswerSelected,
+					onlyView
 				)}
 			</View>
 		);

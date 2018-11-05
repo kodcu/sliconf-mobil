@@ -13,7 +13,9 @@ class AnswersView extends React.Component {
 		questionId: this.props.questionId,
 		questionName: this.props.questionName,
 		answers: this.props.answers,
-		selectedAnswers: this.props.selectedAnswers
+		selectedAnswers: this.props.selectedAnswers,
+		onlyView: this.props.onlyView,
+		participants: this.props.participants
 	}
 
 	/**
@@ -30,7 +32,9 @@ class AnswersView extends React.Component {
 				currentIndex: nextProps.currentIndex,
 				questionId: nextProps.questionId,
 				questionName: nextProps.questionName,
-				answers: nextProps.answers
+				answers: nextProps.answers,
+				onlyView: nextProps.onlyView,
+				participants: nextProps.participants
 			});
 		}
 	}
@@ -51,15 +55,17 @@ class AnswersView extends React.Component {
 	 * @param {number} answers.answer.voters - current percentage of the answer
 	 * @param {string} selectedAnswerId - current selected answers id
 	 * @param {string} selectedAnswerText - current selected answers text
+	 * @param {number} participants - current surveys participants
+	 * @param {boolean} onlyView - handless touchable opacity
 	 * @returns {Array} answer buttons as array of components
 	 */
-	renderAnswers = (answers, selectedAnswerId, selectedAnswerText) => {
+	renderAnswers = (answers, selectedAnswerId, selectedAnswerText, participants, onlyView) => {
 		const buttons = [];
 
 		const anyAnswerPressed = Boolean(selectedAnswerId && selectedAnswerText);
 
 		const hundred = 100;
-		//Find the biggest vote from answers.	
+		//Find the biggest vote from answers.
 		const maxVote = answers.reduce((max, answer) => {
 			const isPressed = Boolean(
 				anyAnswerPressed &&
@@ -67,10 +73,9 @@ class AnswersView extends React.Component {
 				selectedAnswerText.trim() === answer.text.trim()
 			);
 			const vote = isPressed ? (answer.voters + 1) : answer.voters;
-			return vote > max ? vote : max;
-		});
-		console.log('MaxVote: ')
-		console.log(maxVote)
+			return vote >= max ? vote : max;
+		}, answers[0].voters); //Initial value of max variable
+
 		const isMaxVoteNotZero = maxVote !== 0;
 
 		answers.forEach((answer) => {
@@ -79,20 +84,25 @@ class AnswersView extends React.Component {
 				selectedAnswerId.trim() === answer.id.trim() &&
 				selectedAnswerText.trim() === answer.text.trim()
 			);
-			//Checks if maxVote is 0 (Nobody voted yet) then creates a progress
+			const vote = isPressed ? (answer.voters + 1) : answer.voters;
+			const totalVoteCount = onlyView ? participants : (participants + 1);
+			//Create a progress from vote ratio to maxVote.
 			const progress = isMaxVoteNotZero ?
-				(hundred * answer.voters) / maxVote :
+				(hundred * vote) / maxVote :
 				0;
-
+			const percentage = totalVoteCount && vote / totalVoteCount;
+			
 			buttons.push(
 				(<AnswerButton
 					key={`${answer.id}${answer.text}`}
 					answerId={answer.id.trim()}
 					answerText={answer.text.trim()}
 					progress={progress}
+					percentage={percentage}
 					isPressed={isPressed}
 					anyAnswerSelected={anyAnswerPressed}
 					onAnswerPress={this.onAnswerPress}
+					onlyView={onlyView}
 				/>)
 			);
 		});
@@ -112,7 +122,9 @@ class AnswersView extends React.Component {
 			questionName,
 			answers,
 			selectedAnswers,
-			currentIndex
+			currentIndex,
+			onlyView,
+			participants
 		} = this.state;
 
 		let selectedAnswerId,
@@ -133,8 +145,23 @@ class AnswersView extends React.Component {
 						numberOfLines={1}
 					>{questionName}</Text>
 				</View>
+				{onlyView && (
+					<View style={{ alignItems: 'center', justifyContent: 'center' }}>
+						<Text
+							style={styles.alreadyAnswered}
+						>You already answered this survey. {'\n'}
+							Your answer is: {selectedAnswerText}
+						</Text>
+					</View>
+				)}
 				<ScrollView style={scrollView}>
-					{this.renderAnswers(answers, selectedAnswerId, selectedAnswerText)}
+					{this.renderAnswers(
+						answers,
+						selectedAnswerId,
+						selectedAnswerText,
+						participants,
+						onlyView
+					)}
 				</ScrollView>
 			</View>
 		);
@@ -167,6 +194,12 @@ const styles = StyleSheet.create({
 		paddingBottom: 2,
 		backgroundColor: Color.white,
 		height: (Scale.verticalScale(72) * 5)
+	},
+	alreadyAnswered: {
+		...Font.regular,
+		alignSelf: 'center',
+		paddingLeft: 4,
+		fontSize: Scale.verticalScale(16)
 	}
 });
 

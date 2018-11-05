@@ -34,6 +34,7 @@ const mapStateToProps = (state) => ({
 class PollScreen extends Component {
 	state = {
 		surveys: [],
+		answered: [],
 		surveyId: '',
 		currentIndex: 0,
 		selectedAnswers: [],
@@ -52,17 +53,14 @@ class PollScreen extends Component {
 
 		if (surveys && surveys.length > 0) {
 			if (answered && answered.length > 0) {
-				const notAnswered = surveys.filter(
-					survey => !answered.find(
-						answeredSurvey => survey.id === answeredSurvey.surveyId
-					)
-				);
 				this.setState({
-					surveys: notAnswered
+					surveys,
+					answered
 				});
 			} else {
 				this.setState({
-					surveys
+					surveys,
+					answered: []
 				});
 			}
 		}
@@ -304,18 +302,42 @@ class PollScreen extends Component {
 	}
 
 	render() {
-		const { surveys, surveyId, currentIndex, surveySelected, selectedAnswers } = this.state;
+		const {
+			surveys,
+			answered,
+			surveyId,
+			currentIndex,
+			surveySelected,
+			selectedAnswers
+		} = this.state;
 
 		let currentQuestion,
 			currentAnswers,
-			surveyLength;
+			surveyLength,
+			participants,
+			answeredSurvey = {},
+			newSelectedAnswers = {};
 
 		if (surveySelected) {
 			const currentSurvey = surveys.find(survey => survey.id === surveyId);
+			participants = currentSurvey.participants;
+			answeredSurvey = answered ?
+				answered.find(element => element.surveyId === currentSurvey.id) :
+				null;
 			surveyLength = currentSurvey.questions.length;
 			if ((surveyLength > currentIndex) && (currentIndex > -1)) {
 				currentQuestion = currentSurvey.questions[currentIndex];
 				currentAnswers = currentQuestion.options;
+			}
+			if (answeredSurvey && answeredSurvey.answeredQuestions) {
+				let idNumber = 0;
+				for (const key in answeredSurvey.answeredQuestions) {
+					newSelectedAnswers[currentIndex] = {};
+					newSelectedAnswers[currentIndex].question = key;
+					newSelectedAnswers[currentIndex].id = String(idNumber);
+					newSelectedAnswers[currentIndex].text = answeredSurvey.answeredQuestions[key];
+					idNumber++;
+				}
 			}
 		}
 
@@ -344,20 +366,22 @@ class PollScreen extends Component {
 									alignSelf: 'flex-start',
 									alignItems: 'flex-start'
 								}}
-							>
+							>								
 								<View style={styles.answerViewContainer}>
 									<AnswersView
 										questionId={currentQuestion.id}
 										questionName={currentQuestion.text}
 										answers={currentAnswers}
-										onAnswerSelect={this.onAnswerSelect}
+										onAnswerSelect={answeredSurvey ? () => { } : this.onAnswerSelect}
 										currentIndex={currentIndex}
-										selectedAnswers={selectedAnswers}
+										selectedAnswers={answeredSurvey ? newSelectedAnswers : selectedAnswers}
+										onlyView={Boolean(answeredSurvey)}
+										participants={participants}
 									/>
 								</View>
 								<LeftRight
 									onNext={this.onNext}
-									onSubmit={this.onSubmit}
+									onSubmit={answeredSurvey ? () => { } : this.onSubmit}
 									onPrevious={this.onPrevious}
 									nextDisabled={currentIndex === (surveyLength - 1)}
 									previousDisabled={currentIndex === 0}
