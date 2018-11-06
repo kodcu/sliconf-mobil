@@ -11,7 +11,12 @@ const initialState = {
 	drawerIndex: HOME
 };
 
-export const reducer = (state = initialState, action) => {
+const initialAction = {
+	type: String,
+	payload: Object
+};
+
+export const reducer = (state = initialState, action = initialAction) => {
 	const { type, payload } = action;
 	if (type === types.DRAWER_REQUEST) {
 		return {

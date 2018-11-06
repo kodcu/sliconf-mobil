@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
 
 export class Header extends Component {
     render() {
-        const { leftImage, rightImage, rightText, onPressRight, onPressLeft, children, active, connection } = this.props;
+        const { leftImage, rightImage, rightText, onPressRight, onPressLeft, children, active, connection, homeScreen } = this.props;
 
         let backgroundColor = Color.white;
         let textColor = Color.darkGray;
@@ -33,8 +33,6 @@ export class Header extends Component {
             Boolean('vote'.toUpperCase() === rightText.toUpperCase()) :
             false;
 
-        const isHomeScreen = (leftImage && rightImage) && (leftImage === 'chevron-left' && rightImage === 'bars');
-
         return (
             <NBHeader
                 noShadow
@@ -42,7 +40,7 @@ export class Header extends Component {
                 iosBarStyle={statusBar}
                 androidStatusBarColor={backgroundColor}
                 style={
-                    isHomeScreen ?
+                    homeScreen ?
                         {
                             backgroundColor: Color.transparent,
                             paddingTop: 0,
@@ -59,8 +57,8 @@ export class Header extends Component {
                     style={[
                         styles.header,
                         this.props.headerStyle,
-                        isHomeScreen ? 
-                        { backgroundColor }:
+                        homeScreen ? 
+                        { backgroundColor } :
                         {
                             paddingTop: Platform.OS === 'ios' ? 20 : 0,
                             backgroundColor
@@ -68,7 +66,7 @@ export class Header extends Component {
                     ]}
                 >
                     <Button
-                        style={isHomeScreen ? styles.homeScreenButtons : styles.button}
+                        style={homeScreen ? styles.homeScreenButtons : styles.button}
                         onPress={onPressLeft}
                     >
                         <Icon color={textColor} name={leftImage} size={18} />
@@ -77,7 +75,7 @@ export class Header extends Component {
                         {connection ? children : <Text style={[styles.HeaderText, { color: Color.white }]}>Connection Fail</Text>}
                     </View>
                     <Button
-                        style={isHomeScreen ? styles.homeScreenButtons : styles.button}
+                        style={homeScreen ? styles.homeScreenButtons : styles.button}
                         onPress={onPressRight}
                     >
                         {rightText && !isVote ? <Text style={{ fontFamily: 'Montserrat-Medium', fontSize: 14, color: textColor }}>{rightText}</Text> : null}

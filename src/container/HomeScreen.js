@@ -91,6 +91,7 @@ class HomeScreen extends Component {
 				<View style={styles.headerPanel}>
 					<Header
 						active
+						homeScreen
 						headerStyle={{ backgroundColor: Color.green, overflow: 'hidden' }}
 						leftImage='chevron-left' rightImage='bars'
 						onPressLeft={() => this.props.navigation.navigate(MAIN)}

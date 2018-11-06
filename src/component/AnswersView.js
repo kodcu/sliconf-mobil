@@ -91,7 +91,7 @@ class AnswersView extends React.Component {
 				(hundred * vote) / maxVote :
 				0;
 			const percentage = totalVoteCount && vote / totalVoteCount;
-			
+
 			buttons.push(
 				(<AnswerButton
 					key={`${answer.id}${answer.text}`}
@@ -109,6 +109,24 @@ class AnswersView extends React.Component {
 
 		return buttons;
 	}
+	/**
+	 * Returns you already answered this question text.
+	 * @param {string} questionId id of the current question.
+	 * @param {Object} selectedAnswers propertie values are answer text and keys are question ids.
+	 * @returns {Component} text component
+	 */
+	getAlreadyAnsweredComponent = (questionId, selectedAnswers) => {
+		return (
+			<View style={{ alignItems: 'center', justifyContent: 'center' }}>
+				<Text
+					style={styles.alreadyAnswered}
+				>{selectedAnswers[questionId] ? `You already answered this survey.\n
+				Your answer is: ${selectedAnswers[questionId]}` :
+				`You already answered this survey.\n 
+				However you did not answered this question`}</Text>
+			</View>
+		);
+	}
 
 	render() {
 		const {
@@ -119,6 +137,7 @@ class AnswersView extends React.Component {
 		} = styles;
 
 		const {
+			questionId,
 			questionName,
 			answers,
 			selectedAnswers,
@@ -145,15 +164,7 @@ class AnswersView extends React.Component {
 						numberOfLines={1}
 					>{questionName}</Text>
 				</View>
-				{onlyView && (
-					<View style={{ alignItems: 'center', justifyContent: 'center' }}>
-						<Text
-							style={styles.alreadyAnswered}
-						>You already answered this survey. {'\n'}
-							Your answer is: {selectedAnswerText}
-						</Text>
-					</View>
-				)}
+				{onlyView && this.getAlreadyAnsweredComponent(questionId, onlyView, selectedAnswers)}
 				<ScrollView style={scrollView}>
 					{this.renderAnswers(
 						answers,

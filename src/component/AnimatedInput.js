@@ -8,13 +8,13 @@ import {
     TextInput,
     StyleSheet,
 } from 'react-native';
-import Font from "../theme/Font";
-import Color from "../theme/Color";
+
+import Font from '../theme/Font';
+import Color from '../theme/Color';
 
 const PADDING = 16;
 
 export default class AnimatedInput extends React.Component {
-
     static defaultProps = {
         iconColor: 'white',
         iconSize: 30,
@@ -36,7 +36,7 @@ export default class AnimatedInput extends React.Component {
         const value = props.value || props.defaultValue;
 
         this.state = {
-            value : '',
+            value: '',
             focusedAnim: new Animated.Value(value ? 1 : 0),
         };
     }

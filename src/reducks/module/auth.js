@@ -26,7 +26,12 @@ const initialState = {
 	loginError: String,
 };
 
-export const reducer = (state = initialState, action) => {
+const initialAction = {
+	type: String,
+	payload: Object
+};
+
+export const reducer = (state = initialState, action = initialAction) => {
 	const { type, payload } = action;
 
 	switch (type) {
