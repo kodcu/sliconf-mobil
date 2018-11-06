@@ -58,7 +58,7 @@ class AnswerButton extends React.Component {
 								color
 							}
 						]}
-					>{`${this.props.percentage * 100}%`}</Text>
+					>{`${Number(this.props.percentage * 100).toPrecision(3)}%`}</Text>
 				</View>
 			</View>
 		);

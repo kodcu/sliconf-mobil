@@ -118,15 +118,10 @@ class PollScreen extends Component {
 				await dispatch(surveyAction.getAnsweredSurveys(event.id, user.id));
 				const { surveys, answered } = this.props;
 
-				const notAnswered = surveys.filter(
-					survey => !answered.find(
-						answeredSurvey => survey.id === answeredSurvey.surveyId
-					)
-				);
-
 				this.setState(
 					{
-						surveys: notAnswered,
+						surveys,
+						answered,
 						surveyId: '',
 						currentIndex: 0,
 						selectedAnswers: [],
