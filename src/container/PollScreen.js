@@ -10,7 +10,8 @@ import {
 	Platform,
 	Modal,
 	ScrollView,
-	Alert
+	Alert,
+	Image
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -30,6 +31,8 @@ const mapStateToProps = (state) => ({
 	user: state.auth.login ? state.auth.user : state.authDevice.user,
 	event: state.event.event
 });
+
+const checkImage = require('../component/Icons/check.png');
 
 class PollScreen extends Component {
 	state = {
@@ -241,9 +244,10 @@ class PollScreen extends Component {
 	}
 
 	getPollButtons(surveys) {
+		const { answered } = this.state;
 		const buttons = [];
-
 		surveys.forEach((survey) => {
+			const isAnswered = answered.some(element => element.surveyId === survey.id);
 			buttons.push(
 				(
 					<TouchableOpacity
@@ -263,8 +267,9 @@ class PollScreen extends Component {
 						<View style={styles.selectPollButton}>
 							<Text
 								style={styles.selectAPollText}
-								numberOfLines={1}
+								numberOfLines={2}
 							>{survey.name}</Text>
+							{isAnswered && this.getAlreadyAnsweredComponent()}
 						</View>
 					</TouchableOpacity>
 				)
@@ -280,6 +285,34 @@ class PollScreen extends Component {
 		}
 		return buttons;
 	}
+
+	getAlreadyAnsweredComponent = () => (
+		<View
+			style={{
+				flexDirection: 'row',
+				alignItems: 'flex-start',
+				justifyContent: 'center',
+				height: Scale.verticalScale(16),
+				width: '100%'
+			}}
+		>
+			<View
+				style={{
+					width: 16, 
+					height: 16,
+					backgroundColor: Color.green,
+					borderRadius: Platform.OS === 'ios' ? 60 : 90,
+					overflow: 'hidden'
+				}}
+			>
+				<Image
+					style={{ width: 15, height: 15 }}
+					source={checkImage}
+				/>
+			</View>
+			<Text style={styles.alreadyAnswered}>You already answered this survey.</Text>
+		</View>
+	);
 
 	increaseViewCount(surveyId) {
 		const { dispatch, event, user } = this.props;
@@ -310,8 +343,7 @@ class PollScreen extends Component {
 			currentAnswers,
 			surveyLength,
 			participants,
-			answeredSurvey = {},
-			newSelectedAnswers = {};
+			answeredSurvey = {};
 
 		if (surveySelected) {
 			const currentSurvey = surveys.find(survey => survey.id === surveyId);
@@ -323,16 +355,6 @@ class PollScreen extends Component {
 			if ((surveyLength > currentIndex) && (currentIndex > -1)) {
 				currentQuestion = currentSurvey.questions[currentIndex];
 				currentAnswers = currentQuestion.options;
-			}
-			if (answeredSurvey && answeredSurvey.answeredQuestions) {
-				let idNumber = 0;
-				for (const key in answeredSurvey.answeredQuestions) {
-					newSelectedAnswers[currentIndex] = {};
-					newSelectedAnswers[currentIndex].question = key;
-					newSelectedAnswers[currentIndex].id = String(idNumber);
-					newSelectedAnswers[currentIndex].text = answeredSurvey.answeredQuestions[key];
-					idNumber++;
-				}
 			}
 		}
 
@@ -361,7 +383,7 @@ class PollScreen extends Component {
 									alignSelf: 'flex-start',
 									alignItems: 'flex-start'
 								}}
-							>								
+							>
 								<View style={styles.answerViewContainer}>
 									<AnswersView
 										questionId={currentQuestion.id}
@@ -369,7 +391,7 @@ class PollScreen extends Component {
 										answers={currentAnswers}
 										onAnswerSelect={answeredSurvey ? () => { } : this.onAnswerSelect}
 										currentIndex={currentIndex}
-										selectedAnswers={answeredSurvey ? newSelectedAnswers : selectedAnswers}
+										selectedAnswers={answeredSurvey ? answeredSurvey.answeredQuestions : selectedAnswers}
 										onlyView={Boolean(answeredSurvey)}
 										participants={participants}
 									/>
@@ -418,7 +440,7 @@ const styles = StyleSheet.create({
 		borderTopWidth: 0.8,
 		borderBottomWidth: 0.8,
 		borderColor: Color.green,
-		height: Scale.verticalScale(68)
+		height: Scale.verticalScale(80)
 	},
 	selectPollButtonText: {
 		...Font.regular,
@@ -465,6 +487,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignSelf: 'center',
 		alignItems: 'center'
+	},
+	alreadyAnswered: {
+		...Font.regular,
+		alignSelf: 'center',
+		paddingLeft: 4,
+		fontSize: Scale.verticalScale(16)
 	}
 });
 

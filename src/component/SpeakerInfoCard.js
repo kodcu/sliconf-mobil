@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+	Alert,
 	StyleSheet,
 	View,
 	Text,
@@ -66,8 +67,17 @@ class SpeakerInfoCard extends Component {
 		}
 	}
 
-	onHeartPress = () => {
-		this.setState({ heartPressed: !this.state.heartPressed });
+	onHeartPress = (talk) => {
+		moment().isAfter(moment(talk.date)) ?			
+			this.setState({ heartPressed: !this.state.heartPressed }) :
+			Alert.alert(
+				'Warning!',
+				'Please wait until talk starts.',
+				[
+					{ text: 'OK', onPress: () => console.log('ok') }
+				],
+				{ cancelable: false }
+			);
 	}
 
 	onChange = () => {
@@ -167,7 +177,7 @@ class SpeakerInfoCard extends Component {
 								color={Color.green} size={36}
 								smiley={smiley}
 								style={styles.heartField}
-								onHeartPress={this.onHeartPress}
+								onHeartPress={this.onHeartPress(talk)}
 								heartPressed={heartPressed}
 							/>
 						</View>
@@ -270,7 +280,7 @@ class SpeakerInfoCard extends Component {
 							<Text style={styles.topic}>{this.getRoomName(talk.room)}</Text>
 						</View>
 					</View>
-					<View style={styles.actionField}>
+					<View style={styles.actionField}>						
 						<Heart
 							color={Color.green} size={36}
 							smiley={smiley}

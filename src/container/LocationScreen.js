@@ -68,7 +68,6 @@ class LocationScreen extends Component {
 				</View>
 			);
 		}
-
 		return (
 			<View style={styles.container}>
 				<Header
@@ -114,7 +113,7 @@ class LocationScreen extends Component {
 					<View style={styles.getDirections}>
 						<View style={styles.addressContainer}>
 							<Text style={styles.venueName}>{event.name}</Text>
-							<Text style={styles.venueName}>{event.venue}</Text>
+							<Text style={styles.venueName}>{location.venue}</Text>
 							<Text style={styles.venueAddress}>{location.description}</Text>
 						</View>
 						<View style={styles.directionsIcon}>

@@ -27,7 +27,7 @@ class AnswerButton extends React.Component {
 				<View
 					style={[
 						styles.textViewStyle,
-						{ flex: 0.84, paddingLeft: 2 }
+						{ flex: 0.83, paddingLeft: 2 }
 					]}
 				>
 					<Text
@@ -45,14 +45,14 @@ class AnswerButton extends React.Component {
 				</View>
 				<View
 					style={[styles.textViewStyle, {
-						flex: 0.16, paddingRight: 2
+						flex: 0.17, paddingRight: 1
 					}]}
 				>
 					<Text
 						style={[
 							styles.answerText,
 							{
-								alignSelf: 'flex-end',
+								alignSelf: 'flex-start',
 								textAlign: 'right',
 								width: '100%',
 								color

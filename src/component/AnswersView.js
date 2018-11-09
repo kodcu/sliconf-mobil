@@ -100,7 +100,7 @@ class AnswersView extends React.Component {
 					progress={progress}
 					percentage={percentage}
 					isPressed={isPressed}
-					anyAnswerSelected={anyAnswerPressed}
+					anyAnswerSelected={onlyView ? true : anyAnswerPressed}
 					onAnswerPress={this.onAnswerPress}
 					onlyView={onlyView}
 				/>)
@@ -115,18 +115,14 @@ class AnswersView extends React.Component {
 	 * @param {Object} selectedAnswers propertie values are answer text and keys are question ids.
 	 * @returns {Component} text component
 	 */
-	getAlreadyAnsweredComponent = (questionId, selectedAnswers) => {
-		return (
-			<View style={{ alignItems: 'center', justifyContent: 'center' }}>
-				<Text
-					style={styles.alreadyAnswered}
-				>{selectedAnswers[questionId] ? `You already answered this survey.\n
-				Your answer is: ${selectedAnswers[questionId]}` :
-				`You already answered this survey.\n 
-				However you did not answered this question`}</Text>
-			</View>
-		);
-	}
+	getAlreadyAnsweredComponent = (questionId, selectedAnswers) =>
+		(<View style={{ alignItems: 'center', justifyContent: 'center' }}>
+			<Text
+				style={styles.alreadyAnswered}
+			>{selectedAnswers[questionId] ?
+				`You already answered this survey.\nYour answer is: ${selectedAnswers[questionId]}` :
+				'You already answered this survey.\nHowever you did not answered this question'}</Text>
+		</View>);
 
 	render() {
 		const {
@@ -161,10 +157,10 @@ class AnswersView extends React.Component {
 				<View style={questionNameContainer}>
 					<Text
 						style={questionNameText}
-						numberOfLines={1}
+						numberOfLines={2}
 					>{questionName}</Text>
 				</View>
-				{onlyView && this.getAlreadyAnsweredComponent(questionId, onlyView, selectedAnswers)}
+				{onlyView && this.getAlreadyAnsweredComponent(questionId, selectedAnswers)}
 				<ScrollView style={scrollView}>
 					{this.renderAnswers(
 						answers,
