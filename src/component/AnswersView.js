@@ -13,7 +13,9 @@ class AnswersView extends React.Component {
 		questionId: this.props.questionId,
 		questionName: this.props.questionName,
 		answers: this.props.answers,
-		selectedAnswers: this.props.selectedAnswers
+		selectedAnswers: this.props.selectedAnswers,
+		onlyView: this.props.onlyView,
+		participants: this.props.participants
 	}
 
 	/**
@@ -21,60 +23,30 @@ class AnswersView extends React.Component {
 	 * @param {Object} nextProps next state as props
 	 */
 	componentWillReceiveProps(nextProps) {
-		const { questionId, questionName, answers, selectedAnswers, currentIndex } = this.state;
+		const { selectedAnswers, currentIndex } = this.state;
 		if (nextProps.currentIndex !== currentIndex) {
-			if (nextProps.questionId.trim() !== questionId.trim()) {
-				if (nextProps.questionName.trim() !== questionName.trim()) {
-					if (!_.isEqual(nextProps.answers, answers)) {
-						if (!_.isEqual(nextProps.selectedAnswers, selectedAnswers)) {
-							this.setState(nextProps);
-						}
-						this.setState({
-							currentIndex: nextProps.currentIndex,
-							questionId: nextProps.questionId,
-							questionName: nextProps.questionName,
-							answers: nextProps.answers
-						});
-					}
-				}
-			} else {
-				if (!_.isEqual(nextProps.selectedAnswers, selectedAnswers)) {
-					this.setState(nextProps);
-				}
-				this.setState({
-					currentIndex: nextProps.currentIndex,
-					questionId: nextProps.questionId,
-					questionName: nextProps.questionName,
-					answers: nextProps.answers
-				});
+			if (!_.isEqual(nextProps.selectedAnswers, selectedAnswers)) {
+				this.setState(nextProps);
 			}
+			this.setState({
+				currentIndex: nextProps.currentIndex,
+				questionId: nextProps.questionId,
+				questionName: nextProps.questionName,
+				answers: nextProps.answers,
+				onlyView: nextProps.onlyView,
+				participants: nextProps.participants
+			});
 		}
 	}
 	/**
-	 * Handless answer press
+	 * Passes answer press to parent class PollScreen
 	 * @param {string} answerId - id of pressed answer
 	 * @param {string} answerText - text of pressed answer
 	 */
 	onAnswerPress = (answerId, answerText) => {
-		const { currentIndex, questionId, selectedAnswers } = this.state;
+		const { currentIndex, questionId } = this.state;
 
 		this.props.onAnswerSelect(currentIndex, questionId, answerId, answerText);
-
-		if (answerId && answerText && answerText.trim() !== '') {
-			selectedAnswers[currentIndex] = {};
-			selectedAnswers[currentIndex]['question'] = questionId;
-			selectedAnswers[currentIndex]['id'] = answerId;
-			selectedAnswers[currentIndex]['text'] = answerText;
-		} else {
-			selectedAnswers[currentIndex] = {};
-			selectedAnswers[currentIndex]['question'] = '';
-			selectedAnswers[currentIndex]['id'] = '';
-			selectedAnswers[currentIndex]['text'] = '';
-		}
-
-		this.setState({
-			selectedAnswers
-		});
 	}
 	/**
 	 * Renders answer inside answer view.
@@ -83,55 +55,74 @@ class AnswersView extends React.Component {
 	 * @param {number} answers.answer.voters - current percentage of the answer
 	 * @param {string} selectedAnswerId - current selected answers id
 	 * @param {string} selectedAnswerText - current selected answers text
-	 * @returns {Component} answer buttons as component array
+	 * @param {number} participants - current surveys participants
+	 * @param {boolean} onlyView - handless touchable opacity
+	 * @returns {Array} answer buttons as array of components
 	 */
-	renderAnswers = (answers, selectedAnswerId, selectedAnswerText) => {
-		let buttons = [];
+	renderAnswers = (answers, selectedAnswerId, selectedAnswerText, participants, onlyView) => {
+		const buttons = [];
 
-		const answerSelected = Boolean(
-			selectedAnswerId &&
-			selectedAnswerText &&
-			selectedAnswerText.trim() !== ''
-		);
+		const anyAnswerPressed = Boolean(selectedAnswerId && selectedAnswerText);
 
-		let currentBiggest = 0;
-
-		answers.forEach((answer) => {
-			if (answer.voters && currentBiggest < answer.voters) {
-				currentBiggest = answer.voters;
-			}
-		});
-
-		answers.forEach((answer) => {
+		const hundred = 100;
+		//Find the biggest vote from answers.
+		const maxVote = answers.reduce((max, answer) => {
 			const isPressed = Boolean(
-				selectedAnswerId &&
-				selectedAnswerText &&
+				anyAnswerPressed &&
 				selectedAnswerId.trim() === answer.id.trim() &&
 				selectedAnswerText.trim() === answer.text.trim()
 			);
+			const vote = isPressed ? (answer.voters + 1) : answer.voters;
+			return vote >= max ? vote : max;
+		}, answers[0].voters); //Initial value of max variable
 
-			const progress = answer.voters ?
-				(100 * answer.voters) / currentBiggest :
-				0
-				;
+		const isMaxVoteNotZero = maxVote !== 0;
+
+		answers.forEach((answer) => {
+			const isPressed = Boolean(
+				anyAnswerPressed &&
+				selectedAnswerId.trim() === answer.id.trim() &&
+				selectedAnswerText.trim() === answer.text.trim()
+			);
+			const vote = isPressed ? (answer.voters + 1) : answer.voters;
+			const totalVoteCount = onlyView ? participants : (participants + 1);
+			//Create a progress from vote ratio to maxVote.
+			const progress = isMaxVoteNotZero ?
+				(hundred * vote) / maxVote :
+				0;
+			const percentage = totalVoteCount && vote / totalVoteCount;
 
 			buttons.push(
 				(<AnswerButton
 					key={`${answer.id}${answer.text}`}
 					answerId={answer.id.trim()}
-					answer={answer.text.trim()}
-					percentage={answer.voters || 0}
-					progress={progress / 100}
-					isBiggest={currentBiggest === answer.voters}
+					answerText={answer.text.trim()}
+					progress={progress}
+					percentage={percentage}
 					isPressed={isPressed}
-					anyAnswerSelected={answerSelected}
+					anyAnswerSelected={onlyView ? true : anyAnswerPressed}
 					onAnswerPress={this.onAnswerPress}
+					onlyView={onlyView}
 				/>)
 			);
 		});
 
 		return buttons;
 	}
+	/**
+	 * Returns you already answered this question text.
+	 * @param {string} questionId id of the current question.
+	 * @param {Object} selectedAnswers propertie values are answer text and keys are question ids.
+	 * @returns {Component} text component
+	 */
+	getAlreadyAnsweredComponent = (questionId, selectedAnswers) =>
+		(<View style={{ alignItems: 'center', justifyContent: 'center' }}>
+			<Text
+				style={styles.alreadyAnswered}
+			>{selectedAnswers[questionId] ?
+				`You already answered this survey.\nYour answer is: ${selectedAnswers[questionId]}` :
+				'You already answered this survey.\nHowever you did not answered this question'}</Text>
+		</View>);
 
 	render() {
 		const {
@@ -142,31 +133,42 @@ class AnswersView extends React.Component {
 		} = styles;
 
 		const {
+			questionId,
 			questionName,
 			answers,
 			selectedAnswers,
-			currentIndex
+			currentIndex,
+			onlyView,
+			participants
 		} = this.state;
 
 		let selectedAnswerId,
 			selectedAnswerText;
 
-		if (currentIndex > -1) {
-			if (selectedAnswers) {
-				if (selectedAnswers[currentIndex] && selectedAnswers[currentIndex].text.trim() !== '') {
-					selectedAnswerId = selectedAnswers[currentIndex].id;
-					selectedAnswerText = selectedAnswers[currentIndex].text;
-				}
+		if (selectedAnswers) {
+			if (selectedAnswers[currentIndex] && selectedAnswers[currentIndex].text.trim() !== '') {
+				selectedAnswerId = selectedAnswers[currentIndex].id;
+				selectedAnswerText = selectedAnswers[currentIndex].text;
 			}
 		}
 
 		return (
 			<View style={answersContainer}>
 				<View style={questionNameContainer}>
-					<Text style={questionNameText}>{questionName}</Text>
+					<Text
+						style={questionNameText}
+						numberOfLines={2}
+					>{questionName}</Text>
 				</View>
+				{onlyView && this.getAlreadyAnsweredComponent(questionId, selectedAnswers)}
 				<ScrollView style={scrollView}>
-					{this.renderAnswers(answers, selectedAnswerId, selectedAnswerText)}
+					{this.renderAnswers(
+						answers,
+						selectedAnswerId,
+						selectedAnswerText,
+						participants,
+						onlyView
+					)}
 				</ScrollView>
 			</View>
 		);
@@ -199,6 +201,12 @@ const styles = StyleSheet.create({
 		paddingBottom: 2,
 		backgroundColor: Color.white,
 		height: (Scale.verticalScale(72) * 5)
+	},
+	alreadyAnswered: {
+		...Font.regular,
+		alignSelf: 'center',
+		paddingLeft: 4,
+		fontSize: Scale.verticalScale(16)
 	}
 });
 

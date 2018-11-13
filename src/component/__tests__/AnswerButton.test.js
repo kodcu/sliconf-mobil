@@ -13,16 +13,17 @@ const answer = {
 	text: 'Apple',
 	voters: 25
 };
+
 const selectedAnswerId = '20';
 const selectedAnswerText = 'Orange';
-const answerSelected = Boolean(
+
+const anyAnswerSelected = Boolean(
 	selectedAnswerId &&
-	selectedAnswerText &&
-	selectedAnswerText.trim() !== ''
+	selectedAnswerText
 );
+
 const isPressed = Boolean(
-	selectedAnswerId &&
-	selectedAnswerText &&
+	anyAnswerSelected &&
 	selectedAnswerId.trim() === answer.id.trim() &&
 	selectedAnswerText.trim() === answer.text.trim()
 );
@@ -36,12 +37,10 @@ describe('<AnswerButton /> testing with mock answer data', () => {
 			<AnswerButton
 				key={`${answer.id}${answer.text}`}
 				answerId={answer.id.trim()}
-				answer={answer.text.trim()}
-				percentage={answer.voters || 0}
-				progress={progress / 100}
-				isBiggest={currentBiggest === answer.voters}
+				answerText={answer.text.trim()}
+				progress={progress}
 				isPressed={isPressed}
-				anyAnswerSelected={answerSelected}
+				anyAnswerSelected={anyAnswerPressed}
 				onAnswerPress={this.onAnswerPress}
 			/>
 		).toJSON();
@@ -64,17 +63,15 @@ describe('<AnswerButton /> testing with mock answer data', () => {
 			expect(wrapper.find(Text)).to.have.length(2);
 			expect(wrapper.find(TouchableOpacity)).to.have.length(1);
 		});
-		it('Not pressed answerButton should render 6 View & 2 Text & 1 TouchableOpacity components', () => {
+		it('Not pressed answerButton should render 3 View & 1 Text & 1 TouchableOpacity components', () => {
 			const wrapper = shallow(
 				<AnswerButton
 					key={`${answer.id}${answer.text}`}
 					answerId={answer.id.trim()}
-					answer={answer.text.trim()}
-					percentage={answer.voters || 0}
-					progress={progress / 100}
-					isBiggest={currentBiggest === answer.voters}
+					answerText={answer.text.trim()}
+					progress={progress}
 					//isPressed={isPressed}
-					//anyAnswerSelected={answerSelected}
+					//anyAnswerSelected={anyAnswerPressed}
 					onAnswerPress={this.onAnswerPress}
 				/>
 			);
@@ -88,12 +85,10 @@ describe('<AnswerButton /> testing with mock answer data', () => {
 				<AnswerButton
 					key={`${answer.id}${answer.text}`}
 					answerId={answer.id.trim()}
-					answer={answer.text.trim()}
-					percentage={answer.voters || 0}
-					progress={progress / 100}
-					isBiggest={currentBiggest === answer.voters}
+					answerText={answer.text.trim()}
+					progress={progress}
 					isPressed={isPressed}
-					anyAnswerSelected={answerSelected}
+					anyAnswerSelected={anyAnswerPressed}
 					onAnswerPress={this.onAnswerPress}
 				/>
 			);

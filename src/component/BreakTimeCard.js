@@ -5,7 +5,7 @@ import Color from '../theme/Color';
 import Font from '../theme/Font';
 import { moderateScale } from '../theme/Scale';
 
-export default class ChosenCard extends Component {
+export default class BreakTimeCard extends Component {
     render() {
         const item = this.props.item;
         return (

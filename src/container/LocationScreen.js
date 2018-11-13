@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Linking, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Entypo';
 import { connect } from 'react-redux';
 
@@ -68,7 +68,6 @@ class LocationScreen extends Component {
 				</View>
 			);
 		}
-
 		return (
 			<View style={styles.container}>
 				<Header
@@ -83,7 +82,6 @@ class LocationScreen extends Component {
 				</Header>
 				<View style={styles.mapContainer}>
 					<MapView
-						//provider={PROVIDER_GOOGLE}
 						style={styles.map}
 						initialRegion={{
 							latitude: parseFloat(location.lat),
@@ -115,6 +113,7 @@ class LocationScreen extends Component {
 					<View style={styles.getDirections}>
 						<View style={styles.addressContainer}>
 							<Text style={styles.venueName}>{event.name}</Text>
+							<Text style={styles.venueName}>{location.venue}</Text>
 							<Text style={styles.venueAddress}>{location.description}</Text>
 						</View>
 						<View style={styles.directionsIcon}>

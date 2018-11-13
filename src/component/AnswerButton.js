@@ -5,31 +5,29 @@ import * as Progress from 'react-native-progress';
 import Color from '../theme/Color';
 import * as Scale from '../theme/Scale';
 import Font from '../theme/Font';
+import { Circle } from '../component/Selectables';
 
 class AnswerButton extends React.Component {
 	state = {
-		answer: this.props.answer,
 		answerId: this.props.answerId,
-		percentage: this.props.percentage || 0,
-		progress: this.props.progress,
-		isBiggest: this.props.isBiggest
+		answerText: this.props.answerText,
+		onlyView: this.props.onlyView
 	}
 
 	/**
 	 * Renders text on top of the bar
-	 * @param {string} answer displayed answer
-	 * @param {number} percentage displayed percentage
-	 * @param {boolean} biggest handles color of text
+	 * @param {string} answerText displayed answerText
+	 * @param {boolean} filled handles color of text
 	 * @returns {Component} bar text
 	 */
-	renderBarText = (answer, percentage, biggest) => {
-		const color = biggest ? Color.white : Color.darkGray;
+	renderBarText = (answerText, filled) => {
+		const color = filled ? Color.white : Color.darkGray;
 		return (
 			<View style={styles.textViewContainer}>
 				<View
 					style={[
 						styles.textViewStyle,
-						{ flex: 0.84, paddingLeft: 2 }
+						{ flex: 0.83, paddingLeft: 2 }
 					]}
 				>
 					<Text
@@ -43,109 +41,97 @@ class AnswerButton extends React.Component {
 							}
 						]}
 						numberOfLines={1}
-					>{answer}</Text>
+					>{answerText}</Text>
 				</View>
 				<View
 					style={[styles.textViewStyle, {
-						flex: 0.16, paddingRight: 2
+						flex: 0.17, paddingRight: 1
 					}]}
 				>
 					<Text
 						style={[
 							styles.answerText,
-							{	
-								alignSelf: 'flex-end',
+							{
+								alignSelf: 'flex-start',
 								textAlign: 'right',
 								width: '100%',
 								color
 							}
 						]}
-					>{`${percentage}%`}</Text>
+					>{`${Number(this.props.percentage * 100).toPrecision(3)}%`}</Text>
 				</View>
 			</View>
 		);
 	}
 
 	/**
-	 * Renders answer bars
-	 * @param {string} answer text to be displayed
-	 * @param {number} percentage handless progress
+	 * Renders answerText bars
+	 * @param {string} answerText text to be displayed
+	 * @param {number} progress progress from vote count
 	 * @param {boolean} pressed handless pressing
-	 * @param {boolean} biggest handless black/white text
 	 * @param {boolean} anyPressed handless not selected answers
 	 * @returns {Component} button
 	 */
-	renderAnswerBar = (answer, percentage, progress, pressed, biggest, anyPressed) => {
-		//96% of the screen handless bar width
+	renderAnswerBar = (answerText, progress, pressed, anyPressed) => {
+		//96% of the screen handless bar width this comes from design choices
 		const width = ((Scale.width * 9.6) / 10);
+		const hundred = 100;
+
 		if (anyPressed) {
-			if (pressed) {
-				return (
-					<View style={[styles.answerView, { alignItems: 'center', justifyContent: 'center' }]}>
-						<View style={{ flex: 1, alignItems: 'center' }}>
-							<Progress.Bar
-								color={Color.green}
-								height={Scale.verticalScale(34)}
-								width={width}
-								borderRadius={8}
-								progress={biggest ? 1 : progress}
-								indeterminate={false}
-							>
-								{this.renderBarText(answer, percentage, biggest)}
-							</Progress.Bar>
-						</View>
-					</View>
-				);
-			}
 			return (
 				<View style={[styles.answerView, { alignItems: 'center', justifyContent: 'center' }]}>
 					<View style={{ flex: 1, alignItems: 'center' }}>
 						<Progress.Bar
-							color={Color.darkGray5}
+							color={pressed ? Color.green : Color.darkGray5}
 							height={Scale.verticalScale(34)}
 							width={width}
 							borderRadius={8}
-							progress={biggest ? 1 : progress}
+							progress={progress / hundred}
 							indeterminate={false}
 						>
-							{this.renderBarText(answer, percentage, biggest)}
+							{this.renderBarText(answerText, (progress === 100))}
 						</Progress.Bar>
 					</View>
 				</View>
 			);
 		}
-
 		return (
 			<View style={styles.answerView}>
 				<Text
 					style={[styles.answerText, { width, paddingHorizontal: 8 }]}
 					numberOfLines={1}
-				>{answer}</Text>
+				><Circle isPressed color={Color.darkGray5} size={16} />{`  ${answerText}`}</Text>
 			</View>
 		);
 	}
 
 	/**
 	 * Renders touchable button template
-	 * @param {string} answer text to be displayed
-	 * @param {string} answerId unique id of answer
-	 * @param {number} percentage voter count of answer
-	 * @param {number} progress progress of the bar proportioned to highest answer
+	 * @param {string} answerText text to be displayed
+	 * @param {string} answerId unique id of answerText
+	 * @param {number} progress progress of the bar proportioned to highest answerText
 	 * @param {boolean} pressed handless color of selected answers
-	 * @param {boolean} biggest handless proportioning and text color
 	 * @param {boolean} anyAnswerSelected handless color of not selected answers
+	 * @param {boolean} onlyView - handless touchable opacity
 	 */
-	renderButton = (answer, answerId, percentage, progress, pressed, biggest, anyAnswerSelected) => {
-		const displayAnswer = answer.trim();
-
-		return (
-			<TouchableOpacity onPress={() => this.props.onAnswerPress(answerId, answer)}>
-				{this.renderAnswerBar(
+	renderButton = (answerText, answerId, progress, pressed, anyAnswerSelected, onlyView) => {
+		const displayAnswer = answerText.trim();
+		if (onlyView) {
+			return (
+				this.renderAnswerBar(
 					displayAnswer,
-					percentage,
 					progress,
 					pressed,
-					biggest,
+					anyAnswerSelected
+				)
+			);
+		}
+		return (
+			<TouchableOpacity onPress={() => this.props.onAnswerPress(answerId, answerText)}>
+				{this.renderAnswerBar(
+					displayAnswer,
+					progress,
+					pressed,
 					anyAnswerSelected
 				)}
 			</TouchableOpacity>
@@ -154,19 +140,18 @@ class AnswerButton extends React.Component {
 
 	render() {
 		const { container } = styles;
-		const { answer, answerId, percentage, progress, isBiggest } = this.state;
-		const { isPressed, anyAnswerSelected } = this.props;
+		const { answerText, answerId, onlyView } = this.state;
+		const { progress, isPressed, anyAnswerSelected } = this.props;
 
 		return (
-			<View key={answer} style={container}>
+			<View key={answerText} style={container}>
 				{this.renderButton(
-					answer,
+					answerText,
 					answerId,
-					percentage,
 					progress,
 					isPressed,
-					isBiggest,
-					anyAnswerSelected
+					anyAnswerSelected,
+					onlyView
 				)}
 			</View>
 		);

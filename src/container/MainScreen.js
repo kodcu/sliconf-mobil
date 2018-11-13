@@ -1,6 +1,3 @@
-/*
- * Created by Muslum on 2.08.2017.
- */
 import React, { Component } from 'react';
 import {
 	Image,
@@ -21,7 +18,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { actionCreators } from '../reducks/module/event';
 import { EVENT_STACK } from '../router';
 import Loading from '../component/Loading';
-import If from '../component/If';
 import Header from '../component/Header';
 import AnimatedInput from '../component/AnimatedInput';
 import Color from '../theme/Color';
@@ -33,8 +29,6 @@ const logo = require('../../images/logo.png');
 const mapStateToProps = (state) => ({
 	loading: state.event.loading,
 	error: state.event.error,
-	events: state.event.events,
-	event: state.event.event,
 	errorMessage: state.event.errorMessage,
 	login: state.auth.login,
 	userDevice: state.authDevice.user,
@@ -50,18 +44,12 @@ class MainScreen extends Component {
 	};
 
 	componentWillMount() {
-		AsyncStorage.getItem('Code').then((value) => {
+		AsyncStorage.multiGet(['Code', 'eventName']).then(results => {
 			this.setState({
-				code: value,
+				code: results[0][1],
+				eventName: results[1][1]
 			});
-		}
-		);
-		AsyncStorage.getItem('eventName').then((value) => {
-			this.setState({
-				eventName: value,
-			});
-		}
-		);
+		});
 	}
 
     /**
@@ -87,14 +75,10 @@ class MainScreen extends Component {
 			);
 
 		if (!error && !loading) {
-			//this.props.navigation.dispatch({type: 'drawerStack'});
 			this.setState({ loadingModal: loading });
-			if (code) {
-				AsyncStorage.setItem('Code', code).then((code1) => {
-					console.log('Success', code1);
-				});
+			if (code !== this.state.code) {
+				AsyncStorage.setItem('Code', code);
 			}
-			Keyboard.dismiss();
 			this.props.navigation.navigate(EVENT_STACK);
 		}
 	};
@@ -105,7 +89,8 @@ class MainScreen extends Component {
      * @private
      */
 	_handlePressSearch(value) {
-		if (!!value)
+		Keyboard.dismiss();
+		if (value)
 			this.getEvent(value);
 	}
 
@@ -121,78 +106,66 @@ class MainScreen extends Component {
 		const loading = this.state.loadingModal;
 		const { search, code, eventName } = this.state;
 
-		let storeCode = '';
-		AsyncStorage.getItem('Code').then((value) => {
-			storeCode = value;
-		});
-
-		let storeEventName = '';
-		AsyncStorage.getItem('eventName').then((value) => {
-			storeEventName = value;
-		});
-
 		return (
 			<View style={styles.container}>
 				<Loading visible={loading} />
-				<If con={search}>
-					<If.Then>
-						<KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
-							<View style={styles.container}>
-								<Header />
-								<View style={styles.logoContainer}>
-									<Image style={styles.image} source={logo} />
-									<Text style={styles.title}>Welcome to SliConf</Text>
-									<Text style={styles.subtitle}>Conferences at your fingertips</Text>
-								</View>
-								<View style={styles.containerBottom}>
-									<View style={styles.search}>
-										<AnimatedInput
-											label={'Event Code'}
-											iconClass={FontAwesomeIcon}
-											iconName={'search'}
-											iconColor={Color.white}
-											inputStyle={{ color: Color.green }}
-											onSubmitEditing={(value) => {
-												Keyboard.dismiss;
-												this._handlePressSearch(value);
-											}}
-										/>
-										{<TouchableOpacity
-											style={styles.search}
-											onPress={() => this._handlePressSearch(Boolean(storeCode) && storeCode !== '' ? storeCode : code)}>
-											<View style={{ flex: 1, flexDirection: 'row' }}>
-												<Text
-													style={styles.title2}
-													numberOfLines={1}
-												>{Boolean(storeEventName) && storeEventName !== '' ? storeEventName : eventName}</Text>
-											</View>
-										</TouchableOpacity>}
-										<TouchableOpacity
-											style={styles.qrcode}
-											onPress={() => this.setState({ search: false })}>
-											<Icon name='qrcode-scan' size={64} color={Color.darkGray} />
-										</TouchableOpacity>
-									</View>
+				{search ?
+					(<KeyboardAwareScrollView keyboardShouldPersistTaps={'never'}>
+						<View style={styles.container}>
+							<Header />
+							<View style={styles.logoContainer}>
+								<Image style={styles.image} source={logo} />
+								<Text style={styles.title}>Welcome to SliConf</Text>
+								<Text style={styles.subtitle}>Conferences at your fingertips</Text>
+							</View>
+							<View style={styles.containerBottom}>
+								<View style={styles.search}>
+									<AnimatedInput
+										label={'Event Code'}
+										iconClass={FontAwesomeIcon}
+										iconName={'search'}
+										iconColor={Color.white}
+										inputStyle={{ color: Color.green }}
+										onSubmitEditing={(value) => {
+											this._handlePressSearch(value);
+										}}
+									/>
+									{<TouchableOpacity
+										style={styles.search}
+										onPress={() => this._handlePressSearch(code)}
+									>
+										<View style={{ flex: 1, flexDirection: 'row' }}>
+											<Text
+												style={styles.title2}
+												numberOfLines={1}
+											>{eventName}</Text>
+										</View>
+									</TouchableOpacity>}
+									<TouchableOpacity
+										style={styles.qrcode}
+										onPress={() => this.setState({ search: false })}
+									>
+										<Icon name='qrcode-scan' size={64} color={Color.darkGray} />
+									</TouchableOpacity>
 								</View>
 							</View>
-						</KeyboardAwareScrollView>
-					</If.Then>
-					<If.Else>
-						<View style={styles.container}>
-							<Header rightImage='close'
-								onPressRight={() => this._hide()}>
-								<Header.Title title="QR Code" />
-							</Header>
-							<QRCodeScanner
-								onRead={(e) => {
-									this._hide();
-									this.getEvent(e.data);
-								}}
-							/>
-							<View />
 						</View>
-					</If.Else>
-				</If>
+					</KeyboardAwareScrollView>) : (<View style={styles.container}>
+						<Header
+							rightImage='close'
+							onPressRight={() => this._hide()}
+						>
+							<Header.Title title="QR Code" />
+						</Header>
+						<QRCodeScanner
+							onRead={(e) => {
+								this._hide();
+								this.getEvent(e.data);
+							}}
+						/>
+						<View />
+					</View>)
+				}
 			</View>
 		);
 	}
@@ -201,6 +174,7 @@ class MainScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		height: '100%',
 		alignItems: 'center',
 		justifyContent: 'center',
 		backgroundColor: Color.white

@@ -10,7 +10,8 @@ import {
 	Platform,
 	Modal,
 	ScrollView,
-	Alert
+	Alert,
+	Image
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -31,9 +32,12 @@ const mapStateToProps = (state) => ({
 	event: state.event.event
 });
 
+const checkImage = require('../component/Icons/check.png');
+
 class PollScreen extends Component {
 	state = {
 		surveys: [],
+		answered: [],
 		surveyId: '',
 		currentIndex: 0,
 		selectedAnswers: [],
@@ -42,8 +46,7 @@ class PollScreen extends Component {
 	};
 
 	async componentWillMount() {
-		const { dispatch, event, user } = this.props; //const eventId = event.id;
-
+		const { dispatch, event, user } = this.props;
 		//Get answered surveys
 		await dispatch(surveyAction.getAnsweredSurveys(event.id, user.id));
 		//Get surveys
@@ -51,18 +54,18 @@ class PollScreen extends Component {
 
 		const { surveys, answered } = this.props;
 
-		if (surveys) {
-			if (answered) {
-				const notAnswered = surveys.filter(
-					(element) => answered.indexOf(element) === -1
-				);
+		if (surveys && surveys.length > 0) {
+			if (answered && answered.length > 0) {
 				this.setState({
-					surveys: notAnswered
+					surveys,
+					answered
+				});
+			} else {
+				this.setState({
+					surveys,
+					answered: []
 				});
 			}
-			this.setState({
-				surveys
-			});
 		}
 	}
 
@@ -96,8 +99,7 @@ class PollScreen extends Component {
 
 		if (selectedAnswers && selectedAnswers.length > 0) {
 			const answeredQuestions = selectedAnswers.reduce(
-				(obj, element) => (obj[element.question] = element.text, obj),
-				{}
+				(obj, element) => (obj[element.question] = element.text, obj), {}
 			);
 			//Sends user answers to remote
 			await dispatch(
@@ -105,10 +107,10 @@ class PollScreen extends Component {
 					event.id,
 					surveyId,
 					{
-						"surveyId": surveyId,
-						"userId": userId,
+						surveyId,
+						userId: user.id,
 						eventId: event.id,
-						"answeredQuestions": answeredQuestions
+						answeredQuestions
 					}
 				)
 			);
@@ -116,8 +118,13 @@ class PollScreen extends Component {
 			const { error } = this.props;
 
 			if (!error) {
+				await dispatch(surveyAction.getAnsweredSurveys(event.id, user.id));
+				const { surveys, answered } = this.props;
+
 				this.setState(
 					{
+						surveys,
+						answered,
 						surveyId: '',
 						currentIndex: 0,
 						selectedAnswers: [],
@@ -202,7 +209,10 @@ class PollScreen extends Component {
 					}
 				>
 					<View style={styles.selectPollButton}>
-						<Text style={styles.selectPollButtonText}>{data.name}</Text>
+						<Text
+							style={styles.selectPollButtonText}
+							numberOfLines={1}
+						>{data.name}</Text>
 					</View>
 				</TouchableOpacity>
 			);
@@ -234,9 +244,10 @@ class PollScreen extends Component {
 	}
 
 	getPollButtons(surveys) {
-		let buttons = [];
-
+		const { answered } = this.state;
+		const buttons = [];
 		surveys.forEach((survey) => {
+			const isAnswered = answered.some(element => element.surveyId === survey.id);
 			buttons.push(
 				(
 					<TouchableOpacity
@@ -254,7 +265,11 @@ class PollScreen extends Component {
 						}
 					>
 						<View style={styles.selectPollButton}>
-							<Text style={styles.selectAPollText}>{survey.name}</Text>
+							<Text
+								style={styles.selectAPollText}
+								numberOfLines={2}
+							>{survey.name}</Text>
+							{isAnswered && this.getAlreadyAnsweredComponent()}
 						</View>
 					</TouchableOpacity>
 				)
@@ -270,6 +285,34 @@ class PollScreen extends Component {
 		}
 		return buttons;
 	}
+
+	getAlreadyAnsweredComponent = () => (
+		<View
+			style={{
+				flexDirection: 'row',
+				alignItems: 'flex-start',
+				justifyContent: 'center',
+				height: Scale.verticalScale(16),
+				width: '100%'
+			}}
+		>
+			<View
+				style={{
+					width: 16, 
+					height: 16,
+					backgroundColor: Color.green,
+					borderRadius: Platform.OS === 'ios' ? 60 : 90,
+					overflow: 'hidden'
+				}}
+			>
+				<Image
+					style={{ width: 15, height: 15 }}
+					source={checkImage}
+				/>
+			</View>
+			<Text style={styles.alreadyAnswered}>You already answered this survey.</Text>
+		</View>
+	);
 
 	increaseViewCount(surveyId) {
 		const { dispatch, event, user } = this.props;
@@ -287,14 +330,27 @@ class PollScreen extends Component {
 	}
 
 	render() {
-		const { surveys, surveyId, currentIndex, surveySelected, selectedAnswers } = this.state;
+		const {
+			surveys,
+			answered,
+			surveyId,
+			currentIndex,
+			surveySelected,
+			selectedAnswers
+		} = this.state;
 
 		let currentQuestion,
 			currentAnswers,
-			surveyLength;
+			surveyLength,
+			participants,
+			answeredSurvey = {};
 
 		if (surveySelected) {
 			const currentSurvey = surveys.find(survey => survey.id === surveyId);
+			participants = currentSurvey.participants;
+			answeredSurvey = answered ?
+				answered.find(element => element.surveyId === currentSurvey.id) :
+				null;
 			surveyLength = currentSurvey.questions.length;
 			if ((surveyLength > currentIndex) && (currentIndex > -1)) {
 				currentQuestion = currentSurvey.questions[currentIndex];
@@ -333,14 +389,16 @@ class PollScreen extends Component {
 										questionId={currentQuestion.id}
 										questionName={currentQuestion.text}
 										answers={currentAnswers}
-										onAnswerSelect={this.onAnswerSelect}
+										onAnswerSelect={answeredSurvey ? () => { } : this.onAnswerSelect}
 										currentIndex={currentIndex}
-										selectedAnswers={selectedAnswers}
+										selectedAnswers={answeredSurvey ? answeredSurvey.answeredQuestions : selectedAnswers}
+										onlyView={Boolean(answeredSurvey)}
+										participants={participants}
 									/>
 								</View>
 								<LeftRight
 									onNext={this.onNext}
-									onSubmit={this.onSubmit}
+									onSubmit={answeredSurvey ? () => { } : this.onSubmit}
 									onPrevious={this.onPrevious}
 									nextDisabled={currentIndex === (surveyLength - 1)}
 									previousDisabled={currentIndex === 0}
@@ -382,7 +440,7 @@ const styles = StyleSheet.create({
 		borderTopWidth: 0.8,
 		borderBottomWidth: 0.8,
 		borderColor: Color.green,
-		height: Scale.verticalScale(68)
+		height: Scale.verticalScale(80)
 	},
 	selectPollButtonText: {
 		...Font.regular,
@@ -429,6 +487,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignSelf: 'center',
 		alignItems: 'center'
+	},
+	alreadyAnswered: {
+		...Font.regular,
+		alignSelf: 'center',
+		paddingLeft: 4,
+		fontSize: Scale.verticalScale(16)
 	}
 });
 
