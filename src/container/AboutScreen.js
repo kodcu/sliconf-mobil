@@ -125,7 +125,7 @@ export class About extends Component {
 									const icon = index && index > 0 ?
 										'ios-call-outline' :
 										'ios-phone-portrait';
-									return item.trim() ?
+									return (item.trim() && (item.trim().length > 4)) ?
 										this.rowItem(
 											item,
 											icon,
