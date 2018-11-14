@@ -45,10 +45,8 @@ class App extends React.Component {
         StatusBar.setBarStyle("dark-content", true)
     }
 
-
     render() {
         return (
-
             <AppNavigator navigation={addNavigationHelpers({
                 dispatch: this.props.dispatch,
                 state: this.props.nav,

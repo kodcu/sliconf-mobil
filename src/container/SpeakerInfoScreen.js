@@ -30,8 +30,10 @@ const mapStateToProps = (state) => ({
 	agenda: state.event.event.agenda
 });
 
-class SpeakerInfoScreen extends Component {
+const firstRegex = /^https?:\/\//i;
+const secondRegex = /^https?:\\\\/i;
 
+class SpeakerInfoScreen extends Component {
 	state = {
 		height: new Animated.Value(0),
 		width: new Animated.Value(0),
@@ -76,13 +78,14 @@ class SpeakerInfoScreen extends Component {
      * Internet sitesine yonlendirir.
      * @param url
      */
-	redirect(url) {
+	redirect(url) {			
 		if (url !== '') {
+			if (!firstRegex.test(url) && !secondRegex.test(url))
+				url = 'http://' + url;
+
 			Linking.canOpenURL(url).then(supported => {
 				if (supported) {
 					Linking.openURL(url);
-				} else {
-					console.log('Don\'t know how to go');
 				}
 			}).catch(err => console.error('An error occurred', err));
 		}

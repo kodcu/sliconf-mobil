@@ -23,75 +23,6 @@ export class About extends Component {
 		dispatch(actionCreators.changedDrawer(navigation.state.routeName));
 	}
 
-    /**
-     * Etkinligin iletisim bilgilerini ekrana basar
-     * @param name iletisim bilgisi
-     * @param icon kullanilacak ikon ismi
-     * @param type mail - telefon (email-phone)
-     * @param index
-     */
-	rowItem = (name, icon, type, index) =>
-		<TouchableOpacity
-			key={index}
-			style={{ flexDirection: 'row', alignItems: 'center' }}
-			onPress={() => type === 'phone' ?
-				Communications.phonecall(name, true) :
-				type === 'web' ?
-					this.redirect(this.props.event.about.web) :
-					Communications.email(
-						[name.toString()],
-						null,
-						null,
-						this.props.event.name + ' About',
-						''
-					)
-			}
-		>
-			<Icon name={icon} size={40} color={Color.darkGray} style={{ margin: 15 }} />
-			<Text style={styles.aboutText}>{name}</Text>
-		</TouchableOpacity >
-
-    /**
-     * Etkinligin sosyal medya hesaplarini ekrana basar
-     * @param icon sosyal medya ikonunun ismi
-     * @param url sosyal medya linki
-     * @param index
-     */
-	rowSocial = (icon, url, index) => {
-		if (url) {
-			return (
-				<TouchableOpacity
-					key={index}
-					style={{ flexDirection: 'row', alignItems: 'center' }}
-					onPress={() => this.redirect(url)}
-				>
-					<IconSocial
-						name={icon}
-						size={40}
-						color={Color.darkGray}
-						style={{ margin: 10 }}
-					/>
-				</TouchableOpacity>
-			);
-		}
-	}
-
-	/**
-	 * Sosyal medya linklerini yonlendirir
-	 * @param url yonlendirelecek link
-	 */
-	redirect(url) {
-		if (url && (url.length > 1)) {
-			Linking.canOpenURL(url).then(supported => {
-				if (supported) {
-					Linking.openURL(url);
-				} else {
-					console.log('Don\'t know how to go');
-				}
-			}).catch(err => console.error('An error occurred', err));
-		}
-	}
-
 	render() {
 		const event = this.props.event;
 		const about = event.about;
@@ -114,44 +45,7 @@ export class About extends Component {
 							<Text style={styles.eventNameText}>{event.name}</Text>
 							<Text style={styles.descText}>{event.description}</Text>
 						</View>
-					</View>
-					<View style={styles.panel}>
-						<Text style={styles.activeTabText}>Contact Us</Text>
-						<View style={styles.contact}>
-							{about.web ? this.rowItem(about.web, 'ios-globe-outline', 'web') : null}
-							{about.email ? this.rowItem(about.email, 'ios-at-outline', 'email') : null}
-							{about.phone ?
-								about.phone.map((item, index) => {
-									const icon = index && index > 0 ?
-										'ios-call-outline' :
-										'ios-phone-portrait';
-									return item.trim() ?
-										this.rowItem(
-											item,
-											icon,
-											'phone',
-											index
-										) :
-										null;
-								}
-								) : null
-							}
-							{about.social ?
-								<View style={styles.socialMedia}>
-									{Object.keys(about.social)
-										.map((item, index) =>
-											item.trim() ?
-												this.rowSocial(
-													item + '-with-circle',
-													about.social[item],
-													index
-												) :
-												null
-										)}
-								</View> : null
-							}
-						</View>
-					</View>
+					</View>					
 				</ScrollView>
 			</View>
 		);
@@ -168,58 +62,14 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		flex: 1
 	},
-	panel: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: Color.white,
-	},
-	activeTab: {
-		backgroundColor: Color.white,
-		borderBottomWidth: 1,
-		borderBottomColor: Color.green,
-		borderTopWidth: 1,
-		borderTopColor: Color.green,
-	},
-	tabText: {
-		...Font.regular,
-		fontSize: moderateScale(15),
-		lineHeight: 23,
-		letterSpacing: 0.47,
-		color: Color.darkGray3
-	},
-	activeTabText: {
-		...Font.medium,
-		fontSize: moderateScale(18),
-		color: Color.green
-	},
 	aboutField: {
 		padding: 15,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	tabBarUnderlineStyle: {
-		backgroundColor: Color.green,
-		elevation: 0,
-		shadowColor: Color.white,
-		height: 0
-	},
-	tabsStyle: {
-		marginTop: 10
-	},
-	contact: {
-		justifyContent: 'flex-start',
-		alignItems: 'center',
-		flex: 1,
-		margin: 5
-	},
-	socialMedia: {
-		flexDirection: 'row',
-		marginLeft: 50,
-		marginRight: 50
-	},
 	descText: {
 		...Font.light,
+		fontSize: moderateScale(13),
 		color: Color.darkGray3,
 		textAlign: 'center'
 	},
@@ -229,12 +79,6 @@ const styles = StyleSheet.create({
 		color: Color.darkGray,
 		margin: 10,
 		textAlign: 'center'
-	},
-	aboutText: {
-		...Font.regular,
-		fontSize: moderateScale(15),
-		margin: 15,
-		color: Color.darkGray
 	}
 });
 

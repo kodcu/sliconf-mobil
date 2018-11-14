@@ -15,7 +15,18 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 
 import { actionCreators } from '../reducks/module/drawer';
-import { AGENDA, ASK, INFO, LOCATION, SPEAKERS, SPONSOR, MAIN, POLL } from '../router';
+import {
+	AGENDA,
+	ASK,
+	INFO,
+	LOCATION,
+	SPEAKERS,
+	SPONSOR,
+	MAIN,
+	POLL,
+	CONTACT,
+	SOCIAL
+} from '../router';
 import Header from '../component/Header';
 import If from '../component/If';
 import { moderateScale, scale, verticalScale } from '../theme/Scale';
@@ -38,7 +49,9 @@ class HomeScreen extends Component {
 			{ name: 'Location', icon: 'ios-map-outline', nav: LOCATION },
 			{ name: 'Sponsors', icon: 'ios-ribbon-outline', nav: SPONSOR },
 			{ name: 'Info', icon: 'ios-information-outline', nav: INFO },
-			{ name: 'Survey', icon: 'ios-list', nav: POLL }
+			{ name: 'Survey', icon: 'ios-list', nav: POLL },
+			{ name: 'Contact Us', icon: 'ios-phone-portrait-outline', nav: CONTACT },
+			{ name: 'Social Media', icon: 'ios-link-outline', nav: SOCIAL }
 		]
 	};
 
@@ -46,9 +59,7 @@ class HomeScreen extends Component {
 		const { dispatch, navigation } = this.props;
 		dispatch(actionCreators.changedDrawer(navigation.state.routeName));
 
-		AsyncStorage.setItem('eventName', this.props.event.name).then((name) => {
-			console.log('Success', name);
-		});
+		AsyncStorage.setItem('eventName', this.props.event.name);
 	}
 
     /**
@@ -169,6 +180,8 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: Color.white,
+		width: '100%',
+		height: '100%',
 		marginTop: Platform.OS === 'ios' ? 20 : 0
 	},
 	headerPanel: {

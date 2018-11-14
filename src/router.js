@@ -5,18 +5,20 @@ import SplashScreen from './container/SplashScreen';
 import MainScreen from './container/MainScreen';
 import HomeScreen from './container/HomeScreen';
 import LoginScreen from './container/LoginScreen';
-import AgendaScreen from './container/AgendaScreen'
-import SpeakersScreen from './container/SpeakersScreen'
-import SearchResult from './container/SearchResult'
-import InfoScreen from './container/AboutScreen'
-import SpeakerInfoScreen from './container/SpeakerInfoScreen'
+import AgendaScreen from './container/AgendaScreen';
+import SpeakersScreen from './container/SpeakersScreen';
+import SearchResult from './container/SearchResult';
+import InfoScreen from './container/AboutScreen';
+import SpeakerInfoScreen from './container/SpeakerInfoScreen';
 import DrawerMenu from "./container/DrawerMenu";
-import LocationScreen from "./container/LocationScreen"
-import FloorPlanScreen from "./container/FloorPlanScreen"
-import TalkDetailScreen from "./container/TalkDetailScreen"
-import SponsorScreen from "./container/SponsorScreen"
-import AskScreen from "./container/AskScreen"
+import LocationScreen from "./container/LocationScreen";
+import FloorPlanScreen from "./container/FloorPlanScreen";
+import TalkDetailScreen from "./container/TalkDetailScreen";
+import SponsorScreen from "./container/SponsorScreen";
+import AskScreen from "./container/AskScreen";
 import PollScreen from './container/PollScreen';
+import ContactScreen from './container/ContactScreen';
+import SocialMediaScreen from './container/SocialMediaScreen';
 
 export const SPLASH = 'screen/Splash';
 export const MAIN = 'screen/Main';
@@ -35,6 +37,8 @@ export const EVENT_STACK = 'stack/Event';
 export const MAIN_STACK = 'stack/Main';
 export const ASK = 'screen/Ask';
 export const POLL = 'screen/Poll';
+export const CONTACT = 'screen/Contact';
+export const SOCIAL = 'screen/Social';
 
 const EventStack = DrawerNavigator(
     {
@@ -72,7 +76,9 @@ const EventStack = DrawerNavigator(
         [LOGIN]: { screen: LoginScreen },
         [SPONSOR]: { screen: SponsorScreen },
 		[ASK]: { screen: AskScreen },
-		[POLL]: { screen: PollScreen }
+		[POLL]: { screen: PollScreen },
+		[CONTACT]: { screen: ContactScreen },
+		[SOCIAL]: { screen: SocialMediaScreen }
     },
     {
         drawerOpenRoute: 'DrawerOpen',

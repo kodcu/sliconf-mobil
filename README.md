@@ -131,21 +131,21 @@ $ react-native run-android
 ```
 * Open files and change import lines
 * First clean import lines of files!
-* First File:
+* First File: AnimatedCircularProgress Location;
 ```sh
  ./node_modules/react-native-circular-progress/src/AnimatedCircularProgress.js
 ```
 Change imports to this:
 ```sh
 import React from 'react';
-import { View, Animated, ViewPropTypes } from 'react-native';
+import { Animated, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 
 import CircularProgress from './CircularProgress';
 ```
-* Second File
+* Second File CircularProgress Location;
 ```sh
- ./node_modules/react-native-circular-progress/src/AnimatedCircularProgress.js
+ ./node_modules/react-native-circular-progress/src/CircularProgress.js
 ```
 Change imports to this:
 ```sh

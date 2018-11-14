@@ -112,7 +112,6 @@ class LocationScreen extends Component {
 				>
 					<View style={styles.getDirections}>
 						<View style={styles.addressContainer}>
-							<Text style={styles.venueName}>{event.name}</Text>
 							<Text style={styles.venueName}>{location.venue}</Text>
 							<Text style={styles.venueAddress}>{location.description}</Text>
 						</View>
@@ -149,7 +148,7 @@ const styles = StyleSheet.create({
 	venueAddress: {
 		...Font.light,
 		fontSize: 10,
-		lineHeight: 18,
+		lineHeight: 20,
 		letterSpacing: 0,
 	},
 	directionsIcon: {
@@ -174,11 +173,13 @@ const styles = StyleSheet.create({
 		...Font.bold,
 		fontSize: 15,
 		letterSpacing: 0,
-		color: Color.green
+		color: Color.darkGray4
 	},
 	addressContainer: {
 		flex: 4,
-		marginLeft: 5
+		marginLeft: 5,
+		marginBottom: 1,
+		paddingBottom: 1
 	},
 	notFoundText: {
 		...Font.thin,

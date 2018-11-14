@@ -5,7 +5,8 @@ import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import renderer from 'react-test-renderer';
-import AgendaCard from '../AgendaCard';
+
+import AgendaCard from '../../src/component/AgendaCard';
 
 const mockData = {
     key: 'HMBZ',

@@ -1,12 +1,12 @@
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import AnswersView from '../AnswersView';
-import AnswerButton from '../AnswerButton';
-
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import renderer from 'react-test-renderer';
+
+import AnswersView from '../../src/component/AnswersView';
+import AnswerButton from '../../src/component/AnswerButton';
 
 const mockSurveys = [
 	{

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import AnswerButton from '../AnswerButton';
-
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import renderer from 'react-test-renderer';
+
+import AnswerButton from '../../src/component/AnswerButton';
 
 const currentBiggest = 40;
 const answer = {
