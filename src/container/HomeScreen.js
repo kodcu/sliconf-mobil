@@ -48,8 +48,8 @@ class HomeScreen extends Component {
 			{ name: 'Speakers', icon: 'ios-microphone-outline', nav: SPEAKERS },
 			{ name: 'Location', icon: 'ios-map-outline', nav: LOCATION },
 			{ name: 'Sponsors', icon: 'ios-ribbon-outline', nav: SPONSOR },
-			{ name: 'Info', icon: 'ios-information-outline', nav: INFO },
 			{ name: 'Survey', icon: 'ios-list', nav: POLL },
+			{ name: 'Info', icon: 'ios-information-outline', nav: INFO },
 			{ name: 'Contact Us', icon: 'ios-phone-portrait-outline', nav: CONTACT },
 			{ name: 'Social Media', icon: 'ios-link-outline', nav: SOCIAL }
 		]

@@ -4,11 +4,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Communications from 'react-native-communications';
 import { connect } from 'react-redux';
 
-import Header from "../component/Header";
+import Header from '../component/Header';
 import { actionCreators } from '../reducks/module/drawer';
-import Font from "../theme/Font";
-import Color from "../theme/Color";
-import { moderateScale } from "../theme/Scale";
+import Font from '../theme/Font';
+import Color from '../theme/Color';
+import { moderateScale } from '../theme/Scale';
 
 const mapStateToProps = (state) => ({
 	event: state.event.event
@@ -27,13 +27,10 @@ export class ContactScreen extends Component {
      * @param type mail - telefon (email-phone)
      * @param index
      */
-	rowItem = (name, icon, type, index) => (
+	rowItem = (name, icon, type, index, size = 38) => (
 		<TouchableOpacity
 			key={index}
-			style={{
-				flexDirection: 'row',
-				width: '100%'
-			}}
+			style={[styles.rowCenterer, { width: '84%' }]}
 			onPress={() => type === 'phone' ?
 				Communications.phonecall(name, true) :
 				type === 'web' ?
@@ -47,34 +44,20 @@ export class ContactScreen extends Component {
 					)
 			}
 		>
-			<View
-				style={{
-					flex: 1,
-					flexDirection: 'row',
-					width: '100%',						
-					justifyContent: 'center',
-					alignItems: 'center'
-				}}
-			>
-				<View 
-					style={{ 
-						flexDirection: 'row', 
-						justifyContent: 'flex-start', 
-						width: '60%', 
-						height: '100%' 
-					}}
-				>
-					<View style={{ flex: 0.2, alignItems: 'center', justifyContent: 'center' }}>
-						<Icon
-							name={icon}
-							size={40}
-							color={Color.darkGray}
-						/>
-					</View>
-					<View style={{ flex: 0.8, justifyContent: 'center', alignItems: 'flex-start' }}>							
-						<Text style={styles.aboutText}>{name}</Text>
-					</View>
-				</View>
+			<View style={styles.rowCenterer}>
+				<Icon
+					style={{ flex: 0.11, height: size, width: size, textAlign: 'center' }}
+					name={icon}
+					size={size}
+					color={Color.darkGray}
+				/>
+				<Text
+					style={[
+						styles.aboutText,
+						{ flex: 0.89, textAlignVertical: 'center', textAlign: 'left' }
+					]}
+				>{name}
+				</Text>
 			</View>
 		</TouchableOpacity >
 	);
@@ -93,7 +76,7 @@ export class ContactScreen extends Component {
 				}
 			}).catch(err => console.error('An error occurred', err));
 		}
-	}				
+	}
 
 	render() {
 		const event = this.props.event;
@@ -110,8 +93,8 @@ export class ContactScreen extends Component {
 				>
 					<Header.Title title="Contact Us" />
 				</Header>
-				<View style={styles.panel}>
-					<View style={styles.contact}>
+				<View style={[styles.rowCenterer, styles.container]}>
+					<View style={[styles.columnCenterer, styles.contact]}>
 						{about.web ? this.rowItem(about.web, 'ios-globe-outline', 'web') : null}
 						{about.email ? this.rowItem(about.email, 'ios-at-outline', 'email') : null}
 						{about.phone ?
@@ -138,29 +121,34 @@ export class ContactScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+	columnCenterer: {
+		flexDirection: 'column',
+		alignItems: 'center',
+		justifyContent: 'center',
+		alignContent: 'center'
+	},
+	rowCenterer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		alignContent: 'center'
+	},
 	container: {
 		flex: 1,
+		alignItems: 'flex-start',
+		justifyContent: 'flex-start',
 		backgroundColor: Color.white
 	},
-	panel: {
-		width: '100%',
-		height: '60%',
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: Color.white,
-	},
 	contact: {
-		height: '100%',
-		width: '100%',
-		alignItems: 'center',
-		justifyContent: 'center',
-		margin: 5,
+		width: '96%',
+		height: '64%',
 		backgroundColor: Color.white
 	},
 	aboutText: {
 		...Font.regular,
-		fontSize: moderateScale(15),
-		margin: 15,
+		flex: 1,
+		margin: 10,
+		fontSize: moderateScale(16),
 		color: Color.darkGray
 	}
 });

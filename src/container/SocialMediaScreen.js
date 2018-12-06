@@ -38,7 +38,7 @@ export class SocialMediaScreen extends Component {
 					>
 						<Icon
 							name={icon}
-							size={48}
+							size={64}
 							color={Color.darkGray}
 							style={{ margin: 8 }}
 						/>
@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
 	button: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		width: scale(80),
-		height: scale(80),
+		width: scale(100),
+		height: scale(100),
 	}
 });
 
