@@ -16,13 +16,14 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { actionCreators } from '../reducks/module/event';
-import { EVENT_STACK } from '../router';
+import { EVENT_STACK, EVENTSEARCH } from '../router';
 import Loading from '../component/Loading';
 import Header from '../component/Header';
 import AnimatedInput from '../component/AnimatedInput';
 import Color from '../theme/Color';
 import Font from '../theme/Font';
 import * as Scale from '../theme/Scale';
+import Similarity from '../helpers/StringLikeliness';
 
 const logo = require('../../images/logo.png');
 
@@ -33,7 +34,33 @@ const mapStateToProps = (state) => ({
 	login: state.auth.login,
 	userDevice: state.authDevice.user,
 	user: state.auth.user,
+	events: state.event.events
 });
+
+const mockEvents = [
+	{
+		description: 'Test & Development Event',
+		id: '5abc',
+		key: 'BAF3',
+		name: 'Sliconf Development(Berkay)'
+	},
+	{
+		description: 'This event is created for Devops',
+		id: '6cyb',
+		key: 'ABCD',
+		name: 'Devops 2019'
+	}, {
+		description: 'This event is for java',
+		id: '4xyz',
+		key: 'JAVA',
+		name: 'JAVA DAY 2019'
+	}, {
+		description: 'This event is for java work shop',
+		id: '68bl',
+		key: '3XYZ',
+		name: 'JAVA WORKSHOP'
+	}
+];
 
 class MainScreen extends Component {
 	state = {
@@ -59,8 +86,8 @@ class MainScreen extends Component {
      */
 	getEvent = async (code) => {
 		this.setState({ loadingModal: true });
-		const userId = !this.props.login ? this.props.userDevice.id : this.props.user.id;
-		const { dispatch, loading } = this.props;
+		const { dispatch, loading, login, userDevice, user } = this.props;
+		const userId = !login ? userDevice.id : user.id;
 		await dispatch(actionCreators.fetchEvent(code, userId));
 		const { error, errorMessage } = this.props;
 
@@ -83,15 +110,45 @@ class MainScreen extends Component {
 		}
 	};
 
+	goToEventSearch = async (code) => {
+		await this.props.dispatch(actionCreators.getEventsWithName(code));
+		const { events } = this.props;
+		if (events && events.length > 0) {
+			if (events.length === 1 && events[0]) {
+				this.getEvent(events[0].key);
+			} else {
+				for (const event of events) {
+					//Used to calculate how close our event's code is to the code input
+					const codeSimilarity = Similarity(event.key, code);
+					const eventName = event.name.length > 8 ? event.name.slice(0, 8) : event.name;
+					//Used to calculate how close our event's name is to the name input
+					const nameSimilarity = Similarity(eventName, code);
+					event.similarity = (codeSimilarity + nameSimilarity) / 2.0;
+				}
+				events.sort((a, b) => {
+					const similarityA = Number(a.similarity);
+					const similarityB = Number(b.similarity);
+					if (similarityA < similarityB) return 1;
+					if (similarityA > similarityB) return -1;
+					return 0;
+				});
+				this.props.navigation.navigate(EVENTSEARCH, events);
+			}
+		} else {
+			Alert.alert('Warning!', 'Search result not exists.');
+		}		
+	}
+
     /**
      * Etkinlik arama islemini tetikler
      * @param value aranan etkinlik kodu
      * @private
      */
 	_handlePressSearch(value) {
-		Keyboard.dismiss();
-		if (value)
-			this.getEvent(value);
+		if (value) {
+			this.goToEventSearch(value);
+			Keyboard.dismiss();
+		}
 	}
 
     /**

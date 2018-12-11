@@ -1,7 +1,7 @@
 /**
  * Created by Muslum on 30.07.2017.
  */
-import { getEvent } from '../Api';
+import { getEvent, getAllEvents } from '../Api';
 import Request from '../../service/Request';
 import getTokenAuth from '../../helpers/getTokenAuth';
 
@@ -87,6 +87,41 @@ export const reducer = (state = initialState, action = initialAction) => {
 };
 
 export const actionCreators = {
+	getEventsWithName: (name) => async (dispatch, getState) => {
+		dispatch({
+			type: types.EVENTLIST_POSTS_REQUEST
+		});
+		await Request.GET(
+			`${getAllEvents}?name=${name}`,
+			getTokenAuth(getState()),
+			{
+				200: (res) => {
+					if (res.status && res.returnObject.status)
+						dispatch({
+							type: types.EVENTLIST_POSTS_RESPONSE_SUC,
+							payload: res.returnObject
+						});
+					else
+						dispatch({
+							type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
+							payload: '" ' + name.toUpperCase() + ' " can not found!'
+						});
+				},
+				otherwise: (res) => {
+					dispatch({
+						type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
+						payload: '" ' + name.toUpperCase() + ' " can not found!'
+					});
+				},
+				fail: (err) => {
+					dispatch({
+						type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
+						payload: 'Can not be processed at this time!'
+					});
+				}
+			}
+		);
+	},
 	fetchEvent: (code, userId) => async (dispatch, getState) => {
 		dispatch({
 			type: types.EVENT_POSTS_REQUEST
