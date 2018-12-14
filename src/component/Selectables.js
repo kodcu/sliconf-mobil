@@ -107,4 +107,20 @@ const EmptyCardIcon = props => {
 	);
 };
 
-export { Heart, Circle, LeftRight, EmptyCardIcon };
+const TwoLine = props => {
+	const {
+		firstLine,
+		secondLine,
+		viewStyle,
+		firstLineStyle,
+		secondLineStyle
+	} = props;
+	return (
+		<View style={viewStyle}>
+			<Text style={firstLineStyle}>{firstLine}</Text>
+			<Text style={secondLineStyle}>{secondLine}</Text>
+		</View>
+	);
+};
+
+export { Heart, Circle, LeftRight, EmptyCardIcon, TwoLine };

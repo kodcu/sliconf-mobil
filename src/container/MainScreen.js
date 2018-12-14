@@ -37,31 +37,6 @@ const mapStateToProps = (state) => ({
 	events: state.event.events
 });
 
-const mockEvents = [
-	{
-		description: 'Test & Development Event',
-		id: '5abc',
-		key: 'BAF3',
-		name: 'Sliconf Development(Berkay)'
-	},
-	{
-		description: 'This event is created for Devops',
-		id: '6cyb',
-		key: 'ABCD',
-		name: 'Devops 2019'
-	}, {
-		description: 'This event is for java',
-		id: '4xyz',
-		key: 'JAVA',
-		name: 'JAVA DAY 2019'
-	}, {
-		description: 'This event is for java work shop',
-		id: '68bl',
-		key: '3XYZ',
-		name: 'JAVA WORKSHOP'
-	}
-];
-
 class MainScreen extends Component {
 	state = {
 		search: true,
@@ -132,10 +107,11 @@ class MainScreen extends Component {
 					if (similarityA > similarityB) return -1;
 					return 0;
 				});
-				this.props.navigation.navigate(EVENTSEARCH, events);
+				this.props.navigation.navigate(EVENTSEARCH, { events, getEvent: this.getEvent });
 			}
 		} else {
 			Alert.alert('Warning!', 'Search result not exists.');
+			return;
 		}		
 	}
 

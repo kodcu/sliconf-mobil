@@ -15,7 +15,7 @@ const mapStateToProps = (state) => ({
 const firstRegex = /^https?:\/\//i;
 const secondRegex = /^https?:\\\\/i;
 
-export class SocialMediaScreen extends Component {
+class SocialMediaScreen extends Component {
 	componentWillMount() {
 		const { dispatch, navigation } = this.props;
 		dispatch(actionCreators.changedDrawer(navigation.state.routeName));

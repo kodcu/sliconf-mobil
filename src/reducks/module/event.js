@@ -92,11 +92,11 @@ export const actionCreators = {
 			type: types.EVENTLIST_POSTS_REQUEST
 		});
 		await Request.GET(
-			`${getAllEvents}?name=${name}`,
+			`${getAllEvents}`, //?name=${name.toLowerCase()}
 			getTokenAuth(getState()),
 			{
 				200: (res) => {
-					if (res.status && res.returnObject.status)
+					if (res.status && res.returnObject)
 						dispatch({
 							type: types.EVENTLIST_POSTS_RESPONSE_SUC,
 							payload: res.returnObject
@@ -104,13 +104,13 @@ export const actionCreators = {
 					else
 						dispatch({
 							type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
-							payload: '" ' + name.toUpperCase() + ' " can not found!'
+							payload: res.message
 						});
 				},
 				otherwise: (res) => {
 					dispatch({
 						type: types.EVENTLIST_POSTS_RESPONSE_FAIL,
-						payload: '" ' + name.toUpperCase() + ' " can not found!'
+						payload: res.message
 					});
 				},
 				fail: (err) => {

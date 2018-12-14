@@ -19,6 +19,7 @@ import AskScreen from "./container/AskScreen";
 import PollScreen from './container/PollScreen';
 import ContactScreen from './container/ContactScreen';
 import SocialMediaScreen from './container/SocialMediaScreen';
+import EventSearch from './container/EventSearch';
 
 export const SPLASH = 'screen/Splash';
 export const MAIN = 'screen/Main';
@@ -39,93 +40,102 @@ export const ASK = 'screen/Ask';
 export const POLL = 'screen/Poll';
 export const CONTACT = 'screen/Contact';
 export const SOCIAL = 'screen/Social';
+export const EVENTSEARCH = 'screen/EventSearch';
 
 const EventStack = DrawerNavigator(
-    {
-        [HOME]: { screen: HomeScreen },
-        [AGENDA]: {
-            screen: StackNavigator({
-                [AGENDA]: { screen: AgendaScreen },
-                [SEARCHRESULT]: { screen: SearchResult },
-                [TALK]: { screen: TalkDetailScreen },
-            }, {
-                    headerMode: 'none',
-                    navigationOptions: {
-                        gesturesEnabled: false
-                    },
-                    transitionConfig: animation
-                })
-        },
-        [SPEAKERS]: {
-            screen: StackNavigator({
-                [SPEAKERS]: { screen: SpeakersScreen },
-                [SPEAKERINFO]: { screen: SpeakerInfoScreen },
-                [TALK]: { screen: TalkDetailScreen }
-            }, {
-                    headerMode: 'none',
-                    navigationOptions: {
-                        gesturesEnabled: false
-                    },
-                    transitionConfig: animation
-                })
-        },
-        [INFO]: { screen: InfoScreen },
-        [LOGIN]: { screen: LoginScreen },
-        [LOCATION]: { screen: LocationScreen },
-        [FLOOR]: { screen: FloorPlanScreen },
-        [LOGIN]: { screen: LoginScreen },
-        [SPONSOR]: { screen: SponsorScreen },
+	{
+		[HOME]: { screen: HomeScreen },
+		[AGENDA]: {
+			screen: StackNavigator({
+				[AGENDA]: { screen: AgendaScreen },
+				[SEARCHRESULT]: { screen: SearchResult },
+				[TALK]: { screen: TalkDetailScreen }
+			}, {
+					headerMode: 'none',
+					navigationOptions: {
+						gesturesEnabled: false
+					},
+					transitionConfig: animation
+				})
+		},
+		[SPEAKERS]: {
+			screen: StackNavigator({
+				[SPEAKERS]: { screen: SpeakersScreen },
+				[SPEAKERINFO]: { screen: SpeakerInfoScreen },
+				[TALK]: { screen: TalkDetailScreen }
+			}, {
+					headerMode: 'none',
+					navigationOptions: {
+						gesturesEnabled: false
+					},
+					transitionConfig: animation
+				})
+		},
+		[INFO]: { screen: InfoScreen },
+		[LOGIN]: { screen: LoginScreen },
+		[LOCATION]: { screen: LocationScreen },
+		[FLOOR]: { screen: FloorPlanScreen },
+		[LOGIN]: { screen: LoginScreen },
+		[SPONSOR]: { screen: SponsorScreen },
 		[ASK]: { screen: AskScreen },
 		[POLL]: { screen: PollScreen },
 		[CONTACT]: { screen: ContactScreen },
 		[SOCIAL]: { screen: SocialMediaScreen }
-    },
-    {
-        drawerOpenRoute: 'DrawerOpen',
-        drawerCloseRoute: 'DrawerClose',
-        drawerToggleRoute: 'DrawerToggle',
-        headerMode: 'none',
-        navigationOptions: {
-            gesturesEnabled: false
-        },
-        transitionConfig: animation,
-        drawerWidth: 250,
-        drawerPosition: 'right',
-        contentOptions: {
-            activeTintColor: '#fff',
-            activeBackgroundColor: '#29B673',
-        },
-        contentComponent: DrawerMenu
-    }
+	},
+	{
+		drawerOpenRoute: 'DrawerOpen',
+		drawerCloseRoute: 'DrawerClose',
+		drawerToggleRoute: 'DrawerToggle',
+		headerMode: 'none',
+		navigationOptions: {
+			gesturesEnabled: false
+		},
+		transitionConfig: animation,
+		drawerWidth: 250,
+		drawerPosition: 'right',
+		contentOptions: {
+			activeTintColor: '#fff',
+			activeBackgroundColor: '#29B673',
+		},
+		contentComponent: DrawerMenu
+	}
 );
 
 const MainStack = StackNavigator({
-    [SPLASH]: { screen: SplashScreen },
-    [MAIN]: { screen: MainScreen },
-    [LOGIN]: { screen: LoginScreen },
-
+	[SPLASH]: { screen: SplashScreen },
+	[MAIN]: {
+		screen: StackNavigator({
+			[MAIN]: { screen: MainScreen },
+			[EVENTSEARCH]: { screen: EventSearch }
+		}, {
+			headerMode: 'none',
+			navigationOptions: {
+				gesturesEnabled: false
+			},
+			transitionConfig: animation
+		})
+	}
 }, {
-        headerMode: 'none',
-        navigationOptions: {
-            gesturesEnabled: false
-        },
-        transitionConfig: animation
-
-    });
+		headerMode: 'none',
+		navigationOptions: {
+			gesturesEnabled: false
+		},
+		transitionConfig: animation
+	});
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator(
-    {
-        [MAIN_STACK]: { screen: MainStack },
-        [EVENT_STACK]: { screen: EventStack }
-    },
-    {
-        headerMode: 'none',
-        navigationOptions: {
-            gesturesEnabled: false
-        },
-        transitionConfig: animation
-    }
+	{
+		[MAIN_STACK]: { screen: MainStack },
+		[EVENT_STACK]: { screen: EventStack }
+	},
+	{
+		headerMode: 'none',
+		navigationOptions: {
+			gesturesEnabled: false
+		},
+		transitionConfig: animation
+	}
 );
 
 export default PrimaryNav;

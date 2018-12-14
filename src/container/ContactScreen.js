@@ -14,7 +14,7 @@ const mapStateToProps = (state) => ({
 	event: state.event.event
 });
 
-export class ContactScreen extends Component {
+class ContactScreen extends Component {
 	componentWillMount() {
 		const { dispatch, navigation } = this.props;
 		dispatch(actionCreators.changedDrawer(navigation.state.routeName));
