@@ -2,14 +2,14 @@ const baseApi = 'https://api.sliconf.com/service/';
 const betaApi = 'http://beta.api.sliconf.com/service/';
 
 //event
-export const getEvent = `${baseApi}events/get/with-key/`;
+export const getEvent = `${betaApi}events/get/with-key/`;
 export const getAllEvents = `${betaApi}users/events`;
 //auth
-export const postLogin = baseApi + 'users/login';
+export const postLogin = betaApi + 'users/login';
 export const postLoginDevice = postLogin + '/anonymous/';
-export const postRegister = baseApi + 'users/register';
+export const postRegister = betaApi + 'users/register';
 export const postRegisterDevice = postRegister + '/anonymous/';
-export const postForgot = baseApi + 'users/password-reset/send/';
+export const postForgot = betaApi + 'users/password-reset/send/';
 
 //comment
 export const postComment = baseApi + 'events/comment/add-new';
