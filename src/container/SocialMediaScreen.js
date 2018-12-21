@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Linking, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Platform, Linking, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import { connect } from 'react-redux';
 
@@ -39,8 +39,13 @@ class SocialMediaScreen extends Component {
 						<Icon
 							name={icon}
 							size={64}
-							color={Color.darkGray}
-							style={{ margin: 8 }}
+							color={Color.white}
+							style={{ 
+								margin: 8, 
+								borderRadius: Platform.OS === 'ios' ? 45 : 90,								
+								borderColor: Color.darkGray,
+								backgroundColor: Color.darkGray 
+							}}
 						/>
 					</TouchableOpacity>
 				);

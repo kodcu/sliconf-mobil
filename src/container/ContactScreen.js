@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Linking, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Linking, Text, TouchableOpacity, View, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Communications from 'react-native-communications';
 import { connect } from 'react-redux';
@@ -8,7 +8,7 @@ import Header from '../component/Header';
 import { actionCreators } from '../reducks/module/drawer';
 import Font from '../theme/Font';
 import Color from '../theme/Color';
-import { moderateScale } from '../theme/Scale';
+import { scale, moderateScale } from '../theme/Scale';
 
 const mapStateToProps = (state) => ({
 	event: state.event.event
@@ -30,7 +30,7 @@ class ContactScreen extends Component {
 	rowItem = (name, icon, type, index, size = 38) => (
 		<TouchableOpacity
 			key={index}
-			style={[styles.rowCenterer, { width: '84%' }]}
+			style={[styles.rowCenterer, { width: '84%', height: scale(50) }]}
 			onPress={() => type === 'phone' ?
 				Communications.phonecall(name, true) :
 				type === 'web' ?
@@ -45,21 +45,23 @@ class ContactScreen extends Component {
 			}
 		>
 			<View style={styles.rowCenterer}>
-				<Icon
-					style={{ flex: 0.11, height: size, width: size, textAlign: 'center' }}
-					name={icon}
-					size={size}
-					color={Color.darkGray}
-				/>
+				<View style={styles.buttonIcon}>
+					<Icon
+						style={{ height: size, width: size, textAlign: 'center' }}
+						name={icon}
+						size={size}
+						color={Color.darkGray}
+					/>
+				</View>
 				<Text
 					style={[
 						styles.aboutText,
-						{ flex: 0.89, textAlignVertical: 'center', textAlign: 'left' }
+						{ flex: 0.96, textAlignVertical: 'center', textAlign: 'left' }
 					]}
 				>{name}
 				</Text>
 			</View>
-		</TouchableOpacity >
+		</TouchableOpacity>
 	);
 
 	/**
@@ -150,7 +152,16 @@ const styles = StyleSheet.create({
 		margin: 10,
 		fontSize: moderateScale(16),
 		color: Color.darkGray
-	}
+	},	
+	buttonIcon: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: Platform.OS === 'ios' ? 45 : 90,
+		borderWidth: 1,
+		width: scale(40),
+		height: scale(40),
+		borderColor: Color.darkGray
+	},
 });
 
 export default connect(mapStateToProps)(ContactScreen);

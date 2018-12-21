@@ -60,13 +60,23 @@ class MainScreen extends Component {
      * @returns {Promise.<void>}
      */
 	getEvent = async (code) => {
+		if (code.length !== 4) return false;
+		console.log('getEvent length sorgusunu geçti')
+
 		this.setState({ loadingModal: true });
-		const { dispatch, loading, login, userDevice, user } = this.props;
+		const { dispatch, login, userDevice, user } = this.props;
 		const userId = !login ? userDevice.id : user.id;
 		await dispatch(actionCreators.fetchEvent(code, userId));
-		const { error, errorMessage } = this.props;
+		const { error, loading } = this.props;
+		console.log('getEvent error')
+		console.log(error)
+		console.log('getEvent loading')
+		console.log(loading)
+		//const { error, errorMessage } = this.props;
 
-		if (error)
+		if (error) return false;
+		console.log('getEvent error sorgusunu geçti')
+		/*if (error) {
 			Alert.alert(
 				'Warning!',
 				errorMessage,
@@ -75,14 +85,20 @@ class MainScreen extends Component {
 				],
 				{ cancelable: false }
 			);
+			return false;
+		}*/
 
 		if (!error && !loading) {
+			console.log('getEvent !error && !loading sorgusunun içinde')
 			this.setState({ loadingModal: loading });
 			if (code !== this.state.code) {
 				AsyncStorage.setItem('Code', code);
 			}
 			this.props.navigation.navigate(EVENT_STACK);
+			return true;
 		}
+		console.log('getEvent !error && !loading sorgusunun dışında')
+		return false;
 	};
 
 	goToEventSearch = async (code) => {
@@ -100,19 +116,25 @@ class MainScreen extends Component {
 					const nameSimilarity = Similarity(eventName, code);
 					event.similarity = (codeSimilarity + nameSimilarity) / 2.0;
 				}
-				events.sort((a, b) => {
+				const filtered = events.filter(
+					event => event.name.toLowerCase().includes(code.toLowerCase())
+				);
+				filtered.sort((a, b) => {
 					const similarityA = Number(a.similarity);
 					const similarityB = Number(b.similarity);
 					if (similarityA < similarityB) return 1;
 					if (similarityA > similarityB) return -1;
 					return 0;
 				});
-				this.props.navigation.navigate(EVENTSEARCH, { events, getEvent: this.getEvent });
+				this.props.navigation.navigate(
+					EVENTSEARCH,
+					{ events: filtered, getEvent: this.getEvent, dispatch: this.props.dispatch }
+				);
 			}
 		} else {
 			Alert.alert('Warning!', 'Search result not exists.');
 			return;
-		}		
+		}
 	}
 
     /**
@@ -120,10 +142,16 @@ class MainScreen extends Component {
      * @param value aranan etkinlik kodu
      * @private
      */
-	_handlePressSearch(value) {
+	async _handlePressSearch(value) {
 		if (value) {
-			this.goToEventSearch(value);
-			Keyboard.dismiss();
+			console.log('value.length')
+			console.log(value.length)
+			const check = await this.getEvent(value);
+			if (!check) {
+				console.log('!this.getEvent(value) if ine girdi')
+				this.goToEventSearch(value);
+				Keyboard.dismiss();
+			}
 		}
 	}
 
