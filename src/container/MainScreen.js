@@ -61,21 +61,15 @@ class MainScreen extends Component {
      */
 	getEvent = async (code) => {
 		if (code.length !== 4) return false;
-		console.log('getEvent length sorgusunu geçti')
 
-		this.setState({ loadingModal: true });
+		//this.setState({ loadingModal: true });
 		const { dispatch, login, userDevice, user } = this.props;
 		const userId = !login ? userDevice.id : user.id;
 		await dispatch(actionCreators.fetchEvent(code, userId));
 		const { error, loading } = this.props;
-		console.log('getEvent error')
-		console.log(error)
-		console.log('getEvent loading')
-		console.log(loading)
 		//const { error, errorMessage } = this.props;
 
 		if (error) return false;
-		console.log('getEvent error sorgusunu geçti')
 		/*if (error) {
 			Alert.alert(
 				'Warning!',
@@ -89,15 +83,13 @@ class MainScreen extends Component {
 		}*/
 
 		if (!error && !loading) {
-			console.log('getEvent !error && !loading sorgusunun içinde')
-			this.setState({ loadingModal: loading });
+			//this.setState({ loadingModal: loading });
 			if (code !== this.state.code) {
 				AsyncStorage.setItem('Code', code);
 			}
 			this.props.navigation.navigate(EVENT_STACK);
 			return true;
 		}
-		console.log('getEvent !error && !loading sorgusunun dışında')
 		return false;
 	};
 
@@ -144,11 +136,8 @@ class MainScreen extends Component {
      */
 	async _handlePressSearch(value) {
 		if (value) {
-			console.log('value.length')
-			console.log(value.length)
 			const check = await this.getEvent(value);
 			if (!check) {
-				console.log('!this.getEvent(value) if ine girdi')
 				this.goToEventSearch(value);
 				Keyboard.dismiss();
 			}
@@ -164,7 +153,7 @@ class MainScreen extends Component {
 	}
 
 	render() {
-		const loading = this.state.loadingModal;
+		const loading = this.props.loading;
 		const { search, code, eventName } = this.state;
 
 		return (
