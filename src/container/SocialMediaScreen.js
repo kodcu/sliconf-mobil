@@ -19,7 +19,7 @@ class SocialMediaScreen extends Component {
 	componentWillMount() {
 		const { dispatch, navigation } = this.props;
 		dispatch(actionCreators.changedDrawer(navigation.state.routeName));
-	}	
+	}
 
 	renderButton = (button) => {
 		const icon = `${button[0]}-with-circle`;
@@ -36,21 +36,24 @@ class SocialMediaScreen extends Component {
 						style={styles.button}
 						onPress={() => Linking.openURL(url)}
 					>
-						<Icon
-							name={icon}
-							size={64}
-							color={Color.white}
-							style={{ 
-								margin: 8, 
-								borderRadius: Platform.OS === 'ios' ? 45 : 90,								
+						<View
+							style={{
+								margin: 8,
+								borderRadius: Platform.OS === 'ios' ? 45 : 90,
 								borderColor: Color.darkGray,
-								backgroundColor: Color.darkGray 
+								backgroundColor: Color.darkGray
 							}}
-						/>
+						>
+							<Icon
+								name={icon}
+								size={64}
+								color={Color.white}
+							/>
+						</View>
 					</TouchableOpacity>
 				);
 			}
-		}		
+		}
 	}
 
 	render() {
