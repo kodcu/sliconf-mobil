@@ -5,6 +5,7 @@ import {
 	Text,
 	ScrollView,
 	Keyboard,
+	Platform
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -38,29 +39,28 @@ class EventSearch extends Component {
 	}
 
 	onSearch = async (code) => {
-		await this.state.dispatch(actionCreators.getEventsWithName(code));
+		await this.state.dispatch(actionCreators.getEvents());
 		const { events } = this.props;
 		if (events && events.length > 0) {
-			for (const event of events) {
-				//Used to calculate how close our event's code is to the code input
-				const codeSimilarity = Similarity(event.key, code);
-				const eventName = event.name.length > 8 ? event.name.slice(0, 8) : event.name;
-				//Used to calculate how close our event's name is to the name input
-				const nameSimilarity = Similarity(eventName, code);
-				event.similarity = (codeSimilarity + nameSimilarity) / 2.0;
+			if (code && code.trim().length > 0) {
+				for (const event of events) {					
+					//Used to calculate how close our event's code is to the code input
+					const codeSimilarity = Similarity(event.key, code);
+					const eventName = event.name.length > 8 ? event.name.slice(0, 8) : event.name;
+					//Used to calculate how close our event's name is to the name input
+					const nameSimilarity = Similarity(eventName, code);
+					event.similarity = (codeSimilarity + nameSimilarity) / 2.0;
+				}				
+				events.sort((a, b) => {
+					const similarityA = Number(a.similarity);
+					const similarityB = Number(b.similarity);
+					if (similarityA < similarityB) return 1;
+					if (similarityA > similarityB) return -1;
+					return 0;
+				});
 			}
-			const filtered = events.filter(
-				event => event.name.toLowerCase().includes(code.toLowerCase())
-			);
-			filtered.sort((a, b) => {
-				const similarityA = Number(a.similarity);
-				const similarityB = Number(b.similarity);
-				if (similarityA < similarityB) return 1;
-				if (similarityA > similarityB) return -1;
-				return 0;
-			});
 			Keyboard.dismiss();
-			this.setState({ events: filtered });
+			this.setState({ events });
 		}
 	}
 
@@ -73,7 +73,7 @@ class EventSearch extends Component {
 			<View style={styles.container}>
 				<View style={styles.search}>
 					<AnimatedInput
-						label={'Event Name'}
+						label={'Search Event'}
 						iconClass={Icon}
 						iconName={'search'}
 						iconColor={Color.white}
@@ -113,11 +113,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		alignContent: 'center',
-		backgroundColor: Color.white
+		backgroundColor: Color.white,
+		marginTop: (Platform.OS === 'ios' ? 20 : 0)
 	},
 	search: {
 		flex: 0.1,
-		width: Scale.width - 80,
+		width: Scale.width - 16,
 		justifyContent: 'flex-start',
 		padding: 10
 	},

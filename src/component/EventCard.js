@@ -1,47 +1,51 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Thumbnail } from 'native-base';
 import { responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import moment from 'moment';
 
 import { TwoLine } from './Selectables';
 import Font from '../theme/Font';
-
-const defaultLogo = require('../../images/logo.png');
+import getImage from '../helpers/getImageHelper';
 
 export default class LoginScreen extends Component {
     render() {
         const { event } = this.props;
-        const { about, name, description, startDate, logo } = event;
-
+        const { about, name, description, startDate, logoPath } = event;
+        
         return (
             <View style={styles.container}>
                 <View style={styles.containerTop}>
-                    <Thumbnail
-                        style={styles.image}
-                        source={logo === undefined ? defaultLogo : { uri: logo }}
-                    />
-                    <View style={styles.viewTop}>
-                        <Text
-                            style={styles.title}
-                            numberOfLines={1}
-                        >{name}</Text>
-                        <ScrollView>
-                            <Text style={styles.subtitle}>{description}</Text>
-                        </ScrollView>
-                    </View>
+                    <TouchableOpacity style={styles.image} onPress={() => this.props.getEvent()}>
+                        <Thumbnail
+                            style={styles.image}
+                            source={{ uri: getImage(logoPath) }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.viewTop} onPress={() => this.props.getEvent()}>
+                        <View style={styles.viewTop}>
+                            <Text
+                                style={styles.title}
+                                numberOfLines={1}
+                            >{name}</Text>
+                            <Text 
+                                style={styles.subtitle}
+                                numberOfLines={3}
+                            >{description}</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.containerBottom}>
                     <View style={styles.bottomSubContainer}>
                         <TwoLine
-                            firstLine={'Event Date'}
-                            secondLine={moment(startDate).format('Do MMM YYYY')}
+                            firstLine={'Date'}
+                            secondLine={moment(startDate).format('MMM DD, YYYY')}
                             viewStyle={[styles.viewBottom, { flex: 0.4 }]}
                             firstLineStyle={styles.subtitle2}
                             secondLineStyle={styles.subtitle}
                         />
                         <TwoLine
-                            firstLine={'Event Venue'}
+                            firstLine={'Venue'}
                             secondLine={about.location.venue}
                             viewStyle={[styles.viewBottom, { flex: 0.6 }]}
                             firstLineStyle={styles.subtitle2}

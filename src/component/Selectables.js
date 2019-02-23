@@ -117,8 +117,8 @@ const TwoLine = props => {
 	} = props;
 	return (
 		<View style={viewStyle}>
-			<Text style={firstLineStyle}>{firstLine}</Text>
-			<Text style={secondLineStyle}>{secondLine}</Text>
+			<Text style={firstLineStyle} numberOfLines={1}>{firstLine}</Text>
+			<Text style={secondLineStyle} numberOfLines={1}>{secondLine}</Text>
 		</View>
 	);
 };

@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
 		alignSelf: 'flex-start',
 		paddingBottom: 2,
 		backgroundColor: Color.white,
-		height: (Scale.verticalScale(72) * 5)
+		height: (Scale.verticalScale(48) * 5)
 	},
 	alreadyAnswered: {
 		...Font.regular,

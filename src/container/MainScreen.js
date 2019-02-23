@@ -94,37 +94,36 @@ class MainScreen extends Component {
 	};
 
 	goToEventSearch = async (code) => {
-		await this.props.dispatch(actionCreators.getEventsWithName(code));
+		await this.props.dispatch(actionCreators.getEvents());
 		const { events } = this.props;
 		if (events && events.length > 0) {
-			if (events.length === 1 && events[0]) {
-				this.getEvent(events[0].key);
+			if (events.length === 1 && events[0] && events[0].key && events[0].key.trim()) {
+				this.getEvent(events[0].key.trim());
 			} else {
-				for (const event of events) {
-					//Used to calculate how close our event's code is to the code input
-					const codeSimilarity = Similarity(event.key, code);
-					const eventName = event.name.length > 8 ? event.name.slice(0, 8) : event.name;
-					//Used to calculate how close our event's name is to the name input
-					const nameSimilarity = Similarity(eventName, code);
-					event.similarity = (codeSimilarity + nameSimilarity) / 2.0;
+				if (code && code.trim().length > 0) {
+					for (const event of events) {					
+						//Used to calculate how close our event's code is to the code input
+						const codeSimilarity = Similarity(event.key, code);
+						const eventName = event.name.length > 8 ? event.name.slice(0, 8) : event.name;
+						//Used to calculate how close our event's name is to the name input
+						const nameSimilarity = Similarity(eventName, code);
+						event.similarity = (codeSimilarity + nameSimilarity) / 2.0;
+					}				
+					events.sort((a, b) => {
+						const similarityA = Number(a.similarity);
+						const similarityB = Number(b.similarity);
+						if (similarityA < similarityB) return 1;
+						if (similarityA > similarityB) return -1;
+						return 0;
+					});
 				}
-				const filtered = events.filter(
-					event => event.name.toLowerCase().includes(code.toLowerCase())
-				);
-				filtered.sort((a, b) => {
-					const similarityA = Number(a.similarity);
-					const similarityB = Number(b.similarity);
-					if (similarityA < similarityB) return 1;
-					if (similarityA > similarityB) return -1;
-					return 0;
-				});
 				this.props.navigation.navigate(
 					EVENTSEARCH,
-					{ events: filtered, getEvent: this.getEvent, dispatch: this.props.dispatch }
+					{ events, getEvent: this.getEvent, dispatch: this.props.dispatch }
 				);
 			}
 		} else {
-			Alert.alert('Warning!', 'Search result not exists.');
+			Alert.alert('Alert!', 'No results found.');
 			return;
 		}
 	}
@@ -135,12 +134,15 @@ class MainScreen extends Component {
      * @private
      */
 	async _handlePressSearch(value) {
-		if (value) {
-			const check = await this.getEvent(value);
+		if (value && value.trim()) {
+			const check = await this.getEvent(value.trim());
 			if (!check) {
-				this.goToEventSearch(value);
+				this.goToEventSearch(value.trim());
 				Keyboard.dismiss();
 			}
+		} else {			
+			this.goToEventSearch();
+			Keyboard.dismiss();
 		}
 	}
 
@@ -171,14 +173,14 @@ class MainScreen extends Component {
 							<View style={styles.containerBottom}>
 								<View style={styles.search}>
 									<AnimatedInput
-										label={'Event Code'}
+										label={'Search Event'}
 										iconClass={FontAwesomeIcon}
 										iconName={'search'}
 										iconColor={Color.white}
 										inputStyle={{ color: Color.green }}
-										onSubmitEditing={(value) => {
-											this._handlePressSearch(value);
-										}}
+										onSubmitEditing={(value) => 
+											this._handlePressSearch(value)
+										}
 									/>
 									{<TouchableOpacity
 										style={styles.search}

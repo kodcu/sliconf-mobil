@@ -112,13 +112,13 @@ class HomeScreen extends Component {
 						<View style={{ flex: 0.68, flexDirection: 'row' }}>
 							<View style={{ flex: 0.6, flexDirection: 'column' }}>
 								<View style={styles.date}>
-									<View style={{ flexDirection: 'row', marginVertical: '8%', marginHorizontal: '4%' }}>
+									<View style={{ flexDirection: 'row', marginVertical: '0.2%', marginHorizontal: '4%' }}>
 										<Icon color={Color.white} name='ios-calendar-outline' size={24} />
 										<Text
 											style={styles.dateText}
 										>{moment(event.startDate).format('Do MMM YYYY')}</Text>
 									</View>
-									<View style={{ flexDirection: 'row', marginVertical: '8%', marginHorizontal: '4%' }}>
+									<View style={{ flexDirection: 'row', marginVertical: '0.2%', marginHorizontal: '4%' }}>
 										<Icon color={Color.white} name='ios-clock-outline' size={24} />
 										<Text
 											style={styles.dateText}
@@ -140,7 +140,7 @@ class HomeScreen extends Component {
 									width: '100%',
 									height: '100%',
 									flexDirection: 'column',
-									alignItems: 'flex-end'
+									alignItems: 'center'
 								}}
 							>
 								<View
@@ -149,7 +149,7 @@ class HomeScreen extends Component {
 										width: '100%',
 										height: '100%',
 										flexDirection: 'row',
-										alignItems: 'flex-end',
+										alignItems: 'center',
 										paddingBottom: '2%'
 									}}
 								>
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
 		flex: 0.32,
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
-		alignSelf: 'flex-end',
+		alignSelf: 'center',
 		alignItems: 'flex-start',
 		paddingTop: verticalScale(4),
 		height: moderateScale(24)

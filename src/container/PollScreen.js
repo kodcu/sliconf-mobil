@@ -131,7 +131,7 @@ class PollScreen extends Component {
 						surveyModal: false,
 						surveySelected: false
 					}, () => Alert.alert(
-						'You answers has been saved.',
+						'Your answers has been saved.',
 						'Thank you for participating in this survey.',
 						[
 							{ text: 'OK' },

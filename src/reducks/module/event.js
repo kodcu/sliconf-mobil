@@ -87,7 +87,7 @@ export const reducer = (state = initialState, action = initialAction) => {
 };
 
 export const actionCreators = {
-	getEventsWithName: (name) => async (dispatch, getState) => {
+	getEvents: () => async (dispatch, getState) => {
 		dispatch({
 			type: types.EVENTLIST_POSTS_REQUEST
 		});

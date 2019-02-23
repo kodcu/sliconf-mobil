@@ -67,18 +67,7 @@ class SpeakerInfoCard extends Component {
 		}
 	}
 
-	onHeartPress = (talk) => {
-		moment().isAfter(moment(talk.date)) ?			
-			this.setState({ heartPressed: !this.state.heartPressed }) :
-			Alert.alert(
-				'Warning!',
-				'Please wait until talk starts.',
-				[
-					{ text: 'OK', onPress: () => console.log('ok') }
-				],
-				{ cancelable: false }
-			);
-	}
+	onHeartPress = () => this.setState({ heartPressed: !this.state.heartPressed })
 
 	onChange = () => {
 		this.setState({ sliderView: true });
@@ -177,7 +166,7 @@ class SpeakerInfoCard extends Component {
 								color={Color.green} size={36}
 								smiley={smiley}
 								style={styles.heartField}
-								onHeartPress={this.onHeartPress(talk)}
+								onHeartPress={this.onHeartPress}
 								heartPressed={heartPressed}
 							/>
 						</View>
@@ -285,7 +274,17 @@ class SpeakerInfoCard extends Component {
 							color={Color.green} size={36}
 							smiley={smiley}
 							style={styles.heartField}
-							onHeartPress={this.onHeartPress}
+							onHeartPress={() => moment().isAfter(moment(talk.date).subtract(1, 'second')) ? 
+								this.onHeartPress() :
+								Alert.alert(
+									'Warning!',
+									'Please wait until talk starts.',
+									[
+										{ text: 'OK', onPress: () => console.log('ok') }
+									],
+									{ cancelable: false }
+								)
+							}
 							heartPressed={heartPressed}
 						/>
 					</View>

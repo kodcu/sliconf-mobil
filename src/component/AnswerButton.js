@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
 	},
 	answerView: {
 		flexDirection: 'row',
-		height: Scale.verticalScale(72),
+		height: Scale.verticalScale(48),
 		width: Scale.width
 	},
 	answerText: {
