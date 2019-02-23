@@ -21,7 +21,7 @@ const mapStateToProps = (state) => ({
 	userLoginWithAccount: state.auth.login
 });
 
-export class SendQuestionView extends Component {
+class SendQuestionView extends Component {
 	state = {
 		commentValue: '',
 		anonymousWarning: false,

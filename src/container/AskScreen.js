@@ -42,24 +42,19 @@ class AskScreen extends Component {
 
     getTopicButtons(agenda) {
         var buttons = [];
-
         agenda.forEach((talk) => {
-            if (talk && talk.speaker && talk.topic && talk.detail && talk.room) {
-                if (talk.speaker.trim() && talk.speaker.trim().length > 1 &&
-                    talk.topic.trim() && talk.topic.trim().length > 1 &&
-                    talk.detail.trim() && talk.detail.trim().length > 1
-                ) {
-                    moment().isBefore(moment(talk.date).add(talk.duration, 'minutes').add(60, 'minutes')) ?
-                        buttons.push(
-                            (<TouchableOpacity
-                                key={talk.id}
-                                onPress={() => this.setState({ sessionId: talk.id, isSessionSelected: true, sessionModal: false })}
-                            >
-                                <View style={styles.selectSessionButton}>
-                                    <Text style={styles.selectASessionText}>{talk.topic}</Text>
-                                </View>
-                            </TouchableOpacity>)
-                        ) : null;
+            if (talk && talk.level !== -1) {
+                if (moment().isBefore(moment(talk.date).add(talk.duration, 'minutes').add(60, 'minutes'))) {                    
+                    buttons.push(
+                        (<TouchableOpacity
+                            key={talk.id}
+                            onPress={() => this.setState({ sessionId: talk.id, isSessionSelected: true, sessionModal: false })}
+                        >
+                            <View style={styles.selectSessionButton}>
+                                <Text style={styles.selectASessionText}>{talk.topic}</Text>
+                            </View>
+                        </TouchableOpacity>)
+                    );
                 }
             }
         });
