@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
 
 import { actionCreators } from '../reducks/module/event';
 import EventCard from '../component/EventCard';
@@ -40,27 +41,41 @@ class EventSearch extends Component {
 
 	onSearch = async (code) => {
 		await this.state.dispatch(actionCreators.getEvents());
-		const { events } = this.props;
+		let { events } = this.props;
 		if (events && events.length > 0) {
-			if (code && code.trim().length > 0) {
-				for (const event of events) {					
-					//Used to calculate how close our event's code is to the code input
-					const codeSimilarity = Similarity(event.key, code);
-					const eventName = event.name.length > 8 ? event.name.slice(0, 8) : event.name;
-					//Used to calculate how close our event's name is to the name input
-					const nameSimilarity = Similarity(eventName, code);
-					event.similarity = (codeSimilarity + nameSimilarity) / 2.0;
-				}				
+			if (events.length === 1 && events[0] && events[0].key && events[0].key.trim()) {
+				this.getEvent(events[0].key.trim());
+			} else {
+				events = events.filter(event => moment().isBefore(moment(event.endDate).add(1, 'day')));
+				if (code && code.trim().length > 0) {
+					const regex = new RegExp('^' + code.trim().toLowerCase());
+					events = events.filter(event =>	regex.test(event.name.toLowerCase()));
+					for (const event of events) {					
+						//Used to calculate how close our event's code is to the code input
+						const codeSimilarity = Similarity(event.key, code);
+						const eventName = event.name.length > 8 ? event.name.slice(0, 8) : event.name;
+						//Used to calculate how close our event's name is to the name input
+						const nameSimilarity = Similarity(eventName, code);
+						event.similarity = (codeSimilarity + nameSimilarity) / 2.0;
+					}				
+					events.sort((a, b) => {
+						const similarityA = Number(a.similarity);
+						const similarityB = Number(b.similarity);
+						if (similarityA < similarityB) return 1;
+						if (similarityA > similarityB) return -1;
+						return 0;
+					});
+				}			
 				events.sort((a, b) => {
-					const similarityA = Number(a.similarity);
-					const similarityB = Number(b.similarity);
-					if (similarityA < similarityB) return 1;
-					if (similarityA > similarityB) return -1;
+					const aStart = moment(a.startDate);
+					const bStart = moment(b.startDate);
+					if (aStart.isAfter(bStart)) return 1;
+					if (aStart.isBefore(bStart)) return -1;
 					return 0;
 				});
+				Keyboard.dismiss();
+				this.setState({ events });
 			}
-			Keyboard.dismiss();
-			this.setState({ events });
 		}
 	}
 
@@ -89,17 +104,6 @@ class EventSearch extends Component {
 						<Text style={styles.notFoundText}>No results found.</Text>
 					</View>)
 				}
-				{/*events && events.length > 0 ?
-					(<FlatList
-						data={events}
-						keyExtractor={(item, index) => index}
-						renderItem={({ item }) => this.renderItem(item, getEvent)}
-						extraData={this.state.events}
-					/>) :
-					(<View key={'expired'} style={styles.notFoundPanel}>
-						<Text style={styles.notFoundText}>No results found.</Text>
-					</View>)
-				*/}
 			</View>
 		);
 	}

@@ -14,6 +14,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import moment from 'moment';
 
 import { actionCreators } from '../reducks/module/event';
 import { EVENT_STACK, EVENTSEARCH } from '../router';
@@ -95,12 +96,15 @@ class MainScreen extends Component {
 
 	goToEventSearch = async (code) => {
 		await this.props.dispatch(actionCreators.getEvents());
-		const { events } = this.props;
+		let { events } = this.props;
 		if (events && events.length > 0) {
 			if (events.length === 1 && events[0] && events[0].key && events[0].key.trim()) {
 				this.getEvent(events[0].key.trim());
 			} else {
+				events = events.filter(event => moment().isBefore(moment(event.endDate).add(1, 'day')));
 				if (code && code.trim().length > 0) {
+					const regex = new RegExp('^' + code.trim().toLowerCase());
+					events = events.filter(event =>	regex.test(event.name.toLowerCase()));
 					for (const event of events) {					
 						//Used to calculate how close our event's code is to the code input
 						const codeSimilarity = Similarity(event.key, code);
@@ -116,7 +120,15 @@ class MainScreen extends Component {
 						if (similarityA > similarityB) return -1;
 						return 0;
 					});
-				}
+				}			
+				events.sort((a, b) => {
+					const aStart = moment(a.startDate);
+					const bStart = moment(b.startDate);
+					if (aStart.isAfter(bStart)) return 1;
+					if (aStart.isBefore(bStart)) return -1;
+					return 0;
+				});
+				Keyboard.dismiss();
 				this.props.navigation.navigate(
 					EVENTSEARCH,
 					{ events, getEvent: this.getEvent, dispatch: this.props.dispatch }

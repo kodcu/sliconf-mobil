@@ -63,8 +63,7 @@ export class TalkDetail extends Component {
                 voteMessage,
                 [
                     {
-                        text: 'OK', onPress: () => {
-                        }
+                        text: 'OK'
                     },
                 ],
                 { cancelable: false }
@@ -94,26 +93,32 @@ export class TalkDetail extends Component {
         return talk;
     }
 
+    voteController(date) {
+        if (moment().isAfter(moment(date))) {
+            this.setState({ rate: true });			
+		} else {
+			Alert.alert(
+				'Warning!',
+				'Please wait until talk starts.',
+				[
+					{ text: 'OK' }
+				],
+				{ cancelable: false }
+			);
+		}
+    }
+
     render() {
-        const { tab, rate } = this.state
+        const { tab, rate } = this.state;
         const { state } = this.props.navigation;
-        let talk = this.changeTalkData(state.params);
+        const talk = this.changeTalkData(state.params);
         return (
             <Container style={styles.container}>
-                <Header leftImage='chevron-left' rightText='Vote'
+                <Header 
+                    leftImage='chevron-left' rightText='Vote'
                     onPressLeft={() => this.props.navigation.goBack()}
-                    onPressRight={() => {
-                        moment().isAfter(moment(talk.date)) ?
-                            this.setState({ rate: true }) :
-                            Alert.alert(
-                                'Warning!',
-                                'Please wait until talk starts.',
-                                [
-                                    { text: 'OK', onPress: () => console.log('ok') }
-                                ],
-                                { cancelable: false }
-                            );
-                    }}>
+                    onPressRight={() => this.voteController(talk.date)}
+                >
                     <Header.Title title="Talk Detail" />
                 </Header>
                 <Content>
@@ -122,13 +127,14 @@ export class TalkDetail extends Component {
                         closeModal={this.changeAskQuestionState}
                         visible={this.state.messageModal}
                     />
-                    <TalkRate visible={rate}
-                        onPressDismiss={() => { this.setState({ rate: false }) }}
+                    <TalkRate 
+                        visible={rate}
+                        onPressDismiss={() => this.setState({ rate: false })}
                         onPressSubmit={(value) => this.voteTalk(value)}
                         loading={this.props.voteLoading}
                         user={this.props.userVote}
-                        voteValue={this.props.voteValue} />
-
+                        voteValue={this.props.voteValue} 
+                    />
                     <If con={tab === 'info'}>
                         <If.Then>
                             <TalkInfo talk={talk} />

@@ -19,11 +19,10 @@ const mapStateToProps = (state) => ({
 	userVote: state.talk.userVote,
 	voteValue: state.talk.voteValue,
 	voteMessage: state.talk.errorMessage,
-	voteError: state.talk.error,
+	voteError: state.talk.error
 });
 
 class SpeakerInfoView extends Component {
-	static openCards = 0; //Count of currently open cards
 	state = {
 		talks: this.props.talks,
 		user: this.props.user,
@@ -32,32 +31,30 @@ class SpeakerInfoView extends Component {
 	}
 
 	onSubmit = async (value, talkId) => {
-		const { user, event } = this.state;
 		const { dispatch } = this.props;
+		const { user, event } = this.state;
 		const userId = user.id;
 		const eventId = event.id;
 		await dispatch(
 			actionTalk.voteTalk(eventId, talkId, userId, value)
 		);
-		const { voteError, voteMessage } = this.props;
+		await dispatch(
+			actionTalk.getVoteByUser(eventId, talkId, userId)
+		);
+		const { voteError, voteMessage, userVote, voteValue } = this.props;
 		if (voteError) {
 			Alert.alert(
 				'Warning!',
 				voteMessage,
 				[
 					{
-						text: 'OK',
-						onPress: () => {
-						}
+						text: 'OK'
 					},
 				],
 				{ cancelable: false }
 			);
+			return { userVote: false, voteValue: undefined };
 		}
-		await this.props.dispatch(
-			actionTalk.getVoteByUser(eventId, talkId, userId)
-		);
-		const { userVote, voteValue } = this.props;
 		return { userVote, voteValue };
 	}
 
@@ -67,7 +64,7 @@ class SpeakerInfoView extends Component {
 
 	renderTalks = (talks, user, event) => {
 		let buttons = [];
-
+		
 		talks.forEach((talk, index) => {
 			buttons.push(
 				<TouchableOpacity
@@ -92,10 +89,9 @@ class SpeakerInfoView extends Component {
 	render() {
 		const { talksContainer } = styles;
 		const { talks, user, event, scrollSize } = this.state;
-		let scrollHeight;
-		scrollSize ?
-			scrollHeight = ((talks.length * moderateScale(145)) + talks.length + 2) :
-			scrollHeight = scrollSize + (talks.length * moderateScale(253.75));
+		const scrollHeight = scrollSize ?
+			((talks.length * moderateScale(145)) + talks.length + 2) :
+			scrollSize + (talks.length * moderateScale(253.75));
 
 		return (
 			<ScrollView style={{ height: scrollHeight }} onContentSizeChange={this.onSizeChange}>
@@ -112,7 +108,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		margin: 10,
+		margin: 10
 	}
 });
 

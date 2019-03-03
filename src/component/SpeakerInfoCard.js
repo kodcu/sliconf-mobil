@@ -45,7 +45,7 @@ class SpeakerInfoCard extends Component {
 			'Good',
 			'Wonderful'
 		]
-	};
+	}
 
 	async componentWillMount() {
 		const { talk, user, event } = this.state;
@@ -76,7 +76,7 @@ class SpeakerInfoCard extends Component {
 
 	getSmiley = (value) => {
 		this.setState({ smiley: Emoji[value - 1], value });
-	};
+	}
 
 	getColorByLevel(level) {
 		let color;
@@ -103,10 +103,27 @@ class SpeakerInfoCard extends Component {
 	getSpeakerName(speakerId) {
 		return this.props.speakers.find(speaker => speaker.id === speakerId).name;
 	}
+	/**
+	 * @param {number} date Date of talk
+	 */
+	initialHeart(date) {	
+		if (moment().isAfter(moment(date))) {			
+			this.onHeartPress();
+		} else {
+			Alert.alert(
+				'Warning!',
+				'Please wait until talk starts.',
+				[
+					{ text: 'OK' }
+				],
+				{ cancelable: false }
+			);
+		}
+	}
 
     /**
-     * params {value} = user vote value
-     * params {id} = talk.id
+     * @param {number} value = user vote value
+     * @param {number} id = talk.id
      */
 	submitPress = async (value, id) => {
 		const { userVote, voteValue } = await this.state.onSubmit(value, id);
@@ -235,7 +252,8 @@ class SpeakerInfoCard extends Component {
 							</View>
 							<View style={styles.buttonView}>
 								<Button
-									vertical transparent
+									vertical
+									transparent
 									onPress={this.onHeartPress}
 									style={styles.modalButton}
 								>
@@ -269,22 +287,12 @@ class SpeakerInfoCard extends Component {
 							<Text style={styles.topic}>{this.getRoomName(talk.room)}</Text>
 						</View>
 					</View>
-					<View style={styles.actionField}>						
+					<View style={styles.actionField}>
 						<Heart
 							color={Color.green} size={36}
 							smiley={smiley}
 							style={styles.heartField}
-							onHeartPress={() => moment().isAfter(moment(talk.date).subtract(1, 'second')) ? 
-								this.onHeartPress() :
-								Alert.alert(
-									'Warning!',
-									'Please wait until talk starts.',
-									[
-										{ text: 'OK', onPress: () => console.log('ok') }
-									],
-									{ cancelable: false }
-								)
-							}
+							onHeartPress={() => this.initialHeart(talk.date)}
 							heartPressed={heartPressed}
 						/>
 					</View>
@@ -334,7 +342,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		padding: 20,
+		padding: 20
 	},
 	resultView: {
 		flex: 1,
@@ -349,7 +357,7 @@ const styles = StyleSheet.create({
 		backgroundColor: Color.green,
 		borderBottomLeftRadius: 25,
 		borderBottomRightRadius: 25,
-		flexDirection: 'row',
+		flexDirection: 'row'
 	},
 	topic: {
 		...Font.regular,
@@ -385,7 +393,7 @@ const styles = StyleSheet.create({
 	},
 	slider: {
 		width: (width - 60) * 0.75,
-		paddingTop: 10,
+		paddingTop: 10
 	},
 	textQuestion: {
 		...Font.medium,
@@ -397,13 +405,13 @@ const styles = StyleSheet.create({
 		...Font.regular,
 		textAlign: 'center',
 		fontSize: moderateScale(15),
-		color: Color.darkGray4,
+		color: Color.darkGray4
 	},
 	modalButton: {
 		width: (width - 60) / 2,
 		height: 60,
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'center'
 	},
 	textButton: {
 		...Font.medium,

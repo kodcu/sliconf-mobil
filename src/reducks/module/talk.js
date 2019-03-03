@@ -92,23 +92,24 @@ export const actionCreators = {
 		dispatch({
 			type: types.VOTE_TALK_REQUEST
 		});
-
+		
 		await Request.POST(
-			voteTalk + eventId + "/" + sessionId + "/" + userId + "/" + voteValue,
+			voteTalk + eventId + '/' + sessionId + '/' + userId + '/' + voteValue,
 			{},
 			getTokenAuth(getState()),
 			{
 				'200': (res) => {
-					if (res.status)
+					if (res.status) {
 						dispatch({
 							type: types.VOTE_TALK_SUC,
 							payload: res.message
 						});
-					else
+					} else {
 						dispatch({
 							type: types.VOTE_TALK_FAIL,
 							payload: res.message
 						});
+					}
 				},
 				otherwise: (res) => {
 					dispatch({
@@ -116,7 +117,7 @@ export const actionCreators = {
 						payload: res.message
 					});
 				},
-				fail: (err) => {
+				fail: () => {
 					dispatch({
 						type: types.VOTE_TALK_FAIL,
 						payload: 'Can not be processed at this time!'
@@ -130,20 +131,21 @@ export const actionCreators = {
 		});
 
 		await Request.GET(
-			getVoteByUser + eventId + "/" + sessionId + "/" + userId,
+			getVoteByUser + eventId + '/' + sessionId + '/' + userId,
 			getTokenAuth(getState()),
 			{
 				'200': (res) => {
-					if (res.status)
+					if (res.status) {
 						dispatch({
 							type: types.VOTE_TALK_USER_SUC,
 							payload: res.returnObject
 						});
-					else
+					} else {
 						dispatch({
 							type: types.VOTE_TALK_USER_FAIL,
 							payload: res.message
 						});
+					}
 				},
 				otherwise: (res) => {
 					dispatch({
@@ -151,13 +153,14 @@ export const actionCreators = {
 						payload: res.message
 					});
 				},
-				fail: (err) => {
+				fail: () => {
 					dispatch({
 						type: types.VOTE_TALK_USER_FAIL,
 						payload: 'Can not be processed at this time!'
 					});
 				}
-			});
+			}
+		);
 	}
 };
 
