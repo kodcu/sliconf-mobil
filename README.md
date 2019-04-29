@@ -145,7 +145,7 @@ import CircularProgress from './CircularProgress';
 ```
 * Second File
 ```sh
- ./node_modules/react-native-circular-progress/src/AnimatedCircularProgress.js
+ ./node_modules/react-native-circular-progress/src/CircularProgress.js
 ```
 Change imports to this:
 ```sh
