@@ -103,7 +103,7 @@ class MainScreen extends Component {
 			} else {
 				events = events.filter(event => moment().isBefore(moment(event.endDate).add(1, 'day')));
 				if (code && code.trim().length > 0) {
-					const regex = new RegExp('^' + code.trim().toLowerCase());
+					const regex = new RegExp(code.trim().toLowerCase());
 					events = events.filter(event =>	regex.test(event.name.toLowerCase()));
 					for (const event of events) {					
 						//Used to calculate how close our event's code is to the code input
