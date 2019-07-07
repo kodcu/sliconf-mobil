@@ -35,9 +35,7 @@ export const reducer = (state = initialState, action = initialAction) => {
 	const { type, payload } = action;
 
 	switch (type) {
-		case types.LOGIN_REQUEST ||
-			types.REGISTER_REQUEST ||
-			types.FORGOT_PASS_REQUEST: {
+		case types.LOGIN_REQUEST: {
 				return {
 					...state,
 					loading: true,
@@ -46,7 +44,25 @@ export const reducer = (state = initialState, action = initialAction) => {
 					user: {},
 				};
 			}
-		case types.LOGIN_RESPONSE_SUC || types.REGISTER_RESPONSE_SUC: {
+		case types.REGISTER_REQUEST : {
+				return {
+					...state,
+					loading: true,
+					error: false,
+					login: false,
+					user: {},
+				};
+			}
+		case types.FORGOT_PASS_REQUEST: {
+				return {
+					...state,
+					loading: true,
+					error: false,
+					login: false,
+					user: {},
+				};
+			}
+		case types.LOGIN_RESPONSE_SUC: {
 			return {
 				...state,
 				loading: false,
@@ -55,9 +71,36 @@ export const reducer = (state = initialState, action = initialAction) => {
 				user: payload,
 			};
 		}
-		case types.LOGIN_RESPONSE_FAIL ||
-			types.REGISTER_RESPONSE_FAIL ||
-			types.FORGOT_PASS_RESPONSE_FAIL: {
+		case types.REGISTER_RESPONSE_SUC: {
+			return {
+				...state,
+				loading: false,
+				error: false,
+				login: true,
+				user: payload,
+			};
+		}
+		case types.LOGIN_RESPONSE_FAIL : {
+				return {
+					...state,
+					loading: false,
+					error: true,
+					login: false,
+					user: {},
+					errorMessage: payload
+				};
+			}
+		case types.REGISTER_RESPONSE_FAIL : {
+				return {
+					...state,
+					loading: false,
+					error: true,
+					login: false,
+					user: {},
+					errorMessage: payload
+				};
+			}
+		case types.FORGOT_PASS_RESPONSE_FAIL: {
 				return {
 					...state,
 					loading: false,
