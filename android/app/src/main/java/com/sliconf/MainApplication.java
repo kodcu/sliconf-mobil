@@ -11,12 +11,6 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
-import com.react.rnspinkit.RNSpinkitPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.github.wumke.RNExitApp.RNExitAppPackage;
-import com.lwansbrough.RCTCamera.RCTCameraPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -43,15 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNDeviceInfo(),
             new RCTCameraPackage(),
             new LinearGradientPackage(),
-            new RNSpinkitPackage(),
-                    new LinearGradientPackage(),
-                    new RNSpinkitPackage(),
-                    new RNDeviceInfo(),
-                    new RNExitAppPackage(),
-                    new MapsPackage(),
-                    new VectorIconsPackage(),
-                    new RCTCameraPackage()
-            );
+            new RNSpinkitPackage());
         }
     };
 
